@@ -9,7 +9,7 @@ Example 1 - deploying and using a contract
 ******************************************
 .. code-block:: python
 
-   from simpleth import Blockchain, Contract, Filter
+   from simpleth import Blockchain, Contract
    b = Blockchain()
    user = b.accounts[0]
    c = Contract('TestTrx')
@@ -22,7 +22,7 @@ Example 2 - using a deployed contract
 *************************************
 .. code-block:: python
 
-   from simpleth import Blockchain, Contract, Filter
+   from simpleth import Blockchain, Contract
    b = Blockchain()
    user = b.accounts[0]
    c = Contract('TestTrx')

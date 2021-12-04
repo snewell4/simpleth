@@ -1,15 +1,17 @@
 Getting Started
 ===============
 
-Pre-reqs
-********
+Pre-requisites
+**************
 
 #.  Ganache must be installed and running. See: http://trufflesuite.com/ganache/
-#.  ``web3.py`` must be added to your Python environment. You can install with:
+#.  ``web3.py`` and ``hexbytes`` must be added to your Python environment.
+    You can install with:
 
 .. code-block:: python
 
    pip install web3
+   pip install hexbytes
 
 Installation
 ************
