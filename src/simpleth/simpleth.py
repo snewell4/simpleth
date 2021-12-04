@@ -187,11 +187,11 @@ class Blockchain:
         https://web3py.readthedocs.io/en/stable/web3.main.html
 
     """
-    def __init__(self, url: str = constant.GANACHE_URL) -> None:
+    def __init__(self, url: str = GANACHE_URL) -> None:
         """Create blockchain instance.
 
         :param url: Ethereum blockchain web address (optional,
-            default: :const:`constant.GANACHE_URL`)
+            default: :const:`GANACHE_URL`)
         :type url: str
         :rtype: None
         :example:
@@ -214,9 +214,9 @@ class Blockchain:
                 )
             raise SimplEthError(message, code='B-010-010') from None
 
-        self._eth: constant.T_WEB3_ETH_OBJ = self.web3.eth
+        self._eth: T_WEB3_ETH_OBJ = self.web3.eth
         """private ``web3.eth`` object"""
-        self._web3e: constant.T_WEB3_EXC = web3e
+        self._web3e: T_WEB3_EXC = web3e
         """private module to catch exceptions from Web3 API"""
         self._accounts: List[str] = self.eth.accounts
         """private list of addresses in the Ganache-provided
@@ -286,7 +286,7 @@ class Blockchain:
         return self._client_version
 
     @property
-    def eth(self) -> constant.T_ETH_OBJ:
+    def eth(self) -> T_ETH_OBJ:
         """Return the ``web3.eth`` object.
 
         :rtype: object
@@ -305,7 +305,7 @@ class Blockchain:
         return self._eth
 
     @property
-    def web3(self) -> constant.T_WEB3_OBJ:
+    def web3(self) -> T_WEB3_OBJ:
         """Return the ``web3`` object.
 
         :rtype: object
@@ -481,14 +481,14 @@ class Blockchain:
     def block_time_string(
             self,
             block_number: int,
-            time_format: str = constant.TIME_FORMAT
+            time_format: str = TIME_FORMAT
          ) -> str:
         """Return time, as a string, when a block was mined.
 
         :param block_number: number of the block on the chain
         :type block_number: int
         :param time_format: format codes used to create time string
-            (optional, default: :const:`constant.TIME_FORMAT`)
+            (optional, default: :const:`TIME_FORMAT`)
         :type time_format: str
         :rtype: str
         :return: time block was mined, in local timezone, as a string.
@@ -529,7 +529,7 @@ class Blockchain:
             sender: str,
             receiver: str,
             amount_wei: int
-            ) -> constant.T_HASH:
+            ) -> T_HASH:
         """Transfer Ether from one account to another.
 
         ``amount`` is deducted from ``sender`` account and added to
@@ -593,7 +593,7 @@ class Blockchain:
             raise SimplEthError(message, code='B-050-030') from None
         return trx_hash
 
-    def transaction(self, trx_hash: str) -> constant.T_TRANSACTION:
+    def transaction(self, trx_hash: str) -> T_TRANSACTION:
         """Return details about the transaction identified by the transaction hash.
 
         :param trx_hash: transaction hash
@@ -696,33 +696,33 @@ class Contract:
         """Private name of the contract this object represents"""
 
         self._artifact_dir: str = \
-            constant.PROJECT_HOME + '/' + \
-            constant.ARTIFACT_SUBDIR
+            PROJECT_HOME + '/' + \
+            ARTIFACT_SUBDIR
         """Private filepath to the directory with artifact files"""
 
         self._artifact_abi_filepath: str = \
             self._artifact_dir + '/' + \
             self._name + '.' + \
-            constant.ABI_SUFFIX
+            ABI_SUFFIX
         """Private filepath to the ABI file"""
 
         self._artifact_address_filepath: str = \
             self._artifact_dir + '/' + \
             self._name + '.' + \
-            constant.ADDRESS_SUFFIX
+            ADDRESS_SUFFIX
         """Private filepath to the address file"""
 
         self._artifact_bytecode_filepath: str = \
             self._artifact_dir + '/' + \
             self._name + '.' + \
-            constant.BYTECODE_SUFFIX
+            BYTECODE_SUFFIX
         """Private filepath to the bytecode file"""
 
-        self._blockchain: constant.T_BLOCKCHAIN_OBJ = Blockchain()
+        self._blockchain: T_BLOCKCHAIN_OBJ = Blockchain()
         """Private :class:`Blockchain` object used to access
             blockchain methods"""
 
-        self._web3e: constant.T_WEB3_EXC = web3e
+        self._web3e: T_WEB3_EXC = web3e
         """Private instance to catch exceptions from Web3 API"""
         self._abi: List = self._get_artifact_abi()
         """Private contract Application Binary Interface"""
@@ -733,11 +733,11 @@ class Contract:
         # They are filled in with a `connect()` and this happens when
         # a user calls `connect()` or `deploy()` (a `deploy()` does
         # a `connect()`).
-        self._deployed_code: constant.T_DEPLOYED_CODE = ''
+        self._deployed_code: T_DEPLOYED_CODE = ''
         """Private contract code as deployed on blockchain"""
         self._address: str = ''
         """Private contract blockchain address"""
-        self._web3_contract: constant.T_WEB3_CONTRACT_OBJ = None
+        self._web3_contract: T_WEB3_CONTRACT_OBJ = None
         """Private instance of the ``web3._utils.datatypes.Contract``
             used to access methods for that object."""
         self._events: List = []
@@ -780,7 +780,7 @@ class Contract:
         return self._address
 
     @property
-    def blockchain(self) -> constant.T_BLOCKCHAIN_OBJ:
+    def blockchain(self) -> T_BLOCKCHAIN_OBJ:
         """Return `web3.py` ``blockchain`` object."""
         return self._blockchain
 
@@ -804,7 +804,7 @@ class Contract:
         return self._bytecode
 
     @property
-    def deployed_code(self) -> constant.T_DEPLOYED_CODE:
+    def deployed_code(self) -> T_DEPLOYED_CODE:
         """Return contract bytecode as deployed on blockchain.
 
         :rtype: str
@@ -894,7 +894,7 @@ class Contract:
         return self._size
 
     @property
-    def web3_contract(self) -> constant.T_WEB3_CONTRACT_OBJ:
+    def web3_contract(self) -> T_WEB3_CONTRACT_OBJ:
         """Return web3.py contract object.
 
         :rtype: object
@@ -904,7 +904,7 @@ class Contract:
         return self._web3_contract
 
     @property
-    def web3e(self) -> constant.T_WEB3_EXC:
+    def web3e(self) -> T_WEB3_EXC:
         """Return web3.py Exceptions class.
 
         :rtype: object
@@ -1031,10 +1031,10 @@ class Contract:
             sender: str,
             *constructor_args: Union[int, float, str, list],
             constructor_event_name: str = '',
-            gas_limit: int = constant.GAS_LIMIT,
-            max_priority_fee_gwei: Union[float, int] = constant.MAX_PRIORITY_FEE_GWEI,
-            max_fee_gwei: Union[float, int] = constant.MAX_FEE_GWEI,
-            ) -> constant.T_RESULT:
+            gas_limit: int = GAS_LIMIT,
+            max_priority_fee_gwei: Union[float, int] = MAX_PRIORITY_FEE_GWEI,
+            max_fee_gwei: Union[float, int] = MAX_FEE_GWEI,
+            ) -> T_RESULT:
         """Deploy the contract onto the blockchain.
 
         :param sender: address of account requesting the deploy
@@ -1046,16 +1046,16 @@ class Contract:
             constructor (optional, default: `''`)
         :type constructor_event_name: str
         :param gas_limit: maximum amount of gas units allowed for the deploy
-            (optional, default: :const:`constant.GAS_LIMIT`)
+            (optional, default: :const:`GAS_LIMIT`)
         :type gas_limit: int
         :param max_priority_fee_gwei: maximum ``sender`` will pay from
             account balance as a tip for a miner to mine this
             transaction, in gwei (optional, default:
-            :const:`constant.MAX_PRIORITY_FEE_GWEI`)
+            :const:`MAX_PRIORITY_FEE_GWEI`)
         :type max_priority_fee_gwei: int
         :param max_fee_gwei: maximum ``sender`` will pay to have this
             transaction mined, in gwei (optional, default:
-            :const:`constant.MAX_FEE_GWEI`)
+            :const:`MAX_FEE_GWEI`)
         :type max_fee_gwei: int
         :rtype: Result
         :return: :class:`trx_result` holding the details of mining
@@ -1079,7 +1079,7 @@ class Contract:
             {'address': '0x8DAEaf6D1e702Ab068BB9DED7026b8A3   ..snip..
 
         """
-        trx_result: constant.T_RESULT = []
+        trx_result: T_RESULT = []
         try:
             self._web3_contract = self._blockchain.eth.contract(
                     abi=self.abi,
@@ -1094,7 +1094,7 @@ class Contract:
             raise SimplEthError(message, code='C-030-010') from None
 
         try:
-            trx_hash: constant.T_HASH = \
+            trx_hash: T_HASH = \
                 self._web3_contract.constructor(
                         *constructor_args
                     ).transact(
@@ -1132,8 +1132,8 @@ class Contract:
         try:
             trx_receipt = self._blockchain.eth.waitForTransactionReceipt(
                 trx_hash,
-                timeout=constant.TIMEOUT,
-                poll_latency=constant.POLL_LATENCY
+                timeout=TIMEOUT,
+                poll_latency=POLL_LATENCY
                 )
         except self._web3e.TimeExhausted:
             # Timed out. Trx not yet mined. Return empty result
@@ -1271,10 +1271,10 @@ class Contract:
 
     def get_trx_result(
             self,
-            trx_hash: constant.T_HASH,
+            trx_hash: T_HASH,
             trx_name: str,
             event_name: str = ''
-            ) -> constant.T_RESULT:
+            ) -> T_RESULT:
         """Return the results of a transaction.
 
         This is used after :meth:`submit_trx` to get the results of the
@@ -1330,7 +1330,7 @@ class Contract:
                 )
         except self._web3e.TransactionNotFound:
             # Receipt not found. Not yet mined. Will return empty trx_result
-            trx_result: Optional[constant.T_RESULT] = None
+            trx_result: Optional[T_RESULT] = None
         else:
             trx_result = _Result(
                 trx_name,
@@ -1344,12 +1344,12 @@ class Contract:
 
     def get_trx_result_wait(
             self,
-            trx_hash: constant.T_HASH,
+            trx_hash: T_HASH,
             trx_name: str,
             event_name: str = '',
-            timeout: Union[int, float] = constant.TIMEOUT,
-            poll_latency: Union[int, float] = constant.POLL_LATENCY
-            ) -> constant.T_RESULT:
+            timeout: Union[int, float] = TIMEOUT,
+            poll_latency: Union[int, float] = POLL_LATENCY
+            ) -> T_RESULT:
         """Wait for transaction to be mined and then return the results
            of that transaction.
 
@@ -1374,11 +1374,11 @@ class Contract:
         :type event_name: str
         :param timeout: maximum number of seconds to wait for
             mining to finish
-            (optional, default: :const:`constant.TIMEOUT`)
+            (optional, default: :const:`TIMEOUT`)
         :type timeout: int | float
         :param poll_latency: number of seconds between checking
             for transaction completion (optional, default:
-            :const:`constant.POLL_LATENCY`)
+            :const:`POLL_LATENCY`)
         :type poll_latency: int | float
         :rtype: Result
         :return: :class:`Result` with transaction outcomes
@@ -1441,7 +1441,7 @@ class Contract:
             # Timed out. Trx not yet mined. Will return None for trx_result.
             return None
         else:
-            trx_result: constant.T_RESULT = _Result(
+            trx_result: T_RESULT = _Result(
                 trx_name,
                 trx_hash,
                 trx_receipt,
@@ -1533,13 +1533,13 @@ class Contract:
             trx_name: str,
             *args: Any,
             event_name: str = '',
-            gas_limit: int = constant.GAS_LIMIT,
-            max_priority_fee_gwei: Union[int, float] = constant.MAX_PRIORITY_FEE_GWEI,
-            max_fee_gwei: Union[int, float] = constant.MAX_FEE_GWEI,
+            gas_limit: int = GAS_LIMIT,
+            max_priority_fee_gwei: Union[int, float] = MAX_PRIORITY_FEE_GWEI,
+            max_fee_gwei: Union[int, float] = MAX_FEE_GWEI,
             value_wei: int = 0,
-            timeout: Union[int, float] = constant.TIMEOUT,
-            poll_latency: Union[int, float] = constant.POLL_LATENCY
-            ) -> constant.T_RESULT:
+            timeout: Union[int, float] = TIMEOUT,
+            poll_latency: Union[int, float] = POLL_LATENCY
+            ) -> T_RESULT:
         """"Send a transaction and return the results.
 
         This is the method typically used for running transactions.
@@ -1562,7 +1562,7 @@ class Contract:
         :type event_name: str
         :param gas_limit: max gas sender will allow for this
             transaction in units of gas (optional, default:
-            :const:`constant.GAS_LIMIT`)
+            :const:`GAS_LIMIT`)
         :type gas_limit: int
         :param max_priority_fee_gwei: max amount of Ether (in gwei) the
             sender will pay as a tip
@@ -1575,11 +1575,11 @@ class Contract:
         :type value_wei: int
         :param timeout: maximum number of seconds to wait for
             mining to finish
-            (optional, default: :const:`constant.TIMEOUT`)
+            (optional, default: :const:`TIMEOUT`)
         :type timeout: int | float
         :param poll_latency: number of seconds between checking
             for transaction completion (optional, default:
-            :const:`constant.POLL_LATENCY`)
+            :const:`POLL_LATENCY`)
         :type poll_latency: int | float
         :rtype: Result
         :return: :class:``Result`` with transaction result
@@ -1619,7 +1619,7 @@ class Contract:
               other args.
 
         """
-        trx_hash: constant.T_HASH = self.submit_trx(
+        trx_hash: T_HASH = self.submit_trx(
             sender,
             trx_name,
             *args,
@@ -1636,7 +1636,7 @@ class Contract:
                 )
             raise SimplEthError(message, code='C-070-010') from None
 
-        trx_result: constant.T_RESULT = self.get_trx_result_wait(
+        trx_result: T_RESULT = self.get_trx_result_wait(
             trx_hash,
             trx_name,
             event_name=event_name,
@@ -1665,11 +1665,11 @@ class Contract:
             sender: str,
             trx_name: str,
             *args: Any,
-            gas_limit: int = constant.GAS_LIMIT,
-            max_priority_fee_gwei: Union[int, float] = constant.MAX_PRIORITY_FEE_GWEI,
-            max_fee_gwei: Union[int, float] = constant.MAX_FEE_GWEI,
+            gas_limit: int = GAS_LIMIT,
+            max_priority_fee_gwei: Union[int, float] = MAX_PRIORITY_FEE_GWEI,
+            max_fee_gwei: Union[int, float] = MAX_FEE_GWEI,
             value_wei: int = 0
-            ) -> constant.T_HASH:
+            ) -> T_HASH:
         """Send a transaction to this contract.
 
         This is used to request a contract carry out a transaction.
@@ -1707,7 +1707,7 @@ class Contract:
         :type args: int | string
         :param gas_limit: max gas sender will allow for thexi
             transaction in units of gas(optional, default is
-            :const:`constant.GAS_LIMIT`)
+            :const:`GAS_LIMIT`)
         :type gas_limit: int
         :param max_priority_fee_gwei: max amount of Ether (in gwei) the
             sender will pay as a tip
@@ -1779,7 +1779,7 @@ class Contract:
 
         """
         try:
-            trx_hash: constant.T_HASH = getattr(
+            trx_hash: T_HASH = getattr(
                 self._web3_contract.functions,
                 trx_name
                 )(*args).transact(
@@ -1938,7 +1938,7 @@ class Contract:
                 self._artifact_abi_filepath,
                 encoding='UTF-8'
             ) as abi_file:
-                abi: constant.T_ABI = json.load(abi_file)
+                abi: T_ABI = json.load(abi_file)
         except FileNotFoundError:
             message: str = (
                 f'ERROR in {self.name}()._get_artifact_abi(). '
@@ -2012,7 +2012,7 @@ class Contract:
                 self._artifact_bytecode_filepath,
                 encoding='UTF-8'
             ) as bytecode_file:
-                bytecode: constant.T_BYTECODE = bytecode_file.read()
+                bytecode: T_BYTECODE = bytecode_file.read()
         except FileNotFoundError:
             message: str = (
                 f'ERROR in {self.name}()._get_artifact_bytecode(): '
@@ -2072,7 +2072,7 @@ class Contract:
                 ]
         return functions
 
-    def _get_deployed_code(self) -> constant.T_DEPLOYED_CODE:
+    def _get_deployed_code(self) -> T_DEPLOYED_CODE:
         """Return the bytecode at the `contract` `address` on the
         blockchain.
 
@@ -2092,7 +2092,7 @@ class Contract:
                hint defined.
 
         """
-        deployed_code: constant.T_DEPLOYED_CODE = \
+        deployed_code: T_DEPLOYED_CODE = \
             self._blockchain.eth.getCode(self.address).hex()
         return deployed_code
 
@@ -2161,10 +2161,10 @@ class Filter:
 
         """
         self._contract: Contract = contract
-        self._web3_contract: constant.T_WEB3_CONTRACT_OBJ = \
+        self._web3_contract: T_WEB3_CONTRACT_OBJ = \
             self._contract.web3_contract
 
-    def create_filter(self, event_name: str) -> constant.T_FILTER_OBJ:
+    def create_filter(self, event_name: str) -> T_FILTER_OBJ:
         """Return a filter used to watch for a specific event.
 
         Create a filter to be used when watching for future emissions
@@ -2194,7 +2194,7 @@ class Filter:
 
         """
         try:
-            event_filter: constant.T_FILTER_OBJ = getattr(
+            event_filter: T_FILTER_OBJ = getattr(
                 self._web3_contract.events,
                 event_name
                 )().createFilter(fromBlock='latest')
@@ -2215,7 +2215,7 @@ class Filter:
             raise SimplEthError(message, code='F-020-020') from None
         return event_filter
 
-    def get_new_events(self, event_filter: constant.T_FILTER_OBJ) -> List:
+    def get_new_events(self, event_filter: T_FILTER_OBJ) -> List:
         """Search newly mined blocks for a specific event.
 
         Each call checks the blocks mined since the previous call.
@@ -2251,7 +2251,7 @@ class Filter:
         :see also: :meth:`create_event_filter` to create ``event_filter``.
 
         """
-        filter_list: constant.T_FILTER_LIST = event_filter.get_new_entries()
+        filter_list: T_FILTER_LIST = event_filter.get_new_entries()
         return self._create_simple_events(filter_list)
 
     def get_old_events(
@@ -2309,7 +2309,7 @@ class Filter:
         from_block: int = latest_block - (num_preceding_blocks - 1)
         to_block: Union[str, int] = 'latest'
         try:
-            event_filter: constant.T_FILTER_OBJ = getattr(
+            event_filter: T_FILTER_OBJ = getattr(
                 self._web3_contract.events,
                 event_name
                 )().createFilter(
@@ -2340,11 +2340,11 @@ class Filter:
             raise SimplEthError(message, code='F-030-030') from None
 
         # getattr() worked and we have a valid filter to use
-        filter_list: constant.T_FILTER_LIST = event_filter.get_all_entries()
+        filter_list: T_FILTER_LIST = event_filter.get_all_entries()
         return self._create_simple_events(filter_list)
 
     @staticmethod
-    def _create_simple_events(filter_list: constant.T_FILTER_LIST) -> List:
+    def _create_simple_events(filter_list: T_FILTER_LIST) -> List:
         """Return a list of events with the essential data.
 
         The filter list is an AttributeDict with args, event name, logIndex,
@@ -2437,7 +2437,7 @@ class SimplEthError(Exception):
         """
         self.code: str = ''
         """Exception instance variable with ``code``"""
-        self.exc_info: constant.T_EXC_INFO = sys.exc_info()
+        self.exc_info: T_EXC_INFO = sys.exc_info()
         """Exception instance variable with exception
         info: (`type`, `value`, `traceback`)"""
         self.message: str = message
@@ -2462,10 +2462,10 @@ class _Result:
     def __init__(
             self,
             trx_name: str,
-            trx_hash: constant.T_HASH,
-            trx_receipt: constant.T_RECEIPT,
+            trx_hash: T_HASH,
+            trx_receipt: T_RECEIPT,
             contract: Contract,
-            web3_contract_object: constant.T_WEB3_CONTRACT_OBJ,
+            web3_contract_object: T_WEB3_CONTRACT_OBJ,
             event_name: str
             ) -> None:
         """Create instance for the result of specified transaction.
@@ -2486,7 +2486,7 @@ class _Result:
         :example:
 
         """
-        transaction: constant.T_TRANSACTION = \
+        transaction: T_TRANSACTION = \
             contract.blockchain.eth.get_transaction(trx_hash)
 
         self._block_number: int = trx_receipt.blockNumber
@@ -2498,19 +2498,19 @@ class _Result:
         """Event log created by the transaction"""
         self._gas_price_gwei: int = transaction.gasPrice
         self._gas_used: int = trx_receipt.gasUsed
-        self._trx_hash: constant.T_HASH = trx_hash
+        self._trx_hash: T_HASH = trx_hash
         self._trx_name: str = trx_name
-        self._trx_receipt: constant.T_RECEIPT = trx_receipt
+        self._trx_receipt: T_RECEIPT = trx_receipt
         self._trx_sender: str = dict(trx_receipt)['from']
         self._trx_value_wei: int = transaction.value
-        self._transaction: constant.T_TRANSACTION = transaction
+        self._transaction: T_TRANSACTION = transaction
 
         if event_name:
             # User gave us an event name. Find and add event log info to
             # trx_result. If either exception is thrown, return the
             # trx_result as built above without any event log info.
             try:
-                contract_event: constant.T_CONTRACT_EVENT = getattr(
+                contract_event: T_CONTRACT_EVENT = getattr(
                     web3_contract_object.events,
                     event_name
                     )
@@ -2571,7 +2571,7 @@ class _Result:
         return dict(self._event_log[0]['args'])
 
     @property
-    def event_log(self) -> constant.T_EVENT_LOG:
+    def event_log(self) -> T_EVENT_LOG:
         """Full event log resulting from transaction."""
         return self._event_log
 
@@ -2592,7 +2592,7 @@ class _Result:
         return self._gas_used
 
     @property
-    def trx_hash(self) -> constant.T_HASH:
+    def trx_hash(self) -> T_HASH:
         """Transaction hash for the mined transaction.
 
         This was returned from :meth:`submit_trx`.
@@ -2606,7 +2606,7 @@ class _Result:
         return self._trx_name
 
     @property
-    def trx_receipt(self) -> constant.T_RECEIPT:
+    def trx_receipt(self) -> T_RECEIPT:
         """Transaction receipt."""
         return self._trx_receipt
 
@@ -2621,18 +2621,18 @@ class _Result:
         return self._trx_value_wei
 
     @property
-    def transaction(self) -> constant.T_TRANSACTION:
+    def transaction(self) -> T_TRANSACTION:
         """Transaction object."""
         return self._transaction
 
     def block_time_string(
             self,
-            time_format: str = constant.TIME_FORMAT
+            time_format: str = TIME_FORMAT
             ) -> str:
         """Time block was mined, in local timezone, as a string.
 
         :param time_format: format codes used to create time string
-            (optional, default: :const:`constant.TIME_FORMAT`)
+            (optional, default: :const:`TIME_FORMAT`)
         :type time_format: str
         :rtype: str
         :return: time block was mined, in local timezone, as a string.
