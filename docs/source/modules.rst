@@ -2,7 +2,7 @@ simpleth
 ========
 
 .. toctree::
-   :maxdepth: 3s
+   :maxdepth: 3
 
    simpleth
 
