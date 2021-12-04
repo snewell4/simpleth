@@ -1,22 +1,30 @@
-simpleth package
-================
+simpleth
+========
 
-Submodules
-----------
-
-simpleth.constant module
-------------------------
-
-.. automodule:: constant
+``Blockchain`` class
+********************
+.. autoclass:: simpleth.Blockchain
    :members:
    :undoc-members:
    :show-inheritance:
 
+``Contract`` class
+******************
+.. autoclass:: simpleth.Contract
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-Module contents
----------------
+``Filter`` class
+****************
+.. autoclass:: simpleth.Filter
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-.. automodule:: simpleth
+``SimplEthError`` class
+***********************
+.. autoclass:: simpleth.SimplEthError
    :members:
    :undoc-members:
    :show-inheritance:

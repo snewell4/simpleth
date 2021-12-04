@@ -97,10 +97,7 @@ TIME_FORMAT: str = '%Y-%m-%d %H:%M:%S'
 #
 # Type Hint aliases
 #
-# Using anything besides, Any, causes pylint to complain that it it
-# a class name and doesn't conform to PascalCase naming style. For now,
-# easiest to just use Any for all.
-#
+
 T_ABI = Any
 """``ABI`` type is a list with JSON read from the `artifact` file."""
 
@@ -135,7 +132,7 @@ T_EXC_INFO = Any
 
 T_DEPLOYED_CODE = Any
 """``Deployed code`` type is class `HexBytes`. Use
-`str` for now.  Created by `web3.py` method."""
+`Any` for now.  Created by `web3.py` method."""
 
 T_BLOCKCHAIN_OBJ = Any
 """``Blockchain object`` type is `simpleth.Blockchain`. Use `Any` for now.
@@ -1451,7 +1448,7 @@ class Contract:
                 )
         return trx_result
 
-    def get_var(
+    def get_value(
             self,
             var_name: str,
             *args: Any
@@ -1473,7 +1470,7 @@ class Contract:
         :example:
             >>> from simpleth import Contract
             >>> c = Contract('testtrx')
-            >>> c.get_var('specialNum')
+            >>> c.get_value('specialNum')
             42
 
         :notes:
