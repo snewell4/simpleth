@@ -6,7 +6,7 @@ Blockchain class
 .. autoclass:: simpleth.Blockchain
 
 Contract class
-******************
+**************
 .. autoclass:: simpleth.Contract
 
 Filter class

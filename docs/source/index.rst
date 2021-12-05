@@ -3,7 +3,6 @@ Simple Ethereum Documentation
 
 .. toctree::
    :maxdepth: 4
-   :caption: Contents:
 
    intro
    starting

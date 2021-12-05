@@ -180,7 +180,7 @@ class Blockchain:
     to various values and functions related to the blockchain.
 
     :warning: This has only been tested with `Ganache`.
-    :see also: `Web3` API documentation at
+    :see also: `Web3` API documentation:
         https://web3py.readthedocs.io/en/stable/web3.main.html
 
     """
@@ -188,15 +188,14 @@ class Blockchain:
         """Create blockchain instance.
 
         :param url: Ethereum blockchain web address (optional,
-            default: :const:`GANACHE_URL`)
+            default: `GANACHE_URL`)
         :type url: str
         :rtype: None
+        :raises SimplEthError: if unable to connect to the blockchain
+            client
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
-
-        :raises SimplEthError: if unable to connect to blockchain
-            client
 
         """
         self._web3 = Web3(Web3.HTTPProvider(url))
@@ -224,8 +223,8 @@ class Blockchain:
         """private Ethereum client version"""
 
     @property
-    def accounts(self) -> List:
-        """Return list of accounts provided by the blockchain client.
+    def accounts(self) -> list:
+        """Return list of accounts provided by `Ganache`.
 
         :rtype: list
         :return: list of blockchain `addresses`
@@ -239,7 +238,7 @@ class Blockchain:
 
     @property
     def api_version(self) -> str:
-        """Return the installed 'web3` API version.
+        """Return the installed `web3` API version.
 
         :rtype: str
         :return: API version number
@@ -256,8 +255,8 @@ class Blockchain:
     def block_number(self) -> int:
         """Return the number of the last block added to the chain.
 
-        :rtype: integer
-        :return: sequence number of last block at the end of the chain
+        :rtype: int
+        :return: sequence number of the block at the end of the chain
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
@@ -272,7 +271,7 @@ class Blockchain:
         """Return the blockchain client version description.
 
         :rtype: str
-        :return: client version number
+        :return: blockchain client version
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
@@ -286,17 +285,20 @@ class Blockchain:
     def eth(self) -> T_ETH_OBJ:
         """Return the ``web3.eth`` object.
 
-        :rtype: object
-        :return: `Eth` object
+        :rtype: obj
+        :return: `web3.eth` object
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> b.eth
             <web3.eth.Eth object at 0x0000019CEBAC8760>
+            >>> b.eth.gas_price
+            20000000000
 
-        :notes:
-            - This can be used to access any of the ``web3.eth``
+        :notes: This can be used to access any of the ``web3.eth``
               methods not provided by `simpleth`.
+        :see also: `web3,eth API` documentation at:
+            https://web3py.readthedocs.io/en/stable/web3.eth.html
 
         """
         return self._eth
@@ -305,18 +307,20 @@ class Blockchain:
     def web3(self) -> T_WEB3_OBJ:
         """Return the ``web3`` object.
 
-        :rtype: object
+        :rtype: obj
         :return: `web3` object
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> b.web3
             <web3.main.Web3 object at 0x0000019CE7AF3520>
+            >>> b.web3.toWei(1, 'ether')
+            1000000000000000000
 
-        :notes:
-            - This can be used to access any of the ``web3`` methods not
-              provided by `simpleth`.
-
+        :notes: This can be used to access any of the
+            ``web3`` methods not provided by `simpleth`.
+        :see also: `Web3 API` documentation at:
+            https://web3py.readthedocs.io/en/stable/web3.main.html
         """
         return self._web3
 
@@ -330,13 +334,9 @@ class Blockchain:
         :type account_address: str
         :rtype: int | None
         :return:
-            - index of the account in the list Ganache-provided accounts
-            - ``None`` if ``account_address`` not one provided by Ganache
 
-        :warning:
-            - This is only relevant for `Ganache`. Other blockchain
-              clients do not provide a list of account addresses to
-              use.
+            - index of the account in the list Ganache-provided accounts
+            - `None` if ``account_address`` not one provided by Ganache
 
         :example:
             >>> from simpleth import Blockchain
@@ -344,12 +344,9 @@ class Blockchain:
             >>> user = b.accounts[6]
             >>> b.account_num(user)
             6
-            >>> bogus_address='0xCd6afD0f6E431DEddCBb9F631cC9E71c6b69b577'
-            >>> b.account_num(bogus_address)
 
-        :see also:
-            - :meth:`accounts` for the list of all Ganache account
-              addresses.
+        :see also: :meth:`accounts` for the list of all
+            account addresses.
 
         """
         try:
@@ -363,16 +360,19 @@ class Blockchain:
     def address(self, account_num: int) -> str:
         """Return the blockchain address of the specified account number.
 
-        :param account_num: index into the account list for the account of
-            interest
+        :param account_num: index into the account list
         :type account_num: int
         :rtype: str
         :return: blockchain ``address`` of the requested account
         :raises SimplEthError: if ``account_num`` is bad
         :example:
+            >>> from simpleth import Blockchain
+            >>> b=Blockchain()
+            >>> b.address(2)
+            '0x02F6903D426Be890BA4F882eD19cF6780ecdfA5b'
 
-        :see also:
-            - :meth:`accounts` to get all addresses.
+        :notes: This is redundant with `accounts[account_num]`.
+        :see also: :meth:`accounts` to get all addresses.
 
         """
         try:
@@ -388,9 +388,9 @@ class Blockchain:
         return address
 
     def balance(self, address: str) -> int:
-        """Return the amount of ether owned by the account at the given ``address``.
+        """Return the amount of Ether owned by an account.
 
-        :param address: blockchain `address` of account to check
+        :param address: blockchain `address` of the account
         :type address: str
         :rtype: int
         :return: account's ether balance, in wei
@@ -423,34 +423,41 @@ class Blockchain:
         return balance
 
     def fee_history(self, num_blocks: int = 3) -> dict:
-        """Return fee information use with recent blocks.
+        """Return fee information for recently mined blocks.
 
         This could be used to determine a reasonable ``max_fee_gwei`` and
         ``max_priority_fee_gwei`` to offer when submitting a new transaction.
 
         :param num_blocks: information for the last ``num_blocks`` will be
-            returned
+            returned (**optional**, default: 3)
         :type num_blocks: int
         :rtype: dict
         :returns: dictionary with:
 
-            -  ``'reward'``: list with the low and high `reward` amounts offered for
-               transactions in this block: low is the 10th percentile; high is the
-               90th percentile
-            -  ``'baseFeePerGas'``: ``base fee`` set by the network for this block
-            -  ``'gasUsedRatio'``: ``gasUsed``/``gasLimit`` for this block
-            -  ``'oldestBlock'``: ``block number`` for the oldest block in the list
-               and will be :attr:`block_number` - ``num_blocks``
+            -  `'reward'`: a list with the `low` and `high` reward
+               amounts offered for transactions in this block: `low`
+               is the 10th percentile; `high` is the 90th percentile
+            -  `'baseFeePerGas'`: `base fee` set by the network for
+               this block
+            -  `'gasUsedRatio'`: `gasUsed`/`gasLimit` for this block
+            -  `'oldestBlock'`: `block number` for the oldest block in
+               the list and will be :attr:`block_number` - ``num_blocks``
 
-        :warning: This does not work. The ``w3.eth.fee_history()` method is
-          specified in the ``web3.py`` documentation but does not seem to be
-          supported by Ganache yet. Currently, it throws a ``ValueError``
-          exception.
+        :warning: **This does not work.** The `w3.eth.fee_history()`
+          method is specified in the `web3.py` documentation but does
+          not seem to be supported by Ganache yet. Currently, it
+          throws a ``ValueError`` exception.
         :example:
+            >>> from simpleth import Blockchain
+            >>> b = Blockchain()
+            >>> b.fee_history()
+            ...
+            HINT: method not yet implemented in Ganache.
 
-        :note: this method is being included in ``simpleth`` in hopes it is
-          soon implemented by Ganache. The method has value for using ``simpleth``
-          and for now will be coded up and ready to use.
+        :note: this method is being included in `simpleth` in hopes
+          it is soon implemented by Ganache. The method has value
+          for using ``simpleth`` and for now will be coded up and
+          ready to use.
 
         """
         try:
@@ -465,12 +472,17 @@ class Blockchain:
         return dict(history)     # cast from AttributeDict to dict
 
     def block_time_epoch(self, block_number: int) -> int:
-        """Return time, as epoch seconds, when a block was mined.
+        """Return the time, as epoch seconds, when a block was mined.
 
         :param block_number: number of the block on the chain
         :type block_number: int
         :rtype: int
         :return: time block was mined, in epoch seconds.
+        :example:
+            >>> from simpleth import Blockchain
+            >>> b = Blockchain()
+            >>> b.block_time_epoch(20)
+            1638120893
 
         """
         return self.eth.get_block(block_number).timestamp
@@ -480,17 +492,23 @@ class Blockchain:
             block_number: int,
             time_format: str = TIME_FORMAT
          ) -> str:
-        """Return time, as a string, when a block was mined.
+        """Return the time, as a string, when a block was mined.
 
         :param block_number: number of the block on the chain
         :type block_number: int
         :param time_format: format codes used to create time string
-            (optional, default: :const:`TIME_FORMAT`)
+            (**optional**, default: `TIME_FORMAT`)
         :type time_format: str
         :rtype: str
-        :return: time block was mined, in local timezone, as a string.
-        :see also:
-            - List of format codes:
+        :return: time block was mined, in local timezone, as a string
+        :example:
+            >>> from simpleth import Blockchain
+            >>> Blockchain().block_time_string(20)
+            '2021-11-28 11:34:53'
+            >>> Blockchain().block_time_string(20, '%A %I:%M %p')
+            'Sunday 11:34 AM'
+
+        :see also: List of format codes:
               https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
 
         """
@@ -503,8 +521,9 @@ class Blockchain:
         """Test for valid blockchain address
 
         :param address: blockchain `address` to verify
-        :rtype: boolean
+        :rtype: bool
         :return:
+
             - `True` if valid
             - `False` otherwise
 
@@ -514,8 +533,8 @@ class Blockchain:
             >>> user0 = b.address(0)
             >>> b.is_valid_address(user0)
             True
-            >>> a = '0x380A36BE82A06A63395D'
-            >>> b.is_valid_address(a)
+            >>> bogus = '0x380A36BE82A06A63395D'
+            >>> b.is_valid_address(bogus)
             False
 
         """
@@ -541,7 +560,7 @@ class Blockchain:
             in `wei`
         :type amount_wei: int
         :rtype: str
-        :return: ``trx_hash`` of the transfer transaction
+        :return: `trx_hash` of the transfer transaction
         :raises SimplEthError:
             - if ``sender`` is bad
             - if ``receiver`` is bad
@@ -550,11 +569,19 @@ class Blockchain:
             - if ``receiver`` is a `non-payable` contract
 
         :example:
+
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> user4 = b.address(4)
             >>> user8 = b.address(8)
             >>> b.send_ether(user4, user8, 1000)
+
+        :see also:
+
+            - :meth:`balance` to get amount of Ether owned by
+              an account.
+            - :meth:`transaction` to get details of the transfer
+              transaction using the `trx_hash`.
 
         """
         try:
@@ -591,14 +618,24 @@ class Blockchain:
         return trx_hash
 
     def transaction(self, trx_hash: str) -> T_TRANSACTION:
-        """Return details about the transaction identified by the transaction hash.
+        # noinspection SpellCheckingInspection
+        """Return details about the transaction.
 
-        :param trx_hash: transaction hash
-        :type trx_hash: str
-        :rtype: dict
-        :return: transaction details as a dictionary
+                :param trx_hash: transaction hash to identify the
+                    transaction of interest
+                :type trx_hash: str
+                :rtype: dict
+                :return: transaction details as a dictionary
+                :example:
+                    >>> from simpleth import Blockchain
+                    >>> t = '0xe6bbbc34f53ef4137de80dc63f156b820d71f9f176b8210a42 ...'
+                    >>> Blockchain().transaction(t)
+                    {'hash': HexBytes('0xe6bbbc34f53ef4137de80dc63f156b820d71f9f176b8210 ...'
 
-        """
+                :see also: :meth:`run_trx` and :meth:`send_trx` return a
+                    ``trx_hash``
+
+                """
         try:
             transaction: dict = dict(self.eth.get_transaction(trx_hash))
         except self._web3e.TransactionNotFound as exception:
