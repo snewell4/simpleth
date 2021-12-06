@@ -9,6 +9,10 @@ Contract class
 **************
 .. autoclass:: simpleth.Contract
 
+Convert class
+**************
+.. autoclass:: simpleth.Convert
+
 Filter class
 ************
 .. autoclass:: simpleth.Filter

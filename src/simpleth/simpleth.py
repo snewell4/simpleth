@@ -24,7 +24,14 @@ from web3 import Web3
 from web3 import exceptions as web3e
 from web3.logs import DISCARD
 
-__all__ = ['Blockchain', 'Contract', 'Filter', 'Result', 'SimplEthError']
+__all__ = [
+    'Blockchain',
+    'Contract',
+    'Convert',
+    'Filter',
+    'Result',
+    'SimplEthError'
+    ]
 __author__ = 'Stephen Newell'
 __copyright__ = 'Copyright 2021, Stephen Newell'
 __license__ = 'MIT'
@@ -2325,6 +2332,17 @@ class Contract:
 class Filter:
     """Create event filter and use to search for events.
 
+    In order to search for particular events emitted by transactions,
+    you create a filter with the search criteria and use that filter
+    to perform your search.
+
+    `simpleth` implements the ability to search for events by `event name`.
+    You can search blocks already on the blockchain using
+    :meth:`get_old_events()`.
+    Besides the name of the event, you specify how far back, by giving the
+    number of blocks, to search. You can watch new blocks as they are
+    added to the blockchain with :meth:`get_new_events()`.
+
     **PROPERTIES**
 
     -  None
@@ -2335,12 +2353,18 @@ class Filter:
     -  :meth:`get_new_events` - return event info from newly mined blocks
     -  :meth:`get_old_events` - return event info from blocks on chain
 
+    :notes:
+        -  The `web3.py` API documentation describes more powerful filters
+           at: https://web3py.readthedocs.io/en/stable/web3.eth.html#filters.
+        -  :attr:`Blockchain.eth` can be used to access the methods
+           described.
+
     """
     def __init__(self, contract: Contract) -> None:
         """Create instance for filters using the contract instance.
 
         This ``Filter`` will be used to find events emitted by
-        ``Contract`` transactions.
+        transactions in ``Contract``.
 
         :param contract: :class:`Contract` object
         :type contract: object
@@ -2388,8 +2412,8 @@ class Filter:
 
             -  :meth:`get_new_events()` for using this new `event_filter`
                to watch for the event.
-            -  :attr:`Contract.events` for the list of valid events emitted by this
-               contract.
+            -  :attr:`Contract.events` for the list of valid events emitted
+               by this contract.
 
         """
         try:
@@ -2461,19 +2485,14 @@ class Filter:
             >>> events_NumsStored
             [{'block_number': 138, 'args': {'num0': 5, 'num1':  ...' }]
 
-        :notes:
+        :notes: :meth:`get_past_events` looks backward and searches old
+            blocks. :meth:`get_new_events` looks forward at the
+            newly mined blocks.
 
-            -  :meth:`get_past_events` looks backward and searches old
-               blocks. :meth:`get_new_events` looks forward at the
-               newly mined blocks.
-            -  Filters can be more sophisticated than just searching
-               backwards based on the ``event_name``. The `web3.py` API
-               documentation describes the full power at:
-               https://web3py.readthedocs.io/en/stable/web3.eth.html#filters.
-               :attr:`Blockchain.eth` can be used to access the methods
-               described.
-
-        :see also: :meth:`create_filter` to create ``event_filter``.
+        :see also:
+            -  :meth:`create_filter` to create ``event_filter``.
+            -  :attr:`Contract.events` for the list of valid events
+               emitted by this contract.
 
         """
         filter_list: T_FILTER_LIST = event_filter.get_new_entries()
@@ -2519,12 +2538,9 @@ class Filter:
             -  :meth:`get_old_events` looks backward and searches old
                blocks. :meth:`get_new_events` looks forward at the
                newly mined blocks.
-            -  Filters can be more sophisticated than just searching
-               backwards based on the ``event_name``. The `web3.py` API
-               documentation describes the full power at:
-               https://web3py.readthedocs.io/en/stable/web3.eth.html#filters.
-               :attr:`Blockchain.eth` can be used to access the methods
-               described.
+
+        :see also: :attr:`Contract.events` for the list of valid events
+               emitted by this contract.
 
         """
         latest_block: int = self._contract.blockchain.block_number
@@ -2605,22 +2621,22 @@ class Filter:
 
 
 class Convert:
-    """Conversion methods for Ether and time
+    """Conversion methods for Ether denominations and time values
 
     **METHODS**
 
-    -  :meth`convert` - convert amount from one denomination to another
-    -  :meth`denominations` - returns valid denominations and values
-    -  :meth`get_epoch` - returns current time in epoch seconds
-    -  :meth`get_local` - returns current local tz time as a string
-    -  :meth`to_local` - convert time in epoch seconds to time string
+    -  :meth:`convert_ether` - convert amount from one denomination to another
+    -  :meth:`denominations_to_wei` - returns valid denominations and values
+    -  :meth:`epoch_time` - returns current time in epoch seconds
+    -  :meth:`local_time` - returns current local time as a string
+    -  :meth:`to_local_time` - convert time in epoch seconds to time string
 
     :notes: The time conversion methods are standard one-line
         Python methods. I put them here so I wouldn't have to look
         them up and I'd always use the same method.
 
     """
-    def convert(
+    def convert_ether(
             self,
             amount: Union[int, float],
             from_denomination: str,
@@ -2632,48 +2648,91 @@ class Convert:
         :type amount: int | float
         :param from_denomination: unit of denomination of ``amount``
         :type from_denomination: str
-        :param to_denomination: unit of denomination of result
+        :param to_denomination: unit of denomination of `result`
         :type to_denomination: str
         :rtype: Decimal
         :return: converted ``amount``
         :example:
-
+            >>> from simpleth import Convert
+            >>> c = Convert()
+            >>> c.convert_ether(100, 'wei', 'ether')
+            Decimal('1.00E-16')
+            >>> c.convert_ether(100, 'ether', 'wei')
+            Decimal('100000000000000000000')
+            >>> int(c.convert_ether(25, 'ether', 'gwei'))
+            25000000000
 
         :note: `web3.py` has two conversion methods: `to_wei()` and
             `from_wei()`. This function is more flexible and does
             not require a `Blockchain` object to use.
 
-        :see also: `denominations` for valid names to use
+        :see also: :meth:`denominations_to_wei` for valid strings to use
             for ``from_denomination`` and ``to_denomination``.
 
         """
-        from_units_wei = self.denominations()[from_denomination]
-        to_units_wei = self.denominations()[to_denomination]
+        from_units_wei = self.denominations_to_wei()[from_denomination]
+        to_units_wei = self.denominations_to_wei()[to_denomination]
 
         getcontext().prec = PRECISION
-        conversion_factor: T_DECIMAL = Decimal(str(from_units_wei)) / Decimal(str(to_units_wei))
+        conversion_factor: T_DECIMAL = Decimal(str(from_units_wei)) / \
+            Decimal(str(to_units_wei))
         converted_amount: T_DECIMAL = Decimal(str(amount)) * conversion_factor
         return converted_amount
 
     @staticmethod
-    def denominations() -> Dict[str, int]:
-        """Return denominations and str, int]their value in units of wei.
-
-        These are the denominations recognized by `convert`.
+    def denominations_to_wei() -> Dict[str, int]:
+        """Return denominations and their value in units of wei.
 
         :rtype: dict
-        :return: valid strings to use as a denomination as keys
-        and their amount in wei as values.
+        :return:
+            -  `key` is the name of an Ether `denomination`
+            -  `value` is the amount in wei for one of that denomination
 
         :example:
+            >>> from simpleth import Convert
+            >>> c = Convert()
+            >>> c.convert_ether(100, 'wei', 'ether')
+            Decimal('1.00E-16')
+            >>> c.convert_ether(100, 'ether', 'wei')
+            Decimal('100000000000000000000')
+            >>> int(c.convert_ether(25, 'ether', 'gwei'))
+            25000000000
+            >>> c.denominations_to_wei()['finney']
+            1000000000000000
+            >>> import math
+            >>> for key, value in c.denominations_to_wei().items():
+            ...     print(f'{key:10} = 10**{int(math.log10(value)):<2} = {value:<41,} wei')
+            ...
+            wei        = 10**0  = 1                                         wei
+            kwei       = 10**3  = 1,000                                     wei
+            babbage    = 10**3  = 1,000                                     wei
+            femtoether = 10**3  = 1,000                                     wei
+            mwei       = 10**6  = 1,000,000                                 wei
+            lovelace   = 10**6  = 1,000,000                                 wei
+            picoether  = 10**6  = 1,000,000                                 wei
+            gwei       = 10**9  = 1,000,000,000                             wei
+            shannon    = 10**9  = 1,000,000,000                             wei
+            nanoether  = 10**9  = 1,000,000,000                             wei
+            nano       = 10**9  = 1,000,000,000                             wei
+            szabo      = 10**12 = 1,000,000,000,000                         wei
+            microether = 10**12 = 1,000,000,000,000                         wei
+            micro      = 10**12 = 1,000,000,000,000                         wei
+            finney     = 10**15 = 1,000,000,000,000,000                     wei
+            milliether = 10**15 = 1,000,000,000,000,000                     wei
+            milli      = 10**15 = 1,000,000,000,000,000                     wei
+            ether      = 10**18 = 1,000,000,000,000,000,000                 wei
+            kether     = 10**21 = 1,000,000,000,000,000,000,000             wei
+            grand      = 10**21 = 1,000,000,000,000,000,000,000             wei
+            mether     = 10**24 = 1,000,000,000,000,000,000,000,000         wei
+            gether     = 10**27 = 1,000,000,000,000,000,000,000,000,000     wei
+            tether     = 10**30 = 1,000,000,000,000,000,000,000,000,000,000 wei
 
-
-        :see also:
-            - Source:
+        :notes: These are the denominations recognized by :meth:`convert_ether`.
+        :see also: Source:
               https://web3py.readthedocs.io/en/stable/examples.html?highlight=denominations#converting-currency-denominations
 
         """
-        denominations_to_value_wei: Dict[str, int] = {
+        return {
             'wei': 1,
             'kwei': 10**3,
             'babbage': 10**3,
@@ -2698,73 +2757,87 @@ class Convert:
             'gether': 10**27,
             'tether': 10**30
             }
-        return denominations_to_value_wei
 
     @staticmethod
-    def get_epoch() -> float:
+    def epoch_time() -> float:
         """Return current time in epoch seconds.
 
         :rtype: float
         :return: current time, in epoch seconds
         :example:
-
+            >>> from simpleth import Convert
+            >>> Convert().epoch_time()
+            1638825195.6231368
 
         """
         return time.time()
 
     @staticmethod
-    def get_local() -> str:
+    def local_time(t_format: str = TIME_FORMAT) -> str:
         """Return current local time as a time string.
 
+        :param t_format: format of outputted time using `strftime` codes
+            (**optional**, default: :const:`TIME_FORMAT`)
+        :param t_format: str
         :rtype: str
-        :return: current time, with format of:
-            `<Day> <Mon> <Date> <HH>:<MM>:<SS> <Year>`
+        :return: current time
         :example:
+            >>> from simpleth import Convert
+            >>> c = Convert()
+            >>> c.local_time()
+            '2021-12-06 15:35:28'
+            >>> c.local_time('%A %I:%M:%S %p')
+            'Monday 03:36:48 PM'
 
+        :see also: https://strftime.org/ for time format codes.
 
         """
-        return time.ctime()
+        return time.strftime(t_format, time.localtime())
 
     @staticmethod
-    def to_local(
+    def to_local_time(
             epoch_sec: Union[int, float],
-            t_format: str = '%Y-%m-%d %H:%M:%S'
+            t_format: str = TIME_FORMAT
             ) -> str:
         """Convert epoch seconds into local time string.
 
         :param epoch_sec: epoch time, in seconds
         :type epoch_sec: int | float
         :param t_format: format of outputted time using `strftime` codes
-            (optional, default will return:
-            `<YYYY>-<MM>-<DD> <HH>:<MM>:<SS>`)
+            (**optional**, default: :const:`TIME_FORMAT`)
         :param t_format: str
         :rtype: str
-        :return: local time, with format of:
-            `<YYYY>-<MM>-<DD> <HH>:<MM>:<SS>`
+        :return: local time equivalent to epoch seconds
         :example:
+                >>> from simpleth import Convert
+                >>> c = Convert()
+                >>> epoch = c.epoch_time()
+                >>> epoch
+                1638825248.9298458
+                >>> c.to_local_time(epoch)
+                '2021-12-06 15:14:08'
+                >>> c.to_local_time(epoch, '%A %I:%M:%S %p')
+                'Monday 03:14:08 PM'
 
-
-       :see also:
-           - https://docs.python.org/3/library/time.html#time.strftime for
-             a list of the codes to use in ``t_format``.
+        :see also: https://strftime.org/ for time format codes.
 
         """
         return time.strftime(t_format, time.localtime(epoch_sec))
 
 
 class Result:
-    """Transaction results data.
-
-    Has the various outcomes resulting from a transaction being
+    """Has the various outcomes resulting from a transaction being
     mined.
 
-    :class:`Result` objects are created by `simpleth` methods:
-    :meth:`Contract.run_trx`,
-    :meth:`Contract.get_trx_result`, and
-    :meth:`Contract.get_trx_result_wait`.
-    It is not intended for users to create `result` objects.
+    :class:`Result` objects are created by:
 
-    However, users can and should use the properties and methods
+    -  :meth:`Contract.run_trx`
+    -  :meth:`Contract.get_trx_result`
+    -  :meth:`Contract.get_trx_result_wait`
+
+    Users will not create `result` objects.
+
+    Users can and should use the properties and methods
     of the class to inspect all the details of results from the
     above methods.
 
@@ -2790,6 +2863,33 @@ class Result:
 
     -  :meth:`block_time_string` - time block mined, in time-format string
     -  :meth:`__str__` - allows ``print(<result>)`` to output most properties
+
+    One of the easiest ways to use :class:`Result` is to `print` the `result`
+    as shown below.
+
+    :example:
+            >>> from simpleth import Blockchain, Contract
+            >>> b = Blockchain()
+            >>> user = b.accounts[2]
+            >>> c = Contract('TestTrx')
+            >>> c.connect()
+            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
+            >>> trx_result = c.run_trx(user, 'storeNums', 30, 20, 10, event_name='NumsStored')
+            >>> print(trx_result)
+            Block number = 147
+            Block time_epoch = 1638830573
+            Block time_string = 2021-12-06 16:42:53
+            Contract address = 0xD34dB707D084fdd1D99Cf9Af77896283a083c470
+            Contract name = TestTrx
+            Event args = {'num0': 30, 'num1': 20, 'num2': 10}
+            Event name = NumsStored
+            Gas price wei = 20000000000
+            Gas used = 34263
+            Trx hash = 0x31c35f605b391eba522c30db0db66516758fb2f0a125d4df9c6e28ea17d31100
+            Trx name = storeNums
+            Trx sender = 0x02F6903D426Be890BA4F882eD19cF6780ecdfA5b
+            Trx value_wei = 0
+
 
     """
     def __init__(
