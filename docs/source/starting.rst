@@ -21,6 +21,17 @@ It **cannot** be installed using *pip*.
 For now, the suggested method is to put the file, ``simpleth.py``, in
 same directory as your source files.
 
+Customizing
+***********
+`simpleth` needs to know your project's home directory.
+Edit ``simpleth.py`` and change the line:
+
+.. code-block:: python
+
+   PROJECT_HOME: str = 'C:/Users/snewe/OneDrive/Desktop/simpleth'
+
+Put in your full path to the directory where you installed ``simpleth.py``.
+
 Usage
 *****
 To use `simpleth` from your interpreter, script, or app, include the
