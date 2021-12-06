@@ -179,6 +179,33 @@ class Blockchain:
     connection to a an Ethereum blockchain and supports access
     to various values and functions related to the blockchain.
 
+    **PROPERTIES**
+
+    -  :meth:`accounts` - List of Ganache account addresses
+    -  :meth:`api_version` - `web3` API version in use
+    -  :meth:`block_number` - Sequence number of last block on chain
+    -  :meth:`client_version` - `Ethereum` client version in use
+    -  :meth:`eth` - `web3.eth` object
+    -  :meth:`web3` - `web3` object
+
+    **METHODS**
+
+    -  :meth:`account_num` - Return account number for an address
+    -  :meth:`address` - Return blockchain address for an account number
+    -  :meth:`balance` - Return amount of Ether for an address
+    -  :meth:`fee_history` - Return fee info for recent blocks
+       (**not currently supported by `Ganache`**)
+    -  :meth:`block_time_epoch` - Return time block was mined in
+       epoch seconds
+    -  :meth:`block_time_string` - Return time block was mined in
+       a time-format string
+    -  :meth:`is_valid_address` - Test for valid blockchain address
+    -  :meth:`send_ether` - Transfer ether from one account to another
+    -  :meth:`transaction` - Return details about a transaction
+    -  :meth:`trx_count` - Return number of transactions sent by
+       an address
+    -  :meth:`trx_sender` - Return address that sent a transaction
+
     :warning: This has only been tested with `Ganache`.
     :see also: `Web3` API documentation:
         https://web3py.readthedocs.io/en/stable/web3.main.html
@@ -648,7 +675,7 @@ class Blockchain:
         return transaction
 
     def trx_count(self, address: str) -> int:
-        """Return the number of transactions sent by an account.
+        """Return the number of transactions sent by an address.
 
         This is the total number of transactions on the blockchain
         that were sent by ``address``.
@@ -716,6 +743,32 @@ class Contract:
     deployed contract, submit transactions to be run, get results of a
     transaction, call functions, and get public
     state variable values.
+
+    **PROPERTIES**
+
+    -  :meth:`abi` - contract ABI
+    -  :meth:`address` - contract address on blockchain
+    -  :meth:`blockchain` - `web3` blockchain object
+    -  :meth:`bytecode` - contract bytecode
+    -  :meth:`deployed_code` - contract bytecode as deployed on chain
+    -  :meth:`events` - event names defined in contract
+    -  :meth:`functions` - function names defined in contract
+    -  :meth:`name` - name of contract
+    -  :meth:`size` - deployed contract size, in bytes
+    -  :meth:`web3_contract` - `web3` contract object
+    -  :meth:`web3e` - `web3` exception module
+
+    **METHODS**
+
+    -  :meth:`call_fcn` - return results from calling a contract function
+    -  :meth:`connect` - enable the use of a deployed contract
+    -  :meth:`deploy` - deploy a contract onto the blockchain
+    -  :meth:`get_gas_estimate` - return units of gas to run a transaction
+    -  :meth:`get_trx_result` - get the results of a transaction
+    -  :meth:`get_trx_result_wait` - wait for the results of a transaction
+    -  :meth:`get_value` - return value of a contract variable
+    -  :meth:`run_trx` - submit a transaction and wait for the results
+    -  :meth:`submit_trx` - send a transaction to be mined
 
     """
     def __init__(self, name: str) -> None:
@@ -1790,8 +1843,12 @@ class Contract:
             -  The `Base Fee` is set by the network and is adjusted
                after each block based on transaction volume. Paying
                the `Base Fee` is mandatory.
+               `Base Fee` is in `gwei` and is paid for each unit of
+               gas used by the transaction.
             -  The `Priority Fee` is the tip you can offer to the
-               miners to attract their attention to your transaction.
+               miners to attract their attention to your transaction,
+               denominated in 'gwei', and paid for every unit of gas
+               used by the transaction.
                It is also call a `'tip'`. Paying the `Priority Fee`
                is optional but might be a near necessity if the
                network is busy with a high transaction volume. In that
@@ -1875,6 +1932,8 @@ class Contract:
                should be defined as a `payable` function in the Solidity
                contract or the contract will need a TODO (what's the
                default payable thing?)
+            -  See https://ethereum.org/en/developers/docs/gas/ for the
+               details on fees and gas.
 
         :warnings: I'm making the assumption that all `ValueError`
             exceptions that contain `revert` in their message are due
@@ -2256,7 +2315,19 @@ class Contract:
 
 
 class Filter:
-    """Create event filter and use to search for events."""
+    """Create event filter and use to search for events.
+
+    **PROPERTIES**
+
+    -  None
+
+    **METHODS**
+
+    -  :meth:`create_filter` - return a filter for an event
+    -  :meth:`get_new_events` - return event info from newly mined blocks
+    -  :meth:`get_old_events` - return event info from blocks on chain
+
+    """
     def __init__(self, contract: Contract) -> None:
         """Create instance for filters using the contract instance.
 
@@ -2541,6 +2612,29 @@ class Result:
     of the class to inspect all the details of results from the
     above methods.
 
+    **PROPERTIES**
+
+    -  :meth:`block_number` - block number containing transaction
+    -  :meth:`block_time_epoch` - time block mined, in epoch seconds
+    -  :meth:`contract_address` - address of contract with the transaction
+    -  :meth:`contract_name` - name of contract with the transaction
+    -  :meth:`event_args` - args for event emitted by transaction
+    -  :meth:`event_log` - full event log from transaction
+    -  :meth:`event_name` - name of event emitted by transaction
+    -  :meth:`gas_price_wei` - price of gas used by transaction, in wei
+    -  :meth:`gas_used` - units of gas needed for transaction
+    -  :meth:`trx_hash` - transaction hash to identify submitted transaction
+    -  :meth:`trx_name` - name of transaction
+    -  :meth:`trx_receipt` - receipt to identify mined transaction
+    -  :meth:`trx_sender` - address sending the transaction
+    -  :meth:`trx_value_wei` - amount of Ether, in wei, sent with transaction
+    -  :meth:`transaction` - `web3.eth` transaction info
+
+    **METHODS**
+
+    -  :meth:`block_time_string` - time block mined, in time-format string
+    -  :meth:`__str__` - allows ``print(<result>)`` to output most properties
+
     """
     def __init__(
             self,
@@ -2671,7 +2765,7 @@ class Result:
 
     @property
     def contract_address(self) -> str:
-        """Return address of contract issuing the transaction.
+        """Return address of the transaction's contract.
 
         :rtype: str
         :return: address of contract
@@ -3080,6 +3174,9 @@ class SimplEthError(Exception):
             causing a specific error.  It makes it easy to search
             simpleth for the line of code that raised a specifid
             SimplEthException.
+
+        :to do: make exc_info, message, code private so they do not
+            appear in doc.
 
         """
         self.code: str = ''
