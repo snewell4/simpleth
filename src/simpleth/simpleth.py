@@ -17,7 +17,9 @@ import sys
 import json
 import json.decoder
 import datetime
-from typing import List, Optional, Union, Any
+import time
+from typing import List, Optional, Union, Dict, Any
+from decimal import Decimal, getcontext
 from web3 import Web3
 from web3 import exceptions as web3e
 from web3.logs import DISCARD
@@ -95,9 +97,15 @@ TIME_FORMAT: str = '%Y-%m-%d %H:%M:%S'
 """Default ``datetime`` format coding used to represent time values"""
 
 #
+# Conversion
+#
+PRECISION = 40
+"""Level of precision for `Decimal` values used in Ether denomination
+conversions. Arbitrary value. Consider a better value."""
+
+#
 # Type Hint aliases
 #
-
 T_ABI = Any
 """``ABI`` type is a list with JSON read from the `artifact` file."""
 
@@ -2594,6 +2602,154 @@ class Filter:
             simple_events.append(simple_event)
         return simple_events
 # end of Filter
+
+
+class Convert:
+    """Conversion methods for Ether and time
+
+    **METHODS**
+
+    -  :meth`convert` - convert amount from one denomination to another
+    -  :meth`denominations` - returns valid denominations and values
+    -  :meth`get_epoch` - returns current time in epoch seconds
+    -  :meth`get_local` - returns current local tz time as a string
+    -  :meth`to_local` - convert time in epoch seconds to time string
+
+    :notes: The time conversion methods are standard one-line
+        Python methods. I put them here so I wouldn't have to look
+        them up and I'd always use the same method.
+
+    """
+    def convert(
+            self,
+            amount: Union[int, float],
+            from_denomination: str,
+            to_denomination: str
+            ) -> T_DECIMAL:
+        """Convert the amount from one Ether denomination to another.
+
+        :param amount: amount to be converted
+        :type amount: int | float
+        :param from_denomination: unit of denomination of ``amount``
+        :type from_denomination: str
+        :param to_denomination: unit of denomination of result
+        :type to_denomination: str
+        :rtype: Decimal
+        :return: converted ``amount``
+        :example:
+
+
+        :note: `web3.py` has two conversion methods: `to_wei()` and
+            `from_wei()`. This function is more flexible and does
+            not require a `Blockchain` object to use.
+
+        :see also: `denominations` for valid names to use
+            for ``from_denomination`` and ``to_denomination``.
+
+        """
+        from_units_wei = self.denominations()[from_denomination]
+        to_units_wei = self.denominations()[to_denomination]
+
+        getcontext().prec = PRECISION
+        conversion_factor: T_DECIMAL = Decimal(str(from_units_wei)) / Decimal(str(to_units_wei))
+        converted_amount: T_DECIMAL = Decimal(str(amount)) * conversion_factor
+        return converted_amount
+
+    @staticmethod
+    def denominations() -> Dict[str, int]:
+        """Return denominations and str, int]their value in units of wei.
+
+        These are the denominations recognized by `convert`.
+
+        :rtype: dict
+        :return: valid strings to use as a denomination as keys
+        and their amount in wei as values.
+
+        :example:
+
+
+        :see also:
+            - Source:
+              https://web3py.readthedocs.io/en/stable/examples.html?highlight=denominations#converting-currency-denominations
+
+        """
+        denominations_to_value_wei: Dict[str, int] = {
+            'wei': 1,
+            'kwei': 10**3,
+            'babbage': 10**3,
+            'femtoether': 10**3,
+            'mwei': 10**6,
+            'lovelace': 10**6,
+            'picoether': 10**6,
+            'gwei': 10**9,
+            'shannon': 10**9,
+            'nanoether': 10**9,
+            'nano': 10**9,
+            'szabo': 10**12,
+            'microether': 10**12,
+            'micro': 10**12,
+            'finney': 10**15,
+            'milliether': 10**15,
+            'milli': 10**15,
+            'ether': 10**18,
+            'kether': 10**21,
+            'grand': 10**21,
+            'mether': 10**24,
+            'gether': 10**27,
+            'tether': 10**30
+            }
+        return denominations_to_value_wei
+
+    @staticmethod
+    def get_epoch() -> float:
+        """Return current time in epoch seconds.
+
+        :rtype: float
+        :return: current time, in epoch seconds
+        :example:
+
+
+        """
+        return time.time()
+
+    @staticmethod
+    def get_local() -> str:
+        """Return current local time as a time string.
+
+        :rtype: str
+        :return: current time, with format of:
+            `<Day> <Mon> <Date> <HH>:<MM>:<SS> <Year>`
+        :example:
+
+
+        """
+        return time.ctime()
+
+    @staticmethod
+    def to_local(
+            epoch_sec: Union[int, float],
+            t_format: str = '%Y-%m-%d %H:%M:%S'
+            ) -> str:
+        """Convert epoch seconds into local time string.
+
+        :param epoch_sec: epoch time, in seconds
+        :type epoch_sec: int | float
+        :param t_format: format of outputted time using `strftime` codes
+            (optional, default will return:
+            `<YYYY>-<MM>-<DD> <HH>:<MM>:<SS>`)
+        :param t_format: str
+        :rtype: str
+        :return: local time, with format of:
+            `<YYYY>-<MM>-<DD> <HH>:<MM>:<SS>`
+        :example:
+
+
+       :see also:
+           - https://docs.python.org/3/library/time.html#time.strftime for
+             a list of the codes to use in ``t_format``.
+
+        """
+        return time.strftime(t_format, time.localtime(epoch_sec))
 
 
 class Result:
