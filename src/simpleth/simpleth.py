@@ -50,6 +50,13 @@ PROJECT_HOME: str = 'C:/Users/snewe/OneDrive/Desktop/simpleth'
 ARTIFACT_SUBDIR: str = 'artifacts'
 """Directory, under home directory, for the artifact files."""
 
+SOLC_SUBDIR: str = 'solc'
+"""Directory, under home directory, for the Solidity compiler."""
+
+SOLIDITY_SOURCE_SUBDIR: str = 'solidity'
+"""Directory, under home directory, for the Solidity smart contract
+source files."""
+
 ABI_SUFFIX: str = 'abi'
 """Filename suffix for the ABI files."""
 
@@ -61,6 +68,9 @@ ADDRESS_SUFFIX: str = 'addr'
 
 BIN_RUNTIME_SUFFIX: str = 'bin-runtime'
 """Filename suffix for bin-runtime files. Used to get compiled size."""
+
+SOLC_FILENAME: str = 'solc.exe'
+"""Filename of the Solidity compiler executable."""
 
 #
 # Transaction processing defaults
@@ -3375,18 +3385,26 @@ class SimplEthError(Exception):
     errors resulting from interacting with Solidity contracts and the
     Ethereum blockchain.
 
-    :note: ``SimplEthError`` is used for two main reasons:
+    The `web3` API throws many different types of exceptions and
+    its methods are not consistent in which they throw. :class:`SimplEthError`
+    catches almost all of these (when new ones are found, they are added)
+    and reports the details. This means you only have to have a `try/except`
+    with just `SimplEthError` instead of having half-dozen Python exceptions
+    in the `except`.
 
-        1) The caller only needs to check for one exception.
-           `web3.py` throws a variety of exceptions and a caller would
-           need to know about all of them and their various reasons.
-        2) Most `SimplEthError` exceptions will print out a hint(s)
-           for what might be wrong or how to resolve. Some of the
-           exceptions as thrown by `web3.py` can be cryptic and
-           difficult to understand the source of error, esp. if the
-           exception is from something that happened in the Solidity
-           contract. As I was developing this module, I tried to add
-           hints as I ran across how errors were thrown
+    Besides passing back the details from the original Python exception,
+    :class:`SimplEthError` offers hints as to the cause of the problem.
+    Some exceptions, esp. the ones caused by a problem with the Solidity
+    contract, can be rather mysterious, esp. to someone just starting out
+    with Ethereum. The hints may quickly point you to the cause.
+
+    At the time of the early version of `simpleth` (circa 2020), the exceptions
+    being thrown had very little explanation and could be difficult to
+    locate the cause. More recent versions of `web3.py` are adding good
+    descriptions of the problem in their exception ``Message`` parameter.
+    If all `web3.py` exceptions add helpful messages, one of the big
+    reasons for `SimplEthError` is fixed and time to consider doing away
+    with it.
 
     """
     def __init__(self, message: str, code: str = '') -> None:
@@ -3425,11 +3443,25 @@ class SimplEthError(Exception):
             message = test
             exc_info = (None, None, None)
 
-        :note: ``code`` can serve several purposes. It could be
-            easily tested in unit tests to make sure a test case is
-            causing a specific error.  It makes it easy to search
-            simpleth for the line of code that raised a specifid
-            SimplEthException.
+        :notes:
+
+        -  ``code`` can serve several purposes. It could be
+           easily tested in unit tests to make sure a test case is
+           causing a specific error.  It makes it easy to search
+           simpleth for the line of code that raised a specified
+           SimplEthException.
+        -  The format for ``code``:
+
+               ``<c>-<method>-<id>``
+
+           Where:
+
+           -  ``<c>`` is the first character of the class: **B** lockchain,
+              **C** ontract, or **F** ilter.
+           -  ``<method>`` is a 3-digit sequence number for the method
+              in the class.
+           -  ``<id>`` is a 3-digit sequence number for the exception
+              in the class.
 
         :to do: make exc_info, message, code private so they do not
             appear in doc.
