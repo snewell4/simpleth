@@ -1,8 +1,9 @@
+***************
 Getting Started
-===============
+***************
 
-Pre-requisites
-**************
+1) Pre-requisites
+=================
 
 #.  Ganache must be installed and running. See: http://trufflesuite.com/ganache/
 #.  ``web3.py`` and ``hexbytes`` must be added to your Python environment.
@@ -13,16 +14,19 @@ Pre-requisites
    pip install web3
    pip install hexbytes
 
-Installation
-************
+2) Installation
+===============
 The package has not yet been installed on PyPi.
 It **cannot** be installed using *pip*.
 
 For now, the suggested method is to put the file, ``simpleth.py``, in
 same directory as your source files.
 
-Customizing
-***********
+3) Customizing
+==============
+
+simpleth.py
+"""""""""""
 `simpleth` needs to know your project's home directory.
 Edit ``simpleth.py`` and change the line:
 
@@ -32,8 +36,17 @@ Edit ``simpleth.py`` and change the line:
 
 Put in your full path to the directory where you installed ``simpleth.py``.
 
-Usage
-*****
+App association
+"""""""""""""""
+Using Windows Settings -> Apps -> Default apps, associate ``.py`` to ``Python``.
+This will allow you to enter the name of a command, like ``compile.py``
+on a terminal command line.
+(TODO - hmmm, what about my virtual environment? Can I use that version of
+Python?)
+
+
+4) Usage
+========
 To use `simpleth` from your interpreter, script, or app, include the
 following line.
 

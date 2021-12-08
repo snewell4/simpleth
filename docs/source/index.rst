@@ -8,6 +8,7 @@ Simple Ethereum Documentation
    starting
    examples
    simpleth
+   commands
 
 
 .. Indices and tables

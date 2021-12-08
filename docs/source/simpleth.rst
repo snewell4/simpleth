@@ -25,3 +25,4 @@ SimplEthError class
 *******************
 .. autoclass:: simpleth.SimplEthError
 
+

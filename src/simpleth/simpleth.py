@@ -53,10 +53,6 @@ ARTIFACT_SUBDIR: str = 'artifacts'
 SOLC_SUBDIR: str = 'solc'
 """Directory, under home directory, for the Solidity compiler."""
 
-SOLIDITY_SOURCE_SUBDIR: str = 'solidity'
-"""Directory, under home directory, for the Solidity smart contract
-source files."""
-
 ABI_SUFFIX: str = 'abi'
 """Filename suffix for the ABI files."""
 
