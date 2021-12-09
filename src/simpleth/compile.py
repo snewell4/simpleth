@@ -2,14 +2,14 @@
 """
 Compile Solidity contract source file(s).
 
-Uses the Solidity ``compiler`` with ``options`` to compile the ``solidity_file``
+Uses the Solidity ``compiler`` with ``options`` to compile the ``contract``
 to create and write the specified artifact files to the ``out_dir`` directory.
 
 **USAGE**
 
-.. code-block::
+.. code-block:: none
 
-   compile.py [-c ``compiler``] [-O ``options``] [-o ``out_dir``] ``solidity_file`` [``solidity_file``]
+   compile.py [-c ``compiler``] [-O ``options``] [-o ``out_dir``] ``contract`` [``contract``]
 
 **EXAMPLES**
 
@@ -47,7 +47,7 @@ The file type, `.py`, has been associated with `Python`. Otherwise, use:
 -  To see a description of compiler ``options`` and version, from a command line
    in the directory with `solc.exe` do:
 
-   .. code-block::
+   .. code-block:: none
 
       solc --help
 
@@ -98,14 +98,14 @@ if __name__ == '__main__':
         )
 
     parser.add_argument(
-        'solidity_file',
+        'contract',
         nargs='+',
         help='Solidity smart contract file to compile'
         )
 
     args = parser.parse_args()
 
-    for file in args.solidity_file:
+    for file in args.contract:
         command = (
             f'{args.compiler} '
             f'-o {args.out_dir} '

@@ -22,6 +22,11 @@ It **cannot** be installed using *pip*.
 For now, the suggested method is to put the file, ``simpleth.py``, in
 same directory as your source files.
 
+Solidity compiler
+"""""""""""""""""
+Download and install from:
+https://github.com/ethereum/solidity/releases
+
 3) Customizing
 ==============
 
