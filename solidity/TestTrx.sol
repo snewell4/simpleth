@@ -85,26 +85,4 @@ contract TestTrx {
     function getNums() public view returns(uint[3] memory) {
         return nums;
     }
-
-
-    /**
-     * @notice Get the number of bytes this contract takes up on the
-     * blockchain.
-     *
-     * @dev This is intended primarily for development and testing to check
-     * on size of this contract.
-     *
-     * @param _addr Address of the contract.
-     *
-     * @return size The size of the deployed code in bytes.
-     */
-    function getContractSize(address _addr)
-        public
-        view
-        returns(uint size)
-    {
-        assembly { size := extcodesize(_addr) }
-        return size;
-    }
-
 }

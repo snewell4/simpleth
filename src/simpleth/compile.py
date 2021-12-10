@@ -25,7 +25,7 @@ to create and write the specified artifact files to the ``out_dir`` directory.
 
 .. code-block:: none
 
-   Compiler run successful. Artifact(s) can be found in directory <out_dir>.
+   Compiler run successful. Artifact(s) can be found in directory ``out_dir``.
 
 **ASSUMES**
 
@@ -45,7 +45,7 @@ The file type, `.py`, has been associated with `Python`. Otherwise, use:
       compile.py -h
 
 -  To see a description of compiler ``options`` and version, from a command line
-   in the directory with `solc.exe` do:
+   in the directory with ``compiler`` do:
 
    .. code-block:: none
 
