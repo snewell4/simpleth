@@ -57,7 +57,8 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 
 import simpleth
 
-if __name__ == '__main__':
+def main():
+    """Start script processing here."""
     parser = ArgumentParser(
         description=__doc__,
         formatter_class=RawTextHelpFormatter
@@ -112,4 +113,7 @@ if __name__ == '__main__':
             f'{args.options} '
             f'{file}'
             )
-        r = os.system(command)
+        os.system(command)
+
+if __name__ == '__main__':
+    main()

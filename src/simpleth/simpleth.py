@@ -48,10 +48,13 @@ PROJECT_HOME: str = 'C:/Users/snewe/OneDrive/Desktop/simpleth'
 """Directory for the prototype project home"""
 
 ARTIFACT_SUBDIR: str = 'artifacts'
-"""Directory, under home directory, for the artifact files."""
+"""Directory, under project directory, for the artifact files."""
 
 SOLC_SUBDIR: str = 'solc'
-"""Directory, under home directory, for the Solidity compiler."""
+"""Directory, under project directory, for the Solidity compiler."""
+
+RST_DOC_SUBDIR: str = 'docs/source'
+"""Directory, under project directory, for the rST files."""
 
 ABI_SUFFIX: str = 'abi'
 """Filename suffix for the ABI files."""
@@ -64,6 +67,9 @@ ADDRESS_SUFFIX: str = 'addr'
 
 BIN_RUNTIME_SUFFIX: str = 'bin-runtime'
 """Filename suffix for bin-runtime files. Used to get compiled size."""
+
+SOLIDITY_CONTRACT_SUFFIX: str = '.sol'
+"""Filename suffix for smart contract source file."""
 
 SOLC_FILENAME: str = 'solc.exe'
 """Filename of the Solidity compiler executable."""
