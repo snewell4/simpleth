@@ -414,7 +414,7 @@ def print_md(
         m_comments: list,
         e_comments: list,
         v_comments: list
-) -> None:
+    ) -> None:
     """Output all comments for a contract - formatted for markdown.
 
     This is the function that controls the printing of all comments
@@ -427,7 +427,7 @@ def print_md(
     :param m_comments: dictionary items, each with all comments
         about one method (ie., function) in the contract
     :type m_comments: list
-     :param e_comments: dictionary items, each with all comments
+    :param e_comments: dictionary items, each with all comments
         about one event in the contract
     :type e_comments: list
     :param v_comments: dictionary items, each with all comments
@@ -503,7 +503,7 @@ def print_blank_line_rst() -> None:
 
     :rtype: None
     """
-    print('\\')
+    print('')
 
 
 def print_c_comments_rst(c_name: str, c_comments: dict) -> None:
@@ -517,7 +517,9 @@ def print_c_comments_rst(c_name: str, c_comments: dict) -> None:
     :type c_comments: dict
     :rtype: None
     """
-    print('# {}'.format(c_name))
+    print('=' * len(c_name))
+    print(f'{c_name}')
+    print('=' * len(c_name))
     print('**Description:** {}'.format(c_comments['title']))
     print_blank_line_rst()
     print('**Purpose:**  {}'.format(c_comments['notice']))
@@ -534,7 +536,8 @@ def print_e_comment_hdr_rst() -> None:
 
     :rtype: None
     """
-    print('## Events')
+    print_subsection_hdr_rst('Events')
+
 
 
 def print_e_comment_rst(e_comment: dict) -> None:
@@ -546,21 +549,23 @@ def print_e_comment_rst(e_comment: dict) -> None:
     :type e_comment: dict
     :rtype: None
     """
-    print('### {}'.format(e_comment['event']))
+    print_subsubsection_hdr_rst(e_comment['event'])
     if e_comment['notice']:
-        print('**Purpose:**      {}'.format(e_comment['notice']))
+        print(f'**Purpose:**      {e_comment["notice"]}')
     if e_comment['dev']:
-        print('**Notes:**  {}'.format(e_comment['dev']))
+        print(f'**Notes:**  {e_comment["dev"]}')
     else:
         print('')
     if e_comment['params']:
         print('')
         print('**Parameters:**')
         print('')
+        print('+----+-----------+')
         print('|Name|Description|')
-        print('|----|-----------|')
+        print('+----+-----------+')
         for param, desc in e_comment['params'].items():
-            print('|`{}`|{}|'.format(param, desc))
+            print(f'|``{param}``|{desc}|')
+            print('+----+-----------+')
         print('')
 
 
@@ -571,7 +576,7 @@ def print_m_comment_hdr_rst() -> None:
 
     :rtype: None
     """
-    print('## Methods')
+    print_subsection_hdr_rst('Methods')
 
 
 def print_m_comment_rst(m_comment: dict) -> None:
@@ -583,30 +588,34 @@ def print_m_comment_rst(m_comment: dict) -> None:
     :type m_comment: dict
     :rtype: None
     """
-    print('### {}'.format(m_comment['method']))
+    print_subsubsection_hdr_rst(m_comment['method'])
     if m_comment['notice']:
-        print('**Purpose:**      {}'.format(m_comment['notice']))
+        print(f'**Purpose:**      {m_comment["notice"]}')
     if m_comment['dev']:
-        print('**Notes:**  {}'.format(m_comment['dev']))
+        print(f'**Notes:**  {m_comment["dev"]}')
     else:
         print('')
     if m_comment['params']:
         print('')
         print('**Parameters:**')
         print('')
+        print('+----+-----------+')
         print('|Name|Description|')
-        print('|----|-----------|')
+        print('+----+-----------+')
         for param, desc in m_comment['params'].items():
-            print('|`{}`|{}|'.format(param, desc))
+            print(f'|``{param}``|{desc}|')
+            print('+----+-----------+')
         print('')
     if m_comment['returns']:
         print('')
         print('**Returns:**')
         print('')
+        print('+----+-----------+')
         print('|Name|Description|')
-        print('|----|-----------|')
+        print('+----+-----------+')
         for ret, desc in m_comment['returns'].items():
-            print('|`{}`|{}|'.format(ret, desc))
+            print(f'|``{ret}``|{desc}|')
+            print('+----+-----------+')
         print('')
 
 
@@ -629,7 +638,7 @@ def print_rst(
     :param m_comments: dictionary items, each with all comments
         about one method (ie., function) in the contract
     :type m_comments: list
-     :param e_comments: dictionary items, each with all comments
+    :param e_comments: dictionary items, each with all comments
         about one event in the contract
     :type e_comments: list
     :param v_comments: dictionary items, each with all comments
@@ -643,6 +652,7 @@ def print_rst(
         print_v_comment_hdr_rst()
         for v_comment in v_comments:
             print_v_comment_rst(v_comment)
+        print_v_comment_table_close_rst()
         print_separator_rst()
 
     if m_comments:
@@ -666,7 +676,31 @@ def print_separator_rst() -> None:
 
     :rtype: None
     """
-    print('---')
+#   print('~' * 80)
+    print()
+
+
+def print_subsection_hdr_rst(subsection_title: str) -> None:
+    """Output header for events section - formatted for restructured text.
+
+    :param subsection_title: name of the subsection
+    :type subsection_title: str
+    :rtype: None
+    """
+    print(f'{subsection_title}')
+    print('-' * len(subsection_title))
+
+
+def print_subsubsection_hdr_rst(subsubsection_title: str) -> None:
+    """Output header for events section - formatted for restructured text.
+
+    :param subsubsection_title: name of the subsection
+    :type subsubsection_title: str
+    :rtype: None
+    """
+    print(f'{subsubsection_title}')
+    print('^' * len(subsubsection_title))
+
 
 
 def print_v_comment_hdr_rst() -> None:
@@ -677,10 +711,11 @@ def print_v_comment_hdr_rst() -> None:
 
     :rtype: None
     """
-    print('## State Variables')
+    print_subsection_hdr_rst('State Variables')
     print('')
+    print('+----+-----------+')
     print('|Name|Description|')
-    print('|----|-----------|')
+    print('+----+-----------+')
 
 
 def print_v_comment_rst(v_comment: dict) -> None:
@@ -692,7 +727,11 @@ def print_v_comment_rst(v_comment: dict) -> None:
     :type v_comment: dict
     :rtype: None
     """
-    print('|`{}`|{}|'.format(v_comment['stateVariable'], v_comment['dev']))
+    print(f'|``{v_comment["stateVariable"]}``|{v_comment["dev"]}|')
+
+def print_v_comment_table_close_rst() -> None:
+    print('+----+-----------+')
+    print()
 
 
 #
@@ -793,7 +832,7 @@ def print_text(
     :param m_comments: dictionary items, each with all comments
         about one method (ie., function) in the contract
     :type m_comments: list
-     :param e_comments: dictionary items, each with all comments
+    :param e_comments: dictionary items, each with all comments
         about one event in the contract
     :type e_comments: list
     :param v_comments: dictionary items, each with all comments
@@ -826,12 +865,12 @@ def put_constructor_first_with_parens(m_comments: list) -> list:
     its name from `constructor` to `constructor()`.
 
     :param m_comments: list of method comments. Each element is a
-    dictionary describing one comment.
+        dictionary describing one comment.
     :type m_comments: list
     :rtype: list
     :return: revised ``m_comments`` where the constructor method,
-    if present, has been moved to the front and renamed from
-    `constructor` to `constructor()`
+        if present, has been moved to the front and renamed from
+        `constructor` to `constructor()`
     """
     for m_comment in m_comments:
         if m_comment['method'] == 'constructor':
@@ -845,7 +884,7 @@ def put_constructor_first_with_parens(m_comments: list) -> list:
 def main():
     """Start script processing here"""
     parser = ArgumentParser(
-        description=__doc__,
+        description='Output formatted Natspec comments with specified markup.',
         formatter_class=RawTextHelpFormatter
         )
     parser.add_argument(
@@ -853,9 +892,8 @@ def main():
         choices=['rst', 'md', 'text'],
         default='rst',
         help=(
-            'rST (reStructured Text) '
-            'markdown, '
-            'text listing'
+            'output formatting: reStructured Text, Markdown, or plain text\n'
+            'default: %(default)s'
             )
         )
     parser.add_argument(
@@ -886,7 +924,7 @@ def main():
         'contracts',
         nargs='+',
         metavar='<contract>',
-        help='contract file'
+        help='contract file (use of the suffix ``.sol`` is optional)'
         )
 
     args = parser.parse_args()
@@ -907,13 +945,13 @@ def main():
                     f'Must exit.'
                     )
                 sys.exit()
-            out_file: str = f'{args.out_dir}/{contract}.{suffix}'
+            out_file: str = f'{args.out_dir}/{contract}{suffix}'
             sys.stdout = open(out_file, 'w', encoding="latin-1")
 
         docuser_file: str =\
-            f'{args.in_dir}/{contract}.{DOCUSER_FILE_SUFFIX}'
+            f'{args.in_dir}/{contract}{DOCUSER_FILE_SUFFIX}'
         docdev_file: str =\
-            f'{args.in_dir}/{contract}.{DOCDEV_FILE_SUFFIX}'
+            f'{args.in_dir}/{contract}{DOCDEV_FILE_SUFFIX}'
 
         docuser: dict = get_docuser(docuser_file)
         docdev: dict = get_docdev(docdev_file)
@@ -932,7 +970,7 @@ def main():
                 )
         elif args.format == 'md':
             print_md(
-                args.contract,
+                contract,
                 c_comments,
                 m_comments,
                 e_comments,
@@ -940,7 +978,7 @@ def main():
                 )
         elif args.format == 'rst':
             print_rst(
-                args.contract,
+                contract,
                 c_comments,
                 m_comments,
                 e_comments,

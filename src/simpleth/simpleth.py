@@ -44,6 +44,7 @@ __status__ = 'Prototype'
 #
 # Directories and filenames
 #
+# FIX - I think all SUFFIX should have a leading "."
 PROJECT_HOME: str = 'C:/Users/snewe/OneDrive/Desktop/simpleth'
 """Directory for the prototype project home"""
 

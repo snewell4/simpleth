@@ -9,6 +9,7 @@ Simple Ethereum Documentation
    examples
    simpleth
    commands
+   TestNatSpec
 
 
 .. Indices and tables
