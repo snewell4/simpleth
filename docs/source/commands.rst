@@ -5,6 +5,6 @@ compile.py
 **********
 .. automodule:: compile
 
-make_contract_doc.py
-********************
-.. automodule:: make_contract_doc
+nat2rtd.py
+**********
+.. automodule:: nat2rtd

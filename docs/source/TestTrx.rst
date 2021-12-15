@@ -1,6 +1,5 @@
-=======
-TestTrx
-=======
+*TestTrx*
+=========
 **Description:** TestTrx
 
 **Purpose:**  This is only used for unit testing the Python Contract() class.
