@@ -34,6 +34,9 @@ contract TestNatspec {
      */
     uint[3] public nums;
 
+    /// @dev VAR dev          - DOCDEV
+    int public specialNum;
+
     /**
      * @notice EVT notice     - DOCUSER
      * @dev EVT dev           - DOCDEV

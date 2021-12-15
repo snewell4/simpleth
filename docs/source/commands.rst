@@ -1,10 +1,10 @@
-simpleth Commands
-=================
+CLI Commands
+============
 
-Compile
-*******
+compile.py
+**********
 .. automodule:: compile
 
-Make Contract Documentation
-***************************
+make_contract_doc.py
+********************
 .. automodule:: make_contract_doc

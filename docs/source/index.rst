@@ -2,14 +2,13 @@ Simple Ethereum Documentation
 =============================
 
 .. toctree::
-   :maxdepth: 4
 
-   intro
-   starting
-   examples
-   simpleth
-   commands
-   TestNatSpec
+   intro.rst
+   starting.rst
+   examples.rst
+   simpleth.rst
+   commands.rst
+   contracts.rst
 
 
 .. Indices and tables

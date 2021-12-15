@@ -1,38 +1,52 @@
 """
-Read Solidity contract documentation files and output documentation in the
-selected markup file.
+Read Solidity contract documentation files and output documentation using the
+selected markup.
 
 Reads the ``contract`` `.docdev` and `.docuser` files found in ``in_dir``, adds
-the specified ``format`` markup, combines them into one file and writes
+the specified `format` markup, combines them into one file and writes
 that marked-up documentation file to ``out_dir`` or `STDOUT`.
 
-The defaults are set to make contract documentation ready for the `Sphinx`
-``make html`` command. This is the command used to create the `Read The Docs`
-`html` files. For normal `simpleth` use, just run:
+Markup formats supported for ``-f``:
 
-.. code-block:: none
-
-   make_contract_doc.py ``contract``
+   -  ``md`` for `Markdown`.
+   -  ``rst`` for `reStructured Text`.
+   -  ``txt`` for plain text.
 
 **USAGE**
 
 .. code-block:: none
 
-   make_contract_doc.py [-h] [-f {rst,text,md,uml}] [-i IN_DIR] [-s | -o OUT_DIR] <contract> [<contract> ...]
+   make_contract_doc.py [-h] [-f {md,rst,txt}] [-i IN_DIR] [-s | -o OUT_DIR] <contract> [<contract> ...]
 
-**EXAMPLE**
+**EXAMPLES**
 
 .. code-block::
 
-   make_contract_doc.py HelloWorld.sol
+   make_contract_doc.py HelloWorld1.sol
+   make_contract_doc.py -f txt -s HelloWorld1.sol
+   make_contract_doc.py -f rst -i ../artifacts -o ../doc HelloWorld1.sol HelloWorld2.sol
 
-**ASSUMES**
+**TO MAKE SIMPLETH CONTRACT DOCUMENTATION**
 
-The file type, `.py`, has been associated with `Python`. Otherwise, use:
+The defaults are set to create and store a documentation file for a
+contract. After running `make_contract_doc.py` you can run the `Sphinx`
+command, `make html`, which will create an HTML file for the contract in
+the `Read The Docs` format.
+
+For normal `simpleth` use, run:
 
 .. code-block:: none
 
-   python make_contract_doc.py
+   make_contract_doc.py ``contract``
+   make html
+
+**ASSUMES**
+
+The file type, ``.py``, has been associated with `Python`. Otherwise, use:
+
+.. code-block:: none
+
+   python make_contract_doc.py <args>
 
 **SEE ALSO**
 
@@ -43,6 +57,7 @@ The file type, `.py`, has been associated with `Python`. Otherwise, use:
 
       compile.py -h
 
+**MODULES**
 """
 import json
 from argparse import ArgumentParser, RawTextHelpFormatter
@@ -191,6 +206,8 @@ def get_m_comments(docdev: dict, docuser: dict) -> list:
             if 'returns' in docdev['methods'][m_name].keys():
                 m_comment['returns'] = docdev['methods'][m_name]['returns']
         m_comments.append(m_comment)
+        # move the constructor to front of list and add `()` to it
+        m_comments = put_constructor_first_with_parens(m_comments)
     return m_comments
 
 
@@ -414,7 +431,7 @@ def print_md(
         m_comments: list,
         e_comments: list,
         v_comments: list
-    ) -> None:
+        ) -> None:
     """Output all comments for a contract - formatted for markdown.
 
     This is the function that controls the printing of all comments
@@ -445,7 +462,6 @@ def print_md(
 
     if m_comments:
         print_m_comment_hdr_md()
-        m_comments = put_constructor_first_with_parens(m_comments)
         for m_comment in m_comments:
             print_m_comment_md(m_comment)
             print_separator_md()
@@ -537,7 +553,6 @@ def print_e_comment_hdr_rst() -> None:
     :rtype: None
     """
     print_subsection_hdr_rst('Events')
-
 
 
 def print_e_comment_rst(e_comment: dict) -> None:
@@ -649,15 +664,20 @@ def print_rst(
     print_separator_rst()
 
     if v_comments:
-        print_v_comment_hdr_rst()
-        for v_comment in v_comments:
-            print_v_comment_rst(v_comment)
-        print_v_comment_table_close_rst()
+        print_subsection_hdr_rst('State Variables')
+        print('')
+        print_comments_as_table_rst(
+            v_comments,
+            'Name',
+            'Comment',
+            'stateVariable',
+            'dev',
+            4
+            )
         print_separator_rst()
 
     if m_comments:
         print_m_comment_hdr_rst()
-        m_comments = put_constructor_first_with_parens(m_comments)
         for m_comment in m_comments:
             print_m_comment_rst(m_comment)
             print_separator_rst()
@@ -676,7 +696,8 @@ def print_separator_rst() -> None:
 
     :rtype: None
     """
-#   print('~' * 80)
+    print()
+    print(f'{"_" * 80}')
     print()
 
 
@@ -702,36 +723,111 @@ def print_subsubsection_hdr_rst(subsubsection_title: str) -> None:
     print('^' * len(subsubsection_title))
 
 
-
-def print_v_comment_hdr_rst() -> None:
-    """Output header for state variables section - formatted for
+def print_comments_as_table_rst(
+        comments: list,
+        col1_header: str,
+        col2_header: str,
+        col1_row_key: str,
+        col2_row_key: str,
+        extra_spaces: int = 2
+        ) -> None:
+    """Output a table of comments for one of the sections - formatted as
     restructured text.
 
-    Called by :meth:`print_rst`
-
-    :rtype: None
-    """
-    print_subsection_hdr_rst('State Variables')
-    print('')
-    print('+----+-----------+')
-    print('|Name|Description|')
-    print('+----+-----------+')
-
-
-def print_v_comment_rst(v_comment: dict) -> None:
-    """Output comments for one state variable - formatted for restructured text.
+    This outputs a two-column table of a smart contract attribute
+    along with its comments.
 
     Called by :meth:`print_rst`
 
-    :param v_comment: all comments for one state variable
-    :type v_comment: dict
+    :param comments: list of dictionary items, each representing
+         one public state variable that had a Natspec comment
+    :type comments: list
+    :param col1_header: left-column title
+    :type col1_header: str
+    :param col2_header: right-column title
+    :type col2_header: str
+    :param col1_row_key: list item's dictionary key to use for the
+        left-column
+    :type col1_row_key: str
+    :param col2_row_key: list item's dictionary key to use for the
+        right-column
+    :type col2_row_key: str
+    :param extra_spaces: number of extra spaces in a table cell to
+        pad the text; the whitespace to the left of the text will
+        be half of this value (**optional**, default: 2)
     :rtype: None
     """
-    print(f'|``{v_comment["stateVariable"]}``|{v_comment["dev"]}|')
+    col1_rows: list[str] =\
+        [comment[col1_row_key] for comment in comments]
+    col2_rows: list[str] =\
+        [comment[col2_row_key] for comment in comments]
 
-def print_v_comment_table_close_rst() -> None:
-    print('+----+-----------+')
+    col1_width = table_column_width_rst(
+        col1_header,
+        col1_rows,
+        extra_spaces
+        )
+    col2_width = table_column_width_rst(
+        col2_header,
+        col2_rows,
+        extra_spaces
+        )
+
+    # num spaces to leave blank to left of text in a cell
+    left_whitespace = int(extra_spaces / 2)
+    print(f'+{"-" * col1_width}+{"-" * col2_width}+')
+    print(
+        f'|'
+        f'{" " * left_whitespace}'
+        f'{col1_header:<{col1_width - left_whitespace}}'
+        f'|'
+        f'{" " * left_whitespace}'
+        f'{col2_header:<{col2_width - left_whitespace}}'
+        f'|'
+        )
+    print(f'+{"-" * col1_width}+{"-" * col2_width}+')
+
+    for comment in comments:
+        print(
+            f'|'
+            f'{" " * left_whitespace}'
+            f'{comment[col1_row_key]:<{col1_width - left_whitespace}}'
+            f'|'
+            f'{" " * left_whitespace}'
+            f'{comment[col2_row_key]:<{col2_width - left_whitespace}}'
+            f'|'
+        )
+        print(f'+{"-" * col1_width}+{"-" * col2_width}+')
     print()
+
+
+def table_column_width_rst(
+        col_header: str,
+        col_rows: list[str],
+        extra_spaces: int
+        ) -> int:
+    """Return number characters for the width of an rst table column.
+
+    Used to determine the number of dashes (`-`) to create the
+    horizontal lines for an rst table column frame.
+
+    Find the longest string from the combination of the table's column
+    title and the strings in each of the rows. Add extra white space
+    to pad the longest string. Return that value.
+
+    :param col_header: column header text
+    :type col_header: str
+    :param col_rows: text strings for each cell in the column
+    :type col_rows: list
+    :param extra_spaces: number of spaces for padding in the column. This
+        is whitespace split between before and after the longest string
+        in the column.
+    :rtype: int
+    :return: width to use for this column
+
+    """
+    max_rows_width = max([len(text) for text in col_rows])
+    return max(max_rows_width, len(col_header)) + extra_spaces
 
 
 #
@@ -889,7 +985,7 @@ def main():
         )
     parser.add_argument(
         '-f', '--format',
-        choices=['rst', 'md', 'text'],
+        choices=['md', 'rst', 'txt'],
         default='rst',
         help=(
             'output formatting: reStructured Text, Markdown, or plain text\n'
