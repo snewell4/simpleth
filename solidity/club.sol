@@ -12,8 +12,7 @@ pragma solidity ^0.8;
  * for integration testing of Python code with simpleth classes.
  *
  * @dev Be careful in making any changes. Do not break the simpleth
- * test cases.
- * @dev I am not testing for overflow/underflow in math. Beware.
+ * test cases. I am not testing for overflow/underflow in math. Beware.
  *
  * @custom:simpleth This should appear in docdev
  */
@@ -350,9 +349,10 @@ contract Club {
      * @notice Get the min and max integer values for Status enum.
      *
      * @dev This is to try out the new min and max functions as well
-     * as returning multiple values plus multiple @return Natspec.
+     * as returning multiple values plus multiple returns with Natspec.
      *
-     * @return min_, max_ smallest and largest integers used in MStatus enum
+     * @return min_ smallest integer used in MStatus enum
+     * @return max_ largest integer used in MStatus enum
      */
     function getMStatusRange()
     public

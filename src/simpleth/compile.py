@@ -5,11 +5,13 @@ Compile Solidity contract source file(s).
 Uses the Solidity ``compiler`` with ``options`` to compile the ``contract``
 to create and write the specified artifact files to the ``out_dir`` directory.
 
+
 **USAGE**
 
 .. code-block:: none
 
    compile.py [-c ``compiler``] [-O ``options``] [-o ``out_dir``] ``contract`` [``contract``]
+
 
 **EXAMPLES**
 
@@ -21,11 +23,13 @@ to create and write the specified artifact files to the ``out_dir`` directory.
    compile.py -O "--abi --overwrite" HelloWorld2.sol
    compile.py -c ..\solc\solc.exe -o . -O "--abi --overwrite" HelloWorld1.sol HelloWorld2.sol
 
+
 **TERMINAL OUTPUT**
 
 .. code-block:: none
 
    Compiler run successful. Artifact(s) can be found in directory ``out_dir``.
+
 
 **ASSUMES**
 
@@ -34,6 +38,7 @@ The file type, `.py`, has been associated with `Python`. Otherwise, use:
 .. code-block:: none
 
    python compile.py
+
 
 **SEE ALSO**
 
@@ -51,6 +56,8 @@ The file type, `.py`, has been associated with `Python`. Otherwise, use:
 
       solc --help
 
+
+**MODULES**
 """
 import os
 from argparse import ArgumentParser, RawTextHelpFormatter
