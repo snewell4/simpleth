@@ -1,5 +1,5 @@
-*TestNatSpec*
-=============
+TestNatSpec
+===========
 **Description:** CLS title           - DOCDEV
 
 **Purpose:**  CLS notice         - DOCUSER
@@ -10,67 +10,58 @@
 
 ________________________________________________________________________________
 
-*State Variables*
-=================
+STATE VARIABLES
+###############
 
-**stateVariable** - nums
-**dev** - VAR dev           - DOCDEV
+-  *stateVariable* - nums
+-  *dev* - VAR dev           - DOCDEV
 
-**stateVariable** - specialNum
-**dev** - VAR dev          - DOCDEV
+-  *stateVariable* - specialNum
+-  *dev* - VAR dev          - DOCDEV
 
 
 
 ________________________________________________________________________________
 
-*Methods*
-=========
-
-
+METHODS
+#######
 getNum(uint8)
-*************
+-------------
 **Purpose:**  FCN notice     - DOCUSER
 
 **Notes:**  FCN dev           - DOCDEV
 
 
 **Parameters:**
-###############
 
-**index** - FCN param - DOCDEV
+-  *index* - FCN param - DOCDEV
 
 
 
 **Returns:**
-############
 
-**num** - FCN return - DOCDEV
+-  *num* - FCN return - DOCDEV
 
 
 storeNums(uint256,uint256,uint256)
-**********************************
+----------------------------------
 **Purpose:**  TRX notice     - DOCUSER
 
 **Notes:**  TRX dev           - DOCDEV
 
 
 **Parameters:**
-###############
 
-**_num0** - TRX param - DOCDEV
+-  *_num0* - TRX param - DOCDEV
 
 
 
 ________________________________________________________________________________
 
-Events
-******
-Methods
-*******
-
-
+EVENTS
+######
 NumsStored(uint256,uint256,uint256)
-###################################
+-----------------------------------
 **Purpose:**      EVT notice     - DOCUSER
 
 **Notes:**  EVT dev           - DOCDEV
@@ -78,7 +69,7 @@ NumsStored(uint256,uint256,uint256)
 
 **Parameters:**
 
-**num0** - EVT param  - DOCDEV
+-  *num0* - EVT param  - DOCDEV
 
 
 
@@ -88,13 +79,3 @@ ________________________________________________________________________________
 ________________________________________________________________________________
 
 
-*Heading1*
-==========
-Heading2
-********
-Heading3
-########
-Heading4
---------
-Heading5
-""""""""

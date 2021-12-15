@@ -341,16 +341,13 @@ def print_blank_line() -> None:
     print('')
 
 
-def print_c_section(c_name: str, c_comments: dict) -> None:
+def print_c_section(c_comments: dict) -> None:
     """Output comments for one contract - formatted for restructured text.
 
-    :param c_name: smart contract name
-    :type c_name: str
     :param c_comments: all comments for the just the contract
     :type c_comments: dict
     :rtype: None
     """
-    print_heading1(c_name)
     print('**Description:** {}'.format(c_comments['title']))
     print_blank_line()
     print('**Purpose:**  {}'.format(c_comments['notice']))
@@ -369,12 +366,9 @@ def print_e_section(e_comments: list) -> None:
     :rtype: None
 
     """
-    print_heading2('Methods')
-    print_blank_line()
-    print_blank_line()
     for e_comment in e_comments:
         if e_comment['event']:
-            print_heading3(e_comment['event'])
+            print_heading4(e_comment['event'])
         if e_comment['notice']:
             print(f'**Purpose:**      {e_comment["notice"]}')
             print_blank_line()
@@ -400,12 +394,9 @@ def print_m_section(m_comments: list) -> None:
     :rtype: None
 
     """
-    print_heading1('Methods')
-    print_blank_line()
-    print_blank_line()
     for m_comment in m_comments:
         if m_comment['method']:
-            print_heading2(m_comment['method'])
+            print_heading4(m_comment['method'])
         if m_comment['notice']:
             print(f'**Purpose:**  {m_comment["notice"]}')
             print_blank_line()
@@ -416,13 +407,13 @@ def print_m_section(m_comments: list) -> None:
             print_blank_line()
         if m_comment['params']:
             print_blank_line()
-            print_heading3('**Parameters:**')
+            print('**Parameters:**')
             print_blank_line()
             print_dict_as_list(m_comment['params'])
             print_blank_line()
         if m_comment['returns']:
             print_blank_line()
-            print_heading3('**Returns:**')
+            print('**Returns:**')
             print_blank_line()
             print_dict_as_list(m_comment['returns'])
             print_blank_line()
@@ -437,7 +428,6 @@ def print_v_section(v_comments: list):
     :rtype: None
 
     """
-    print_heading1('State Variables')
     print_blank_line()
     for v_comment in v_comments:
         print_dict_as_list(v_comment)
@@ -522,7 +512,7 @@ def print_dict_as_list(dct: dict) -> None:
     :rtype: None
     """
     for key, value in dct.items():
-        print(f'**{key}** - {value}')
+        print(f'-  *{key}* - {value}')
     print_blank_line()
 
 
@@ -631,35 +621,33 @@ def main():
         # Read the Docs formatting.
         #
 
-        # Output the Class subsection
-        # Will always have Class comments.
-        print_c_section(contract, c_comments)
+        print_heading1(contract)
+        print_c_section(c_comments)
         print_separator()
 
-        # Output Variable comments, if any
+        print_heading3('STATE VARIABLES')
         if v_comments:
             print_v_section(v_comments)
-            print_separator()
+        else:
+            print('None')
+        print_separator()
 
-        # Output Method comments, if any
+        print_heading3('METHODS')
         if m_comments:
             print_m_section(m_comments)
-            print_separator()
+        else:
+            print('None')
+        print_separator()
 
-        # Output Event comments, if any
+        print_heading3('EVENTS')
         if e_comments:
-            print_heading2('Events')
             print_e_section(e_comments)
-            print_separator()
+        else:
+            print('None')
+        print_separator()
 
     print_separator()
     print_blank_line()   # needed after the final separator
-
-    print_heading1('Heading1')
-    print_heading2('Heading2')
-    print_heading3('Heading3')
-    print_heading4('Heading4')
-    print_heading5('Heading5')
 
 
 if __name__ == '__main__':
