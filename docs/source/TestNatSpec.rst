@@ -1,81 +1,75 @@
+.. image:: ../images/contract_separator.png
+
+
 TestNatSpec
 ===========
-**Description:** CLS title           - DOCDEV
+:Description: CLS title           - DOCDEV
 
-**Purpose:**  CLS notice         - DOCUSER
+:Purpose:  CLS notice         - DOCUSER
 
-**Notes:**  CLS dev               - DOCDEV
+:Notes:  CLS dev               - DOCDEV
 
-**Author:**  CLS author         - DOCDEV
+:Author:  CLS author         - DOCDEV
 
-________________________________________________________________________________
+.. image:: ../images/section_separator.png
 
 STATE VARIABLES
 ###############
 
--  *stateVariable* - nums
--  *dev* - VAR dev           - DOCDEV
+:nums: VAR dev           - DOCDEV
 
--  *stateVariable* - specialNum
--  *dev* - VAR dev          - DOCDEV
+:specialNum: VAR dev          - DOCDEV
 
 
 
-________________________________________________________________________________
+.. image:: ../images/section_separator.png
 
 METHODS
 #######
 getNum(uint8)
 -------------
-**Purpose:**  FCN notice     - DOCUSER
+:Purpose:  FCN notice     - DOCUSER
 
-**Notes:**  FCN dev           - DOCDEV
-
+:Notes:  FCN dev           - DOCDEV
 
 **Parameters:**
 
--  *index* - FCN param - DOCDEV
-
+:index: FCN param - DOCDEV
 
 
 **Returns:**
 
--  *num* - FCN return - DOCDEV
+:num: FCN return - DOCDEV
 
+
+
+________________________________________
 
 storeNums(uint256,uint256,uint256)
 ----------------------------------
-**Purpose:**  TRX notice     - DOCUSER
+:Purpose:  TRX notice     - DOCUSER
 
-**Notes:**  TRX dev           - DOCDEV
-
+:Notes:  TRX dev           - DOCDEV
 
 **Parameters:**
 
--  *_num0* - TRX param - DOCDEV
+:\_num0: TRX param - DOCDEV
 
 
 
-________________________________________________________________________________
+.. image:: ../images/section_separator.png
 
 EVENTS
 ######
 NumsStored(uint256,uint256,uint256)
 -----------------------------------
-**Purpose:**      EVT notice     - DOCUSER
+:Purpose:  EVT notice     - DOCUSER
 
-**Notes:**  EVT dev           - DOCDEV
+:Notes:  EVT dev           - DOCDEV
 
 
 **Parameters:**
 
--  *num0* - EVT param  - DOCDEV
-
-
-
-________________________________________________________________________________
-
-
-________________________________________________________________________________
+:num0: EVT param  - DOCDEV
 
 

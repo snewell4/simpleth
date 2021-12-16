@@ -1,30 +1,30 @@
+.. image:: ../images/contract_separator.png
+
+
 TestTrx
 =======
-**Description:** TestTrx
+:Description: TestTrx
 
-**Purpose:**  This is only used for unit testing the Python Contract() class.
+:Purpose:  This is only used for unit testing the Python Contract() class.
 
-**Notes:**  All changes must be made with the Python unit tests in mind.
+:Notes:  All changes must be made with the Python unit tests in mind.
 
-**Author:**  Stephen Newell
+:Author:  Stephen Newell
 
-________________________________________________________________________________
+.. image:: ../images/section_separator.png
 
 STATE VARIABLES
 ###############
 None
 
-________________________________________________________________________________
+.. image:: ../images/section_separator.png
 
 METHODS
 #######
 None
 
-________________________________________________________________________________
+.. image:: ../images/section_separator.png
 
 EVENTS
 ######
 None
-
-________________________________________________________________________________
-

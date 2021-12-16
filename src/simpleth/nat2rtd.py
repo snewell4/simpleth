@@ -81,6 +81,7 @@ The file type, ``.py``, has been associated with `Python`. Otherwise, use:
 import json
 from argparse import ArgumentParser
 import sys
+import re
 
 import simpleth
 
@@ -98,6 +99,9 @@ MD_FILE_SUFFIX = '.md'
 RST_FILE_SUFFIX = '.rst'
 DOCUSER_FILE_SUFFIX = '.docuser'
 DOCDEV_FILE_SUFFIX = '.docdev'
+CONTRACT_SEPARATOR_IMAGE_FILE = '../images/contract_separator.png'
+SECTION_SEPARATOR_IMAGE_FILE = '../images/section_separator.png'
+UNDERSCORE_PATTERN = re.compile('_')  # regex for an underscore at end of a word
 
 
 def get_docuser(file_name: str) -> dict:
@@ -289,15 +293,10 @@ def get_m_comments(docdev: dict, docuser: dict) -> list:
 def get_v_comments(docdev: dict) -> list:
     """Return the Natspec variable comments found in docdev.
 
-    :param docdev: dictionary of docdev comments
+    :param docdev: dictionary of docdev comments for public state variables
     :type docdev: dict
     :return: list
-    :return: list with dictionary items; each item has all
-        Natspec comments for one `variable`. The `key` is the
-        topic and the `value` is the comment from the smart
-        contract source file. If the `value` is an empty string,
-        the developer did not provide a comment for that topic.
-    :notes: `variable` comments are only found in docdev.
+    :return: [{<variable1>: <value>}, {<variable2>: <value>}, ...]
     :see also: :meth:`get_docdev` to create ``docuser``.
     """
     # get comments for `variables` (only found in docdev)
@@ -316,14 +315,19 @@ def get_v_comments(docdev: dict) -> list:
     # `methods` in the contract
     v_comments = []
     for v_name in var_names_list:
-        v_comment = {
-            'stateVariable': v_name,
-            'dev': ''
-            }
+        v_comment = {v_name: ''}
         if v_name in docdev['stateVariables'].keys():
             if 'details' in docdev['stateVariables'][v_name].keys():
-                v_comment['dev'] = docdev['stateVariables'][v_name]['details']
+                v_comment = {v_name: docdev['stateVariables'][v_name]['details']}
         v_comments.append(v_comment)
+#        v_comment = {
+#            'stateVariable': v_name,
+#            'dev': ''
+#            }
+#        if v_name in docdev['stateVariables'].keys():
+#            if 'details' in docdev['stateVariables'][v_name].keys():
+#                v_comment['dev'] = docdev['stateVariables'][v_name]['details']
+#        v_comments.append(v_comment)
     return v_comments
 
 
@@ -348,13 +352,13 @@ def print_c_section(c_comments: dict) -> None:
     :type c_comments: dict
     :rtype: None
     """
-    print('**Description:** {}'.format(c_comments['title']))
+    print(':Description: {}'.format(c_comments['title']))
     print_blank_line()
-    print('**Purpose:**  {}'.format(c_comments['notice']))
+    print(':Purpose:  {}'.format(c_comments['notice']))
     print_blank_line()
-    print('**Notes:**  {}'.format(c_comments['dev']))
+    print(':Notes:  {}'.format(c_comments['dev']))
     print_blank_line()
-    print('**Author:**  {}'.format(c_comments['author']))
+    print(':Author:  {}'.format(c_comments['author']))
 
 
 def print_e_section(e_comments: list) -> None:
@@ -366,17 +370,22 @@ def print_e_section(e_comments: list) -> None:
     :rtype: None
 
     """
+    first_event: bool = True
     for e_comment in e_comments:
+        if first_event:
+            first_event = False
+        else:
+            print_item_separator()
+
         if e_comment['event']:
             print_heading4(e_comment['event'])
         if e_comment['notice']:
-            print(f'**Purpose:**      {e_comment["notice"]}')
+            print(f':Purpose:  {e_comment["notice"]}')
             print_blank_line()
         if e_comment['dev']:
-            print(f'**Notes:**  {e_comment["dev"]}')
+            print(f':Notes:  {e_comment["dev"]}')
             print_blank_line()
-        else:
-            print_blank_line()
+
         if e_comment['params']:
             print_blank_line()
             print('**Parameters:**')
@@ -394,25 +403,27 @@ def print_m_section(m_comments: list) -> None:
     :rtype: None
 
     """
+    first_method: bool = True
     for m_comment in m_comments:
+        if first_method:
+            first_method = False
+        else:
+            print_item_separator()
+
         if m_comment['method']:
             print_heading4(m_comment['method'])
         if m_comment['notice']:
-            print(f'**Purpose:**  {m_comment["notice"]}')
+            print(f':Purpose:  {m_comment["notice"]}')
             print_blank_line()
         if m_comment['dev']:
-            print(f'**Notes:**  {m_comment["dev"]}')
-            print_blank_line()
-        else:
+            print(f':Notes:  {m_comment["dev"]}')
             print_blank_line()
         if m_comment['params']:
-            print_blank_line()
             print('**Parameters:**')
             print_blank_line()
             print_dict_as_list(m_comment['params'])
             print_blank_line()
         if m_comment['returns']:
-            print_blank_line()
             print('**Returns:**')
             print_blank_line()
             print_dict_as_list(m_comment['returns'])
@@ -434,15 +445,34 @@ def print_v_section(v_comments: list):
     print_blank_line()
 
 
-def print_separator() -> None:
-    """Output a separator - formatted for restructured text.
-
-    Called by :meth:`print_rst`
+def print_contract_separator() -> None:
+    """Output an image of a horizontal separator used between contracts
 
     :rtype: None
     """
+    print(f'.. image:: {CONTRACT_SEPARATOR_IMAGE_FILE}')
+
+
+def print_section_separator() -> None:
+    """Output an image of a horizontal separator used between sections
+    of a contract.
+
+    :rtype: None
+
+    """
     print()
-    print(f'{"_" * 80}')
+    print(f'.. image:: {SECTION_SEPARATOR_IMAGE_FILE}')
+    print()
+
+
+def print_item_separator() -> None:
+    """Output a horizontal separator between items in a section.
+
+    :rtype: None
+
+    """
+    print()
+    print(f'{"_" * 40}')
     print()
 
 
@@ -501,19 +531,58 @@ def print_heading5(subsubsection_title: str) -> None:
     print('"' * len(subsubsection_title))
 
 
-def print_dict_as_list(dct: dict) -> None:
+def print_dict_as_list(dct: dict,) -> None:
     """Output a list of comments for one of the sections - formatted as
     restructured text.
 
     This outputs a list with the key boldfaced and the value next to it.
+
+    Check the key(s) and all words in value(s) for variable names that
+    end in an `_` and escape it.
 
     :param dct: dictionary to print as a list
     :type dct: dict
     :rtype: None
     """
     for key, value in dct.items():
-        print(f'-  *{key}* - {value}')
+        key = escape_underscores(key)
+        value = escape_underscores(value)
+        print(f':{key}: {value}')
     print_blank_line()
+
+
+def escape_underscores(in_str: str) -> str:
+    """Return var_name with a underscores escaped for rst and Sphinx.
+
+    Some coding standards for Solidity smart contracts add a ``_`` at the
+    end of variables defined in the function; for example: `address_`.
+
+    `rST` considers a term ending in ``_`` as a single word hyperlink to
+    a target in the document. This means when Sphinx processes these local
+    variables in a contract it gives a warning message: ``Unknown target name``
+    since it can not find the target to complete the hyperlink.
+
+    To avoid Sphinx from treating the local variable as hyperlink, it can
+    be escaped using `<backslash>_`. This will prevent Sphinx for issuing
+    a warning.  (PyCharm doesn't like me using an actual <backslash>. Says
+    it's an invalid escape sequence.)
+
+    This function checks the word(s) in ``in_str`` for any ``_`` and
+    replaces them with ``<backslash>_``. Only a backslash at the end
+    upsets Sphinx but escaping all fixes the issue and results in the
+    same documentation; there seems to be no harm in escaping backslashes
+    at the start and in the middle of words.  (This was simpler than
+    coming up with the regex to just handle backslash at the end of a word)
+
+    :param in_str: a string that might have words containing ``_``
+    :type in_str: str
+    :return: ``in_str`` with all ``_`` replaced with ``<backslash>_``
+
+    :see also:
+        -  https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#escaping-mechanism
+
+    """
+    return UNDERSCORE_PATTERN.sub('\\_', in_str)
 
 
 def put_constructor_first_with_parens(m_comments: list) -> list:
@@ -621,33 +690,33 @@ def main():
         # Read the Docs formatting.
         #
 
+        print_contract_separator()
+
+        print_blank_line()    # 2 blank lines are required before H1
+        print_blank_line()
         print_heading1(contract)
         print_c_section(c_comments)
-        print_separator()
 
+        print_section_separator()
         print_heading3('STATE VARIABLES')
         if v_comments:
             print_v_section(v_comments)
         else:
             print('None')
-        print_separator()
 
+        print_section_separator()
         print_heading3('METHODS')
         if m_comments:
             print_m_section(m_comments)
         else:
             print('None')
-        print_separator()
 
+        print_section_separator()
         print_heading3('EVENTS')
         if e_comments:
             print_e_section(e_comments)
         else:
             print('None')
-        print_separator()
-
-    print_separator()
-    print_blank_line()   # needed after the final separator
 
 
 if __name__ == '__main__':
