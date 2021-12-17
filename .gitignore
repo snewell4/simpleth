@@ -22,3 +22,4 @@ docs/source/_templates
 docs/build
 env/
 solc/
+/src/simpleth/get_json.py

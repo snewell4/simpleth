@@ -2,6 +2,6 @@
 Smart Contracts
 ===============
 
-.. include:: TestNatSpec.rst
 .. include:: TestTrx.rst
+.. include:: TestNatspec.rst
 .. include:: Club.rst

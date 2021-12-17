@@ -1,22 +1,25 @@
 .. image:: ../images/contract_separator.png
 
 
-TestNatSpec
+TestNatspec
 ===========
-:Description: CLS title           - DOCDEV
+:Description: CLS title1           - DOCDEVCLS title2           - DOCDEV
 
-:Purpose:  CLS notice         - DOCUSER
+:Purpose:  CLS notice1         - DOCUSERCLS notice2         - DOCUSER
 
-:Notes:  CLS dev               - DOCDEV
+:Notes:  CLS dev1               - DOCDEVCLS dev2               - DOCDEV
 
-:Author:  CLS author         - DOCDEV
+:Author:  CLS author1         - DOCDEVCLS author2         - DOCDEV
+:testa: CLS test1 #1 - DOCDEVCLS test1 #2 - DOCDEV
+:testb: CLS test2   - DOCDEV
+
 
 .. image:: ../images/section_separator.png
 
 STATE VARIABLES
 ###############
 
-:nums: VAR dev           - DOCDEV
+:nums: VAR dev1           - DOCDEVVAR dev2           - DOCDEV
 
 :specialNum: VAR dev          - DOCDEV
 
@@ -47,13 +50,18 @@ ________________________________________
 
 storeNums(uint256,uint256,uint256)
 ----------------------------------
-:Purpose:  TRX notice     - DOCUSER
+:Purpose:  TRX notice1     - DOCUSERTRX notice2     - DOCUSER
 
-:Notes:  TRX dev           - DOCDEV
+:Notes:  TRX dev1           - DOCDEVTRX dev2           - DOCDEV
+
+:testa: TRX test1 #1 - DOCDEVTRX test1 #2 - DOCDEV
+:testb: TRX test2 #1 - DOCDEV
 
 **Parameters:**
 
 :\_num0: TRX param - DOCDEV
+:\_num1: TRX param - DOCDEV
+:\_num2: TRX param - DOCDEV
 
 
 
@@ -67,9 +75,13 @@ NumsStored(uint256,uint256,uint256)
 
 :Notes:  EVT dev           - DOCDEV
 
+:testa: EVT test1 - DOCDEV
+
 
 **Parameters:**
 
 :num0: EVT param  - DOCDEV
+:num1: EVT param  - DOCDEV
+:num2: EVT param  - DOCDEV
 
 

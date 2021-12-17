@@ -23,24 +23,36 @@ pragma solidity ^0.8;
 //
 
 /**
- * @title CLS title           - DOCDEV
- * @author CLS author         - DOCDEV
- * @notice CLS notice         - DOCUSER
- * @dev CLS dev               - DOCDEV
+ * @title CLS title1           - DOCDEV
+ * @title CLS title2           - DOCDEV
+ * @author CLS author1         - DOCDEV
+ * @author CLS author2         - DOCDEV
+ * @notice CLS notice1         - DOCUSER
+ * @notice CLS notice2         - DOCUSER
+ * @custom:testa  CLS test1 #1 - DOCDEV
+ * @custom:testa  CLS test1 #2 - DOCDEV
+ * @custom:testb  CLS test2   - DOCDEV
+ * @dev CLS dev1               - DOCDEV
+ * @dev CLS dev2               - DOCDEV
  */
 contract TestNatspec {
     /**
-     * @dev VAR dev           - DOCDEV
+     * @dev VAR dev1           - DOCDEV
+     * @dev VAR dev2           - DOCDEV
      */
     uint[3] public nums;
 
     /// @dev VAR dev          - DOCDEV
+    /// @custom:testa  VAR test1 - DOCDEV
     int public specialNum;
 
     /**
      * @notice EVT notice     - DOCUSER
      * @dev EVT dev           - DOCDEV
+     * @custom:testa  EVT test1 - DOCDEV
      * @param num0 EVT param  - DOCDEV
+     * @param num1 EVT param  - DOCDEV
+     * @param num2 EVT param  - DOCDEV
      */
     event NumsStored(
         uint num0,
@@ -49,9 +61,16 @@ contract TestNatspec {
     );
 
     /**
-     * @notice TRX notice     - DOCUSER
-     * @dev TRX dev           - DOCDEV
+     * @notice TRX notice1     - DOCUSER
+     * @notice TRX notice2     - DOCUSER
+     * @dev TRX dev1           - DOCDEV
+     * @dev TRX dev2           - DOCDEV
+     * @custom:testa  TRX test1 #1 - DOCDEV
+     * @custom:testa  TRX test1 #2 - DOCDEV
+     * @custom:testb  TRX test2 #1 - DOCDEV
      * @param _num0 TRX param - DOCDEV
+     * @param _num1 TRX param - DOCDEV
+     * @param _num2 TRX param - DOCDEV
      */
     function storeNums(uint _num0, uint _num1, uint _num2)
     public

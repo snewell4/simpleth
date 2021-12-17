@@ -1,5 +1,5 @@
-Simple Ethereum Documentation
-=============================
+Simple Ethereum
+===============
 
 .. toctree::
 

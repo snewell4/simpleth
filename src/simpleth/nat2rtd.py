@@ -101,7 +101,7 @@ DOCUSER_FILE_SUFFIX = '.docuser'
 DOCDEV_FILE_SUFFIX = '.docdev'
 CONTRACT_SEPARATOR_IMAGE_FILE = '../images/contract_separator.png'
 SECTION_SEPARATOR_IMAGE_FILE = '../images/section_separator.png'
-UNDERSCORE_PATTERN = re.compile('_')  # regex for an underscore at end of a word
+UNDERSCORE_PATTERN = re.compile('_')  # regex for an underscore in a word
 
 
 def get_docuser(file_name: str) -> dict:
@@ -169,6 +169,11 @@ def get_c_comments(docdev: dict, docuser: dict) -> dict:
         c_comments['notice'] = docuser['notice']
     if 'details' in docdev.keys():
         c_comments['dev'] = docdev['details']
+
+    custom_tags: list = get_custom_tags(docdev)
+    if custom_tags:
+        for tag in custom_tags:
+            c_comments[tag] = docdev[tag]
     return c_comments
 
 
@@ -224,6 +229,10 @@ def get_e_comments(docdev: dict, docuser: dict) -> list:
                 e_comment['dev'] = docdev['events'][e_name]['details']
             if 'params' in docdev['events'][e_name].keys():
                 e_comment['params'] = docdev['events'][e_name]['params']
+            custom_tags: list = get_custom_tags(docdev['events'][e_name])
+            if custom_tags:
+                for tag in custom_tags:
+                    e_comment[tag] = docdev['events'][e_name][tag]
         e_comments.append(e_comment)
     return e_comments
 
@@ -284,6 +293,10 @@ def get_m_comments(docdev: dict, docuser: dict) -> list:
                 m_comment['params'] = docdev['methods'][m_name]['params']
             if 'returns' in docdev['methods'][m_name].keys():
                 m_comment['returns'] = docdev['methods'][m_name]['returns']
+            custom_tags: list = get_custom_tags(docdev['methods'][m_name])
+            if custom_tags:
+                for tag in custom_tags:
+                    m_comment[tag] = docdev['methods'][m_name][tag]
         m_comments.append(m_comment)
         # move the constructor to front of list and add `()` to it
         m_comments = put_constructor_first_with_parens(m_comments)
@@ -360,6 +373,14 @@ def print_c_section(c_comments: dict) -> None:
     print_blank_line()
     print(':Author:  {}'.format(c_comments['author']))
 
+    # Natspec custom tags are ``custom:<tag> <str>``.
+    custom_tags: list = get_custom_tags(c_comments)
+    if custom_tags:
+        for custom_tag in custom_tags:
+            tag = custom_tag.split(':')[1]
+            print(f':{tag}: {c_comments[custom_tag]}')
+        print_blank_line()
+
 
 def print_e_section(e_comments: list) -> None:
     """Output the Events subsection
@@ -384,6 +405,14 @@ def print_e_section(e_comments: list) -> None:
             print_blank_line()
         if e_comment['dev']:
             print(f':Notes:  {e_comment["dev"]}')
+            print_blank_line()
+
+        # Natspec custom tags are ``custom:<tag> <str>``.
+        custom_tags: list = get_custom_tags(e_comment)
+        if custom_tags:
+            for custom_tag in custom_tags:
+                tag = custom_tag.split(':')[1]
+                print(f':{tag}: {e_comment[custom_tag]}')
             print_blank_line()
 
         if e_comment['params']:
@@ -418,6 +447,15 @@ def print_m_section(m_comments: list) -> None:
         if m_comment['dev']:
             print(f':Notes:  {m_comment["dev"]}')
             print_blank_line()
+
+        # Natspec custom tags are ``custom:<tag> <str>``.
+        custom_tags: list = get_custom_tags(m_comment)
+        if custom_tags:
+            for custom_tag in custom_tags:
+                tag = custom_tag.split(':')[1]
+                print(f':{tag}: {m_comment[custom_tag]}')
+            print_blank_line()
+
         if m_comment['params']:
             print('**Parameters:**')
             print_blank_line()
@@ -585,6 +623,24 @@ def escape_underscores(in_str: str) -> str:
     return UNDERSCORE_PATTERN.sub('\\_', in_str)
 
 
+def get_custom_tags(dct: dict) -> list:
+    """Return list with custom tag names
+
+    Solidity Natspec allows use of ``@custom:<tag>`` in the smart contract.
+    This shows up in the JSON file as ``custom:<tag>``.
+
+    This function will find any custom tags in a comments dictionary and
+    return a list of the tags.
+
+    :param dct: a comments dictionary from the `docdev` file.
+    :type dct: dict
+    :rtype: list
+    :returns: custom tags found in ``dct``; returned as ``'custom:<tag>'``
+
+    """
+    return [d for d in dct.keys() if 'custom' in d]
+
+
 def put_constructor_first_with_parens(m_comments: list) -> list:
     """Return updated list of method comments with the `constructor()`
     as the first element.
@@ -601,6 +657,7 @@ def put_constructor_first_with_parens(m_comments: list) -> list:
     :return: revised ``m_comments`` where the constructor method,
         if present, has been moved to the front and renamed from
         `constructor` to `constructor()`
+
     """
     for m_comment in m_comments:
         if m_comment['method'] == 'constructor':

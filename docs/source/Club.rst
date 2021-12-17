@@ -10,6 +10,8 @@ club
 :Notes:  Be careful in making any changes. Do not break the simpleth test cases. I am not testing for overflow/underflow in math. Beware.
 
 :Author:  Stephen Newell
+:simpleth: This should appear in docdev for the Contract
+
 
 .. image:: ../images/section_separator.png
 
@@ -24,7 +26,7 @@ STATE VARIABLES
 
 :members: addresses of all member accounts, includes all who have applied
 
-:name: name of the club string can not be immutable (I could change to bytes32) DOES THIS WORK AND SHOW UP AS A NOTICE?
+:name: name of the club
 
 
 

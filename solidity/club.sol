@@ -14,15 +14,13 @@ pragma solidity ^0.8;
  * @dev Be careful in making any changes. Do not break the simpleth
  * test cases. I am not testing for overflow/underflow in math. Beware.
  *
- * @custom:simpleth This should appear in docdev
+ * @custom:simpleth This should appear in docdev for the Contract
  */
 contract Club {
     /// @dev address of the club administrator
     address payable public immutable admin;
 
     /// @dev name of the club
-    /// string can not be immutable (I could change to bytes32)
-    /// DOES THIS WORK AND SHOW UP AS A NOTICE?
     string public name;
 
     /// @dev club member statuses
@@ -34,16 +32,13 @@ contract Club {
         BANNED     // Was APPROVED but misbehave. Admin has banned.
     }
 
-    /// @dev club member info record
     struct MemberInfo {
-        /// @dev blockchain address for member account (DOES THIS WORK?)
-        address addr;           // blockchain address for member account
-        /// @notice member status (DOES THIS WORK?)
-        MStatus status;         // current status
-        bytes32 name;           // name of member
+        address addr;         // blockchain address for member account
+        MStatus status;       // current status
+        bytes32 name;         // name of member
         uint duesBalanceWei;  // membership dues owed, in wei
-        uint donationsWei;     // donations to club made, in wei
-        uint8 attendance;       // count of meetings attended
+        uint donationsWei;    // donations to club made, in wei
+        uint8 attendance;     // count of meetings attended
     }
 
     /// @dev member records indexed by account address
@@ -53,12 +48,14 @@ contract Club {
     address[] private members;
 
     /// @dev membership dues, in wei
-    uint constant DUES_WEI = 10 gwei;
+    uint constant DUES_WEI = 10 gwei
 
 
     /// @notice Guard function that requires user be the admin.
     ///
     /// @dev Used for admin-only transactions.
+    ///
+    /// @custom:simpleth Here's a custom tag for Method isAdmin()
     modifier isAdmin() {
         require(msg.sender == admin, "must be admin");
         _;
