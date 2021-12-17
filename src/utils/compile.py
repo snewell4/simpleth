@@ -64,6 +64,7 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 
 import simpleth
 
+
 def main():
     """Start script processing here."""
     parser = ArgumentParser(

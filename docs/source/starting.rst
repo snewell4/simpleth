@@ -13,6 +13,7 @@ Getting Started
 
    pip install web3
    pip install hexbytes
+   pip install pytest
 
 2) Installation
 ===============
