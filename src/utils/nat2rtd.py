@@ -63,7 +63,13 @@ The file type, ``.py``, has been associated with `Python`. Otherwise, use:
 
    -  Follows the use of `Natspec tags` as shown in:
       https://docs.soliditylang.org/en/v0.8.9/natspec-format.html
-   -  The ``@inheritdoc`` and ``@custom:`` Natspec tags are ignored.
+   -  The ``@inheritdoc`` Natspec tag is ignored.
+   -  Case matters with ``contract``. Use the same upper/lower case
+      for ``contract`` as is used for the `contract name` in the
+      Solidity source. DOS filenames don't care but Sphinx does.
+      Best for the `contract name` in the `contract source` to match
+      `compile.py` ``contract`` (which creates the `artifact` files)
+      to match ``<contract>.rst`` in `Sphinx` files.
 
 
 **SEE ALSO**
@@ -94,8 +100,6 @@ import simpleth
 # in solc. A newer release may fix.
 #
 
-TEXT_FILE_SUFFIX = '.txt'
-MD_FILE_SUFFIX = '.md'
 RST_FILE_SUFFIX = '.rst'
 DOCUSER_FILE_SUFFIX = '.docuser'
 DOCDEV_FILE_SUFFIX = '.docdev'

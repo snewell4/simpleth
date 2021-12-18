@@ -2,14 +2,14 @@ pragma solidity ^0.8;
 // SPDX-FileCopyrightText: Copyright 2021 Stephen R. Newell
 // SPDX-License-Identifier: MIT
 
-/// @title TestTrx
+/// @title Test
 ///
 /// @author Stephen Newell
 ///
 /// @notice This is only used for unit testing the Python Contract() class.
 ///
 /// @dev All changes must be made with the Python unit tests in mind.
-contract TestTrx {
+contract Test {
     address public owner;
     uint public specialNum = 42;
     int public initNum;
@@ -19,11 +19,11 @@ contract TestTrx {
     address public test_addr;
     string public test_str;
 
-    event TestTrxConstructed(
+    event TestConstructed(
         uint timestamp,
         address indexed sender,
         int initNum,
-        address TestTrx
+        address Test
     );
 
     event NumsStored(
@@ -42,7 +42,7 @@ contract TestTrx {
     constructor(int _initNum) {
         owner = msg.sender;
         initNum = _initNum;
-        emit TestTrxConstructed(
+        emit TestConstructed(
             block.timestamp,
             msg.sender,
             initNum,

@@ -234,7 +234,12 @@ class Blockchain:
        an address
     -  :meth:`trx_sender` - Return address that sent a transaction
 
-    :warning: This has only been tested with `Ganache`.
+    :warning:
+
+    -  This has only been tested with `Ganache`.
+    -  Since it is a list, ``accounts[-1]`` returns ``accounts[9]``.
+       Should I try to fix this?
+
     :see also: `Web3` API documentation:
         https://web3py.readthedocs.io/en/stable/web3.main.html
 
@@ -249,7 +254,7 @@ class Blockchain:
         :raises SimplEthError: if unable to connect to the blockchain
             client
         :example:
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> b = Blockchain()
 
         """
@@ -284,7 +289,7 @@ class Blockchain:
         :rtype: list
         :return: list of blockchain `addresses`
         :example:
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> Blockchain().accounts
             ['0x235A686386d03a5Bb986Fb13E71A0dC86846c636',   ..snip..
 
@@ -460,7 +465,7 @@ class Blockchain:
 
         """
         try:
-            balance: int = self.eth.getBalance(address)
+            balance: int = self.eth.get_balance(address)
         except TypeError as exception:
             message: str = (
                 f'ERROR in get_balance(): '
@@ -472,7 +477,7 @@ class Blockchain:
             message = (
                 f'ERROR in get_balance(): '
                 f'InvalidAddress says: {exception}.\n'
-                f'HINT: Did you use a string with a valid account address?\n'
+                f'HINT: Did you specify a valid account address?\n'
                 )
             raise SimplEthError(message, code='B-030-020') from None
         return balance
@@ -751,7 +756,7 @@ class Blockchain:
             >>> thash = r.trx_hash
             >>> from src.simpleth import Blockchain, Contract
             >>> user = Blockchain().accounts[3]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0x3F1c8adCB6E8F89dc2d0a32c947CaA6Af95d4448'
             >>> r = c.run_trx(user,'storeNums',1,2,3,event_name='NumsStored')
@@ -809,7 +814,7 @@ class Contract:
             not been compiled.
         :example:
             >>> from src.simpleth import Contract
-            >>> Contract('TestTrx')
+            >>> Contract('Test')
             <simpleth.Contract object at 0x0000028A7262B580>
 
         :notes:
@@ -883,7 +888,7 @@ class Contract:
         :return: list with signature of all contract functions
         :example:
             >>> from src.simpleth import Contract
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.abi
             [{'inputs': [{'internalType': 'int256', 'name':  ...snip...
 
@@ -898,7 +903,7 @@ class Contract:
         :return: blockchain address of the contract
         :example:
             >>> from src.simpleth import Contract
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             >>> c.address
             '0x0F802Cf8C7929C5E0CC140314d1501e21b18a6A8'
@@ -918,7 +923,7 @@ class Contract:
         :return: :class:`Blockchain` object
         :example:
             >>> from src.simpleth import Contract
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0x3F1c8adCB6E8F89dc2d0a32c947CaA6Af95d4448'
             >>> c.blockchain
@@ -935,7 +940,7 @@ class Contract:
         :return: bytecode of contract
         :example:
             >>> from src.simpleth import Contract
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             >>> c.bytecode
             '6080604052602a60015534801561001557600080  ...snip...
@@ -955,7 +960,7 @@ class Contract:
         :return: contract code as deployed on chain.
         :example:
             >>> from src.simpleth import Contract
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
             >>> c.deployed_code
@@ -966,7 +971,7 @@ class Contract:
             :attr:`bytecode` without its additional code to deploy.
 
         :to do: Play with this a bit. After doing a lot of gonzo
-            hand-testing to create examples and debug, I had TestTrx
+            hand-testing to create examples and debug, I had Test
             already deployed that would run storeNums() but showed
             deployed_code == 'x0'. Did a fresh deploy() and all worked.
 
@@ -982,11 +987,11 @@ class Contract:
         :return: names of the events defined in the contract
         :example:
             >>> from src.simpleth import Contract
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
             >>> c.events
-            ['NumsStored', 'TestTrxConstructed', 'TypesStored']
+            ['NumsStored', 'TestConstructed', 'TypesStored']
 
         """
         return self._events
@@ -999,7 +1004,7 @@ class Contract:
         :return: signatures of all functions.
         :example:
             >>> from src.simpleth import Contract
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             >>> c.functions
             ['getContractSize(address)', 'getNum(uint8)',  ...snip...
@@ -1019,10 +1024,10 @@ class Contract:
         :return: contract name
         :example:
             >>> from src.simpleth import Contract
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
             >>> c.name
-            'TestTrx'
+            'Test'
 
         """
         return self._name
@@ -1035,7 +1040,7 @@ class Contract:
         :return: size of the contract, in bytes
         :example:
             >>> from src.simpleth import Contract
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
             >>> c.size
@@ -1058,7 +1063,7 @@ class Contract:
         :return: `web3._utils.datatypes.Contract` object
         :example:
             >>> from src.simpleth import Contract
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
             >>> c.web3_contract
@@ -1079,7 +1084,7 @@ class Contract:
         :return: web3 exception module
         :example:
             >>> from src.simpleth import Contract
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
             >>> c.web3_contract
@@ -1190,7 +1195,7 @@ class Contract:
             >>> c.connect()
             '0x6FDce3428A455372AE43b3cE90B60E6B0cb95188'
             >>> c.name
-            'TestTrx'
+            'Test'
 
         :notes:
             - Use :meth:`deploy` to install a contract onto the
@@ -1265,7 +1270,7 @@ class Contract:
             >>> c.connect()
             '0x6FDce3428A455372AE43b3cE90B60E6B0cb95188'
             >>> user = Blockchain().accounts[0]
-            >>> r = c.deploy(user, 42, constructor_event_name='TestTrxConstructed')
+            >>> r = c.deploy(user, 42, constructor_event_name='TestConstructed')
 
         :to do: Can you have a list for a constructor arg?
 
@@ -1581,7 +1586,7 @@ class Contract:
         :return: :class:`Result` with transaction return
         :example:
             >>> from src.simpleth import Blockchain, Contract
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> b = Blockchain()
@@ -1785,7 +1790,7 @@ class Contract:
 
         :example:
             >>> from src.simpleth import Blockchain, Contract
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> b = Blockchain()
@@ -1938,7 +1943,7 @@ class Contract:
 
         :example:
             >>> from src.simpleth import Blockchain, Contract
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> b = Blockchain()
             >>> c.connect()
             >>> user = b.accounts[0]
@@ -2383,7 +2388,7 @@ class Filter:
         :type contract: object
         :example:
             >>> from src.simpleth import Contract, Filter
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> f = Filter(c)
             >>> f
             <simpleth.Filter object at 0x0000021FB2FD5DE0>
@@ -2413,7 +2418,7 @@ class Filter:
 
         :example:
             >>> from src.simpleth import Contract, Filter
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> f = Filter(c)
@@ -2472,7 +2477,7 @@ class Filter:
             >>> from src.simpleth import Blockchain, Contract, Filter
             >>> b = Blockchain()
             >>> user = b.accounts[3]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> f = Filter(c)
@@ -2533,7 +2538,7 @@ class Filter:
 
         :example:
             >>> from src.simpleth import Contract, Filter
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> f = Filter(c)
@@ -2884,7 +2889,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[2]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 30, 20, 10, event_name='NumsStored')
@@ -2893,7 +2898,7 @@ class Result:
             Block time_epoch = 1638830573
             Block time_string = 2021-12-06 16:42:53
             Contract address = 0xD34dB707D084fdd1D99Cf9Af77896283a083c470
-            Contract name = TestTrx
+            Contract name = Test
             Event args = {'num0': 30, 'num1': 20, 'num2': 10}
             Event name = NumsStored
             Gas price wei = 20000000000
@@ -3000,7 +3005,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
@@ -3021,7 +3026,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
@@ -3042,7 +3047,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
@@ -3062,12 +3067,12 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
             >>> trx_result.contract_name
-            'TestTrx'
+            'Test'
 
         """
         return self._contract_name
@@ -3082,7 +3087,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
@@ -3102,7 +3107,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
@@ -3124,7 +3129,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
@@ -3145,7 +3150,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
@@ -3165,7 +3170,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
@@ -3185,7 +3190,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
@@ -3205,7 +3210,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
@@ -3225,7 +3230,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
@@ -3245,7 +3250,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
@@ -3265,7 +3270,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
@@ -3285,7 +3290,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
@@ -3310,7 +3315,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
@@ -3341,7 +3346,7 @@ class Result:
             >>> from src.simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
-            >>> c = Contract('TestTrx')
+            >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
@@ -3350,7 +3355,7 @@ class Result:
             Block time_epoch = 1638755042
             Block time_string = 2021-12-05 19:44:02
             Contract address = 0xD34dB707D084fdd1D99Cf9Af77896283a083c470
-            Contract name = TestTrx
+            Contract name = Test
             Event args = {'num0': 10, 'num1': 10, 'num2': 10}
             Event name = NumsStored
             Gas price wei = 20000000000
