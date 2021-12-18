@@ -4,9 +4,12 @@ from simpleth import Blockchain
 
 def test_accounts():
     """Ganache should return 10 valid addresses"""
+    # Default Ganache settings provides 10 accounts. This number
+    # can be altered with a setting. If altered, this test will fail.
     accounts = Blockchain().accounts
+    default_num_accounts = 10
     assert(all([Blockchain().is_valid_address(a) for a in accounts]) and
-           len(accounts) == 10)
+           len(accounts) == default_num_accounts)
 
 
 def test_api_version():

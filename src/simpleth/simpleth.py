@@ -431,21 +431,20 @@ class Blockchain:
             >>> b.address(2)
             '0x02F6903D426Be890BA4F882eD19cF6780ecdfA5b'
 
-        :notes: This is redundant with `accounts[account_num]`.
         :see also: :meth:`accounts` to get all addresses.
 
         """
-        try:
-            address: str = self.accounts[account_num]
-        except IndexError as exception:
-            message: str = (
-                f'ERROR in get_account_address({account_num}): '
-                f'IndexError says: {exception}.\n'
-                f'HINT: account_num arg is out of range for the number of '
-                f'accounts.\n'
-                )
-            raise SimplEthError(message, code='B-020-010') from None
-        return address
+        if account_num in range(0, len(self.accounts)):
+            return self.accounts[account_num]
+
+        message: str = (
+            f'ERROR in get_account({account_num}): '
+            f'the account_num must be an integer between 0 and '
+            f'{len(self.accounts)}.\n'
+            f'HINT: account_num is bad.\n'
+            )
+        raise SimplEthError(message, code='B-020-010') from None
+
 
     def balance(self, address: str) -> int:
         """Return the amount of Ether owned by an account.
@@ -481,6 +480,70 @@ class Blockchain:
                 )
             raise SimplEthError(message, code='B-030-020') from None
         return balance
+
+    def block_time_epoch(self, block_num: int) -> int:
+        """Return the time, as epoch seconds, when a block was mined.
+
+        :param block_num: number of the block on the chain
+        :type block_num: int
+        :rtype: int
+        :return: time block was mined, in epoch seconds.
+        :raises SimplEthError: if block_num is bad
+        :example:
+            >>> from src.simpleth import Blockchain
+            >>> b = Blockchain()
+            >>> b.block_time_epoch(20)
+            1638120893
+
+        """
+        if block_num not in range(0, self.block_number + 1):
+            message: str = (
+                f'ERROR in block_time_epoch({block_num}): '
+                f'the block_num must be an integer between '
+                f'0 and {self.block_number}.\n'
+                f'HINT: check type and value for account_num.\n'
+            )
+            raise SimplEthError(message, code='B-040-010') from None
+        return self.eth.get_block(block_num).timestamp
+
+
+    def block_time_string(
+            self,
+            block_number: int,
+            time_format: str = TIME_FORMAT
+         ) -> str:
+        """Return the time, as a string, when a block was mined.
+
+        :param block_number: number of the block on the chain
+        :type block_number: int
+        :param time_format: format codes used to create time string
+            (**optional**, default: `TIME_FORMAT`)
+        :type time_format: str
+        :rtype: str
+        :return: time block was mined, in local timezone, as a string
+        :example:
+            >>> from src.simpleth import Blockchain
+            >>> Blockchain().block_time_string(20)
+            '2021-11-28 11:34:53'
+            >>> Blockchain().block_time_string(20, '%A %I:%M %p')
+            'Sunday 11:34 AM'
+
+        :see also: List of format codes:
+              https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
+
+        """
+        if isinstance(time_format, str):
+            epoch_seconds: int = self.block_time_epoch(block_number)
+            return datetime.datetime. \
+                fromtimestamp(epoch_seconds). \
+                strftime(time_format)
+        message = (
+            f'ERROR in block_time_string({block_number}, {time_format}).\n'
+            f'time_format must be a string.\n'
+            f'HINT: Use a string of valid strftime format codes for '
+            f'time_format.')
+        raise SimplEthError(message, code='B-050-010') from None
+
 
     def fee_history(self, num_blocks: int = 3) -> dict:
         """Return fee information for recently mined blocks.
@@ -528,54 +591,8 @@ class Blockchain:
                 f'ValueError says: {exception}\n'
                 f'HINT: method not yet implemented in Ganache.\n'
                 )
-            raise SimplEthError(message, code='B-040-010') from None
+            raise SimplEthError(message, code='B-060-010') from None
         return dict(history)     # cast from AttributeDict to dict
-
-    def block_time_epoch(self, block_number: int) -> int:
-        """Return the time, as epoch seconds, when a block was mined.
-
-        :param block_number: number of the block on the chain
-        :type block_number: int
-        :rtype: int
-        :return: time block was mined, in epoch seconds.
-        :example:
-            >>> from src.simpleth import Blockchain
-            >>> b = Blockchain()
-            >>> b.block_time_epoch(20)
-            1638120893
-
-        """
-        return self.eth.get_block(block_number).timestamp
-
-    def block_time_string(
-            self,
-            block_number: int,
-            time_format: str = TIME_FORMAT
-         ) -> str:
-        """Return the time, as a string, when a block was mined.
-
-        :param block_number: number of the block on the chain
-        :type block_number: int
-        :param time_format: format codes used to create time string
-            (**optional**, default: `TIME_FORMAT`)
-        :type time_format: str
-        :rtype: str
-        :return: time block was mined, in local timezone, as a string
-        :example:
-            >>> from src.simpleth import Blockchain
-            >>> Blockchain().block_time_string(20)
-            '2021-11-28 11:34:53'
-            >>> Blockchain().block_time_string(20, '%A %I:%M %p')
-            'Sunday 11:34 AM'
-
-        :see also: List of format codes:
-              https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
-
-        """
-        epoch_seconds = self.block_time_epoch(block_number)
-        return datetime.datetime. \
-            fromtimestamp(epoch_seconds). \
-            strftime(time_format)
 
     def is_valid_address(self, address: str) -> bool:
         """Test for valid blockchain address
@@ -659,14 +676,14 @@ class Blockchain:
                 f'HINT 1: Amount exceeds sender balance\n'
                 f'HINT 2: Amount must be positive\n'
                 )
-            raise SimplEthError(message, code='B-050-010') from None
+            raise SimplEthError(message, code='B-070-010') from None
         except TypeError as exception:
             message = (
                 f'ERROR in transfer(): '
                 f'TypeError says: {exception}.\n'
                 f'HINT: Amount must be an int. Did you use a float?\n'
                 )
-            raise SimplEthError(message, code='B-050-020') from None
+            raise SimplEthError(message, code='B-070-020') from None
         except AttributeError as exception:
             message = (
                 f'ERROR in transfer(): '
@@ -674,7 +691,7 @@ class Blockchain:
                 f'HINT: Did you attempt to send Ether to a non-payable '
                 f'contract?\n'
                 )
-            raise SimplEthError(message, code='B-050-030') from None
+            raise SimplEthError(message, code='B-070-030') from None
         return trx_hash
 
     def transaction(self, trx_hash: str) -> T_TRANSACTION:
@@ -704,7 +721,7 @@ class Blockchain:
                 f'TransactionNotFound says: {exception}\n'
                 f'HINT: Did you use a valid trx_hash?'
                 )
-            raise SimplEthError(message, code='B-060-010') from None
+            raise SimplEthError(message, code='B-080-010') from None
         return transaction
 
     def trx_count(self, address: str) -> int:
@@ -734,14 +751,14 @@ class Blockchain:
                 f'TypeError says: {exception}.\n'
                 f'HINT: Did you use a string with a valid account address?\n'
                 )
-            raise SimplEthError(message, code='B-070-010') from None
+            raise SimplEthError(message, code='B-090-010') from None
         except self._web3e.InvalidAddress as exception:
             message = (
                 f'ERROR in get_trx_count(): '
                 f'InvalidAddress says: {exception}.\n'
                 f'HINT: Did you use a string with a valid account address?\n'
                 )
-            raise SimplEthError(message, code='B-070-020') from None
+            raise SimplEthError(message, code='B-090-020') from None
         return count
 
     def trx_sender(self, trx_hash: str) -> str:
