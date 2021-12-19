@@ -662,7 +662,7 @@ class Blockchain:
 
         """
         try:
-            trx_hash: str = self._web3.eth.sendTransaction(
+            trx_hash: str = self._web3.eth.send_transaction(
                 {
                     'to': receiver,
                     'from': sender,
@@ -670,18 +670,21 @@ class Blockchain:
                 }
             ).hex()      # cast to a string from HexBytes
         except ValueError as exception:
-            message = (
+            message: str = (
                 f'ERROR in transfer(): '
                 f'ValueError says: {exception}.\n'
                 f'HINT 1: Amount exceeds sender balance\n'
                 f'HINT 2: Amount must be positive\n'
+                f'HINT 3: Invalid address used for to or from\n'
                 )
             raise SimplEthError(message, code='B-070-010') from None
         except TypeError as exception:
             message = (
                 f'ERROR in transfer(): '
                 f'TypeError says: {exception}.\n'
-                f'HINT: Amount must be an int. Did you use a float?\n'
+                f'HINT1: Amount must be an int. Did you use a float?\n'
+                f'HINT2: Did you use a non-string used for the from or '
+                f'to address?\n'
                 )
             raise SimplEthError(message, code='B-070-020') from None
         except AttributeError as exception:
@@ -698,30 +701,37 @@ class Blockchain:
         # noinspection SpellCheckingInspection
         """Return details about the transaction.
 
-                :param trx_hash: transaction hash to identify the
-                    transaction of interest
-                :type trx_hash: str
-                :rtype: dict
-                :return: transaction details as a dictionary
-                :example:
-                    >>> from src.simpleth import Blockchain
-                    >>> t = '0xe6bbbc34f53ef4137de80dc63f156b820d71f9f176b8210a42 ...'
-                    >>> Blockchain().transaction(t)
-                    {'hash': HexBytes('0xe6bbbc34f53ef4137de80dc63f156b820d71f9f176b8210 ...'
+        :param trx_hash: transaction hash to identify the
+            transaction of interest
+        :type trx_hash: str
+        :rtype: dict
+        :return: transaction details as a dictionary
+        :example:
+            >>> from src.simpleth import Blockchain
+            >>> t = '0xe6bbbc34f53ef4137de80dc63f156b820d71f9f176b8210a42 ...'
+            >>> Blockchain().transaction(t)
+            {'hash': HexBytes('0xe6bbbc34f53ef4137de80dc63f156b820d71f9f176b8210 ...'
 
-                :see also: :meth:`run_trx` and :meth:`send_trx` return a
-                    ``trx_hash``
+        :see also: :meth:`run_trx` and :meth:`send_trx` return a
+            ``trx_hash``
 
-                """
+        """
         try:
             transaction: dict = dict(self.eth.get_transaction(trx_hash))
         except self._web3e.TransactionNotFound as exception:
             message: str = (
-                f'ERROR in transaction(): '
+                f'ERROR in transaction({trx_hash}): '
                 f'TransactionNotFound says: {exception}\n'
                 f'HINT: Did you use a valid trx_hash?'
                 )
             raise SimplEthError(message, code='B-080-010') from None
+        except ValueError as exception:
+            message: str = (
+                f'ERROR in transaction({trx_hash}): '
+                f'ValueError says: {exception}\n'
+                f'HINT: Was trx_hash a hex value?'
+                )
+            raise SimplEthError(message, code='B-080-020') from None
         return transaction
 
     def trx_count(self, address: str) -> int:
@@ -744,7 +754,7 @@ class Blockchain:
 
         """
         try:
-            count: int = self.eth.getTransactionCount(address)
+            count: int = self.eth.get_transaction_count(address)
         except TypeError as exception:
             message: str = (
                 f'ERROR in get_trx_count(): '
@@ -756,7 +766,7 @@ class Blockchain:
             message = (
                 f'ERROR in get_trx_count(): '
                 f'InvalidAddress says: {exception}.\n'
-                f'HINT: Did you use a string with a valid account address?\n'
+                f'HINT: Did you use a valid account address?\n'
                 )
             raise SimplEthError(message, code='B-090-020') from None
         return count
