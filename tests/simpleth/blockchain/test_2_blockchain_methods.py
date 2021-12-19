@@ -27,13 +27,13 @@ def test_account_num():
     assert(Blockchain().account_num(addr7) == 7)
 
 
-def test_account_num_invalid_addr():
+def test_account_num_bad_addr():
     """account_num() returns None for invalid account_address"""
-    invalid_addr = '0xF0E9C98500f34BE7C7c4a99700e4c56C0D9d6e6'
-    assert(Blockchain().account_num(invalid_addr) is None)
+    bad_addr = '0xF0E9C98500f34BE7C7c4a99700e4c56C0D9d6e6'
+    assert(Blockchain().account_num(bad_addr) is None)
 
 
-def test_account_num_invalid_type():
+def test_account_num_bad_type():
     """account_num() returns None for bad account_address type"""
     bad_type = 200
     assert(Blockchain().account_num(bad_type) is None)
@@ -45,7 +45,7 @@ def test_balance():
     assert(isinstance(Blockchain().balance(addr3), int))
 
 
-def test_balance_raises_b_030_010():
+def test_balance_bad_address_type_raises_b_030_010():
     """balance() with bad address type raises SimplEthError"""
     bad_addr_type = 200
     with pytest.raises(SimplEthError) as excp:
@@ -53,11 +53,11 @@ def test_balance_raises_b_030_010():
     assert excp.value.code == 'B-030-010'
 
 
-def test_balance_raises_b_030_020():
-    """balance() with invalid address raises SimplEthError"""
-    invalid_addr = '0xF0E9C98500f34BE7C7c4a99700e4c56C0D9d6e6'
+def test_balance_bad_address_raises_b_030_020():
+    """balance() with bad address raises SimplEthError"""
+    bad_addr = '0xF0E9C98500f34BE7C7c4a99700e4c56C0D9d6e6'
     with pytest.raises(SimplEthError) as excp:
-        Blockchain().balance(invalid_addr)
+        Blockchain().balance(bad_addr)
     assert excp.value.code == 'B-030-020'
 
 
@@ -71,7 +71,7 @@ def test_block_time_epoch():
 @pytest.mark.parametrize('bad_block_num',
                          [-1, Blockchain().block_number + 1, 'xxx']
                          )
-def test_block_time_epoch_raises_b_040_010(bad_block_num):
+def test_block_time_epoch_bad_block_num_type_raises_b_040_010(bad_block_num):
     """block_time_epoch() with bad block_num type raises SimplEthError"""
     with pytest.raises(SimplEthError) as excp:
         Blockchain().block_time_epoch(bad_block_num)
@@ -107,25 +107,15 @@ def test_block_time_string_with_time_format():
         )
 
 
-@pytest.mark.parametrize('bad_block_num',
-                         [-1, Blockchain().block_number + 1, 'xxx']
-                         )
-def test_block_time_epoch_raises_b_040_010(bad_block_num):
-    """block_time_string() with bad block_num type raises SimplEthError"""
-    with pytest.raises(SimplEthError) as excp:
-        Blockchain().block_time_string(bad_block_num)
-    assert excp.value.code == 'B-040-010'
-
-
-def test_block_time_string_raises_b_050_010():
+def test_block_time_with_bad_time_format_type_raises_b_050_010():
     """block_time_string() with bad block_format type raises SimplEthError"""
     # Use last block in chain
     block_num = Blockchain().block_number
-    bad_block_format_type = 100
+    bad_format_type = 100
     with pytest.raises(SimplEthError) as excp:
         Blockchain().block_time_string(
             block_num,
-            bad_block_format_type
+            bad_format_type
             )
     assert excp.value.code == 'B-050-010'
 
@@ -138,7 +128,7 @@ def fee_history_placeholder():
     assert True
 
 
-def test_is_valid_address():
+def test_is_valid_address_returns_true():
     """is_valid_address() returns true for a valid address"""
     addr3 = Blockchain().address(3)
     assert(isinstance(Blockchain().balance(addr3), int))
@@ -176,55 +166,55 @@ def test_send_ether_with_too_big_amount_raises_b_070_010():
     """send_ether() with amount > from balance raises SimplEthError"""
     user6 = Blockchain().address(6)
     user7 = Blockchain().address(7)
-    amount = Blockchain().balance(user6) + 1
+    too_big_amount = Blockchain().balance(user6) + 1
     with pytest.raises(SimplEthError) as excp:
-        Blockchain().send_ether(user6, user7, amount)
+        Blockchain().send_ether(user6, user7, too_big_amount)
     assert excp.value.code == 'B-070-010'
 
 
-@pytest.mark.parametrize('invalid_address',
+@pytest.mark.parametrize('bad_address',
                          ['0xF0E9C98500f34BE7C7c4a99700e4c56C0D9d6e6', 'xxx']
                          )
-def test_send_ether_with_invalid_from_raises_b_070_010(invalid_address):
+def test_send_ether_with_bad_address_from_raises_b_070_010(bad_address):
     """send_ether() with bad address for from raises SimplEthError"""
-    user6 = invalid_address
+    bad_address_user6 = bad_address
     user7 = Blockchain().address(7)
     amount = 2_000_000_000
     with pytest.raises(SimplEthError) as excp:
-        Blockchain().send_ether(user6, user7, amount)
+        Blockchain().send_ether(bad_address_user6, user7, amount)
     assert excp.value.code == 'B-070-010'
 
 
-@pytest.mark.parametrize('invalid_address',
+@pytest.mark.parametrize('bad_address',
                          ['0xF0E9C98500f34BE7C7c4a99700e4c56C0D9d6e6', 'xxx']
                          )
-def test_send_ether_with_invalid_to_raises_b_070_010(invalid_address):
+def test_send_ether_with_bad_address_to_raises_b_070_010(bad_address):
     """send_ether() with bad address for to raises SimplEthError"""
     user6 = Blockchain().address(6)
-    user7 = invalid_address
+    bad_address_user7 = bad_address
     amount = 2_000_000_000
     with pytest.raises(SimplEthError) as excp:
-        Blockchain().send_ether(user6, user7, amount)
+        Blockchain().send_ether(user6, bad_address_user7, amount)
     assert excp.value.code == 'B-070-010'
 
 
 def test_send_ether_with_bad_type_to_raises_b_070_020():
     """send_ether() with bad address for to raises SimplEthError"""
     user6 = Blockchain().address(6)
-    user7 = 123456
+    bad_type_user7 = 123456
     amount = 2_000_000_000
     with pytest.raises(SimplEthError) as excp:
-        Blockchain().send_ether(user6, user7, amount)
+        Blockchain().send_ether(user6, bad_type_user7, amount)
     assert excp.value.code == 'B-070-020'
 
 
 def test_send_ether_with_bad_type_from_raises_b_070_020():
     """send_ether() with bad address for to raises SimplEthError"""
-    user6 = 123456
+    bad_type_user6 = 123456
     user7 = Blockchain().address(7)
     amount = 2_000_000_000
     with pytest.raises(SimplEthError) as excp:
-        Blockchain().send_ether(user6, user7, amount)
+        Blockchain().send_ether(bad_type_user6, user7, amount)
     assert excp.value.code == 'B-070-020'
 
 
@@ -232,12 +222,13 @@ def test_send_ether_with_float_amount_raises_b_070_020():
     """send_ether() with a float amount raises SimplEthError"""
     user6 = Blockchain().address(6)
     user7 = Blockchain().address(7)
-    amount = 2_000_000_000.00
+    float_amount = 2_000_000_000.00
     with pytest.raises(SimplEthError) as excp:
-        Blockchain().send_ether(user6, user7, amount)
+        Blockchain().send_ether(user6, user7, float_amount)
     assert excp.value.code == 'B-070-020'
 
 
+@pytest.mark.skip(reason='run this as a Contract() test case')
 def test_send_ether_raises_b_070_030_placeholder():
     """send_ether() to a non-payable account raises SimplEthError"""
     # This requires a non-payable contract to be deployed on chain.
@@ -248,17 +239,16 @@ def test_send_ether_raises_b_070_030_placeholder():
 
 
 @pytest.mark.parametrize('bad_address',
-                         ['0xF0E9C98500f34BE7C7c4a99700e4c56C0D9d6e6',
-                          'xxx', 123]
+                         ['0xF0E9C98500f34BE7C7c4a99700e4c56C0D9d6e6', 'xxx']
                          )
-def test_send_ether_with_bad_from_raises_b_070_020(bad_address):
+def test_send_ether_with_bad_address_from_raises_b_070_010(bad_address):
     """send_ethers() with bad address for from raises SimplEthError"""
-    user6 = bad_address
+    bad_address_user6 = bad_address
     user7 = Blockchain().address(7)
-    amount = 2_000_000_000.00
+    amount = 2_000_000_000
     with pytest.raises(SimplEthError) as excp:
-        Blockchain().send_ether(user6, user7, amount)
-    assert excp.value.code == 'B-070-020'
+        Blockchain().send_ether(bad_address_user6, user7, amount)
+    assert excp.value.code == 'B-070-010'
 
 
 def test_transaction():

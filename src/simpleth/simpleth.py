@@ -5,6 +5,8 @@ Classes
 -------
 - `Blockchain` - interact with Ethereum blockchain
 - `Contract` - interact with Solidity contracts
+- `Convert` - conversion methods for Ether denominations and time values
+- `Result` - outcomes resulting from a transaction being mined
 - `Filter` - search for events emitted by transactions
 
 Exceptions
@@ -675,7 +677,7 @@ class Blockchain:
                 f'ValueError says: {exception}.\n'
                 f'HINT 1: Amount exceeds sender balance\n'
                 f'HINT 2: Amount must be positive\n'
-                f'HINT 3: Invalid address used for to or from\n'
+                f'HINT 3: Bad address used for to or from\n'
                 )
             raise SimplEthError(message, code='B-070-010') from None
         except TypeError as exception:
@@ -2673,8 +2675,9 @@ class Convert:
     -  :meth:`convert_ether` - convert amount from one denomination to another
     -  :meth:`denominations_to_wei` - returns valid denominations and values
     -  :meth:`epoch_time` - returns current time in epoch seconds
-    -  :meth:`local_time` - returns current local time as a string
-    -  :meth:`to_local_time` - convert time in epoch seconds to time string
+    -  :meth:`local_time_string` - returns current local time as a string
+    -  :meth:`to_local_time_string` - convert time in epoch seconds to
+       time string, in local time
 
     :notes: The time conversion methods are standard one-line
         Python methods. I put them here so I wouldn't have to look
@@ -2715,6 +2718,22 @@ class Convert:
             for ``from_denomination`` and ``to_denomination``.
 
         """
+        if from_denomination not in self.denominations_to_wei():
+            message: str = (
+                f'ERROR in convert_ether({amount}, {from_denomination}, '
+                f'{to_denomination}): \n'
+                f'the from_denomination is bad.\n'
+                f'HINT: Check spelling and make sure it is a string.'
+            )
+            raise SimplEthError(message, code='V-010-010') from None
+        if to_denomination not in self.denominations_to_wei():
+            message: str = (
+                f'ERROR in convert_ether({amount}, {from_denomination}, '
+                f'{to_denomination}): \n'
+                f'the to_denomination is bad.\n'
+                f'HINT: Check spelling and make sure it is a string.'
+            )
+            raise SimplEthError(message, code='V-010-020') from None
         from_units_wei = self.denominations_to_wei()[from_denomination]
         to_units_wei = self.denominations_to_wei()[to_denomination]
 
@@ -2818,7 +2837,7 @@ class Convert:
         return time.time()
 
     @staticmethod
-    def local_time(t_format: str = TIME_FORMAT) -> str:
+    def local_time_string(t_format: str = TIME_FORMAT) -> str:
         """Return current local time as a time string.
 
         :param t_format: format of outputted time using `strftime` codes
@@ -2837,10 +2856,22 @@ class Convert:
         :see also: https://strftime.org/ for time format codes.
 
         """
-        return time.strftime(t_format, time.localtime())
+        try:
+            local_time_string: str = time.strftime(
+                t_format,
+                time.localtime()
+                )
+        except TypeError as exception:
+            message: str = (
+                f'ERROR in local_time_string({t_format}: '
+                f't_format must be a string with strftime format codes.\n'
+                f'HINT: Make sure t_format is a string.'
+            )
+            raise SimplEthError(message, code='V-020-010') from None
+        return local_time_string
 
     @staticmethod
-    def to_local_time(
+    def to_local_time_string(
             epoch_sec: Union[int, float],
             t_format: str = TIME_FORMAT
             ) -> str:
@@ -2867,7 +2898,19 @@ class Convert:
         :see also: https://strftime.org/ for time format codes.
 
         """
-        return time.strftime(t_format, time.localtime(epoch_sec))
+        try:
+            to_local_time_string: str = time.strftime(
+                t_format,
+                time.localtime(epoch_sec)
+                )
+        except TypeError as exception:
+            message: str = (
+                f'ERROR in local_time_string({t_format}: '
+                f't_format must be a string with strftime format codes.\n'
+                f'HINT: Make sure t_format is a string.'
+            )
+            raise SimplEthError(message, code='V-030-010') from None
+        return to_local_time_string
 
 
 class Result:
@@ -3059,7 +3102,6 @@ class Result:
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
             >>> trx_result.block_time_epoch
             1638751644
-
 
         """
         return self._block_time
@@ -3511,7 +3553,7 @@ class SimplEthError(Exception):
         """Exception instance variable with ``message``"""
 
         if code:
-            self.code = code
+            self.code: str = code
             msg: str = f'[{code}] {message}'
         else:
             msg = f'{message}'
