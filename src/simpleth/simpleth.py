@@ -828,7 +828,7 @@ class Contract:
     -  :meth:`get_gas_estimate` - return units of gas to run a transaction
     -  :meth:`get_trx_result` - get the results of a transaction
     -  :meth:`get_trx_result_wait` - wait for the results of a transaction
-    -  :meth:`get_value` - return value of a contract variable
+    -  :meth:`get_var` - return value of a contract variable
     -  :meth:`run_trx` - submit a transaction and wait for the results
     -  :meth:`submit_trx` - send a transaction to be mined
 
@@ -1355,7 +1355,7 @@ class Contract:
             raise SimplEthError(message, code='C-030-040') from None
 
         try:
-            trx_receipt = self._blockchain.eth.waitForTransactionReceipt(
+            trx_receipt = self._blockchain.eth.wait_for_transaction_receipt(
                 trx_hash,
                 timeout=TIMEOUT,
                 poll_latency=POLL_LATENCY
@@ -1368,7 +1368,6 @@ class Contract:
         self.connect()
 
         trx_result = Result(
-            'deploy',
             trx_hash,
             trx_receipt,
             self,
@@ -1563,7 +1562,6 @@ class Contract:
             trx_result: Optional[T_RESULT] = None
         else:
             trx_result = Result(
-                trx_name,
                 trx_hash,
                 trx_receipt,
                 self,
@@ -1657,7 +1655,7 @@ class Contract:
 
         """
         try:
-            trx_receipt = self._blockchain.eth.waitForTransactionReceipt(
+            trx_receipt = self._blockchain.eth.wait_for_transaction_receipt(
                 trx_hash,
                 timeout=timeout,
                 poll_latency=poll_latency
@@ -1667,7 +1665,6 @@ class Contract:
             return None
         else:
             trx_result: T_RESULT = Result(
-                trx_name,
                 trx_hash,
                 trx_receipt,
                 self,
@@ -1676,7 +1673,7 @@ class Contract:
                 )
         return trx_result
 
-    def get_value(
+    def get_var(
             self,
             var_name: str,
             *args: Any
@@ -1702,7 +1699,7 @@ class Contract:
             >>> from src.simpleth import Contract
             >>> c = Contract('testtrx')
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> c.get_value('specialNum')
+            >>> c.get_var('specialNum')
             42
 
         :notes:
@@ -2103,6 +2100,7 @@ class Contract:
             raise SimplEthError(message, code='C-080-080') from None
         return trx_hash
 
+
     def _format_revert_message(self, value_error_msg: str) -> str:
         """Return a message to explain why a transaction was reverted.
 
@@ -2325,7 +2323,7 @@ class Contract:
 
         """
         deployed_code: T_DEPLOYED_CODE = \
-            self._blockchain.eth.getCode(self.address).hex()
+            self._blockchain.eth.get_code(self.address).hex()
         return deployed_code
 
     def _get_size(self) -> int:
@@ -2373,7 +2371,254 @@ class Contract:
                 )
             raise SimplEthError(message, code='C-150-020') from None
         return True
-# end Contract()
+# end of Contract()
+
+
+class Convert:
+    """Conversion methods for Ether denominations and time values
+
+    **METHODS**
+
+    -  :meth:`convert_ether` - convert amount from one denomination to another
+    -  :meth:`denominations_to_wei` - returns valid denominations and values
+    -  :meth:`epoch_time` - returns current time in epoch seconds
+    -  :meth:`local_time_string` - returns current local time as a string
+    -  :meth:`to_local_time_string` - convert time in epoch seconds to
+       time string, in local time
+
+    :notes: The time conversion methods are standard one-line
+        Python methods. I put them here so I wouldn't have to look
+        them up and I'd always use the same method.
+
+    """
+    def convert_ether(
+            self,
+            amount: Union[int, float],
+            from_denomination: str,
+            to_denomination: str
+            ) -> T_DECIMAL:
+        """Convert the amount from one Ether denomination to another.
+
+        :param amount: amount to be converted
+        :type amount: int | float
+        :param from_denomination: unit of denomination of ``amount``
+        :type from_denomination: str
+        :param to_denomination: unit of denomination of `result`
+        :type to_denomination: str
+        :rtype: Decimal
+        :return: converted ``amount``
+        :example:
+            >>> from src.simpleth import Convert
+            >>> c = Convert()
+            >>> c.convert_ether(100, 'wei', 'ether')
+            Decimal('1.00E-16')
+            >>> c.convert_ether(100, 'ether', 'wei')
+            Decimal('100000000000000000000')
+            >>> int(c.convert_ether(25, 'ether', 'gwei'))
+            25000000000
+
+        :note: `web3.py` has two conversion methods: `to_wei()` and
+            `from_wei()`. This function is more flexible and does
+            not require a `Blockchain` object to use.
+
+        :see also: :meth:`denominations_to_wei` for valid strings to use
+            for ``from_denomination`` and ``to_denomination``.
+
+        """
+        if from_denomination not in self.denominations_to_wei():
+            message: str = (
+                f'ERROR in convert_ether({amount}, {from_denomination}, '
+                f'{to_denomination}): \n'
+                f'the from_denomination is bad.\n'
+                f'HINT: Check spelling and make sure it is a string.'
+            )
+            raise SimplEthError(message, code='V-010-010') from None
+        if to_denomination not in self.denominations_to_wei():
+            message: str = (
+                f'ERROR in convert_ether({amount}, {from_denomination}, '
+                f'{to_denomination}): \n'
+                f'the to_denomination is bad.\n'
+                f'HINT: Check spelling and make sure it is a string.'
+            )
+            raise SimplEthError(message, code='V-010-020') from None
+        from_units_wei = self.denominations_to_wei()[from_denomination]
+        to_units_wei = self.denominations_to_wei()[to_denomination]
+
+        getcontext().prec = PRECISION
+        conversion_factor: T_DECIMAL = Decimal(str(from_units_wei)) / \
+            Decimal(str(to_units_wei))
+        converted_amount: T_DECIMAL = Decimal(str(amount)) * conversion_factor
+        return converted_amount
+
+    @staticmethod
+    def denominations_to_wei() -> Dict[str, int]:
+        """Return denominations and their value in units of wei.
+
+        :rtype: dict
+        :return:
+            -  `key` is the name of an Ether `denomination`
+            -  `value` is the amount in wei for one of that denomination
+
+        :example:
+            >>> from src.simpleth import Convert
+            >>> c = Convert()
+            >>> c.convert_ether(100, 'wei', 'ether')
+            Decimal('1.00E-16')
+            >>> c.convert_ether(100, 'ether', 'wei')
+            Decimal('100000000000000000000')
+            >>> int(c.convert_ether(25, 'ether', 'gwei'))
+            25000000000
+            >>> c.denominations_to_wei()['finney']
+            1000000000000000
+            >>> import math
+            >>> for key, value in c.denominations_to_wei().items():
+            ...     print(f'{key:10} = 10**{int(math.log10(value)):<2} = {value:<41,} wei')
+            ...
+            wei        = 10**0  = 1                                         wei
+            kwei       = 10**3  = 1,000                                     wei
+            babbage    = 10**3  = 1,000                                     wei
+            femtoether = 10**3  = 1,000                                     wei
+            mwei       = 10**6  = 1,000,000                                 wei
+            lovelace   = 10**6  = 1,000,000                                 wei
+            picoether  = 10**6  = 1,000,000                                 wei
+            gwei       = 10**9  = 1,000,000,000                             wei
+            shannon    = 10**9  = 1,000,000,000                             wei
+            nanoether  = 10**9  = 1,000,000,000                             wei
+            nano       = 10**9  = 1,000,000,000                             wei
+            szabo      = 10**12 = 1,000,000,000,000                         wei
+            microether = 10**12 = 1,000,000,000,000                         wei
+            micro      = 10**12 = 1,000,000,000,000                         wei
+            finney     = 10**15 = 1,000,000,000,000,000                     wei
+            milliether = 10**15 = 1,000,000,000,000,000                     wei
+            milli      = 10**15 = 1,000,000,000,000,000                     wei
+            ether      = 10**18 = 1,000,000,000,000,000,000                 wei
+            kether     = 10**21 = 1,000,000,000,000,000,000,000             wei
+            grand      = 10**21 = 1,000,000,000,000,000,000,000             wei
+            mether     = 10**24 = 1,000,000,000,000,000,000,000,000         wei
+            gether     = 10**27 = 1,000,000,000,000,000,000,000,000,000     wei
+            tether     = 10**30 = 1,000,000,000,000,000,000,000,000,000,000 wei
+
+        :notes: These are the denominations recognized by :meth:`convert_ether`.
+        :see also: Source:
+              https://web3py.readthedocs.io/en/stable/examples.html?highlight=denominations#converting-currency-denominations
+
+        """
+        return {
+            'wei': 1,
+            'kwei': 10**3,
+            'babbage': 10**3,
+            'femtoether': 10**3,
+            'mwei': 10**6,
+            'lovelace': 10**6,
+            'picoether': 10**6,
+            'gwei': 10**9,
+            'shannon': 10**9,
+            'nanoether': 10**9,
+            'nano': 10**9,
+            'szabo': 10**12,
+            'microether': 10**12,
+            'micro': 10**12,
+            'finney': 10**15,
+            'milliether': 10**15,
+            'milli': 10**15,
+            'ether': 10**18,
+            'kether': 10**21,
+            'grand': 10**21,
+            'mether': 10**24,
+            'gether': 10**27,
+            'tether': 10**30
+            }
+
+    @staticmethod
+    def epoch_time() -> float:
+        """Return current time in epoch seconds.
+
+        :rtype: float
+        :return: current time, in epoch seconds
+        :example:
+            >>> from src.simpleth import Convert
+            >>> Convert().epoch_time()
+            1638825195.6231368
+
+        """
+        return time.time()
+
+    @staticmethod
+    def local_time_string(t_format: str = TIME_FORMAT) -> str:
+        """Return current local time as a time string.
+
+        :param t_format: format of outputted time using `strftime` codes
+            (**optional**, default: :const:`TIME_FORMAT`)
+        :param t_format: str
+        :rtype: str
+        :return: current time
+        :example:
+            >>> from src.simpleth import Convert
+            >>> c = Convert()
+            >>> c.local_time()
+            '2021-12-06 15:35:28'
+            >>> c.local_time('%A %I:%M:%S %p')
+            'Monday 03:36:48 PM'
+
+        :see also: https://strftime.org/ for time format codes.
+
+        """
+        try:
+            local_time_string: str = time.strftime(
+                t_format,
+                time.localtime()
+                )
+        except TypeError as exception:
+            message: str = (
+                f'ERROR in local_time_string({t_format}: '
+                f't_format must be a string with strftime format codes.\n'
+                f'HINT: Make sure t_format is a string.'
+            )
+            raise SimplEthError(message, code='V-020-010') from None
+        return local_time_string
+
+    @staticmethod
+    def to_local_time_string(
+            epoch_sec: Union[int, float],
+            t_format: str = TIME_FORMAT
+            ) -> str:
+        """Convert epoch seconds into local time string.
+
+        :param epoch_sec: epoch time, in seconds
+        :type epoch_sec: int | float
+        :param t_format: format of outputted time using `strftime` codes
+            (**optional**, default: :const:`TIME_FORMAT`)
+        :param t_format: str
+        :rtype: str
+        :return: local time equivalent to epoch seconds
+        :example:
+                >>> from src.simpleth import Convert
+                >>> c = Convert()
+                >>> epoch = c.epoch_time()
+                >>> epoch
+                1638825248.9298458
+                >>> c.to_local_time(epoch)
+                '2021-12-06 15:14:08'
+                >>> c.to_local_time(epoch, '%A %I:%M:%S %p')
+                'Monday 03:14:08 PM'
+
+        :see also: https://strftime.org/ for time format codes.
+
+        """
+        try:
+            to_local_time_string: str = time.strftime(
+                t_format,
+                time.localtime(epoch_sec)
+                )
+        except TypeError as exception:
+            message: str = (
+                f'ERROR in local_time_string({t_format}: '
+                f't_format must be a string with strftime format codes.\n'
+                f'HINT: Make sure t_format is a string.'
+            )
+            raise SimplEthError(message, code='V-030-010') from None
+        return to_local_time_string
+# end of Convert()
 
 
 class Filter:
@@ -2667,252 +2912,6 @@ class Filter:
 # end of Filter
 
 
-class Convert:
-    """Conversion methods for Ether denominations and time values
-
-    **METHODS**
-
-    -  :meth:`convert_ether` - convert amount from one denomination to another
-    -  :meth:`denominations_to_wei` - returns valid denominations and values
-    -  :meth:`epoch_time` - returns current time in epoch seconds
-    -  :meth:`local_time_string` - returns current local time as a string
-    -  :meth:`to_local_time_string` - convert time in epoch seconds to
-       time string, in local time
-
-    :notes: The time conversion methods are standard one-line
-        Python methods. I put them here so I wouldn't have to look
-        them up and I'd always use the same method.
-
-    """
-    def convert_ether(
-            self,
-            amount: Union[int, float],
-            from_denomination: str,
-            to_denomination: str
-            ) -> T_DECIMAL:
-        """Convert the amount from one Ether denomination to another.
-
-        :param amount: amount to be converted
-        :type amount: int | float
-        :param from_denomination: unit of denomination of ``amount``
-        :type from_denomination: str
-        :param to_denomination: unit of denomination of `result`
-        :type to_denomination: str
-        :rtype: Decimal
-        :return: converted ``amount``
-        :example:
-            >>> from src.simpleth import Convert
-            >>> c = Convert()
-            >>> c.convert_ether(100, 'wei', 'ether')
-            Decimal('1.00E-16')
-            >>> c.convert_ether(100, 'ether', 'wei')
-            Decimal('100000000000000000000')
-            >>> int(c.convert_ether(25, 'ether', 'gwei'))
-            25000000000
-
-        :note: `web3.py` has two conversion methods: `to_wei()` and
-            `from_wei()`. This function is more flexible and does
-            not require a `Blockchain` object to use.
-
-        :see also: :meth:`denominations_to_wei` for valid strings to use
-            for ``from_denomination`` and ``to_denomination``.
-
-        """
-        if from_denomination not in self.denominations_to_wei():
-            message: str = (
-                f'ERROR in convert_ether({amount}, {from_denomination}, '
-                f'{to_denomination}): \n'
-                f'the from_denomination is bad.\n'
-                f'HINT: Check spelling and make sure it is a string.'
-            )
-            raise SimplEthError(message, code='V-010-010') from None
-        if to_denomination not in self.denominations_to_wei():
-            message: str = (
-                f'ERROR in convert_ether({amount}, {from_denomination}, '
-                f'{to_denomination}): \n'
-                f'the to_denomination is bad.\n'
-                f'HINT: Check spelling and make sure it is a string.'
-            )
-            raise SimplEthError(message, code='V-010-020') from None
-        from_units_wei = self.denominations_to_wei()[from_denomination]
-        to_units_wei = self.denominations_to_wei()[to_denomination]
-
-        getcontext().prec = PRECISION
-        conversion_factor: T_DECIMAL = Decimal(str(from_units_wei)) / \
-            Decimal(str(to_units_wei))
-        converted_amount: T_DECIMAL = Decimal(str(amount)) * conversion_factor
-        return converted_amount
-
-    @staticmethod
-    def denominations_to_wei() -> Dict[str, int]:
-        """Return denominations and their value in units of wei.
-
-        :rtype: dict
-        :return:
-            -  `key` is the name of an Ether `denomination`
-            -  `value` is the amount in wei for one of that denomination
-
-        :example:
-            >>> from src.simpleth import Convert
-            >>> c = Convert()
-            >>> c.convert_ether(100, 'wei', 'ether')
-            Decimal('1.00E-16')
-            >>> c.convert_ether(100, 'ether', 'wei')
-            Decimal('100000000000000000000')
-            >>> int(c.convert_ether(25, 'ether', 'gwei'))
-            25000000000
-            >>> c.denominations_to_wei()['finney']
-            1000000000000000
-            >>> import math
-            >>> for key, value in c.denominations_to_wei().items():
-            ...     print(f'{key:10} = 10**{int(math.log10(value)):<2} = {value:<41,} wei')
-            ...
-            wei        = 10**0  = 1                                         wei
-            kwei       = 10**3  = 1,000                                     wei
-            babbage    = 10**3  = 1,000                                     wei
-            femtoether = 10**3  = 1,000                                     wei
-            mwei       = 10**6  = 1,000,000                                 wei
-            lovelace   = 10**6  = 1,000,000                                 wei
-            picoether  = 10**6  = 1,000,000                                 wei
-            gwei       = 10**9  = 1,000,000,000                             wei
-            shannon    = 10**9  = 1,000,000,000                             wei
-            nanoether  = 10**9  = 1,000,000,000                             wei
-            nano       = 10**9  = 1,000,000,000                             wei
-            szabo      = 10**12 = 1,000,000,000,000                         wei
-            microether = 10**12 = 1,000,000,000,000                         wei
-            micro      = 10**12 = 1,000,000,000,000                         wei
-            finney     = 10**15 = 1,000,000,000,000,000                     wei
-            milliether = 10**15 = 1,000,000,000,000,000                     wei
-            milli      = 10**15 = 1,000,000,000,000,000                     wei
-            ether      = 10**18 = 1,000,000,000,000,000,000                 wei
-            kether     = 10**21 = 1,000,000,000,000,000,000,000             wei
-            grand      = 10**21 = 1,000,000,000,000,000,000,000             wei
-            mether     = 10**24 = 1,000,000,000,000,000,000,000,000         wei
-            gether     = 10**27 = 1,000,000,000,000,000,000,000,000,000     wei
-            tether     = 10**30 = 1,000,000,000,000,000,000,000,000,000,000 wei
-
-        :notes: These are the denominations recognized by :meth:`convert_ether`.
-        :see also: Source:
-              https://web3py.readthedocs.io/en/stable/examples.html?highlight=denominations#converting-currency-denominations
-
-        """
-        return {
-            'wei': 1,
-            'kwei': 10**3,
-            'babbage': 10**3,
-            'femtoether': 10**3,
-            'mwei': 10**6,
-            'lovelace': 10**6,
-            'picoether': 10**6,
-            'gwei': 10**9,
-            'shannon': 10**9,
-            'nanoether': 10**9,
-            'nano': 10**9,
-            'szabo': 10**12,
-            'microether': 10**12,
-            'micro': 10**12,
-            'finney': 10**15,
-            'milliether': 10**15,
-            'milli': 10**15,
-            'ether': 10**18,
-            'kether': 10**21,
-            'grand': 10**21,
-            'mether': 10**24,
-            'gether': 10**27,
-            'tether': 10**30
-            }
-
-    @staticmethod
-    def epoch_time() -> float:
-        """Return current time in epoch seconds.
-
-        :rtype: float
-        :return: current time, in epoch seconds
-        :example:
-            >>> from src.simpleth import Convert
-            >>> Convert().epoch_time()
-            1638825195.6231368
-
-        """
-        return time.time()
-
-    @staticmethod
-    def local_time_string(t_format: str = TIME_FORMAT) -> str:
-        """Return current local time as a time string.
-
-        :param t_format: format of outputted time using `strftime` codes
-            (**optional**, default: :const:`TIME_FORMAT`)
-        :param t_format: str
-        :rtype: str
-        :return: current time
-        :example:
-            >>> from src.simpleth import Convert
-            >>> c = Convert()
-            >>> c.local_time()
-            '2021-12-06 15:35:28'
-            >>> c.local_time('%A %I:%M:%S %p')
-            'Monday 03:36:48 PM'
-
-        :see also: https://strftime.org/ for time format codes.
-
-        """
-        try:
-            local_time_string: str = time.strftime(
-                t_format,
-                time.localtime()
-                )
-        except TypeError as exception:
-            message: str = (
-                f'ERROR in local_time_string({t_format}: '
-                f't_format must be a string with strftime format codes.\n'
-                f'HINT: Make sure t_format is a string.'
-            )
-            raise SimplEthError(message, code='V-020-010') from None
-        return local_time_string
-
-    @staticmethod
-    def to_local_time_string(
-            epoch_sec: Union[int, float],
-            t_format: str = TIME_FORMAT
-            ) -> str:
-        """Convert epoch seconds into local time string.
-
-        :param epoch_sec: epoch time, in seconds
-        :type epoch_sec: int | float
-        :param t_format: format of outputted time using `strftime` codes
-            (**optional**, default: :const:`TIME_FORMAT`)
-        :param t_format: str
-        :rtype: str
-        :return: local time equivalent to epoch seconds
-        :example:
-                >>> from src.simpleth import Convert
-                >>> c = Convert()
-                >>> epoch = c.epoch_time()
-                >>> epoch
-                1638825248.9298458
-                >>> c.to_local_time(epoch)
-                '2021-12-06 15:14:08'
-                >>> c.to_local_time(epoch, '%A %I:%M:%S %p')
-                'Monday 03:14:08 PM'
-
-        :see also: https://strftime.org/ for time format codes.
-
-        """
-        try:
-            to_local_time_string: str = time.strftime(
-                t_format,
-                time.localtime(epoch_sec)
-                )
-        except TypeError as exception:
-            message: str = (
-                f'ERROR in local_time_string({t_format}: '
-                f't_format must be a string with strftime format codes.\n'
-                f'HINT: Make sure t_format is a string.'
-            )
-            raise SimplEthError(message, code='V-030-010') from None
-        return to_local_time_string
-
-
 class Result:
     """Has the various outcomes resulting from a transaction being
     mined.
@@ -2940,12 +2939,13 @@ class Result:
     -  :meth:`event_name` - name of event emitted by transaction
     -  :meth:`gas_price_wei` - price of gas used by transaction, in wei
     -  :meth:`gas_used` - units of gas needed for transaction
+    -  :meth:`transaction` - `web3.eth` transaction dictionary info
+    -  :meth:`trx_args` - arguments passed into transaction
     -  :meth:`trx_hash` - transaction hash to identify submitted transaction
     -  :meth:`trx_name` - name of transaction
     -  :meth:`trx_receipt` - receipt to identify mined transaction
     -  :meth:`trx_sender` - address sending the transaction
     -  :meth:`trx_value_wei` - amount of Ether, in wei, sent with transaction
-    -  :meth:`transaction` - `web3.eth` transaction info
 
     **METHODS**
 
@@ -2978,11 +2978,9 @@ class Result:
             Trx sender = 0x02F6903D426Be890BA4F882eD19cF6780ecdfA5b
             Trx value_wei = 0
 
-
     """
     def __init__(
             self,
-            trx_name: str,
             trx_hash: T_HASH,
             trx_receipt: T_RECEIPT,
             contract: Contract,
@@ -3008,27 +3006,47 @@ class Result:
         """
         transaction: T_TRANSACTION = \
             contract.blockchain.eth.get_transaction(trx_hash)
-
+        self._transaction: dict = self._transaction_to_dict(transaction)
         self._block_number: int = trx_receipt.blockNumber
         self._block_time: int = \
             contract.blockchain.eth.get_block(self._block_number).timestamp
         self._contract_address: str = contract.address
         self._contract_name: str = contract.name
-        self._event_log: dict = {}
-        """Event log created by the transaction"""
-        self._gas_price_wei: int = transaction.gasPrice
+        self._event_log: list[dict] = []     # may be assigned below
+        self._function_object: object = None   # may be assigned below
+        self._gas_price_wei: int = self._transaction['gasPrice']
         self._gas_used: int = trx_receipt.gasUsed
+        self._trx_args: dict = {}   # may be assigned below
         self._trx_hash: T_HASH = trx_hash
-        self._trx_name: str = trx_name
+        self._trx_name: str = ''   # assigned below
         self._trx_receipt: T_RECEIPT = trx_receipt
-        self._trx_sender: str = dict(trx_receipt)['from']
-        self._trx_value_wei: int = transaction.value
-        self._transaction: T_TRANSACTION = transaction
+        self._trx_sender: str = self._trx_receipt['from']
+        self._trx_value_wei: int = self._transaction['value']
+        # Not surfaced as a property. Available as a private attribute only.
+        self._web3_contract_object = web3_contract_object
+
+        if self.transaction['to']:
+            # If there is a value for `to`, this was a transaction using
+            # a deployed contract. Proceed to get interesting info.
+            function_obj, function_params = \
+                web3_contract_object.decode_function_input(
+                    self._transaction['input']
+                )
+            # Get trx_name from the name of the function object
+            self._trx_name = \
+                str(function_obj).strip('<Function ').split('(')[0]
+            self._trx_args: dict = function_params
+            # Not surfaced as a property. Available as a private attribute only.
+            self._function_object: object = function_obj
+        else:
+            # This was a deploy. The input is the ABI and can't be
+            # decoded. Assign 'deploy' to the trx_name. Don't know a way
+            # to get the constructor args.
+            self._trx_name = 'deploy'
 
         if event_name:
             # User gave us an event name. Find and add event log info to
-            # trx_result. If either exception is thrown, return the
-            # trx_result as built above without any event log info.
+            # trx_result.
             try:
                 contract_event: T_CONTRACT_EVENT = getattr(
                     web3_contract_object.events,
@@ -3045,25 +3063,19 @@ class Result:
                     )
                 raise SimplEthError(message, code='R-090-010') from None
 
-            # use the trx_event object to get the transaction receipt.
             try:
-                self._event_log = contract_event().processReceipt(
-                    trx_receipt,
-                    errors=DISCARD
-                    )
-                # Toss out any transaction log records that
-                # can not be processed. This is expected when there is a
-                # transaction that calls other transactions.
-                # Using DISCARD returns only logs that match the event_name
-                # event for the first transaction and discards records
-                # from any transaction(s) called by that first transaction.
-            except contract.web3e.MismatchedABI as exception:
+                event_log: tuple = contract_event().processReceipt(
+                    trx_receipt)
+            except web3_contract_object.web3e.MismatchedABI as exception:
                 message = (
                     f'ERROR inf getting transaction results for '
                     f'{self._contract_name}.{self._trx_name}().\n'
                     f'MismatchedABI says: {exception}'
                     )
                 raise SimplEthError(message, code='R-010-020') from None
+
+            for event in event_log:
+                self._event_log.append(self._event_to_dict(event))
 
     @property
     def block_number(self) -> int:
@@ -3167,10 +3179,18 @@ class Result:
         return dict(self._event_log[0]['args'])
 
     @property
-    def event_log(self) -> T_EVENT_LOG:
+    def event_log(self) -> list[dict]:
         """Return event log resulting from transaction.
 
-        :rtype: AttributeDict
+        This differs from the `web3.py` event log in three ways:
+
+        1)  `web3` returns the log as a tuple. This uses a list.
+        2)  `web3` returns the tuple item as an AttributeDict.
+            This uses dicts. Likewise, within an event there are
+            AttributeDicts and this uses dicts instead.
+        3)  `web3` returns hashes as HexBytes and this uses strings.
+
+        :rtype: list
         :return: event log
         :example:
             >>> from src.simpleth import Blockchain, Contract
@@ -3181,9 +3201,7 @@ class Result:
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
             >>> trx_result.event_log
-            (AttributeDict({'args': AttributeDict({'num0': 10, 'num1': 10 ... })})
-
-        :to do: figure out how to turn this into a dict
+            [{'args': {'num0': 10, 'num1': 20, 'num2': 20}, 'event': 'NumsStored'
 
         """
         return self._event_log
@@ -3248,6 +3266,46 @@ class Result:
 
         """
         return self._gas_used
+
+    @property
+    def transaction(self) -> T_TRANSACTION:
+        """Return the transaction info kept by `web3 eth`.
+
+        :rtype: dict
+        :return: transaction info
+        :example:
+            >>> from src.simpleth import Blockchain, Contract
+            >>> b = Blockchain()
+            >>> user = b.accounts[8]
+            >>> c = Contract('Test')
+            >>> c.connect()
+            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
+            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result.transaction
+            {'hash': '0x81d725c47a94e71aa40561ff96da8d99ce105a1327239a867099bb0e480e492b',
+
+        """
+        return self._transaction
+
+    @property
+    def trx_args(self) -> dict:
+        """Return arguments passed into the transaction.
+
+        :rtype: dict
+        :return: `key` is `param name`; `value` is arg value passed to
+            transaction
+        :example:
+            >>> from src.simpleth import Blockchain, Contract
+            >>> b = Blockchain()
+            >>> user = b.accounts[8]
+            >>> c = Contract('Test')
+            >>> c.connect()
+            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
+            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result.trx_args
+
+        """
+        return self._trx_args
 
     @property
     def trx_hash(self) -> T_HASH:
@@ -3349,58 +3407,67 @@ class Result:
         """
         return self._trx_value_wei
 
-    @property
-    def transaction(self) -> T_TRANSACTION:
-        """Return the transaction info kept by `web3 eth`.
 
+    def _event_to_dict(self, event: T_EVENT_LOG) -> dict:
+        """Return event log entry as a dictionary.
+
+        `web3.py` structures an event in the event log using
+         `AttributeDict` and HexBytes.
+
+        This converts event to using dictionaries and strings. This
+        gives `simpleth` a simpler data structure.
+
+        :param event: one event entry from a transaction event log
+        :type event: AttributeDict
         :rtype: dict
-        :return: transaction info
-        :example:
-            >>> from src.simpleth import Blockchain, Contract
-            >>> b = Blockchain()
-            >>> user = b.accounts[8]
-            >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
-            >>> trx_result.transaction
-            {'hash': HexBytes('0x0e36d22f42dbf641cef1e9f26d ... ')}
+        :returns: the same event data but using dict and string types
+        throughout.
 
         """
-        return self._transaction
+        eventd: dict = {}   # event dictionary
+        eventd['args'] = dict(event['args'])
+        eventd['event'] = event['event']
+        eventd['logIndex'] = event['logIndex']
+        eventd['transactionIndex'] = event['transactionIndex']
+        eventd['transactionHash'] = event['transactionHash'].hex()
+        eventd['address'] = event['address']
+        eventd['blockHash'] = event['blockHash'].hex()
+        eventd['blockNumber'] = event['blockNumber']
+        return eventd
 
-    def block_time_string(
-            self,
-            time_format: str = TIME_FORMAT
-            ) -> str:
-        """Return the time the block was mined as a string.
 
-        :param time_format: format codes used to create time string
-            (**optional**, default: :const:`TIME_FORMAT`)
-        :type time_format: str
-        :rtype: str
-        :return: time block was mined, in local timezone
-        :example:
-            >>> from src.simpleth import Blockchain, Contract
-            >>> b = Blockchain()
-            >>> user = b.accounts[8]
-            >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
-            >>> trx_result.block_time_string()
-            '2021-12-05 19:03:28'
-            >>> trx_result.block_time_string('%A %I:%M %p')
-            'Sunday 07:03 PM'
+    def _transaction_to_dict(self, trans: T_TRANSACTION) -> dict:
+        """Return transaction AttributeDict as a dictionary.
 
-        :see also: List of format codes:
-            https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
+        `web3.py` structures a transaction using `AttributeDict` and
+        HexBytes. This converts that transaction AttributedDict to one
+        using dictionaries and strings. This gives `simpleth` a simpler
+        data structure.
+
+        :param trans: transaction dictionary from `web3`
+        :type trans: AttributeDict
+        :rtype: dict
+        :returns: the same transaction data but uses dict and string
+        types throughout.
 
         """
-        epoch_seconds = self._block_time
-        return datetime.datetime.\
-            fromtimestamp(epoch_seconds).\
-            strftime(time_format)
+        transd: dict = {}     # transaction dictionary
+        transd['hash'] = trans['hash'].hex()
+        transd['nonce'] = trans['nonce']
+        transd['blockHash'] = trans['blockHash'].hex()
+        transd['blockNumber'] = trans['blockNumber']
+        transd['transactionIndex'] = trans['transactionIndex']
+        transd['from'] = trans['from']
+        transd['to'] = trans['to']
+        transd['value'] = trans['value']
+        transd['gas'] = trans['gas']
+        transd['gasPrice'] = trans['gasPrice']
+        transd['input'] = trans['input']
+        transd['v'] = trans['v']
+        transd['r'] = trans['r'].hex()
+        transd['s'] = trans['s'].hex()
+        return transd
+
 
     def __str__(self) -> str:
         """Print most of the result properties.
@@ -3422,7 +3489,6 @@ class Result:
             >>> print(trx_result)
             Block number = 146
             Block time_epoch = 1638755042
-            Block time_string = 2021-12-05 19:44:02
             Contract address = 0xD34dB707D084fdd1D99Cf9Af77896283a083c470
             Contract name = Test
             Event args = {'num0': 10, 'num1': 10, 'num2': 10}
@@ -3438,15 +3504,18 @@ class Result:
         string = (
             f'Block number = {self.block_number}\n'
             f'Block time_epoch = {self.block_time_epoch}\n'
-            f'Block time_string = {self.block_time_string()}\n'
             f'Contract address = {self.contract_address}\n'
             f'Contract name = {self.contract_name}\n'
             f'Event args = {self.event_args}\n'
+            f'Event log = {self.event_log}\n'
             f'Event name = {self.event_name}\n'
             f'Gas price wei = {self.gas_price_wei}\n'
             f'Gas used = {self.gas_used}\n'
+            f'Transaction = {self.transaction}\n'
+            f'Trx args = {self.trx_args}\n'
             f'Trx hash = {self.trx_hash}\n'
             f'Trx name = {self.trx_name}\n'
+            f'Trx receipt = {self.trx_receipt}\n'
             f'Trx sender = {self.trx_sender}\n'
             f'Trx value_wei = {self.trx_value_wei}\n'
             )
