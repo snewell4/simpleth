@@ -3303,6 +3303,7 @@ class Result:
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
             >>> trx_result.trx_args
+            {'_num0': 10, '_num1': 10, '_num2': 10}
 
         """
         return self._trx_args
@@ -3485,19 +3486,23 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user, 'storeNums', 4, 5, 6, event_name='NumsStored')
             >>> print(trx_result)
-            Block number = 146
-            Block time_epoch = 1638755042
-            Contract address = 0xD34dB707D084fdd1D99Cf9Af77896283a083c470
+            Block number = 450
+            Block time_epoch = 1640055579
+            Contract address = 0x2f1E0A12de6741f26FCC34776764c87f46a1B7aA
             Contract name = Test
-            Event args = {'num0': 10, 'num1': 10, 'num2': 10}
+            Event args = {'num0': 4, 'num1': 5, 'num2': 6}
+            Event log = [{'args': {'num0': 4, 'num1': 5, 'num2': 6}, ',
             Event name = NumsStored
             Gas price wei = 20000000000
-            Gas used = 25863
-            Trx hash = 0x16929000852977ce68b0103c75a5bbe96b773a24e466db2558431dcfa4b9e77b
+            Gas used = 83443
+            Transaction = {'hash': '0xc5e3fd42eddefdcf79b511438b4b5ef58c18ad1b
+            Trx args = {'_num0': 4, '_num1': 5, '_num2': 6}
+            Trx hash = 0xc5e3fd42eddefdcf79b511438b4b5ef58c18ad1b761b09f9790900718155f21f
             Trx name = storeNums
-            Trx sender = 0xB7fc6B28ea0c1c0d4ec54143A552aF67260905cF
+            Trx receipt = {'transactionHash': HexBytes('0xc5e3fd42eddefdcf79b511
+            Trx sender = 0xa894b8d26Cd25eCD3E154a860A86f7c75B12D993
             Trx value_wei = 0
 
         """
