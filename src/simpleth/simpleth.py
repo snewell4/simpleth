@@ -1337,7 +1337,7 @@ class Contract:
             message = (
                 f'ERROR in {self.name}().deploy(): '
                 f'TypeError says {exception}.\n'
-                f'HINT: Check contract constructor args.\n'
+                f'HINT: Check contract constructor args: type and number.\n'
                 )
             raise SimplEthError(message, code='C-030-030') from None
         except ValueError as exception:
