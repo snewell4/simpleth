@@ -42,7 +42,7 @@ def test_denominations_to_wei():
 
 # This is a brute force test. It generates 23x23 test cases. These
 # take about 50 seconds on my laptop to run.
-# @pytest.mark.skip(reason='takes too long')
+@pytest.mark.skip(reason='takes too long')
 @pytest.mark.parametrize('from_denominations',
                          [
                             'wei',

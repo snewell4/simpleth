@@ -24,7 +24,7 @@ from typing import List, Optional, Union, Dict, Any
 from decimal import Decimal, getcontext
 from web3 import Web3
 from web3 import exceptions as web3e
-from web3.logs import DISCARD
+# from web3.logs import DISCARD
 
 __all__ = [
     'Blockchain',
@@ -305,7 +305,7 @@ class Blockchain:
         :rtype: str
         :return: API version number
         :example:
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> b.api_version
             '5.24.0'
@@ -320,7 +320,7 @@ class Blockchain:
         :rtype: int
         :return: sequence number of the block at the end of the chain
         :example:
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> b.block_number
             2284
@@ -335,7 +335,7 @@ class Blockchain:
         :rtype: str
         :return: blockchain client version
         :example:
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> b.client_version
             'EthereumJS TestRPC/v2.13.1/ethereum-js'
@@ -350,7 +350,7 @@ class Blockchain:
         :rtype: object
         :return: `web3.eth` object
         :example:
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> b.eth
             <web3.eth.Eth object at 0x0000019CEBAC8760>
@@ -372,7 +372,7 @@ class Blockchain:
         :rtype: object
         :return: `web3` object
         :example:
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> b.web3
             <web3.main.Web3 object at 0x0000019CE7AF3520>
@@ -401,7 +401,7 @@ class Blockchain:
             - `None` if ``account_address`` not one provided by Ganache
 
         :example:
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> user = b.accounts[6]
             >>> b.account_num(user)
@@ -428,7 +428,7 @@ class Blockchain:
         :return: blockchain ``address`` of the requested account
         :raises SimplEthError: if ``account_num`` is bad
         :example:
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> b=Blockchain()
             >>> b.address(2)
             '0x02F6903D426Be890BA4F882eD19cF6780ecdfA5b'
@@ -447,7 +447,6 @@ class Blockchain:
             )
         raise SimplEthError(message, code='B-020-010') from None
 
-
     def balance(self, address: str) -> int:
         """Return the amount of Ether owned by an account.
 
@@ -458,7 +457,7 @@ class Blockchain:
 
         :raises SimplEthError: if ``address`` is bad
         :example:
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> user0 = b.address(0)
             >>> b.balance(user0)
@@ -492,7 +491,7 @@ class Blockchain:
         :return: time block was mined, in epoch seconds.
         :raises SimplEthError: if block_num is bad
         :example:
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> b.block_time_epoch(20)
             1638120893
@@ -507,7 +506,6 @@ class Blockchain:
             )
             raise SimplEthError(message, code='B-040-010') from None
         return self.eth.get_block(block_num).timestamp
-
 
     def block_time_string(
             self,
@@ -524,7 +522,7 @@ class Blockchain:
         :rtype: str
         :return: time block was mined, in local timezone, as a string
         :example:
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> Blockchain().block_time_string(20)
             '2021-11-28 11:34:53'
             >>> Blockchain().block_time_string(20, '%A %I:%M %p')
@@ -545,7 +543,6 @@ class Blockchain:
             f'HINT: Use a string of valid strftime format codes for '
             f'time_format.')
         raise SimplEthError(message, code='B-050-010') from None
-
 
     def fee_history(self, num_blocks: int = 3) -> dict:
         """Return fee information for recently mined blocks.
@@ -573,7 +570,7 @@ class Blockchain:
           not seem to be supported by Ganache yet. Currently, it
           throws a ``ValueError`` exception.
         :example:
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> b.fee_history()
             ...
@@ -607,7 +604,7 @@ class Blockchain:
             - `False` otherwise
 
         :example:
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> user0 = b.address(0)
             >>> b.is_valid_address(user0)
@@ -649,7 +646,7 @@ class Blockchain:
 
         :example:
 
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> user4 = b.address(4)
             >>> user8 = b.address(8)
@@ -709,7 +706,7 @@ class Blockchain:
         :rtype: dict
         :return: transaction details as a dictionary
         :example:
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> t = '0xe6bbbc34f53ef4137de80dc63f156b820d71f9f176b8210a42 ...'
             >>> Blockchain().transaction(t)
             {'hash': HexBytes('0xe6bbbc34f53ef4137de80dc63f156b820d71f9f176b8210 ...'
@@ -748,7 +745,7 @@ class Blockchain:
         :return: number of transactions
         :raises SimplEthError: if ``address`` is bad
         :example:
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> user0 = b.address(0)
             >>> b.trx_count(user0)
@@ -783,7 +780,7 @@ class Blockchain:
         :example:
             >>> r = c.run_trx(user,'storeNums',1,2,3,event_name='NumsStored')
             >>> thash = r.trx_hash
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> user = Blockchain().accounts[3]
             >>> c = Contract('Test')
             >>> c.connect()
@@ -842,7 +839,7 @@ class Contract:
         :raises SimplEthError: if ``name`` is misspelled or has
             not been compiled.
         :example:
-            >>> from src.simpleth import Contract
+            >>> from simpleth import Contract
             >>> Contract('Test')
             <simpleth.Contract object at 0x0000028A7262B580>
 
@@ -916,7 +913,7 @@ class Contract:
         :rtype: list
         :return: list with signature of all contract functions
         :example:
-            >>> from src.simpleth import Contract
+            >>> from simpleth import Contract
             >>> c = Contract('Test')
             >>> c.abi
             [{'inputs': [{'internalType': 'int256', 'name':  ...snip...
@@ -931,7 +928,7 @@ class Contract:
         :rtype: str
         :return: blockchain address of the contract
         :example:
-            >>> from src.simpleth import Contract
+            >>> from simpleth import Contract
             >>> c = Contract('Test')
             >>> c.connect()
             >>> c.address
@@ -951,7 +948,7 @@ class Contract:
         :rtype: object
         :return: :class:`Blockchain` object
         :example:
-            >>> from src.simpleth import Contract
+            >>> from simpleth import Contract
             >>> c = Contract('Test')
             >>> c.connect()
             '0x3F1c8adCB6E8F89dc2d0a32c947CaA6Af95d4448'
@@ -968,7 +965,7 @@ class Contract:
         :rtype: str
         :return: bytecode of contract
         :example:
-            >>> from src.simpleth import Contract
+            >>> from simpleth import Contract
             >>> c = Contract('Test')
             >>> c.connect()
             >>> c.bytecode
@@ -988,7 +985,7 @@ class Contract:
         :rtype: str
         :return: contract code as deployed on chain.
         :example:
-            >>> from src.simpleth import Contract
+            >>> from simpleth import Contract
             >>> c = Contract('Test')
             >>> c.connect()
             '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
@@ -1015,7 +1012,7 @@ class Contract:
         :rtype: list
         :return: names of the events defined in the contract
         :example:
-            >>> from src.simpleth import Contract
+            >>> from simpleth import Contract
             >>> c = Contract('Test')
             >>> c.connect()
             '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
@@ -1032,7 +1029,7 @@ class Contract:
         :rtype: list
         :return: signatures of all functions.
         :example:
-            >>> from src.simpleth import Contract
+            >>> from simpleth import Contract
             >>> c = Contract('Test')
             >>> c.connect()
             >>> c.functions
@@ -1052,7 +1049,7 @@ class Contract:
         :rtype: str
         :return: contract name
         :example:
-            >>> from src.simpleth import Contract
+            >>> from simpleth import Contract
             >>> c = Contract('Test')
             '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
             >>> c.name
@@ -1068,7 +1065,7 @@ class Contract:
         :rtype: int
         :return: size of the contract, in bytes
         :example:
-            >>> from src.simpleth import Contract
+            >>> from simpleth import Contract
             >>> c = Contract('Test')
             >>> c.connect()
             '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
@@ -1091,7 +1088,7 @@ class Contract:
         :rtype: object
         :return: `web3._utils.datatypes.Contract` object
         :example:
-            >>> from src.simpleth import Contract
+            >>> from simpleth import Contract
             >>> c = Contract('Test')
             >>> c.connect()
             '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
@@ -1112,7 +1109,7 @@ class Contract:
         :rtype: module
         :return: web3 exception module
         :example:
-            >>> from src.simpleth import Contract
+            >>> from simpleth import Contract
             >>> c = Contract('Test')
             >>> c.connect()
             '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
@@ -1146,7 +1143,7 @@ class Contract:
         :rtype: int | float | string | list
         :return: value returned from the Solidity function
         :Example:
-            >>> from src.simpleth import Contract
+            >>> from simpleth import Contract
             >>> c = Contract('testtrx')
             >>> c.connect()
             '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
@@ -1219,7 +1216,7 @@ class Contract:
         :return:  `address` of the contract
 
         :example:
-            >>> from src.simpleth import Contract
+            >>> from simpleth import Contract
             >>> c = Contract('testtrx')
             >>> c.connect()
             '0x6FDce3428A455372AE43b3cE90B60E6B0cb95188'
@@ -1294,7 +1291,7 @@ class Contract:
             - if ``gas_limit`` exceeded the block limit
 
         :example:
-            >>> from src.simpleth import Contract, Blockchain
+            >>> from simpleth import Contract, Blockchain
             >>> c = Contract('testtrx')
             >>> c.connect()
             '0x6FDce3428A455372AE43b3cE90B60E6B0cb95188'
@@ -1403,8 +1400,8 @@ class Contract:
             - if ``sender`` is bad
 
         :example:
-            >>> from src.simpleth import Contract
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Contract
+            >>> from simpleth import Blockchain
             >>> c = Contract('testtrx')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
@@ -1498,7 +1495,6 @@ class Contract:
     def get_trx_result(
             self,
             trx_hash: T_HASH,
-            trx_name: str,
             event_name: str = ''
             ) -> T_RESULT:
         """Return the results of a transaction.
@@ -1512,16 +1508,14 @@ class Contract:
 
         :param trx_hash: transaction hash from :meth:`submit_trx`
         :type trx_hash: str
-        :param trx_name: transaction name
-        :type trx_name: str
         :param event_name: event name emitted by this
             transaction (**optional**, default: `''`)
         :type event_name: str
         :rtype: object
         :return: :class:`Result` with transaction result
         :example:
-            >>> from src.simpleth import Contract
-            >>> from src.simpleth import Blockchain
+            >>> from simpleth import Contract
+            >>> from simpleth import Blockchain
             >>> c = Contract('testtrx')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
@@ -1573,7 +1567,6 @@ class Contract:
     def get_trx_result_wait(
             self,
             trx_hash: T_HASH,
-            trx_name: str,
             event_name: str = '',
             timeout: Union[int, float] = TIMEOUT,
             poll_latency: Union[int, float] = POLL_LATENCY
@@ -1596,8 +1589,6 @@ class Contract:
 
         :param trx_hash: transaction hash
         :type trx_hash: str
-        :param trx_name: transaction name
-        :type trx_name: str
         :param event_name: event name emitted by this transaction
             (**optional**, default: ``None``)
         :type event_name: str
@@ -1612,7 +1603,7 @@ class Contract:
         :rtype: Result
         :return: :class:`Result` with transaction return
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
@@ -1696,7 +1687,7 @@ class Contract:
             - if a :meth:`connect` is needed
 
         :example:
-            >>> from src.simpleth import Contract
+            >>> from simpleth import Contract
             >>> c = Contract('testtrx')
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> c.get_var('specialNum')
@@ -1815,7 +1806,7 @@ class Contract:
         :raises SimplEthError: if unable to submit the transaction
 
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
@@ -1854,7 +1845,6 @@ class Contract:
 
         trx_result: T_RESULT = self.get_trx_result_wait(
             trx_hash,
-            trx_name,
             event_name=event_name,
             timeout=timeout,
             poll_latency=poll_latency
@@ -1968,7 +1958,7 @@ class Contract:
                was reverted
 
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> c = Contract('Test')
             >>> b = Blockchain()
             >>> c.connect()
@@ -2100,7 +2090,6 @@ class Contract:
             raise SimplEthError(message, code='C-080-080') from None
         return trx_hash
 
-
     def _format_revert_message(self, value_error_msg: str) -> str:
         """Return a message to explain why a transaction was reverted.
 
@@ -2179,6 +2168,7 @@ class Contract:
                 f'ERROR in {self.name}()._get_artifact_abi(). '
                 f'Unable to read ABI file.\n'
                 f'Full path: {self._artifact_abi_filepath}\n'
+                f'Contract name of "{self._name}" is bad.\n'
                 f'HINT 1: Check the spelling of the contract name.\n'
                 f'HINT 2: You may need to do a new compile.\n'
                 )
@@ -2408,7 +2398,7 @@ class Convert:
         :rtype: Decimal
         :return: converted ``amount``
         :example:
-            >>> from src.simpleth import Convert
+            >>> from simpleth import Convert
             >>> c = Convert()
             >>> c.convert_ether(100, 'wei', 'ether')
             Decimal('1.00E-16')
@@ -2460,7 +2450,7 @@ class Convert:
             -  `value` is the amount in wei for one of that denomination
 
         :example:
-            >>> from src.simpleth import Convert
+            >>> from simpleth import Convert
             >>> c = Convert()
             >>> c.convert_ether(100, 'wei', 'ether')
             Decimal('1.00E-16')
@@ -2536,7 +2526,7 @@ class Convert:
         :rtype: float
         :return: current time, in epoch seconds
         :example:
-            >>> from src.simpleth import Convert
+            >>> from simpleth import Convert
             >>> Convert().epoch_time()
             1638825195.6231368
 
@@ -2553,11 +2543,11 @@ class Convert:
         :rtype: str
         :return: current time
         :example:
-            >>> from src.simpleth import Convert
+            >>> from simpleth import Convert
             >>> c = Convert()
-            >>> c.local_time()
+            >>> c.local_time_string()
             '2021-12-06 15:35:28'
-            >>> c.local_time('%A %I:%M:%S %p')
+            >>> c.local_time_string('%A %I:%M:%S %p')
             'Monday 03:36:48 PM'
 
         :see also: https://strftime.org/ for time format codes.
@@ -2592,14 +2582,14 @@ class Convert:
         :rtype: str
         :return: local time equivalent to epoch seconds
         :example:
-                >>> from src.simpleth import Convert
+                >>> from simpleth import Convert
                 >>> c = Convert()
                 >>> epoch = c.epoch_time()
                 >>> epoch
                 1638825248.9298458
-                >>> c.to_local_time(epoch)
+                >>> c.to_local_time_string(epoch)
                 '2021-12-06 15:14:08'
-                >>> c.to_local_time(epoch, '%A %I:%M:%S %p')
+                >>> c.to_local_time_string(epoch, '%A %I:%M:%S %p')
                 'Monday 03:14:08 PM'
 
         :see also: https://strftime.org/ for time format codes.
@@ -2661,7 +2651,7 @@ class Filter:
         :param contract: :class:`Contract` object
         :type contract: object
         :example:
-            >>> from src.simpleth import Contract, Filter
+            >>> from simpleth import Contract, Filter
             >>> c = Contract('Test')
             >>> f = Filter(c)
             >>> f
@@ -2691,7 +2681,7 @@ class Filter:
             -  if a :meth:`connect` is needed
 
         :example:
-            >>> from src.simpleth import Contract, Filter
+            >>> from simpleth import Contract, Filter
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
@@ -2748,7 +2738,7 @@ class Filter:
                use of ``event_filter``.
 
         :example:
-            >>> from src.simpleth import Blockchain, Contract, Filter
+            >>> from simpleth import Blockchain, Contract, Filter
             >>> b = Blockchain()
             >>> user = b.accounts[3]
             >>> c = Contract('Test')
@@ -2811,7 +2801,7 @@ class Filter:
             -  if no :meth:`connect`
 
         :example:
-            >>> from src.simpleth import Contract, Filter
+            >>> from simpleth import Contract, Filter
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
@@ -2913,20 +2903,19 @@ class Filter:
 
 
 class Result:
-    """Has the various outcomes resulting from a transaction being
-    mined.
+    """Data class created after a transaction is mined making most of
+    the transaction information easily accessible.
 
-    :class:`Result` objects are created by:
+    Users will not create `result` objects. Rather, the following
+    create and return `result` objects:
 
     -  :meth:`Contract.run_trx`
     -  :meth:`Contract.get_trx_result`
     -  :meth:`Contract.get_trx_result_wait`
 
-    Users will not create `result` objects.
-
-    Users can and should use the properties and methods
-    of the class to inspect all the details of results from the
-    above methods.
+    By accessing the `result` object returned from one of these methods,
+    the following properties make it simple to access the outcome
+    details:
 
     **PROPERTIES**
 
@@ -2949,34 +2938,36 @@ class Result:
 
     **METHODS**
 
-    -  :meth:`block_time_string` - time block mined, in time-format string
     -  :meth:`__str__` - allows ``print(<result>)`` to output most properties
 
     One of the easiest ways to use :class:`Result` is to `print` the `result`
     as shown below.
 
     :example:
-            >>> from src.simpleth import Blockchain, Contract
-            >>> b = Blockchain()
-            >>> user = b.accounts[2]
-            >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 30, 20, 10, event_name='NumsStored')
-            >>> print(trx_result)
-            Block number = 147
-            Block time_epoch = 1638830573
-            Block time_string = 2021-12-06 16:42:53
-            Contract address = 0xD34dB707D084fdd1D99Cf9Af77896283a083c470
-            Contract name = Test
-            Event args = {'num0': 30, 'num1': 20, 'num2': 10}
-            Event name = NumsStored
-            Gas price wei = 20000000000
-            Gas used = 34263
-            Trx hash = 0x31c35f605b391eba522c30db0db66516758fb2f0a125d4df9c6e28ea17d31100
-            Trx name = storeNums
-            Trx sender = 0x02F6903D426Be890BA4F882eD19cF6780ecdfA5b
-            Trx value_wei = 0
+        >>> from simpleth import Blockchain, Contract
+        >>> b = Blockchain()
+        >>> user = b.accounts[2]
+        >>> c = Contract('Test')
+        >>> c.connect()
+        '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
+        >>> trx_result = c.run_trx(user, 'storeNums', 30, 20, 10, event_name='NumsStored')
+        >>> print(trx_result)
+        Block number = 450
+        Block time_epoch = 1640055579
+        Contract address = 0x2f1E0A12de6741f26FCC34776764c87f46a1B7aA
+        Contract name = Test
+        Event args = {'num0': 4, 'num1': 5, 'num2': 6}
+        Event log = [{'args': {'num0': 4, 'num1': 5, 'num2': 6}, ',
+        Event name = NumsStored
+        Gas price wei = 20000000000
+        Gas used = 83443
+        Transaction = {'hash': '0xc5e3fd42eddefdcf79b511438b4b5ef58c18ad1b
+        Trx args = {'_num0': 4, '_num1': 5, '_num2': 6}
+        Trx hash = 0xc5e3fd42eddefdcf79b511438b4b5ef58c18ad1b761b09f9790900718155f21f
+        Trx name = storeNums
+        Trx receipt = {'transactionHash': HexBytes('0xc5e3fd42eddefdcf79b511
+        Trx sender = 0xa894b8d26Cd25eCD3E154a860A86f7c75B12D993
+        Trx value_wei = 0
 
     """
     def __init__(
@@ -2986,11 +2977,9 @@ class Result:
             contract: Contract,
             web3_contract_object: T_WEB3_CONTRACT_OBJ,
             event_name: str = ''
-            ) -> None:
+        ) -> None:
         """Create object for the result of specified transaction.
 
-        :param trx_name: transaction name
-        :type trx_name: str
         :param trx_hash: transaction hash created after submitting the
              transaction for mining.
         :type trx_hash: T_HASH
@@ -3084,7 +3073,7 @@ class Result:
         :rtype: int
         :return: number of block with transaction
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3105,7 +3094,7 @@ class Result:
         :rtype: int
         :return: time, in epoch seconds, when block was mined.
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3125,7 +3114,7 @@ class Result:
         :rtype: str
         :return: address of contract
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3145,7 +3134,7 @@ class Result:
         :rtype: str
         :return: name of contract
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3165,7 +3154,7 @@ class Result:
         :rtype: dict
         :return: event args, if any, emitted
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3193,7 +3182,7 @@ class Result:
         :rtype: list
         :return: event log
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3213,7 +3202,7 @@ class Result:
         :rtype: str
         :return: name of event
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3234,7 +3223,7 @@ class Result:
         :rtype: int
         :return: gas price, in wei
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3254,7 +3243,7 @@ class Result:
         :rtype: int
         :return: units of gas used to run transaction
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3274,7 +3263,7 @@ class Result:
         :rtype: dict
         :return: transaction info
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3295,7 +3284,7 @@ class Result:
         :return: `key` is `param name`; `value` is arg value passed to
             transaction
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3315,7 +3304,7 @@ class Result:
         :rtype: str
         :return: hash that identifies this transaction on blockchain.
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3335,7 +3324,7 @@ class Result:
         :rtype: str
         :return: name of transaction
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3355,7 +3344,7 @@ class Result:
         :rtype: dict
         :return: receipt after transaction was mined.
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3375,7 +3364,7 @@ class Result:
         :rtype: int
         :return: gas price, in wei
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3395,7 +3384,7 @@ class Result:
         :rtype: int
         :return: amount of Ether, in wei, sent with the transaction
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3480,7 +3469,7 @@ class Result:
         :rtype: str
         :return: multi-line output of most `Result` properties
         :example:
-            >>> from src.simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
@@ -3567,7 +3556,7 @@ class SimplEthError(Exception):
             default: `''`)
         :type code: str
         :example:
-            >>> from src.simpleth import SimplEthError
+            >>> from simpleth import SimplEthError
             >>> try:
             ...     raise SimplEthError('test')
             ... except SimplEthError as e:
@@ -3580,7 +3569,7 @@ class SimplEthError(Exception):
             ...     print(f'{e}')
             ...
             [10] test
-            >>> from src.simpleth import SimplEthError
+            >>> from simpleth import SimplEthError
             >>> try:
             ...     raise SimplEthError('test', 'ERR-020')
             ... except SimplEthError as e:

@@ -25,7 +25,7 @@ contract Test {
     int public initNum;
 
     /// @dev used by the storeNums...() transactions
-    uint[3] public nums;
+    uint[3] public nums = [uint(0), 1, 2];
 
     /// @dev used by sumNums() to hold the sum of nums[].
     uint public numsTotal;
