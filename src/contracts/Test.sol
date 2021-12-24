@@ -238,12 +238,6 @@ contract Test {
         nums[0] = _num0;
         nums[1] = _num1;
         nums[2] = _num2;
-        emit NumsStored(
-            block.timestamp,
-            nums[0],
-            nums[1],
-            nums[2]
-        );
     }
 
     /**

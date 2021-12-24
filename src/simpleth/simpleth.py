@@ -24,7 +24,7 @@ from typing import List, Optional, Union, Dict, Any
 from decimal import Decimal, getcontext
 from web3 import Web3
 from web3 import exceptions as web3e
-# from web3.logs import DISCARD
+from web3.logs import DISCARD
 
 __all__ = [
     'Blockchain',
@@ -87,15 +87,15 @@ SOLC_FILENAME: str = 'solc.exe'
 GAS_LIMIT: int = 6_000_000
 """Gas limit for a transaction, in units of gas."""
 
-# Currently has no effect with Ganache. It is valid for main net.
+# Currently, has no effect with Ganache. It is valid for main net.
 MAX_BASE_FEE_GWEI: Union[int, float] = 100
 """Maximum tip to pay the miners, per unit of gas in gwei."""
 
-# Currently has no effect with Ganache. It is valid for main net.
+# Currently, has no effect with Ganache. It is valid for main net.
 MAX_PRIORITY_FEE_GWEI: Union[int, float] = 2
 """Maximum tip to pay the miners, per unit of gas in gwei."""
 
-# Currently has no effect with Ganache. It is valid for main net.
+# Currently, has no effect with Ganache. It is valid for main net.
 MAX_FEE_GWEI: Union[int, float] = \
     MAX_BASE_FEE_GWEI + MAX_PRIORITY_FEE_GWEI
 """Maximum total to pay the miners, per unit of gas in gwei."""
@@ -206,7 +206,7 @@ class Blockchain:
     """Interact with an Ethereum blockchain.
 
     Sets up the `Web3` object which establishes the
-    connection to a an Ethereum blockchain and supports access
+    connection to an Ethereum blockchain and supports access
     to various values and functions related to the blockchain.
 
     **PROPERTIES**
@@ -242,7 +242,7 @@ class Blockchain:
     -  Since it is a list, ``accounts[-1]`` returns ``accounts[9]``.
        Should I try to fix this?
 
-    :see also: `Web3` API documentation:
+    :see: `Web3` API documentation at
         https://web3py.readthedocs.io/en/stable/web3.main.html
 
     """
@@ -293,7 +293,7 @@ class Blockchain:
         :example:
             >>> from simpleth import Blockchain
             >>> Blockchain().accounts
-            ['0x235A686386d03a5Bb986Fb13E71A0dC86846c636',   ..snip..
+            ['0x235A686386d03a5Bb986Fb13E71A0dC86846c636',   ...snip... ]
 
         """
         return self._accounts
@@ -359,7 +359,7 @@ class Blockchain:
 
         :notes: This can be used to access any of the ``web3.eth``
               methods not provided by `simpleth`.
-        :see also: `web3,eth API` documentation at:
+        :see: `web3,eth API` documentation at:
             https://web3py.readthedocs.io/en/stable/web3.eth.html
 
         """
@@ -381,7 +381,7 @@ class Blockchain:
 
         :notes: This can be used to access any of the
             ``web3`` methods not provided by `simpleth`.
-        :see also: `Web3 API` documentation at:
+        :see: `Web3 API` documentation at:
             https://web3py.readthedocs.io/en/stable/web3.main.html
         """
         return self._web3
@@ -407,7 +407,7 @@ class Blockchain:
             >>> b.account_num(user)
             6
 
-        :see also: :meth:`accounts` for the list of all
+        :see: :meth:`accounts` for the list of all
             account addresses.
 
         """
@@ -433,7 +433,7 @@ class Blockchain:
             >>> b.address(2)
             '0x02F6903D426Be890BA4F882eD19cF6780ecdfA5b'
 
-        :see also: :meth:`accounts` to get all addresses.
+        :see: :meth:`accounts` to get all addresses.
 
         """
         if account_num in range(0, len(self.accounts)):
@@ -528,7 +528,7 @@ class Blockchain:
             >>> Blockchain().block_time_string(20, '%A %I:%M %p')
             'Sunday 11:34 AM'
 
-        :see also: List of format codes:
+        :see: List of format codes:
               https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
 
         """
@@ -652,7 +652,7 @@ class Blockchain:
             >>> user8 = b.address(8)
             >>> b.send_ether(user4, user8, 1000)
 
-        :see also:
+        :see:
 
             - :meth:`balance` to get amount of Ether owned by
               an account.
@@ -709,9 +709,9 @@ class Blockchain:
             >>> from simpleth import Blockchain
             >>> t = '0xe6bbbc34f53ef4137de80dc63f156b820d71f9f176b8210a42 ...'
             >>> Blockchain().transaction(t)
-            {'hash': HexBytes('0xe6bbbc34f53ef4137de80dc63f156b820d71f9f176b8210 ...'
+            {'hash': HexBytes('0xe6bbbc34f53ef4137de80dc63f156b820d71 )...}'
 
-        :see also: :meth:`run_trx` and :meth:`send_trx` return a
+        :see: :meth:`run_trx` and :meth:`send_trx` return a
             ``trx_hash``
 
         """
@@ -916,7 +916,7 @@ class Contract:
             >>> from simpleth import Contract
             >>> c = Contract('Test')
             >>> c.abi
-            [{'inputs': [{'internalType': 'int256', 'name':  ...snip...
+            [{'inputs': [{'internalType': 'int256', 'name':  ...snip... } ]
 
         """
         return self._abi
@@ -1033,7 +1033,7 @@ class Contract:
             >>> c = Contract('Test')
             >>> c.connect()
             >>> c.functions
-            ['getContractSize(address)', 'getNum(uint8)',  ...snip...
+            ['getContractSize(address)', 'getNum(uint8)',  ...snip... ]
 
         :notes: The list of functions includes all transactions, all
             public functions, and all getters for public state
@@ -1259,7 +1259,7 @@ class Contract:
         deploy the contract once. Subsequent sessions only require
         a :meth:`connect` to use the deployed contract.
 
-        :param sender: address of account requesting the deploy
+        :param sender: address of account requesting deploy()
         :type sender: str
         :param constructor_args: argument(s) for the contract
             constructor (**optional**, default: None)
@@ -1268,7 +1268,7 @@ class Contract:
             constructor (**optional**, default: `''`)
         :type constructor_event_name: str
         :param gas_limit: maximum amount of gas units allowed for
-            the deploy (**optional**, default: :const:`GAS_LIMIT`)
+            deploy (**optional**, default: :const:`GAS_LIMIT`)
         :type gas_limit: int
         :param max_priority_fee_gwei: maximum ``sender`` will pay from
             account balance as a tip for a miner to mine this
@@ -1527,7 +1527,7 @@ class Contract:
             ...     'storeNums',
             ...     event_name='NumsStored'
             ...     )
-            {'address': None, 'gas_used': 83421,  ...snip...
+            {'address': None, 'gas_used': 83421,  ...snip... }
 
         :notes:
             - ``trx_name`` must match the name used in :meth:`submit_trx`.
@@ -1537,7 +1537,7 @@ class Contract:
               may have their own events, but they will not be returned
               as part of the ``Result``.
 
-        :see also:
+        :see:
             - :meth:`submit_trx` for submitting a transaction to be
               mined and returning ``trx_hash``.
             - :meth:`get_trx_result_wait` which will make repeated
@@ -1634,7 +1634,7 @@ class Contract:
               :meth:`get_trx_result_wait` to continue to periodically
               check for completion.
 
-        :see also:
+        :see:
             - :meth:`submit_trx` for submitting a transaction to be
               carried out and mined and returning ``trx_hash``.
             - :meth:`get_trx_result` which will make one check and
@@ -1822,7 +1822,7 @@ class Contract:
             Address        = None
                  ...
 
-        :see also: Description section for :meth:`submit_trx` for an
+        :see: Description section for :meth:`submit_trx` for an
             explanation about fees.
 
         """
@@ -1993,7 +1993,7 @@ class Contract:
             If you see one, add it to the lengthy code of all the
             exceptions.
 
-        :see also:
+        :see:
 
             -  :meth:`get_trx_result` and :meth:`get_trx_result_wait`
                to retrieve the result of the transaction using the
@@ -2118,11 +2118,11 @@ class Contract:
         :rtype: str
         :return: message explaining the Solidity transaction revert
 
-        :note: This is the method that adds the eye catcher, `GUARDMSG:`,
+        :note: This is the method that adds the eye-catcher, `GUARDMSG:`,
             that appears in the SimplEthError explanation message
             to flag a transaction was stopped because it failed to
             pass one of the pre-conditions in a modifier for the
-            contract.  You can change this eye catcher but some apps
+            contract.  You can change this eye-catcher but some apps
             may be watching for that string.
 
         """
@@ -2377,8 +2377,8 @@ class Convert:
        time string, in local time
 
     :notes: The time conversion methods are standard one-line
-        Python methods. I put them here so I wouldn't have to look
-        them up and I'd always use the same method.
+        Python methods. I put them here, so I wouldn't have to look
+        them up, and I'd always use the same method.
 
     """
     def convert_ether(
@@ -2411,7 +2411,7 @@ class Convert:
             `from_wei()`. This function is more flexible and does
             not require a `Blockchain` object to use.
 
-        :see also: :meth:`denominations_to_wei` for valid strings to use
+        :see: :meth:`denominations_to_wei` for valid strings to use
             for ``from_denomination`` and ``to_denomination``.
 
         """
@@ -2489,7 +2489,7 @@ class Convert:
             tether     = 10**30 = 1,000,000,000,000,000,000,000,000,000,000 wei
 
         :notes: These are the denominations recognized by :meth:`convert_ether`.
-        :see also: Source:
+        :see: Source:
               https://web3py.readthedocs.io/en/stable/examples.html?highlight=denominations#converting-currency-denominations
 
         """
@@ -2550,7 +2550,7 @@ class Convert:
             >>> c.local_time_string('%A %I:%M:%S %p')
             'Monday 03:36:48 PM'
 
-        :see also: https://strftime.org/ for time format codes.
+        :see: https://strftime.org/ for time format codes.
 
         """
         try:
@@ -2561,6 +2561,7 @@ class Convert:
         except TypeError as exception:
             message: str = (
                 f'ERROR in local_time_string({t_format}: '
+                f'TypeError says {exception}.\n'
                 f't_format must be a string with strftime format codes.\n'
                 f'HINT: Make sure t_format is a string.'
             )
@@ -2592,7 +2593,7 @@ class Convert:
                 >>> c.to_local_time_string(epoch, '%A %I:%M:%S %p')
                 'Monday 03:14:08 PM'
 
-        :see also: https://strftime.org/ for time format codes.
+        :see: https://strftime.org/ for time format codes.
 
         """
         try:
@@ -2603,6 +2604,7 @@ class Convert:
         except TypeError as exception:
             message: str = (
                 f'ERROR in local_time_string({t_format}: '
+                f'TypeError says {exception}\n'
                 f't_format must be a string with strftime format codes.\n'
                 f'HINT: Make sure t_format is a string.'
             )
@@ -2621,7 +2623,7 @@ class Filter:
     `simpleth` implements the ability to search for events by `event name`.
     You can search blocks already on the blockchain using
     :meth:`get_old_events()`.
-    Besides the name of the event, you specify how far back, by giving the
+    Besides, the name of the event, you specify how far back, by giving the
     number of blocks, to search. You can watch new blocks as they are
     added to the blockchain with :meth:`get_new_events()`.
 
@@ -2690,7 +2692,7 @@ class Filter:
             >>> f_NumsStored
             <web3._utils.filters.LogFilter object at 0x0000021FB2FB1C
 
-        :see also:
+        :see:
 
             -  :meth:`get_new_events()` for using this new `event_filter`
                to watch for the event.
@@ -2771,7 +2773,7 @@ class Filter:
             blocks. :meth:`get_new_events` looks forward at the
             newly mined blocks.
 
-        :see also:
+        :see:
             -  :meth:`create_filter` to create ``event_filter``.
             -  :attr:`Contract.events` for the list of valid events
                emitted by this contract.
@@ -2810,7 +2812,7 @@ class Filter:
             >>> len(events_NumsStored)
             3
             >>> events_NumsStored
-            [{'block_number': 139, 'args': {'num0': 5, 'num1': 6, ...}]
+            [{'block_number': 139, 'args': {'num0': 5, 'num1': 6, ...}}]
 
         :notes:
 
@@ -2821,7 +2823,7 @@ class Filter:
                blocks. :meth:`get_new_events` looks forward at the
                newly mined blocks.
 
-        :see also: :attr:`Contract.events` for the list of valid events
+        :see: :attr:`Contract.events` for the list of valid events
                emitted by this contract.
 
         """
@@ -2869,7 +2871,7 @@ class Filter:
                 )
             raise SimplEthError(message, code='F-030-030') from None
 
-        # getattr() worked and we have a valid filter to use
+        # getattr() worked. we have a valid filter to use
         filter_list: T_FILTER_LIST = event_filter.get_all_entries()
         return self._create_simple_events(filter_list)
 
@@ -2923,9 +2925,9 @@ class Result:
     -  :meth:`block_time_epoch` - time block mined, in epoch seconds
     -  :meth:`contract_address` - address of contract with the transaction
     -  :meth:`contract_name` - name of contract with the transaction
-    -  :meth:`event_args` - args for event emitted by transaction
-    -  :meth:`event_log` - full event log from transaction
-    -  :meth:`event_name` - name of event emitted by transaction
+    -  :meth:`event_args` - arg(s) for event(s) emitted by transaction
+    -  :meth:`event_log` - event log from transaction for ``event_name``
+    -  :meth:`event_name` - ``event_name`` arg
     -  :meth:`gas_price_wei` - price of gas used by transaction, in wei
     -  :meth:`gas_used` - units of gas needed for transaction
     -  :meth:`transaction` - `web3.eth` transaction dictionary info
@@ -2939,6 +2941,16 @@ class Result:
     **METHODS**
 
     -  :meth:`__str__` - allows ``print(<result>)`` to output most properties
+
+    **INTERNAL PROPERTIES**
+    For debugging or using the `web3` data formatting the following atrributres
+    are available:
+
+    -  ``_contract`` - :meth:`Contract` object passed in as arg to `Result()`
+    -  ``_web3.contract_object`` - `web3` object passed in as arg to `Result()`
+    -  ``_web3_transaction`` - `web3` format of the transaction data. Should be
+       same as :meth:`transaction` but `web3` uses `AttributeDict` and
+       `HexBytes`.
 
     One of the easiest ways to use :class:`Result` is to `print` the `result`
     as shown below.
@@ -2977,7 +2989,7 @@ class Result:
             contract: Contract,
             web3_contract_object: T_WEB3_CONTRACT_OBJ,
             event_name: str = ''
-        ) -> None:
+            ) -> None:
         """Create object for the result of specified transaction.
 
         :param trx_hash: transaction hash created after submitting the
@@ -2999,9 +3011,12 @@ class Result:
         self._block_number: int = trx_receipt.blockNumber
         self._block_time: int = \
             contract.blockchain.eth.get_block(self._block_number).timestamp
+        self._contract = contract
         self._contract_address: str = contract.address
         self._contract_name: str = contract.name
+        self._event_args: [dict] = {}  # may be assigned below
         self._event_log: list[dict] = []     # may be assigned below
+        self._event_name: str = event_name
         self._function_object: object = None   # may be assigned below
         self._gas_price_wei: int = self._transaction['gasPrice']
         self._gas_used: int = trx_receipt.gasUsed
@@ -3013,6 +3028,7 @@ class Result:
         self._trx_value_wei: int = self._transaction['value']
         # Not surfaced as a property. Available as a private attribute only.
         self._web3_contract_object = web3_contract_object
+        self._web3_transaction = transaction
 
         if self.transaction['to']:
             # If there is a value for `to`, this was a transaction using
@@ -3028,7 +3044,7 @@ class Result:
             # Not surfaced as a property. Available as a private attribute only.
             self._function_object: object = function_obj
         else:
-            # This was a deploy. The input is the ABI and can't be
+            # This was a   `deploy()`. The input is the ABI and can't be
             # decoded. Assign 'deploy' to the trx_name. Don't know a way
             # to get the constructor args.
             self._trx_name = 'deploy'
@@ -3041,7 +3057,7 @@ class Result:
                     web3_contract_object.events,
                     event_name
                     )
-            except web3_contract_object.web3e.ABIEventFunctionNotFound as exception:
+            except self._contract.web3e.ABIEventFunctionNotFound as exception:
                 message = (
                     f'ERROR in getting transaction results for '
                     f'{self._contract_name}: event "{event_name}" '
@@ -3053,8 +3069,26 @@ class Result:
                 raise SimplEthError(message, code='R-090-010') from None
 
             try:
-                event_log: tuple = contract_event().processReceipt(
-                    trx_receipt)
+                # If the transaction emits multiple events or if the
+                # transaction calls a second transaction which itself
+                # emits an event(s), there will be multiple events to process
+                # and the only one we are prepared to process is the one
+                # title, ``event_name``. The others will have ABIs that
+                # do not match and will generate a `Mismatched ABI` warning.
+                # For now, don't try to find the correct ABI to process
+                # these other events. Specify ``DISCARD`` will silence
+                # the warnings and give us just the event that was
+                # requested by the user. There should be only one item in
+                # event_log, the one event named by the user.
+                #
+                # The `MismatchedABI` exception is thrown if user misspells
+                # the event name meaning it is not found in the transaction.
+                self._event_log: dict = dict(
+                    contract_event().processReceipt(
+                        trx_receipt,
+                        errors=DISCARD
+                        )[0]
+                    )
             except web3_contract_object.web3e.MismatchedABI as exception:
                 message = (
                     f'ERROR inf getting transaction results for '
@@ -3063,9 +3097,8 @@ class Result:
                     )
                 raise SimplEthError(message, code='R-010-020') from None
 
-            for event in event_log:
-                self._event_log.append(self._event_to_dict(event))
-
+            self._event_args = dict(self._event_log['args'])
+            
     @property
     def block_number(self) -> int:
         """Return block number of block containing the transaction.
@@ -3152,7 +3185,7 @@ class Result:
         """Return args for the event emitted by the transaction.
 
         :rtype: dict
-        :return: event args, if any, emitted
+        :return: keys are the arg names; values are arg values
         :example:
             >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
@@ -3165,10 +3198,10 @@ class Result:
             {'num0': 10, 'num1': 10, 'num2': 10}
 
         """
-        return dict(self._event_log[0]['args'])
+        return self._event_args
 
     @property
-    def event_log(self) -> list[dict]:
+    def event_log(self) -> dict:
         """Return event log resulting from transaction.
 
         This differs from the `web3.py` event log in three ways:
@@ -3179,7 +3212,7 @@ class Result:
             AttributeDicts and this uses dicts instead.
         3)  `web3` returns hashes as HexBytes and this uses strings.
 
-        :rtype: list
+        :rtype: dict
         :return: event log
         :example:
             >>> from simpleth import Blockchain, Contract
@@ -3199,8 +3232,8 @@ class Result:
     def event_name(self) -> str:
         """Return name of the event emitted by the transaction.
 
-        :rtype: str
-        :return: name of event
+        :rtype: list
+        :return: list of strings, one per event, with each event name emitted
         :example:
             >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
@@ -3209,11 +3242,11 @@ class Result:
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
-            >>> trx_result.event_name
-            'NumsStored'
+            >>> trx_result.event_names
+            ['NumsStored']
 
         """
-        return self._event_log[0]['event']
+        return self._event_name
 
     @property
     def gas_price_wei(self) -> int:
@@ -3397,8 +3430,8 @@ class Result:
         """
         return self._trx_value_wei
 
-
-    def _event_to_dict(self, event: T_EVENT_LOG) -> dict:
+    @staticmethod
+    def _event_to_dict(event: T_EVENT_LOG) -> dict:
         """Return event log entry as a dictionary.
 
         `web3.py` structures an event in the event log using
@@ -3414,19 +3447,19 @@ class Result:
         throughout.
 
         """
-        eventd: dict = {}   # event dictionary
-        eventd['args'] = dict(event['args'])
-        eventd['event'] = event['event']
-        eventd['logIndex'] = event['logIndex']
-        eventd['transactionIndex'] = event['transactionIndex']
-        eventd['transactionHash'] = event['transactionHash'].hex()
-        eventd['address'] = event['address']
-        eventd['blockHash'] = event['blockHash'].hex()
-        eventd['blockNumber'] = event['blockNumber']
-        return eventd
+        return {
+            'args': dict(event['args']),
+            'event': event['event'],
+            'logIndex': event['logIndex'],
+            'transactionIndex': event['transactionIndex'],
+            'transactionHash': event['transactionHash'].hex(),
+            'address': event['address'],
+            'blockHash': event['blockHash'].hex(),
+            'blockNumber': event['blockNumber']
+            }
 
-
-    def _transaction_to_dict(self, trans: T_TRANSACTION) -> dict:
+    @staticmethod
+    def _transaction_to_dict(trans: T_TRANSACTION) -> dict:
         """Return transaction AttributeDict as a dictionary.
 
         `web3.py` structures a transaction using `AttributeDict` and
@@ -3441,23 +3474,22 @@ class Result:
         types throughout.
 
         """
-        transd: dict = {}     # transaction dictionary
-        transd['hash'] = trans['hash'].hex()
-        transd['nonce'] = trans['nonce']
-        transd['blockHash'] = trans['blockHash'].hex()
-        transd['blockNumber'] = trans['blockNumber']
-        transd['transactionIndex'] = trans['transactionIndex']
-        transd['from'] = trans['from']
-        transd['to'] = trans['to']
-        transd['value'] = trans['value']
-        transd['gas'] = trans['gas']
-        transd['gasPrice'] = trans['gasPrice']
-        transd['input'] = trans['input']
-        transd['v'] = trans['v']
-        transd['r'] = trans['r'].hex()
-        transd['s'] = trans['s'].hex()
-        return transd
-
+        return {        
+            'hash': trans['hash'].hex(),
+            'nonce': trans['nonce'],
+            'blockHash': trans['blockHash'].hex(),
+            'blockNumber': trans['blockNumber'],
+            'transactionIndex': trans['transactionIndex'],
+            'from': trans['from'],
+            'to': trans['to'],
+            'value': trans['value'],
+            'gas': trans['gas'],
+            'gasPrice': trans['gasPrice'],
+            'input': trans['input'],
+            'v': trans['v'],
+            'r': trans['r'].hex(),
+            's': trans['s'].hex()
+            }
 
     def __str__(self) -> str:
         """Print most of the result properties.
@@ -3494,24 +3526,30 @@ class Result:
             Trx sender = 0xa894b8d26Cd25eCD3E154a860A86f7c75B12D993
             Trx value_wei = 0
 
+        :Notes:
+        - Neither :meth:`event_log`, :meth:`transaction`, nor :meth:`receipt`
+          are printed. They can be quite lengthy. You can add a print of them
+          with:
+
+            print(f'Event log = {r.event_log}\n'}
+            print(f'Transacton = {r.transaction}\n')
+            print(f'Receipt = {r.receipt}\n')
+
         """
         string = (
-            f'Block number = {self.block_number}\n'
+            f'Block number     = {self.block_number}\n'
             f'Block time_epoch = {self.block_time_epoch}\n'
+            f'Contract name    = {self.contract_name}\n'
             f'Contract address = {self.contract_address}\n'
-            f'Contract name = {self.contract_name}\n'
-            f'Event args = {self.event_args}\n'
-            f'Event log = {self.event_log}\n'
-            f'Event name = {self.event_name}\n'
-            f'Gas price wei = {self.gas_price_wei}\n'
-            f'Gas used = {self.gas_used}\n'
-            f'Transaction = {self.transaction}\n'
-            f'Trx args = {self.trx_args}\n'
-            f'Trx hash = {self.trx_hash}\n'
-            f'Trx name = {self.trx_name}\n'
-            f'Trx receipt = {self.trx_receipt}\n'
-            f'Trx sender = {self.trx_sender}\n'
-            f'Trx value_wei = {self.trx_value_wei}\n'
+            f'Trx name         = {self.trx_name}\n'
+            f'Trx args         = {self.trx_args}\n'
+            f'Trx sender       = {self.trx_sender}\n'
+            f'Trx value_wei    = {self.trx_value_wei}\n'
+            f'Trx hash         = {self.trx_hash}\n'
+            f'Gas price wei    = {self.gas_price_wei}\n'
+            f'Gas used         = {self.gas_used}\n'
+            f'Event name       = {self.event_name}\n'
+            f'Event args       = {self.event_args}\n'
             )
         return string
 # end of Result
@@ -3525,14 +3563,14 @@ class SimplEthError(Exception):
     errors resulting from interacting with Solidity contracts and the
     Ethereum blockchain.
 
-    The `web3` API throws many different types of exceptions and
+    The `web3` API throws many types of exceptions and
     its methods are not consistent in which they throw. :class:`SimplEthError`
     catches almost all of these (when new ones are found, they are added)
     and reports the details. This means you only have to have a `try/except`
     with just `SimplEthError` instead of having half-dozen Python exceptions
     in the `except`.
 
-    Besides passing back the details from the original Python exception,
+    Besides, passing back the details from the original Python exception,
     :class:`SimplEthError` offers hints as to the cause of the problem.
     Some exceptions, esp. the ones caused by a problem with the Solidity
     contract, can be rather mysterious, esp. to someone just starting out
@@ -3603,7 +3641,7 @@ class SimplEthError(Exception):
            -  ``<id>`` is a 3-digit sequence number for the exception
               in the class.
 
-        :to do: make exc_info, message, code private so they do not
+        :to do: make exc_info, message, and code private, so they do not
             appear in doc.
 
         """
