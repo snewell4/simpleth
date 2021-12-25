@@ -1440,8 +1440,8 @@ class Contract:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
                 f'Can not run transaction {trx_name}.\n'
-                f'HINT 1: Has the contract been destroyed?\n'
-                f'HINT 2: If you just switched Ganache workspace, has '
+                f'HINT1: Has the contract been destroyed?\n'
+                f'HINT2: If you just switched Ganache workspace, has '
                 f'        the contract been deployed yet?\n'
                 )
             raise SimplEthError(message, code='C-040-030') from None
@@ -1469,27 +1469,11 @@ class Contract:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
                 f'Bad type for trx_name: "{trx_name}"\n'
-                f'HINT 1: Check transaction argument types.\n'
-                f'HINT 2: Check all transaction arguments were specified.\n'
+                f'HINT1: Check transaction argument types.\n'
+                f'HINT2: Check all transaction arguments were specified.\n'
+                f'HINT3: Check sender arg was provided.\n'
                 )
             raise SimplEthError(message, code='C-040-070') from None
-        except ValueError as exception:
-            value_error_message: str = \
-                dict(exception.args[0])['message']
-            if 'revert' in value_error_message:
-                revert_message: str = self._format_revert_message(
-                    value_error_message
-                    )
-                raise SimplEthError(revert_message, code='C-040-080') from None
-
-            message = (
-                f'ERROR in {self.name}().get_gas_estimate(): '
-                f'ValueError says {value_error_message}\n'
-                f'HINT 1: Did you divide by zero?\n'
-                f'HINT 2: Did you pass in an out-of-bounds array index?\n'
-                f'HINT 3: Did you pass in a bad address?\n'
-                )
-            raise SimplEthError(message, code='C-040-090') from None
         return gas_estimate
 
     def get_trx_result(

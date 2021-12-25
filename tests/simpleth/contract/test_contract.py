@@ -86,7 +86,10 @@ class TestContractDeployGood:
         assert r.trx_name == 'deploy'
 
 
-@pytest.mark.usefixtures('construct_test_contract')
+@pytest.mark.usefixtures(
+    'construct_test_contract',
+    'construct_never_deployed_test_contract'
+    )
 class TestContractDeployBad:
     """Test cases for Contract().deploy() with bad values"""
 
@@ -385,14 +388,104 @@ class TestContractGetGasEstimateGood:
         assert gas_estimate > constants.GAS_LIMIT_MIN
 
 
-@pytest.mark.usefixtures('connect_to_test_contract')
+@pytest.mark.usefixtures(
+    'connect_to_test_contract',
+    'construct_never_deployed_test_contract'
+    )
 class TestContractGetGasEstimateBad:
     """Test cases for Contract().get_gas_estimate() with bad values"""
 
-    def test_get_gas_estimate_with_bad_sender(
+    def test_get_gas_estimate_with_bad_trx_name_raises_c_040_010(
             self,
             connect_to_test_contract
-    ):
+        ):
+        """Test get_gas_estimate() with a bad trx name"""
+        c = connect_to_test_contract
+        bad_trx_name = 'bad_trx'
+        with pytest.raises(SimplEthError) as excp:
+            gas_estimate = c.get_gas_estimate(
+                constants.TRX_SENDER,
+                bad_trx_name,
+                constants.TRX_ARG0,
+                constants.TRX_ARG1,
+                constants.TRX_ARG2
+            )
+        assert excp.value.code == 'C-040-010'
+
+    def test_get_gas_estimate_with_too_few_trx_args_raises_c_040_020(
+            self,
+            connect_to_test_contract
+        ):
+        """Test get_gas_estimate() with too few trx args"""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            gas_estimate = c.get_gas_estimate(
+                constants.TRX_SENDER,
+                constants.TRX_NAME,
+                constants.TRX_ARG0,
+                constants.TRX_ARG1
+            )
+        assert excp.value.code == 'C-040-020'
+
+    def test_get_gas_estimate_with_too_many_trx_args_raises_c_040_020(
+            self,
+            connect_to_test_contract
+        ):
+        """Test get_gas_estimate() with too many trx args"""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            gas_estimate = c.get_gas_estimate(
+                constants.TRX_SENDER,
+                constants.TRX_NAME,
+                constants.TRX_ARG0,
+                constants.TRX_ARG1,
+                constants.TRX_ARG2,
+                constants.TRX_ARG2
+            )
+        assert excp.value.code == 'C-040-020'
+
+    def test_get_gas_estimate_with_TBD_raises_c_040_030(
+            self,
+            connect_to_test_contract
+        ):
+        """Test get_gas_estimate() a destroyed contract. Don't know how
+        to do this yet. Just do an assert True for now. """
+        assert True
+
+    def test_get_gas_estimate_with_oob_arg_raises_c_040_040(
+            self,
+            connect_to_test_contract
+        ):
+        """Test get_gas_estimate() with too many trx args"""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            gas_estimate = c.get_gas_estimate(
+                constants.OOB_TRX_SENDER,
+                constants.OOB_TRX_NAME,
+                constants.OOB_TRX_ARG0,
+                constants.OOB_TRX_ARG1
+            )
+        assert excp.value.code == 'C-040-040'
+
+    def test_get_gas_estimate_with_db0_arg_raises_c_040_040(
+            self,
+            connect_to_test_contract
+        ):
+        """Test get_gas_estimate() with an arg that causes a
+        divide-by-zero error"""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            gas_estimate = c.get_gas_estimate(
+                constants.DB0_TRX_SENDER,
+                constants.DB0_TRX_NAME,
+                constants.DB0_TRX_ARG0
+            )
+        assert excp.value.code == 'C-040-040'
+
+    def test_get_gas_estimate_with_bad_sender_raises_c_040_050(
+            self,
+            connect_to_test_contract
+        ):
         """Test get_gas_estimate() with a bad sender address"""
         c = connect_to_test_contract
         bad_sender = '123'
@@ -405,4 +498,32 @@ class TestContractGetGasEstimateBad:
                 constants.TRX_ARG2
             )
         assert excp.value.code == 'C-040-050'
-# SN - resume here
+
+    def test_get_gas_estimate_using_never_deployed_contract_raises_c_040_060(
+            self,
+            construct_never_deployed_test_contract
+        ):
+        """Test get_gas_estimate() without doing a `connect()` first"""
+        c = construct_never_deployed_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            gas_estimate = c.get_gas_estimate(
+                constants.NEVER_DEPLOYED_TRX_SENDER,
+                constants.NEVER_DEPLOYED_TRX_NAME
+            )
+        assert excp.value.code == 'C-040-060'
+
+    def test_get_gas_estimate_with_missing_sender_raises_c_040_070(
+            self,
+            connect_to_test_contract
+        ):
+        """Test get_gas_estimate() with a missing sender arg"""
+        c = connect_to_test_contract
+        bad_sender = '123'
+        with pytest.raises(SimplEthError) as excp:
+            gas_estimate = c.get_gas_estimate(
+                constants.TRX_NAME,
+                constants.TRX_ARG0,
+                constants.TRX_ARG1,
+                constants.TRX_ARG2
+            )
+        assert excp.value.code == 'C-040-070'

@@ -13,6 +13,24 @@ def construct_test_contract():
 
 
 @pytest.fixture(scope='class')
+def construct_never_deployed_test_contract():
+    """Set up a simpleth contract object. Return contract object. Do not deploy.
+
+    There are a set of test cases that expect to use a contract which was compiled
+    but never `deploy()`-ed. They are testing the exception handling when a transaction
+    is run without a `connect()` being done.
+
+    In other words, the `.abi` and `.bin` artifact files exist but there is no
+    `.addr` file.
+
+    If this contract is accidentally deployed, just delete the `.addr` file in
+    the `artifact` directory.
+
+    """
+    return Contract(constants.NEVER_DEPLOYED_CONTRACT_NAME)
+
+
+@pytest.fixture(scope='class')
 def deploy_test_contract(construct_test_contract):
     """Deploy the test contract. Return contract_obj ready to be used for
     transactions."""

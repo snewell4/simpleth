@@ -42,6 +42,7 @@ contract Test {
     /// @dev used to store a string
     string public test_str;
 
+
     /**
      * @notice Emitted when the contract is deployed.
      *
@@ -57,6 +58,32 @@ contract Test {
         address indexed sender,
         int initNum,
         address Test
+    );
+
+    /**
+     * @notice Emitted when new num1 is stored
+     *
+     * @param timestamp block time when initNum was updated
+     * @param divisor used to divide initNum
+     * @param result resulting initNum
+     */
+    event InitNumDivided(
+        uint timestamp,
+        int divisor,
+        int result
+    );
+
+    /**
+     * @notice Emitted when a selected nums[] is stored
+     *
+     * @param timestamp block time when nums was updated
+     * @param index into nums[]
+     * @param num stored in nums[`index`]
+     */
+    event NumStored(
+        uint timestamp,
+        uint index,
+        uint num
     );
 
     /**
@@ -132,6 +159,17 @@ contract Test {
     event NumsStoredAndSummed(uint timestamp);
 
     /**
+     * @notice Emitted when owner is changed
+     *
+     * @param timestamp block time when owner was set
+     * @param newOwner address of the new owner
+     */
+    event OwnerSet(
+        uint timestamp,
+        address newOwner
+    );
+
+    /**
      * @notice Emitted when the four different types of variables
      * are stored
      *
@@ -148,6 +186,19 @@ contract Test {
         address test_addr,
         string test_str
     );
+
+
+    /**
+     * @notice Guard function that requires the sender be the Club
+     * owner.
+     *
+     * @dev Used for owner-only transactions.
+     */
+    modifier isOwner() {
+        require(msg.sender == owner, "Must be owner");
+        _;
+    }
+
 
     /**
      * @notice Create a new Test contract on the blockchain.
@@ -169,6 +220,64 @@ contract Test {
     }
 
     /**
+     * @notice Divides initNum by a divisor
+     *
+     * @dev Emits InitNumDivided(). Used to test for divide-by-zero
+     * errors by using 0 for divisor and for non-integer results by using
+     * 3, or other, for divisor
+     *
+     * @param _divisor divide initNum by this value
+     */
+    function divideInitNum(int _divisor)
+        public
+    {
+        initNum = initNum / _divisor;
+        emit InitNumDivided(
+            block.timestamp,
+            _divisor,
+            initNum
+        );
+    }
+
+    /**
+     * @notice Allows current owner to assign a new owner
+     *
+     * @dev Emits OwnerSet().
+     *
+     * @param _newOwner divide initNum by this value
+     */
+    function setOwner(address _newOwner)
+        public
+        isOwner
+    {
+        owner = _newOwner;
+        emit OwnerSet(
+            block.timestamp,
+            _newOwner
+        );
+    }
+
+    /**
+     * @notice Stores one of the nums[]
+     *
+     * @dev Emits NumStored(). Used to test for out of bounds
+     * errors by giving bad value to `_index`.
+     *
+     * @param _index selects which nums[]
+     * @param _num value to store in nums[`index`]
+     */
+    function storeNum(uint _index, uint _num)
+        public
+    {
+        nums[_index] = _num;
+        emit NumStored(
+            block.timestamp,
+            _index,
+            nums[_index]
+        );
+    }
+
+    /**
      * @notice Stores the three args in nums[]
      *
      * @dev Emits NumsStored()
@@ -178,7 +287,7 @@ contract Test {
      * @param _num2 value to store in nums[2]
      */
     function storeNums(uint _num0, uint _num1, uint _num2)
-    public
+        public
     {
         nums[0] = _num0;
         nums[1] = _num1;
@@ -202,7 +311,7 @@ contract Test {
      * @param _num2 value to store in nums[2]
      */
     function storeNumsAndSum(uint _num0, uint _num1, uint _num2)
-    public
+        public
     {
         nums[0] = _num0;
         nums[1] = _num1;
@@ -233,7 +342,7 @@ contract Test {
         uint _num1,
         uint _num2
     )
-    public
+        public
     {
         nums[0] = _num0;
         nums[1] = _num1;
@@ -257,7 +366,7 @@ contract Test {
         uint _num1,
         uint _num2
     )
-    public
+        public
     {
         nums[0] = _num0;
         nums[1] = _num1;
@@ -267,14 +376,13 @@ contract Test {
         emit Num2Stored(block.timestamp, nums[2]);
     }
 
-
     /**
      * @notice Sums values in nums[] and stores in numsTotal
      *
      * @dev Emits NumsSummed()
      */
     function sumNums()
-    public
+        public
     {
         numsTotal = nums[0] + nums[1] + nums[2];
         emit NumsSummed(
@@ -285,7 +393,6 @@ contract Test {
             numsTotal
         );
     }
-
 
     /**
      * @notice Stores a variety of data types into public state
@@ -304,7 +411,7 @@ contract Test {
         address _addr,
         string memory _str
     )
-    public
+        public
     {
         test_uint = _uint;
         test_int = _int;
@@ -319,14 +426,12 @@ contract Test {
         );
     }
 
-
     /**
      * @notice Function to return nums[0]
      */
     function getNum0() public view returns(uint num) {
         return nums[0];
     }
-
 
     /**
      * @notice Function to return nums[index]
@@ -336,7 +441,6 @@ contract Test {
     function getNum(uint8 index) public view returns(uint num) {
         return nums[index];
     }
-
 
     /**
      * @notice Function to return all values in nums[]
