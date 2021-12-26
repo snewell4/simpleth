@@ -9,7 +9,7 @@ CONTRACT_NAME = 'Test'
 CONSTRUCTOR_SENDER = Blockchain().address(0)
 CONSTRUCTOR_ARG = 10  # Test constructor expects a uint
 CONSTRUCTOR_EVENT_NAME = 'TestConstructed'
-CONSTRUCTOR_GAS_LIMIT = 800_000    # deploy() currently takes 698,571 gas units
+CONSTRUCTOR_GAS_LIMIT = 2_000_000    # deploy() currently takes 698,571 gas units
 
 # Parameters for a test transaction in CONTRACT_NAME
 # SNFIX - looks like I ought to prepend 'TEST_' to all these

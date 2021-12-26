@@ -32,7 +32,7 @@ class TestResultProperties:
 
     def test_event_log(self, result_from_test_trx):
         """Test result event_log first event has the expected event name"""
-        assert result_from_test_trx.event_log[0]['event'] == \
+        assert result_from_test_trx.event_log['event'] == \
             constants.EVENT_NAME
 
     def test_event_name(self, result_from_test_trx):

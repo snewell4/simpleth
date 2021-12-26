@@ -46,7 +46,7 @@ __status__ = 'Prototype'
 #
 # Directories and filenames
 #
-# FIX - I think all SUFFIX should have a leading "."
+# TBD - I think all SUFFIX should have a leading "."
 PROJECT_HOME: str = 'C:/Users/snewe/OneDrive/Desktop/simpleth'
 """Directory for the prototype project home"""
 
@@ -131,6 +131,13 @@ conversions. Arbitrary value. Consider a better value."""
 T_ABI = Any
 """``ABI`` type is a list with JSON read from the `artifact` file."""
 
+T_ATTRIBUTE_DICT = Any
+"""``AttributeDict`` type is not known to type hint. Use `Any` for now."""
+
+T_BLOCKCHAIN_OBJ = Any
+"""``Blockchain object`` type is `simpleth.Blockchain`. Use `Any` for now.
+Created by `simpleth` methods. See ``T_result`` about those single quotes."""
+
 T_BYTECODE = Any
 """``bytecode`` type is HexBytes read from the `artifact` file.
 Use `Any` for now."""
@@ -139,13 +146,41 @@ T_CONTRACT_EVENT = Any
 """`contract_event`` type is ``web3._utils.datatypes.<event_name>'``.
 Use ``Any`` for now."""
 
-T_TRANSACTION = Any
-"""``Transaction`` type is class `web3.datastructures.AttributeDict`.
-Use `Any` for now. Created by `web3.py` `getTransaction()`.  """
+T_DECIMAL = Any
+"""``Decimal`` type. Use ``Any`` for now."""
+
+T_DEPLOYED_CODE = Any
+"""``Deployed code`` type is class `HexBytes`. Use
+`Any` for now.  Created by `web3.py` method."""
+
+T_EXC_INFO = Any
+"""``Transaction exception info`` type is a tuple returned by
+`sys.exc_info()` after an exception. Use `Any` for now."""
+
+T_ETH_OBJ = Any
+"""``Eth object`` type is `web3.eth.Eth`. Use `Any` for now.
+Created by `web3.py` methods."""
+
+T_EVENT = Any
+"""``Event`` type is an ``AttributeDict``. Use ``Any`` for now."""
+
+T_EVENT_LOG = List
+"""``Event log`` type is a list of T_EVENT items."""
+
+T_FILTER_OBJ = Any
+"""``Filter object`` type is `web3._utils.filters.LogFilter`.
+Use `Any` for now. Created by `web3.py` methods."""
+
+T_FILTER_LIST = Any
+"""``Filter list`` type is created by `web3.py` `event_filter`.
+Use `Any` for now."""
 
 T_HASH = Any
-"""``Transaction hash`` type is HexBytes in ``web3.py``. It is cast to
-a string for use in ``simpleth``."""
+"""``Transaction hash`` type is HexBytes in ``web3.py``. Use `Any`
+for now."""
+
+T_HEX_BYTE = Any
+"""``HexByte`` type is not known to type hint. Use `Any` for now."""
 
 T_RECEIPT = Any
 """``Transaction receipt`` type is AttributeDict. Use `Any` for now.
@@ -156,39 +191,16 @@ T_RESULT = Any
 from mining a transaction. Created by the `simpleth` class,
 ``Result``. Use Any for now."""
 
-T_EXC_INFO = Any
-"""``Transaction exception info`` type is a tuple returned by
-`sys.exc_info()` after an exception. Use `Any` for now."""
-
-T_DEPLOYED_CODE = Any
-"""``Deployed code`` type is class `HexBytes`. Use
-`Any` for now.  Created by `web3.py` method."""
-
-T_BLOCKCHAIN_OBJ = Any
-"""``Blockchain object`` type is `simpleth.Blockchain`. Use `Any` for now.
-Created by `simpleth` methods. See ``T_result`` about those single quotes."""
-
-T_ETH_OBJ = Any
-"""``Eth object`` type is `web3.eth.Eth`. Use `Any` for now.
-Created by `web3.py` methods."""
-
-T_EVENT_LOG = Any
-"""``Event log`` type is an ``AttributeDict``. Use ``Any`` for now."""
-
-T_FILTER_OBJ = Any
-"""``Filter object`` type is `web3._utils.filters.LogFilter`.
-Use `Any` for now. Created by `web3.py` methods."""
-
-T_FILTER_LIST = Any
-"""``Filter list`` type is created by `web3.py` `event_filter`.
-Use `Any` for now."""
+T_TRANSACTION = Any
+"""``Transaction`` type is class `web3.datastructures.AttributeDict`.
+Use `Any` for now. Created by `web3.py` `getTransaction()`.  """
 
 T_WEB3_OBJ = Any
 """``Web3 object`` type is `web3.main.Web3 object`. Use `Any` for now.
 Created by `web3.py` methods."""
 
 T_WEB3_ETH_OBJ = Any
-"""``Web3 object`` type is `TODO - fill in`. Use `Any` for now."""
+"""``Web3 object`` type is `web3.eth.Eth object`. Use `Any` for now."""
 
 T_WEB3_CONTRACT_OBJ = Any
 """``Web3 contract object`` type is ``web3._utils.datatypes.Contract``
@@ -197,9 +209,6 @@ object. Use ``Any`` for now."""
 T_WEB3_EXC = Any
 """``Web3 Exception`` type is `module web3.exceptions`.
 Use `Any` for now. Provided by `web3.py`"""
-
-T_DECIMAL = Any
-"""``Decimal`` type. Use ``Any`` for now."""
 
 
 class Blockchain:
@@ -996,7 +1005,7 @@ class Contract:
             are on the blockchain. This is the same as the
             :attr:`bytecode` without its additional code to deploy.
 
-        :to do: Play with this a bit. After doing a lot of gonzo
+        :TBD: Play with this a bit. After doing a lot of gonzo
             hand-testing to create examples and debug, I had Test
             already deployed that would run storeNums() but showed
             deployed_code == 'x0'. Did a fresh deploy() and all worked.
@@ -1298,7 +1307,7 @@ class Contract:
             >>> user = Blockchain().accounts[0]
             >>> r = c.deploy(user, 42, constructor_event_name='TestConstructed')
 
-        :to do: Can you have a list for a constructor arg?
+        :TBD: Can you have a list for a constructor arg?
 
         """
         trx_result: T_RESULT = []
@@ -1411,7 +1420,7 @@ class Contract:
             38421
 
         """
-        # TODO can you send a list as an arg? If so, add to the docstring
+        # TBD can you send a list as an arg? If so, add to the docstring
         # and Type Hints
         try:
             gas_estimate: int = getattr(
@@ -1681,7 +1690,7 @@ class Contract:
             - Uses the built-in Solidity public getter.
 
         """
-        # TODO - what are the possible types for args? Just int?
+        # TBD - what are the possible types for args? Just int?
         try:
             var_value: Union[int, str, float, list] = getattr(
                 self._web3_contract.functions,
@@ -1963,7 +1972,7 @@ class Contract:
             -  ``value`` is Ether that is sent to the transaction. It is
                a payment from the sender to the contract. The transaction
                should be defined as a `payable` function in the Solidity
-               contract or the contract will need a TODO (what's the
+               contract or the contract will need a TBD (what's the
                default payable thing?)
             -  See https://ethereum.org/en/developers/docs/gas/ for the
                details on fees and gas.
@@ -2110,9 +2119,9 @@ class Contract:
             may be watching for that string.
 
         """
-        # TODO - what happens when a contract transaction assert()
+        # TBD - what happens when a contract transaction assert()
         # fails? Does that go through this as well?
-        # TODO - does this get called when a transaction sends
+        # TBD - does this get called when a transaction sends
         # Ether to a non-payable contract? If so, update the docstrings
         # to explain that as well.
         revert_reason: str = value_error_msg.split('revert')[1].strip()
@@ -2926,13 +2935,16 @@ class Result:
 
     -  :meth:`__str__` - allows ``print(<result>)`` to output most properties
 
-    **INTERNAL PROPERTIES**
-    For debugging or using the `web3` data formatting the following atrributres
+    **OTHER ATTRIBUTES**
+    For debugging or using the `web3` data formatting the following attributes
     are available:
 
     -  ``_contract`` - :meth:`Contract` object passed in as arg to `Result()`
-    -  ``_web3.contract_object`` - `web3` object passed in as arg to `Result()`
-    -  ``_web3_transaction`` - `web3` format of the transaction data. Should be
+    -  ``web3_contract_object`` - `web3` object passed in as arg to `Result()`
+    -  ``web3_receipt`` - `web3` format of the transaction receipt data. Should
+       be the same as :meth:`receipt` but `web3` uses `AttributeDict` and
+       `HexBytes`.
+    -  ``web3_transaction`` - `web3` format of the transaction data. Should be
        same as :meth:`transaction` but `web3` uses `AttributeDict` and
        `HexBytes`.
 
@@ -2989,9 +3001,11 @@ class Result:
         :type event_name: str
 
         """
-        transaction: T_TRANSACTION = \
+        self.web3_transaction: T_TRANSACTION = \
             contract.blockchain.eth.get_transaction(trx_hash)
-        self._transaction: dict = self._transaction_to_dict(transaction)
+        self._transaction: dict = self._to_simpleth_transaction(
+            self.web3_transaction)
+
         self._block_number: int = trx_receipt.blockNumber
         self._block_time: int = \
             contract.blockchain.eth.get_block(self._block_number).timestamp
@@ -3007,14 +3021,17 @@ class Result:
         self._trx_args: dict = {}   # may be assigned below
         self._trx_hash: T_HASH = trx_hash
         self._trx_name: str = ''   # assigned below
-        self._trx_receipt: T_RECEIPT = trx_receipt
+        self._trx_receipt: dict[str] = self._to_simpleth_receipt(trx_receipt)
         self._trx_sender: str = self._trx_receipt['from']
         self._trx_value_wei: int = self._transaction['value']
-        # Not surfaced as a property. Available as a private attribute only.
-        self._web3_contract_object = web3_contract_object
-        self._web3_transaction = transaction
 
-        if self.transaction['to']:
+        # Not surfaced as @properties. Available as attributes.
+        self.contract: Contract = contract
+        self.web3_contract_object: T_WEB3_CONTRACT_OBJ = web3_contract_object
+        self.web3_receipt: T_RECEIPT = trx_receipt
+        self.web3_event: T_EVENT = []    # may be assigned below
+
+        if self._transaction['to']:
             # If there is a value for `to`, this was a transaction using
             # a deployed contract. Proceed to get interesting info.
             function_obj, function_params = \
@@ -3067,12 +3084,11 @@ class Result:
                 #
                 # The `MismatchedABI` exception is thrown if user misspells
                 # the event name meaning it is not found in the transaction.
-                self._event_log: dict = dict(
-                    contract_event().processReceipt(
+                self.web3_event: T_EVENT = contract_event().processReceipt(
                         trx_receipt,
                         errors=DISCARD
                         )[0]
-                    )
+
             except web3_contract_object.web3e.MismatchedABI as exception:
                 message = (
                     f'ERROR inf getting transaction results for '
@@ -3081,7 +3097,8 @@ class Result:
                     )
                 raise SimplEthError(message, code='R-010-020') from None
 
-            self._event_args = dict(self._event_log['args'])
+            self._event = self._to_simpleth_event(self.web3_event)
+            self._event_args = dict(self._event['args'])
             
     @property
     def block_number(self) -> int:
@@ -3210,7 +3227,8 @@ class Result:
             [{'args': {'num0': 10, 'num1': 20, 'num2': 20}, 'event': 'NumsStored'
 
         """
-        return self._event_log
+        # TBD - get all events in a log and return them. Just returning one, for now.
+        return self._event
 
     @property
     def event_name(self) -> str:
@@ -3358,6 +3376,10 @@ class Result:
     def trx_receipt(self) -> T_RECEIPT:
         """Return the transaction receipt.
 
+        ``trx_receipt`` that is returned is a dict that does not use
+        `AttributeDict` nor `HexBytes`. The `web3` formatted `receipt` that uses
+        those data types is available as the attribute, :attr:`web3_receipt`.
+
         :rtype: dict
         :return: receipt after transaction was mined.
         :example:
@@ -3372,6 +3394,7 @@ class Result:
             {'transactionHash': HexBytes('0x0e36d22f42dbf641cef1e9f26daeb00f28a4850fccde39f ... ')}
 
         """
+        # TBD simplethify()
         return dict(self._trx_receipt)
 
     @property
@@ -3415,8 +3438,8 @@ class Result:
         return self._trx_value_wei
 
     @staticmethod
-    def _event_to_dict(event: T_EVENT_LOG) -> dict:
-        """Return event log entry as a dictionary.
+    def _to_simpleth_event(web3_event: T_EVENT) -> dict:
+        """Return event log entry as a dictionary with strings.
 
         `web3.py` structures an event in the event log using
          `AttributeDict` and HexBytes.
@@ -3424,55 +3447,110 @@ class Result:
         This converts event to using dictionaries and strings. This
         gives `simpleth` a simpler data structure.
 
-        :param event: one event entry from a transaction event log
-        :type event: AttributeDict
+        :param web3_event: one event entry from a transaction event log
+        :type web3_event: AttributeDict
         :rtype: dict
         :returns: the same event data but using dict and string types
         throughout.
+        :notes: I'm sure there is a way to make a generalized recursive
+        method to replace `AttributeDict` and `HexBytes` but my first
+        attempt did not work. Try again sometime.
 
         """
         return {
-            'args': dict(event['args']),
-            'event': event['event'],
-            'logIndex': event['logIndex'],
-            'transactionIndex': event['transactionIndex'],
-            'transactionHash': event['transactionHash'].hex(),
-            'address': event['address'],
-            'blockHash': event['blockHash'].hex(),
-            'blockNumber': event['blockNumber']
+            'args': dict(web3_event['args']),
+            'event': web3_event['event'],
+            'logIndex': web3_event['logIndex'],
+            'transactionIndex': web3_event['transactionIndex'],
+            'transactionHash': web3_event['transactionHash'].hex(),
+            'address': web3_event['address'],
+            'blockHash': web3_event['blockHash'].hex(),
+            'blockNumber': web3_event['blockNumber']
             }
 
     @staticmethod
-    def _transaction_to_dict(trans: T_TRANSACTION) -> dict:
-        """Return transaction AttributeDict as a dictionary.
+    def _to_simpleth_receipt(web3_receipt: T_RECEIPT) -> dict:
+        """Return transaction receipt as a dictionary with strings.
+
+        `web3.py` structures a receipt using `AttributeDict` and HexBytes.
+
+        This converts the receipt using dictionaries and strings. This
+        gives `simpleth` a simpler data structure.
+
+        :param web3_receipt: `web3` transaction receipt
+        :type web3_receipt: AttributeDict
+        :rtype: dict
+        :returns: the same receipt data but using dict and string types
+        throughout.
+        :notes: I'm sure there is a way to make a generalized recursive
+        method to replace `AttributeDict` and `HexBytes` but my first
+        attempt did not work. Try again sometime.
+
+        """
+        simpleth_logs = []
+        for log in web3_receipt['logs']:
+            simpleth_log = {
+                'logIndex': log['logIndex'],
+                'transactionIndex': log['transactionIndex'],
+                'transactionHash': log['transactionHash'].hex(),
+                'blockHash': log['blockHash'].hex(),
+                'blockNumber': log['blockNumber'],
+                'address': log['address'],
+                'data': log['data'],
+                'topics': [topic.hex() for topic in log['topics']],
+                'type': log['type']
+            }
+            simpleth_logs.append(simpleth_log)
+
+        return {
+            'transactionHash': web3_receipt['transactionHash'].hex(),
+            'transactionIndex': web3_receipt['transactionIndex'],
+            'blockHash': web3_receipt['blockHash'].hex(),
+            'blockNumber': web3_receipt['blockNumber'],
+            'from': web3_receipt['from'],
+            'to': web3_receipt['to'],
+            'gasUsed': web3_receipt['gasUsed'],
+            'cumulativeGasUsed': web3_receipt['cumulativeGasUsed'],
+            'contractAddress': web3_receipt['contractAddress'],
+            'logs': simpleth_logs,
+            'status': web3_receipt['status'],
+            'logsBloom': web3_receipt['logsBloom'].hex()
+            }
+
+    @staticmethod
+    def _to_simpleth_transaction(web3_trans: T_TRANSACTION) -> dict:
+        """Return transaction AttributeDict as a dictionary with strings.
 
         `web3.py` structures a transaction using `AttributeDict` and
         HexBytes. This converts that transaction AttributedDict to one
         using dictionaries and strings. This gives `simpleth` a simpler
         data structure.
 
-        :param trans: transaction dictionary from `web3`
-        :type trans: AttributeDict
+        :param web3_trans: transaction dictionary from `web3`
+        :type web3_trans: AttributeDict
         :rtype: dict
         :returns: the same transaction data but uses dict and string
         types throughout.
+        :notes: I'm sure there is a way to make a generalized recursive
+        method to replace `AttributeDict` and `HexBytes` but my first
+        attempt did not work. Try again sometime.
 
         """
         return {        
-            'hash': trans['hash'].hex(),
-            'nonce': trans['nonce'],
-            'blockHash': trans['blockHash'].hex(),
-            'blockNumber': trans['blockNumber'],
-            'transactionIndex': trans['transactionIndex'],
-            'from': trans['from'],
-            'to': trans['to'],
-            'value': trans['value'],
-            'gas': trans['gas'],
-            'gasPrice': trans['gasPrice'],
-            'input': trans['input'],
-            'v': trans['v'],
-            'r': trans['r'].hex(),
-            's': trans['s'].hex()
+            'hash': web3_trans['hash'].hex(),
+            'nonce': web3_trans['nonce'],
+            'blockHash': web3_trans['blockHash'].hex(),
+            'blockNumber': web3_trans['blockNumber'],
+            'transactionIndex': web3_trans['transactionIndex'],
+            'from': web3_trans['from'],
+            'to': web3_trans['to'],
+            'value': web3_trans['value'],
+            'gas': web3_trans['gas'],
+            'gasPrice': web3_trans['gasPrice'],
+            'input': web3_trans['input'],
+            'v': web3_trans['v'],
+            'r': web3_trans['r'].hex(),
+            's': web3_trans['s'].hex()
             }
 
     def __str__(self) -> str:
@@ -3625,7 +3703,7 @@ class SimplEthError(Exception):
            -  ``<id>`` is a 3-digit sequence number for the exception
               in the class.
 
-        :to do: make exc_info, message, and code private, so they do not
+        :TBD: make exc_info, message, and code private, so they do not
             appear in doc.
 
         """
