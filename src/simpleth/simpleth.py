@@ -164,7 +164,7 @@ Created by `web3.py` methods."""
 T_EVENT = Any
 """``Event`` type is an ``AttributeDict``. Use ``Any`` for now."""
 
-T_EVENT_LOG = List
+T_EVENT_LOG_OBJ = List
 """``Event log`` type is a list of T_EVENT items."""
 
 T_FILTER_OBJ = Any
@@ -819,7 +819,7 @@ class Contract:
     -  :meth:`blockchain` - `web3` blockchain object
     -  :meth:`bytecode` - contract bytecode
     -  :meth:`deployed_code` - contract bytecode as deployed on chain
-    -  :meth:`events` - event names defined in contract
+    -  :meth:`event_names` - event names defined in contract
     -  :meth:`functions` - function names defined in contract
     -  :meth:`name` - name of contract
     -  :meth:`size` - deployed contract size, in bytes
@@ -908,8 +908,8 @@ class Contract:
         self._web3_contract: T_WEB3_CONTRACT_OBJ = None
         """Private instance of the `web3._utils.datatypes.Contract`
             used to access methods for that object."""
-        self._events: List = []
-        """Private list of events emitted by the contract"""
+        self._event_names: List = []
+        """Private list of event names emitted by the contract"""
         self._functions: List = []
         """Private list of contract functions provided by the contract"""
         self._size: int = 0
@@ -1015,8 +1015,8 @@ class Contract:
         return self._deployed_code
 
     @property
-    def events(self) -> List[str]:
-        """Return the events defined in the contract.
+    def event_names(self) -> List[str]:
+        """Return the event names defined in the contract.
 
         :rtype: list
         :return: names of the events defined in the contract
@@ -1025,11 +1025,11 @@ class Contract:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
-            >>> c.events
+            >>> c.event_names
             ['NumsStored', 'TestConstructed', 'TypesStored']
 
         """
-        return self._events
+        return self._event_names
 
     @property
     def functions(self) -> List[str]:
@@ -1246,7 +1246,7 @@ class Contract:
             address=self.address,
             abi=self.abi
             )
-        self._events = self._get_contract_events()
+        self._event_names = self._get_contract_events()
         self._functions = self._get_contract_functions()
         self._deployed_code = self._get_deployed_code()
         self._size = self._get_size()
@@ -2702,7 +2702,7 @@ class Filter:
             message: str = (
                 f'ERROR in create({event_name}).\n'
                 f'The event: {event_name} was not found.\n'
-                f'Valid event_names: {self._contract.events}\n'
+                f'Valid event_names: {self._contract.event_names}\n'
                 f'HINT: Check the spelling of your event_name.\n'
                 )
             raise SimplEthError(message, code='F-020-010') from None
@@ -2845,7 +2845,7 @@ class Filter:
             message = (
                 f'ERROR in get_old_events({event_name}).\n'
                 f'The event: {event_name} was not found in contract.\n'
-                f'Valid event_names: {self._contract.events}\n'
+                f'Valid event_names: {self._contract.event_names}\n'
                 f'HINT: Check spelling of event_name arg.\n'
                 )
             raise SimplEthError(message, code='F-030-020') from None
@@ -3012,9 +3012,9 @@ class Result:
         self._contract = contract
         self._contract_address: str = contract.address
         self._contract_name: str = contract.name
-        self._event_args: [dict] = {}  # may be assigned below
-        self._event_log: list[dict] = []     # may be assigned below
-        self._event_name: str = event_name
+        self._event_args: list[dict] = []      # may be assigned below
+        self._event_logs: list[dict] = []      # may be assigned below
+        self._event_names: list[str] = []      # may be assigned below
         self._function_object: object = None   # may be assigned below
         self._gas_price_wei: int = self._transaction['gasPrice']
         self._gas_used: int = trx_receipt.gasUsed
@@ -3029,7 +3029,7 @@ class Result:
         self.contract: Contract = contract
         self.web3_contract_object: T_WEB3_CONTRACT_OBJ = web3_contract_object
         self.web3_receipt: T_RECEIPT = trx_receipt
-        self.web3_event: T_EVENT = []    # may be assigned below
+        self.web3_event_logs: list[T_EVENT_LOG_OBJ] = []    # may be assigned below
 
         if self._transaction['to']:
             # If there is a value for `to`, this was a transaction using
@@ -3045,61 +3045,61 @@ class Result:
             # Not surfaced as a property. Available as a private attribute only.
             self._function_object: object = function_obj
         else:
-            # This was a   `deploy()`. The input is the ABI and can't be
-            # decoded. Assign 'deploy' to the trx_name. Don't know a way
-            # to get the constructor args.
+            # This was a `deploy()`. The input is the ABI and can't be
+            # decoded. Assign 'deploy' to the trx_name.
             self._trx_name = 'deploy'
 
-        if event_name:
-            # User gave us an event name. Find and add event log info to
-            # trx_result.
+        for event_name in contract.event_names:
+            # for every event defined in the contract
             try:
+                # use the event name to get the `web3` contract event object
                 contract_event: T_CONTRACT_EVENT = getattr(
                     web3_contract_object.events,
                     event_name
                     )
             except self._contract.web3e.ABIEventFunctionNotFound as exception:
                 message = (
-                    f'ERROR in getting transaction results for '
-                    f'{self._contract_name}: event "{event_name}" '
-                    f'was not found in trx "{self._trx_name}".\n'
-                    f'Event information not added to result.\n'
-                    f'MESSAGE: ABIEventFunctionNotFound says {exception}\n'
-                    f'HINT: Check spelling of transaction event name.\n'
-                    )
-                raise SimplEthError(message, code='R-090-010') from None
+                    f'ERROR in getting results for '
+                    f'{self._contract_name}.{self._trx_name}().\n'
+                    f'MismatchedABI says: {exception}\n'
+                    f'The event, "{event_name}" was in the simpleth contract '
+                    f'list of `event_names` but was not found in\n'
+                    f'the `web3 contract` object list of `events`. This is not '
+                    f'a typical error.\n'
+                    f'HINT: try recompiling and redeploying the contract.'
+                )
+                raise SimplEthError(message, code='R-010-020') from None
 
             try:
-                # If the transaction emits multiple events or if the
-                # transaction calls a second transaction which itself
-                # emits an event(s), there will be multiple events to process
-                # and the only one we are prepared to process is the one
-                # title, ``event_name``. The others will have ABIs that
-                # do not match and will generate a `Mismatched ABI` warning.
-                # For now, don't try to find the correct ABI to process
-                # these other events. Specify ``DISCARD`` will silence
-                # the warnings and give us just the event that was
-                # requested by the user. There should be only one item in
-                # event_log, the one event named by the user.
-                #
-                # The `MismatchedABI` exception is thrown if user misspells
-                # the event name meaning it is not found in the transaction.
-                self.web3_event: T_EVENT = contract_event().processReceipt(
+                # use the `web3` contract event object to get the details for the
+                # event, an empty tuple is returned if event was not used. DISCARD
+                # silently discards any logs that had errors and returns processed
+                # logs that do not contain any errors.
+                event_log: T_EVENT_LOG_OBJ = contract_event().processReceipt(
                         trx_receipt,
                         errors=DISCARD
-                        )[0]
+                        )
+                if event_log:
+                    # This event had data, so it was emitted by the transaction.
+                    # Add it to the event data list.
+                    self.web3_event_logs.append(event_log)
+                    self._event_logs.append(dict(self._to_simpleth_event(event_log[0])))
+                    self._event_args = [e_log['args'] for e_log in self.event_logs]
+                    self._event_names = [e_log['event'] for e_log in self.event_logs]
 
-            except web3_contract_object.web3e.MismatchedABI as exception:
+            except contract.web3e.MismatchedABI as exception:
                 message = (
-                    f'ERROR inf getting transaction results for '
+                    f'ERROR in getting results for '
                     f'{self._contract_name}.{self._trx_name}().\n'
-                    f'MismatchedABI says: {exception}'
+                    f'MismatchedABI says: {exception}\n'
+                    f'The event ABI in the contract definition does not match '
+                    f'the ABI deployed on the chain.\n'
+                    f'HINT1: are you connecting to the most recently compiled version '
+                    f'of the contract?\n'
+                    f'HINT2: try recompiling and redeploying the contract.'
                     )
                 raise SimplEthError(message, code='R-010-020') from None
 
-            self._event = self._to_simpleth_event(self.web3_event)
-            self._event_args = dict(self._event['args'])
-            
     @property
     def block_number(self) -> int:
         """Return block number of block containing the transaction.
@@ -3182,11 +3182,17 @@ class Result:
         return self._contract_name
 
     @property
-    def event_args(self) -> dict:
+    def event_args(self) -> list[dict]:
         """Return args for the event emitted by the transaction.
 
-        :rtype: dict
-        :return: keys are the arg names; values are arg values
+        :rtype: list[dict]
+        :return: one dict for each event emitted; key is the arg name
+        and the value is the value of the arg
+        :notes:
+        - The event name that emitted these args is found in
+          :meth:`event_names`. Use the same index into list to get the
+          `event name`.
+
         :example:
             >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
@@ -3202,19 +3208,20 @@ class Result:
         return self._event_args
 
     @property
-    def event_log(self) -> dict:
-        """Return event log resulting from transaction.
+    def event_logs(self) -> list[dict]:
+        """Return event logs resulting from transaction.
 
-        This differs from the `web3.py` event log in three ways:
+        This differs from the `web3.py` event logs in three ways:
 
-        1)  `web3` returns the log as a tuple. This uses a list.
+        1)  `web3` returns the log as a list of tuples, each tuple has
+            one event emitted.
         2)  `web3` returns the tuple item as an AttributeDict.
             This uses dicts. Likewise, within an event there are
             AttributeDicts and this uses dicts instead.
         3)  `web3` returns hashes as HexBytes and this uses strings.
 
-        :rtype: dict
-        :return: event log
+        :rtype: list
+        :return: one dict per event emitted
         :example:
             >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
@@ -3223,19 +3230,23 @@ class Result:
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
-            >>> trx_result.event_log
+            >>> trx_result.event_logs
             [{'args': {'num0': 10, 'num1': 20, 'num2': 20}, 'event': 'NumsStored'
 
         """
-        # TBD - get all events in a log and return them. Just returning one, for now.
-        return self._event
+        return self._event_logs
 
     @property
-    def event_name(self) -> str:
-        """Return name of the event emitted by the transaction.
+    def event_names(self) -> list[str]:
+        """Return names of the event emitted by the transaction.
 
-        :rtype: list
-        :return: list of strings, one per event, with each event name emitted
+        :rtype: list[str]
+        :return: list with names of each event emitted
+        :notes:
+        - The event args that were emitted for this event are found in
+          :meth:`event_args`. Use the same index into list to get the
+          `event args`.
+
         :example:
             >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
@@ -3248,7 +3259,7 @@ class Result:
             ['NumsStored']
 
         """
-        return self._event_name
+        return self._event_names
 
     @property
     def gas_price_wei(self) -> int:
@@ -3610,9 +3621,10 @@ class Result:
             f'Trx hash         = {self.trx_hash}\n'
             f'Gas price wei    = {self.gas_price_wei}\n'
             f'Gas used         = {self.gas_used}\n'
-            f'Event name       = {self.event_name}\n'
-            f'Event args       = {self.event_args}\n'
             )
+        for i in range(len(self._event_names)):
+            string += f'Event name[{i}]    = {self.event_names[i]}\n'
+            string += f'Event args[{i}]    = {self.event_args[i]}\n'
         return string
 # end of Result
 

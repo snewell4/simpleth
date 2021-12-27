@@ -27,17 +27,17 @@ class TestResultProperties:
 
     def test_event_args(self, result_from_test_trx):
         """Test result event_args has one of the expected args"""
-        assert result_from_test_trx.event_args[constants.EVENT_ARG_KEY1] == \
+        assert result_from_test_trx.event_args[0][constants.EVENT_ARG_KEY1] == \
             constants.TRX_ARG0
 
     def test_event_log(self, result_from_test_trx):
         """Test result event_log first event has the expected event name"""
-        assert result_from_test_trx.event_log['event'] == \
+        assert result_from_test_trx.event_logs[0]['event'] == \
             constants.EVENT_NAME
 
     def test_event_name(self, result_from_test_trx):
         """Test result event_name is the expected event name"""
-        assert result_from_test_trx.event_name == constants.EVENT_NAME
+        assert result_from_test_trx.event_names[0] == constants.EVENT_NAME
 
     def test_gas_price_wei(self, result_from_test_trx):
         """Test result gas_price_wei is an integer"""

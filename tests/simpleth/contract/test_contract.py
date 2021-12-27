@@ -247,7 +247,7 @@ class TestContractPropertiesGood:
     def test_events(self, connect_to_test_contract):
         """Test events is a list"""
         c = connect_to_test_contract
-        assert isinstance(c.events, list)
+        assert isinstance(c.event_names, list)
 
     def test_functions(self, connect_to_test_contract):
         """Test functions is a list"""
