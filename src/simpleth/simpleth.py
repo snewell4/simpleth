@@ -164,7 +164,7 @@ Created by `web3.py` methods."""
 T_EVENT = Any
 """``Event`` type is an ``AttributeDict``. Use ``Any`` for now."""
 
-T_EVENT_LOG_OBJ = List
+T_EVENT_LOG_OBJ = list
 """``Event log`` type is a list of T_EVENT items."""
 
 T_FILTER_OBJ = Any
@@ -734,7 +734,7 @@ class Blockchain:
                 )
             raise SimplEthError(message, code='B-080-010') from None
         except ValueError as exception:
-            message: str = (
+            message = (
                 f'ERROR in transaction({trx_hash}): '
                 f'ValueError says: {exception}\n'
                 f'HINT: Was trx_hash a hex value?'
@@ -787,14 +787,13 @@ class Blockchain:
         :rtype: str
         :return: address that sent the transaction
         :example:
-            >>> r = c.run_trx(user,'storeNums',1,2,3,event_name='NumsStored')
-            >>> thash = r.trx_hash
+
             >>> from simpleth import Blockchain, Contract
             >>> user = Blockchain().accounts[3]
             >>> c = Contract('Test')
             >>> c.connect()
             '0x3F1c8adCB6E8F89dc2d0a32c947CaA6Af95d4448'
-            >>> r = c.run_trx(user,'storeNums',1,2,3,event_name='NumsStored')
+            >>> r = c.run_trx(user,'storeNums',1,2,3)
             >>> thash = r.trx_hash
             >>> Blockchain().trx_sender(thash)
             '0xfEeB074976F8a2B53d2F8c737BD94cd16ad599F0'
@@ -1252,15 +1251,13 @@ class Contract:
         self._size = self._get_size()
         return self._address
 
-    def deploy(
-            self,
-            sender: str,
-            *constructor_args: Union[int, float, str, list],
-            constructor_event_name: str = '',
-            gas_limit: int = GAS_LIMIT,
-            max_priority_fee_gwei: Union[float, int] = MAX_PRIORITY_FEE_GWEI,
-            max_fee_gwei: Union[float, int] = MAX_FEE_GWEI,
-            ) -> T_RESULT:
+    def deploy(self,
+               sender: str,
+               *constructor_args: Union[int, float, str, list],
+               gas_limit: int = GAS_LIMIT,
+               max_priority_fee_gwei: Union[float, int] = MAX_PRIORITY_FEE_GWEI,
+               max_fee_gwei: Union[float, int] = MAX_FEE_GWEI
+               ) -> T_RESULT:
         """Deploy the contract onto the blockchain.
 
         This installs the contract onto the blockchain and
@@ -1273,9 +1270,6 @@ class Contract:
         :param constructor_args: argument(s) for the contract
             constructor (**optional**, default: None)
         :type constructor_args: int | float | string | list | None
-        :param constructor_event_name: Event name emitted by contract
-            constructor (**optional**, default: `''`)
-        :type constructor_event_name: str
         :param gas_limit: maximum amount of gas units allowed for
             deploy (**optional**, default: :const:`GAS_LIMIT`)
         :type gas_limit: int
@@ -1300,12 +1294,13 @@ class Contract:
             - if ``gas_limit`` exceeded the block limit
 
         :example:
+
             >>> from simpleth import Contract, Blockchain
             >>> c = Contract('testtrx')
             >>> c.connect()
             '0x6FDce3428A455372AE43b3cE90B60E6B0cb95188'
             >>> user = Blockchain().accounts[0]
-            >>> r = c.deploy(user, 42, constructor_event_name='TestConstructed')
+            >>> r = c.deploy(user,42)
 
         :TBD: Can you have a list for a constructor arg?
 
@@ -1373,13 +1368,7 @@ class Contract:
         self._set_artifact_address(trx_receipt.contractAddress)
         self.connect()
 
-        trx_result = Result(
-            trx_hash,
-            trx_receipt,
-            self,
-            self.web3_contract,
-            constructor_event_name
-            )
+        trx_result = Result(trx_hash, trx_receipt, self, self.web3_contract)
         return trx_result
 
     def get_gas_estimate(
@@ -1485,41 +1474,27 @@ class Contract:
             raise SimplEthError(message, code='C-040-070') from None
         return gas_estimate
 
-    def get_trx_result(
-            self,
-            trx_hash: T_HASH,
-            event_name: str = ''
-            ) -> T_RESULT:
+    def get_trx_result(self, trx_hash: T_HASH) -> T_RESULT:
         """Return the results of a transaction.
 
         This is used after :meth:`submit_trx` to get the results of the
         transaction. If the transaction is not yet mined, the results
         will be empty.
 
-        If a valid ``event_name`` is provided, the event args will be
-        included in the results.
-
         :param trx_hash: transaction hash from :meth:`submit_trx`
         :type trx_hash: str
-        :param event_name: event name emitted by this
-            transaction (**optional**, default: `''`)
-        :type event_name: str
         :rtype: object
         :return: :class:`Result` with transaction result
         :example:
-            >>> from simpleth import Contract
-            >>> from simpleth import Blockchain
+
+            >>> from simpleth import Contract, Blockchain
             >>> c = Contract('testtrx')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> b = Blockchain()
             >>> user = b.accounts[0]
             >>> t_hash = c.submit_trx(user, 'storeNums', 7, 8, 9)
-            >>> c.get_trx_result(
-            ...     t_hash,
-            ...     'storeNums',
-            ...     event_name='NumsStored'
-            ...     )
+            >>> c.get_trx_result(t_hash)
             {'address': None, 'gas_used': 83421,  ...snip... }
 
         :notes:
@@ -1548,22 +1523,11 @@ class Contract:
             # Receipt not found. Not yet mined. Will return empty trx_result
             trx_result: Optional[T_RESULT] = None
         else:
-            trx_result = Result(
-                trx_hash,
-                trx_receipt,
-                self,
-                self._web3_contract,
-                event_name
-                )
+            trx_result = Result(trx_hash, trx_receipt, self, self._web3_contract)
         return trx_result
 
-    def get_trx_result_wait(
-            self,
-            trx_hash: T_HASH,
-            event_name: str = '',
-            timeout: Union[int, float] = TIMEOUT,
-            poll_latency: Union[int, float] = POLL_LATENCY
-            ) -> T_RESULT:
+    def get_trx_result_wait(self, trx_hash: T_HASH, timeout: Union[int, float] = TIMEOUT,
+                            poll_latency: Union[int, float] = POLL_LATENCY) -> T_RESULT:
         """Wait for transaction to be mined and then return the results
            of that transaction.
 
@@ -1572,9 +1536,6 @@ class Contract:
         transaction is mined or ``timeout`` is reached. The results
         will be empty if it returns after timing out.
 
-        If a valid ``event_name`` is provided, the event args will be
-        included in the results.
-
         Setting ``timeout`` and ``poll_latency`` gives the caller
         flexiblity in the frequency of checking for the transaction
         completion and the length of time to keep checking before
@@ -1582,9 +1543,6 @@ class Contract:
 
         :param trx_hash: transaction hash
         :type trx_hash: str
-        :param event_name: event name emitted by this transaction
-            (**optional**, default: ``None``)
-        :type event_name: str
         :param timeout: maximum number of seconds to wait for
             mining to finish
             (optional, default: :const:`TIMEOUT`)
@@ -1596,6 +1554,7 @@ class Contract:
         :rtype: Result
         :return: :class:`Result` with transaction return
         :example:
+
             >>> from simpleth import Blockchain, Contract
             >>> c = Contract('Test')
             >>> c.connect()
@@ -1603,18 +1562,12 @@ class Contract:
             >>> b = Blockchain()
             >>> user = b.accounts[0]
             >>> t_hash = c.submit_trx(user, 'storeNums', 7, 8, 9)
-            >>> r = c.get_trx_result_wait(
-            ...     t_hash,
-            ...     'storeNums',
-            ...     event_name='NumsStored'
-            ...     )
+            >>> r = c.get_trx_result_wait(t_hash)
             >>> print(r)
             Address        = None
                 ...
 
         :notes:
-            - ``event_name`` must match the spelling and capitalization
-              of an event in the Solidity function.
             - Typically, :meth:`get_trx_result_wait` is used following
               :meth:`submit_trx` which sends the transaction to be mined
               and returns the ``trx_hash``.
@@ -1648,13 +1601,7 @@ class Contract:
             # Timed out. Trx not yet mined. Will return None for trx_result.
             return None
         else:
-            trx_result: T_RESULT = Result(
-                trx_hash,
-                trx_receipt,
-                self,
-                self.web3_contract,
-                event_name
-                )
+            trx_result: T_RESULT = Result(trx_hash, trx_receipt, self, self.web3_contract)
         return trx_result
 
     def get_var(
@@ -1737,19 +1684,17 @@ class Contract:
             raise SimplEthError(message, code='C-060-050') from None
         return var_value
 
-    def run_trx(
-            self,
-            sender: str,
-            trx_name: str,
-            *args: Any,
-            event_name: str = '',
-            gas_limit: int = GAS_LIMIT,
-            max_priority_fee_gwei: Union[int, float] = MAX_PRIORITY_FEE_GWEI,
-            max_fee_gwei: Union[int, float] = MAX_FEE_GWEI,
-            value_wei: int = 0,
-            timeout: Union[int, float] = TIMEOUT,
-            poll_latency: Union[int, float] = POLL_LATENCY
-            ) -> T_RESULT:
+    def run_trx(self,
+                sender: str,
+                trx_name: str,
+                *args: Any,
+                gas_limit: int = GAS_LIMIT,
+                max_priority_fee_gwei: Union[int, float] = MAX_PRIORITY_FEE_GWEI,
+                max_fee_gwei: Union[int, float] = MAX_FEE_GWEI,
+                value_wei: int = 0,
+                timeout: Union[int, float] = TIMEOUT,
+                poll_latency: Union[int, float] = POLL_LATENCY
+                ) -> T_RESULT:
         """Send a transaction and return the results.
 
         This is the method typically used for running transactions.
@@ -1768,9 +1713,6 @@ class Contract:
         :param args: argument(s) required by the transaction
             (**optional**, default: None)
         :type args: int | float | string | list
-        :param event_name: event name emitted by this transaction
-            (**optional**, default: `''`)
-        :type event_name: str
         :param gas_limit: max `gas` ``sender`` will allow for this
             transaction, in units of `gas` (**optional**, default:
             :const:`GAS_LIMIT`)
@@ -1799,18 +1741,14 @@ class Contract:
         :raises SimplEthError: if unable to submit the transaction
 
         :example:
+
             >>> from simpleth import Blockchain, Contract
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> b = Blockchain()
             >>> user = b.accounts[0]
-            >>> results = c.run_trx(
-            ...     user,
-            ...     'storeNums',
-            ...     2, 4, 6,
-            ...     event_name='NumsStored'
-            ...     )
+            >>> results = c.run_trx(user,'storeNums',2,4,6)
             >>> print(results)
             Address        = None
                  ...
@@ -1838,7 +1776,6 @@ class Contract:
 
         trx_result: T_RESULT = self.get_trx_result_wait(
             trx_hash,
-            event_name=event_name,
             timeout=timeout,
             poll_latency=poll_latency
             )
@@ -2417,7 +2354,7 @@ class Convert:
             )
             raise SimplEthError(message, code='V-010-010') from None
         if to_denomination not in self.denominations_to_wei():
-            message: str = (
+            message = (
                 f'ERROR in convert_ether({amount}, {from_denomination}, '
                 f'{to_denomination}): \n'
                 f'the to_denomination is bad.\n'
@@ -2733,6 +2670,7 @@ class Filter:
                use of ``event_filter``.
 
         :example:
+
             >>> from simpleth import Blockchain, Contract, Filter
             >>> b = Blockchain()
             >>> user = b.accounts[3]
@@ -2741,26 +2679,21 @@ class Filter:
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> f = Filter(c)
             >>> filter_NumsStored = f.create_filter('NumsStored')
-            >>> result_NumsStored =_NumsStored = c.run_trx(user,
-            ... 'storeNums', 5, 6, 7, event_name='NumsStored')
+            >>> result_NumsStored =_NumsStored = c.run_trx(user,'storeNums',5,6,7)
             >>> events_NumsStored = f.get_new_events(filter_NumsStored)
             >>> len(events_NumsStored)
             1
             >>> events_NumsStored
             [{'block_number': 137, 'args': {'num0': 5, 'num1': 6, ... c44a'}]
-            >>> result1_NumsStored = c.run_trx(user,
-            ... 'storeNums', 5, 6, 7, event_name='NumsStored')
-            >>> result2_NumsStored = c.run_trx(user,
-            ... 'storeNums', 5, 6, 7, event_name='NumsStored')
-            >>> result3_NumsStored = c.run_trx(user,
-            ... 'storeNums', 5, 6, 7, event_name='NumsStored')
-            >>> result4_NumsStored = c.run_trx(user,
-            ... 'storeNums', 5, 6, 7, event_name='NumsStored')
+            >>> result1_NumsStored = c.run_trx(user,'storeNums',5,6,7)
+            >>> result2_NumsStored = c.run_trx(user,'storeNums',5,6,7)
+            >>> result3_NumsStored = c.run_trx(user,'storeNums',5,6,7)
+            >>> result4_NumsStored = c.run_trx(user,'storeNums',5,6,7)
             >>> events_NumsStored = f.get_new_events(filter_NumsStored)
             >>> len(events_NumsStored)
             4
             >>> events_NumsStored
-            [{'block_number': 138, 'args': {'num0': 5, 'num1':  ...' }]
+            [{'block_number': 138, 'args': {'num0': 5, 'num1':  ... }}]
 
         :notes: :meth:`get_past_events` looks backward and searches old
             blocks. :meth:`get_new_events` looks forward at the
@@ -2958,7 +2891,7 @@ class Result:
         >>> c = Contract('Test')
         >>> c.connect()
         '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-        >>> trx_result = c.run_trx(user, 'storeNums', 30, 20, 10, event_name='NumsStored')
+        >>> trx_result = c.run_trx(user,'storeNums',30,20,10)
         >>> print(trx_result)
         Block number = 450
         Block time_epoch = 1640055579
@@ -2978,14 +2911,12 @@ class Result:
         Trx value_wei = 0
 
     """
-    def __init__(
-            self,
-            trx_hash: T_HASH,
-            trx_receipt: T_RECEIPT,
-            contract: Contract,
-            web3_contract_object: T_WEB3_CONTRACT_OBJ,
-            event_name: str = ''
-            ) -> None:
+    def __init__(self,
+                 trx_hash: T_HASH,
+                 trx_receipt: T_RECEIPT,
+                 contract: Contract,
+                 web3_contract_object: T_WEB3_CONTRACT_OBJ
+                 ) -> None:
         """Create object for the result of specified transaction.
 
         :param trx_hash: transaction hash created after submitting the
@@ -2996,9 +2927,6 @@ class Result:
         :type trx_receipt: T_RECEIPT
         :param contract: contract containing the transaction
         :type contract: object
-        :param event_name: event name emitted by this transaction
-            (**optional**, default: `''`)
-        :type event_name: str
 
         """
         self.web3_transaction: T_TRANSACTION = \
@@ -3021,7 +2949,7 @@ class Result:
         self._trx_args: dict = {}   # may be assigned below
         self._trx_hash: T_HASH = trx_hash
         self._trx_name: str = ''   # assigned below
-        self._trx_receipt: dict[str] = self._to_simpleth_receipt(trx_receipt)
+        self._trx_receipt: dict = self._to_simpleth_receipt(trx_receipt)
         self._trx_sender: str = self._trx_receipt['from']
         self._trx_value_wei: int = self._transaction['value']
 
@@ -3041,9 +2969,9 @@ class Result:
             # Get trx_name from the name of the function object
             self._trx_name = \
                 str(function_obj).strip('<Function ').split('(')[0]
-            self._trx_args: dict = function_params
+            self._trx_args = function_params
             # Not surfaced as a property. Available as a private attribute only.
-            self._function_object: object = function_obj
+            self._function_object = function_obj
         else:
             # This was a `deploy()`. The input is the ABI and can't be
             # decoded. Assign 'deploy' to the trx_name.
@@ -3113,7 +3041,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result.block_number
             142
 
@@ -3134,7 +3062,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result.block_time_epoch
             1638751644
 
@@ -3154,7 +3082,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result.contract_address
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
 
@@ -3174,7 +3102,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result.contract_name
             'Test'
 
@@ -3200,7 +3128,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result.event_args
             {'num0': 10, 'num1': 10, 'num2': 10}
 
@@ -3229,7 +3157,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result.event_logs
             [{'args': {'num0': 10, 'num1': 20, 'num2': 20}, 'event': 'NumsStored'
 
@@ -3254,7 +3182,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result.event_names
             ['NumsStored']
 
@@ -3275,7 +3203,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result.gas_price_wei
             20000000000
 
@@ -3295,7 +3223,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result.gas_used
             25863
 
@@ -3315,7 +3243,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result.transaction
             {'hash': '0x81d725c47a94e71aa40561ff96da8d99ce105a1327239a867099bb0e480e492b',
 
@@ -3336,7 +3264,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result.trx_args
             {'_num0': 10, '_num1': 10, '_num2': 10}
 
@@ -3356,7 +3284,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result.trx_hash
             '0x0e36d22f42dbf641cef1e9f26daeb00f28a4850fccde39fb11886a980b8f59d6'
 
@@ -3376,7 +3304,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result.trx_name
             'storeNums'
 
@@ -3400,7 +3328,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result.trx_receipt
             {'transactionHash': HexBytes('0x0e36d22f42dbf641cef1e9f26daeb00f28a4850fccde39f ... ')}
 
@@ -3421,7 +3349,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result.trx_sender
             '0xB7fc6B28ea0c1c0d4ec54143A552aF67260905cF'
 
@@ -3441,7 +3369,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 10, 10, 10, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result.trx_value_wei
             0
 
@@ -3547,7 +3475,7 @@ class Result:
         attempt did not work. Try again sometime.
 
         """
-        return {        
+        return {
             'hash': web3_trans['hash'].hex(),
             'nonce': web3_trans['nonce'],
             'blockHash': web3_trans['blockHash'].hex(),
@@ -3580,7 +3508,7 @@ class Result:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user, 'storeNums', 4, 5, 6, event_name='NumsStored')
+            >>> trx_result = c.run_trx(user,'storeNums',4,5,6)
             >>> print(trx_result)
             Block number = 450
             Block time_epoch = 1640055579
@@ -3728,7 +3656,7 @@ class SimplEthError(Exception):
         """Exception instance variable with ``message``"""
 
         if code:
-            self.code: str = code
+            self.code = code
             msg: str = f'[{code}] {message}'
         else:
             msg = f'{message}'

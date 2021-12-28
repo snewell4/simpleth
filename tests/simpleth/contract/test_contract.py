@@ -32,11 +32,7 @@ class TestContractDeployGood:
     def test_deploy_with_good_args(self, connect_to_test_contract):
         """deploy() with typical set of args returns result for deploy trx"""
         c = Contract(constants.CONTRACT_NAME)
-        r = c.deploy(
-            constants.CONSTRUCTOR_SENDER,
-            constants.CONSTRUCTOR_ARG,
-            constructor_event_name=constants.CONSTRUCTOR_EVENT_NAME
-            )
+        r = c.deploy(constants.CONSTRUCTOR_SENDER, constants.CONSTRUCTOR_ARG)
         assert r.trx_name == 'deploy'
 
     def test_deploy_without_constructor_event_name(
@@ -46,10 +42,7 @@ class TestContractDeployGood:
         """deploy() with just sender and arg works and returns result for
         deploy trx"""
         c = Contract(constants.CONTRACT_NAME)
-        r = c.deploy(
-            constants.CONSTRUCTOR_SENDER,
-            constants.CONSTRUCTOR_ARG
-        )
+        r = c.deploy(constants.CONSTRUCTOR_SENDER, constants.CONSTRUCTOR_ARG)
         assert r.trx_name == 'deploy'
 
     def test_deploy_with_good_args_plus_gas_limit(
@@ -59,12 +52,7 @@ class TestContractDeployGood:
         """deploy() with typical set of args plus specifying a gas limit
         large enough for the trx returns result for deploy trx"""
         c = Contract(constants.CONTRACT_NAME)
-        r = c.deploy(
-            constants.CONSTRUCTOR_SENDER,
-            constants.CONSTRUCTOR_ARG,
-            constructor_event_name=constants.CONSTRUCTOR_EVENT_NAME,
-            gas_limit=constants.CONSTRUCTOR_GAS_LIMIT
-        )
+        r = c.deploy(constants.CONSTRUCTOR_SENDER, constants.CONSTRUCTOR_ARG, gas_limit=constants.CONSTRUCTOR_GAS_LIMIT)
         assert r.trx_name == 'deploy'
 
     def test_deploy_with_good_args_plus_gas_limit_and_fees(
@@ -75,14 +63,8 @@ class TestContractDeployGood:
         large enough for the trx plus reasonable values for fees returns
         result for deploy trx"""
         c = Contract(constants.CONTRACT_NAME)
-        r = c.deploy(
-            constants.CONSTRUCTOR_SENDER,
-            constants.CONSTRUCTOR_ARG,
-            constructor_event_name=constants.CONSTRUCTOR_EVENT_NAME,
-            gas_limit=constants.CONSTRUCTOR_GAS_LIMIT,
-            max_priority_fee_gwei=constants.MAX_PRIORITY_FEE_GWEI,
-            max_fee_gwei=constants.MAX_FEE_GWEI
-        )
+        r = c.deploy(constants.CONSTRUCTOR_SENDER, constants.CONSTRUCTOR_ARG, gas_limit=constants.CONSTRUCTOR_GAS_LIMIT,
+                     max_priority_fee_gwei=constants.MAX_PRIORITY_FEE_GWEI, max_fee_gwei=constants.MAX_FEE_GWEI)
         assert r.trx_name == 'deploy'
 
 
@@ -106,11 +88,7 @@ class TestContractDeployBad:
         c = construct_test_contract
         bad_sender = '123'
         with pytest.raises(SimplEthError) as excp:
-            c.deploy(
-                bad_sender,
-                constants.CONSTRUCTOR_ARG,
-                constructor_event_name=constants.CONSTRUCTOR_EVENT_NAME
-                )
+            c.deploy(bad_sender, constants.CONSTRUCTOR_ARG)
         assert excp.value.code == 'C-030-020'
 
     def test_deploy_with_wrong_type_constructor_arg_raises_c_030_030(
@@ -122,11 +100,7 @@ class TestContractDeployBad:
         c = construct_test_contract
         bad_constructor_arg = '123'
         with pytest.raises(SimplEthError) as excp:
-            c.deploy(
-                constants.CONSTRUCTOR_SENDER,
-                bad_constructor_arg,
-                constructor_event_name=constants.CONSTRUCTOR_EVENT_NAME
-                )
+            c.deploy(constants.CONSTRUCTOR_SENDER, bad_constructor_arg)
         assert excp.value.code == 'C-030-030'
 
     def test_deploy_with_too_many_constructor_args_raises_c_030_030(
@@ -138,12 +112,7 @@ class TestContractDeployBad:
         c = construct_test_contract
         extra_constructor_arg = 20
         with pytest.raises(SimplEthError) as excp:
-            c.deploy(
-                constants.CONSTRUCTOR_SENDER,
-                constants.CONSTRUCTOR_ARG,
-                extra_constructor_arg,
-                constructor_event_name=constants.CONSTRUCTOR_EVENT_NAME
-                )
+            c.deploy(constants.CONSTRUCTOR_SENDER, constants.CONSTRUCTOR_ARG, extra_constructor_arg)
         assert excp.value.code == 'C-030-030'
 
     def test_deploy_with_missing_constructor_arg_raises_c_030_030(
@@ -154,10 +123,7 @@ class TestContractDeployBad:
         C-030-030"""
         c = construct_test_contract
         with pytest.raises(SimplEthError) as excp:
-            c.deploy(
-                constants.CONSTRUCTOR_SENDER,
-                constructor_event_name=constants.CONSTRUCTOR_EVENT_NAME
-                )
+            c.deploy(constants.CONSTRUCTOR_SENDER)
         assert excp.value.code == 'C-030-030'
 
     def test_deploy_with_insufficient_gas_raises_c_030_040(
@@ -169,12 +135,7 @@ class TestContractDeployBad:
         c = construct_test_contract
         insufficient_gas_limit = constants.GAS_LIMIT_MIN
         with pytest.raises(SimplEthError) as excp:
-            c.deploy(
-                constants.CONSTRUCTOR_SENDER,
-                constants.CONSTRUCTOR_ARG,
-                constructor_event_name=constants.CONSTRUCTOR_EVENT_NAME,
-                gas_limit=insufficient_gas_limit
-                )
+            c.deploy(constants.CONSTRUCTOR_SENDER, constants.CONSTRUCTOR_ARG, gas_limit=insufficient_gas_limit)
         assert excp.value.code == 'C-030-040'
 
     def test_deploy_with_excessive_gas_raises_c_030_040(
@@ -186,12 +147,7 @@ class TestContractDeployBad:
         c = construct_test_contract
         excessive_gas_limit = constants.GAS_LIMIT_MAX + 1
         with pytest.raises(SimplEthError) as excp:
-            c.deploy(
-                constants.CONSTRUCTOR_SENDER,
-                constants.CONSTRUCTOR_ARG,
-                constructor_event_name=constants.CONSTRUCTOR_EVENT_NAME,
-                gas_limit=excessive_gas_limit
-                )
+            c.deploy(constants.CONSTRUCTOR_SENDER, constants.CONSTRUCTOR_ARG, gas_limit=excessive_gas_limit)
         assert excp.value.code == 'C-030-040'
 
 

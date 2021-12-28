@@ -69,7 +69,7 @@ except SimplEthError as e:
 
 # Deploy contract
 try:
-    c.deploy(user, init_num, constructor_event_name=ename)
+    c.deploy(user, init_num)
 except SimplEthError as e:
     print(f'FAIL:  Unable to deploy contract "{cname}".')
     print(f'MESSAGE:  {e}')
@@ -87,14 +87,7 @@ else:
 try:
     trx_name = 'storeNums'
     start_time = stime.get_epoch()
-    tresults = c.run_trx(
-        user,
-        trx_name,
-        10,
-        20,
-        30,
-        event_name='NumsStored'
-        )
+    tresults = c.run_trx(user, trx_name, 10, 20, 30)
     end_time = stime.get_epoch()
     trx_time = round(end_time - start_time, 2)
 except SimplEthError as e:
@@ -121,15 +114,7 @@ try:
     trx_name = 'storeNums'
     bogus_timeout = MINING_DELAY - 2
     start_time = stime.get_epoch()
-    tresults = c.run_trx(
-        user,
-        trx_name,
-        10,
-        20,
-        30,
-        event_name='NumsStored',
-        timeout=bogus_timeout
-        )
+    tresults = c.run_trx(user, trx_name, 10, 20, 30, timeout=bogus_timeout)
     end_time = stime.get_epoch()
     trx_time = round(end_time - start_time, 2)
 except SimplEthError as e:
@@ -164,16 +149,7 @@ try:
     timeout = MINING_DELAY + 2
     too_long_latency = timeout + 2
     start_time = stime.get_epoch()
-    tresults = c.run_trx(
-        user,
-        trx_name,
-        10,
-        20,
-        30,
-        event_name='NumsStored',
-        timeout=timeout,
-        poll_latency=too_long_latency
-        )
+    tresults = c.run_trx(user, trx_name, 10, 20, 30, timeout=timeout, poll_latency=too_long_latency)
     end_time = stime.get_epoch()
     trx_time = round(end_time - start_time, 2)
 except SimplEthError as e:

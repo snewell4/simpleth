@@ -8,11 +8,7 @@ sender = b.get_address(0)
 contract_name = 'HelloWorld4'
 
 c = Contract(contract_name)
-deploy_results = c.deploy(
-    sender,
-    'hello world',
-    constructor_event_name='HelloWorld4Constructed'
-    )
+deploy_results = c.deploy(sender, 'hello world')
 print(f'DETAILS FROM THE TRANSACTION TO DEPLOY {contract_name}')
 p.print_trx_results(deploy_results, indent=4)
 print()
@@ -27,12 +23,7 @@ print(greeting)
 print()
 
 trx_name = 'setGreeting'
-set_results = c.run_trx(
-    sender,
-    trx_name,
-    'Hello World!',
-    event_name='GreetingSet'
-    )
+set_results = c.run_trx(sender, trx_name, 'Hello World!')
 print(f'DETAILS FROM THE TRANSACTION {trx_name}.')
 p.print_trx_results(set_results, indent=4)
 print()
