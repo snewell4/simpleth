@@ -2,6 +2,7 @@
 # I'm not testing the constructor. Not sure if/where to have those test cases.
 import pytest
 
+import simpleth
 import testconstants as constants
 
 
@@ -16,6 +17,13 @@ class TestResultProperties:
     def test_time_epoch(self, result_from_test_trx):
         """Test result block_time_epoch is an integer"""
         assert isinstance(result_from_test_trx.block_time_epoch, int)
+
+    def test_contract(self, result_from_test_trx):
+        """Test result contract_address is a string"""
+        assert isinstance(
+            result_from_test_trx.contract,
+            simpleth.Contract
+            )
 
     def test_contract_address(self, result_from_test_trx):
         """Test result contract_address is a string"""

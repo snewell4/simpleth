@@ -1368,7 +1368,7 @@ class Contract:
         self._set_artifact_address(trx_receipt.contractAddress)
         self.connect()
 
-        trx_result = Result(trx_hash, trx_receipt, self, self.web3_contract)
+        trx_result = Result(trx_receipt, self)
         return trx_result
 
     def get_gas_estimate(
@@ -1523,7 +1523,7 @@ class Contract:
             # Receipt not found. Not yet mined. Will return empty trx_result
             trx_result: Optional[T_RESULT] = None
         else:
-            trx_result = Result(trx_hash, trx_receipt, self, self._web3_contract)
+            trx_result = Result(trx_receipt, self)
         return trx_result
 
     def get_trx_result_wait(self, trx_hash: T_HASH, timeout: Union[int, float] = TIMEOUT,
@@ -1601,7 +1601,7 @@ class Contract:
             # Timed out. Trx not yet mined. Will return None for trx_result.
             return None
         else:
-            trx_result: T_RESULT = Result(trx_hash, trx_receipt, self, self.web3_contract)
+            trx_result: T_RESULT = Result(trx_receipt, self)
         return trx_result
 
     def get_var(
@@ -2849,6 +2849,7 @@ class Result:
 
     -  :meth:`block_number` - block number containing transaction
     -  :meth:`block_time_epoch` - time block mined, in epoch seconds
+    -  :meth:`contract` - :class:`Contract` object and same as ``contract`` constructor arg
     -  :meth:`contract_address` - address of contract with the transaction
     -  :meth:`contract_name` - name of contract with the transaction
     -  :meth:`event_args` - arg(s) for event(s) emitted by transaction
@@ -2874,6 +2875,8 @@ class Result:
 
     -  ``_contract`` - :meth:`Contract` object passed in as arg to `Result()`
     -  ``web3_contract_object`` - `web3` object passed in as arg to `Result()`
+    -  ``web3_function_object`` - `web3` object for the Solidity function that
+       ran the transaction.
     -  ``web3_receipt`` - `web3` format of the transaction receipt data. Should
        be the same as :meth:`receipt` but `web3` uses `AttributeDict` and
        `HexBytes`.
@@ -2912,58 +2915,60 @@ class Result:
 
     """
     def __init__(self,
-                 trx_hash: T_HASH,
-                 trx_receipt: T_RECEIPT,
-                 contract: Contract,
-                 web3_contract_object: T_WEB3_CONTRACT_OBJ
+                 receipt: T_RECEIPT,
+                 contract: Contract
                  ) -> None:
-        """Create object for the result of specified transaction.
+        """Create data object with the result of a transaction.
 
-        :param trx_hash: transaction hash created after submitting the
-             transaction for mining.
-        :type trx_hash: T_HASH
-        :param trx_receipt: transaction receipt created after the
+        :param receipt: transaction receipt created after the
              transaction was mined
-        :type trx_receipt: T_RECEIPT
-        :param contract: contract containing the transaction
+        :type receipt: T_RECEIPT
+        :param contract: :class:`Contract` containing the transaction
         :type contract: object
 
         """
+        #
+        # Gather information from the transaction's web3 receipt data
+        #
+        self.web3_receipt: T_RECEIPT = receipt
+        self._trx_receipt: dict = self._to_simpleth_receipt(self.web3_receipt)
+        self._gas_used: int = self._trx_receipt['gasUsed']
+        self._trx_sender: str = self._trx_receipt['from']
+        self._trx_hash: T_HASH = self._trx_receipt['transactionHash']
+        self._block_number: int = self._trx_receipt['blockNumber']
+
+        #
+        # Gather information from the web3 transaction data
+        #
         self.web3_transaction: T_TRANSACTION = \
-            contract.blockchain.eth.get_transaction(trx_hash)
+            contract.blockchain.eth.get_transaction(self._trx_hash)
         self._transaction: dict = self._to_simpleth_transaction(
             self.web3_transaction)
-
-        self._block_number: int = trx_receipt.blockNumber
-        self._block_time: int = \
-            contract.blockchain.eth.get_block(self._block_number).timestamp
-        self._contract = contract
-        self._contract_address: str = contract.address
-        self._contract_name: str = contract.name
-        self._event_args: list[dict] = []      # may be assigned below
-        self._event_logs: list[dict] = []      # may be assigned below
-        self._event_names: list[str] = []      # may be assigned below
-        self._function_object: object = None   # may be assigned below
         self._gas_price_wei: int = self._transaction['gasPrice']
-        self._gas_used: int = trx_receipt.gasUsed
-        self._trx_args: dict = {}   # may be assigned below
-        self._trx_hash: T_HASH = trx_hash
-        self._trx_name: str = ''   # assigned below
-        self._trx_receipt: dict = self._to_simpleth_receipt(trx_receipt)
-        self._trx_sender: str = self._trx_receipt['from']
         self._trx_value_wei: int = self._transaction['value']
 
-        # Not surfaced as @properties. Available as attributes.
-        self.contract: Contract = contract
-        self.web3_contract_object: T_WEB3_CONTRACT_OBJ = web3_contract_object
-        self.web3_receipt: T_RECEIPT = trx_receipt
-        self.web3_event_logs: list[T_EVENT_LOG_OBJ] = []    # may be assigned below
+        #
+        # Gather information from the simpleth contract object
+        #
+        self._contract: Contract = contract
+        self._contract_address: str = contract.address
+        self._contract_name: str = contract.name
+        self._block_time: int = \
+            self._contract.blockchain.eth.get_block(self._block_number).timestamp
+        self.web3_contract_object: T_WEB3_CONTRACT_OBJ = \
+            self._contract.web3_contract
 
+        #
+        # Gather details on the transaction name and args
+        #
+        self._trx_name: str = ''
+        self._trx_args: dict = {}
+        self._web3_function_object = None
         if self._transaction['to']:
             # If there is a value for `to`, this was a transaction using
             # a deployed contract. Proceed to get interesting info.
             function_obj, function_params = \
-                web3_contract_object.decode_function_input(
+                self.web3_contract_object.decode_function_input(
                     self._transaction['input']
                 )
             # Get trx_name from the name of the function object
@@ -2971,18 +2976,27 @@ class Result:
                 str(function_obj).strip('<Function ').split('(')[0]
             self._trx_args = function_params
             # Not surfaced as a property. Available as a private attribute only.
-            self._function_object = function_obj
+            self._web3_function_object = function_obj
         else:
             # This was a `deploy()`. The input is the ABI and can't be
-            # decoded. Assign 'deploy' to the trx_name.
+            # decoded. Assign 'deploy' to the trx_name. (A `deploy()` does
+            # not have a value for `to` since the contract does not yet have
+            # an address nor does it have a function object.)
             self._trx_name = 'deploy'
 
-        for event_name in contract.event_names:
+        #
+        # Gather details on event(s), if any, emitted by the transaction
+        #
+        self._event_names: list[str] = []
+        self._event_args: list[dict] = []
+        self._event_logs: list[dict] = []
+        self.web3_event_logs: list[T_EVENT_LOG_OBJ] = []
+        for event_name in self._contract.event_names:
             # for every event defined in the contract
             try:
                 # use the event name to get the `web3` contract event object
                 contract_event: T_CONTRACT_EVENT = getattr(
-                    web3_contract_object.events,
+                    self.web3_contract_object.events,
                     event_name
                     )
             except self._contract.web3e.ABIEventFunctionNotFound as exception:
@@ -3004,7 +3018,7 @@ class Result:
                 # silently discards any logs that had errors and returns processed
                 # logs that do not contain any errors.
                 event_log: T_EVENT_LOG_OBJ = contract_event().processReceipt(
-                        trx_receipt,
+                        self.web3_receipt,
                         errors=DISCARD
                         )
                 if event_log:
@@ -3068,6 +3082,21 @@ class Result:
 
         """
         return self._block_time
+
+    @property
+    def contract(self) -> Contract:
+        """Return `Contract` object for the transaction.
+
+        This is the ``contract`` parameter used for :meth:``__init__``.
+
+        :rtype: obj
+        :return: `simpleth` :meth:`Contract` object
+        :example:
+
+        TBD
+
+        """
+        return self._contract
 
     @property
     def contract_address(self) -> str:
