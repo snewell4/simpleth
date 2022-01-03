@@ -11,8 +11,8 @@ Classes
 
 Exceptions
 ----------
-- `SimplEthError` - raised on errors from methods in `Blockchain` or
-  `Contract`.
+- `SimplEthError` - raised on errors from methods in `Blockchain`,
+  `Contract`, or `Filter`.
 
 """
 import sys
@@ -512,7 +512,7 @@ class Blockchain:
                 f'the block_num must be an integer between '
                 f'0 and {self.block_number}.\n'
                 f'HINT: check type and value for account_num.\n'
-            )
+                )
             raise SimplEthError(message, code='B-040-010') from None
         return self.eth.get_block(block_num).timestamp
 
@@ -671,12 +671,12 @@ class Blockchain:
         """
         try:
             trx_hash: str = self._web3.eth.send_transaction(
-                {
-                    'to': receiver,
-                    'from': sender,
-                    'value': amount_wei
-                }
-            ).hex()      # cast to a string from HexBytes
+                    {
+                        'to': receiver,
+                        'from': sender,
+                        'value': amount_wei
+                        }
+                ).hex()      # cast to a string from HexBytes
         except ValueError as exception:
             message: str = (
                 f'ERROR in transfer(): '
@@ -1283,7 +1283,7 @@ class Contract:
             :const:`MAX_FEE_GWEI`)
         :type max_fee_gwei: int
         :rtype: T_RECEIPT
-        :return: transaction receipt for the deploy
+        :return: transaction receipt for `deploy()`
 
         :raises SimplEthError:
             - if unable to get artifact info and create contract class
@@ -1327,7 +1327,7 @@ class Contract:
                             'gas': gas_limit,
                             'maxFeePerGas': max_fee_gwei,
                             'maxPriorityFeePerGas': max_priority_fee_gwei
-                        }
+                            }
                     ).hex()
         except self._web3e.InvalidAddress:
             message = (
@@ -1415,7 +1415,7 @@ class Contract:
                 )(*args).estimateGas(
                     {
                         'from': sender
-                    }
+                        }
                     )
         except self._web3e.ABIFunctionNotFound:
             message: str = (
@@ -1515,7 +1515,7 @@ class Contract:
             trx_hash: T_HASH,
             timeout: Union[int, float] = TIMEOUT,
             poll_latency: Union[int, float] = POLL_LATENCY
-        ) -> Union[T_RECEIPT | None]:
+            ) -> Union[T_RECEIPT | None]:
         """Wait for transaction to be mined and then return the receipt
            for that transaction.
 
@@ -1919,7 +1919,7 @@ class Contract:
                         'maxFeePerGas': max_fee_gwei,
                         'maxPriorityFeePerGas': max_priority_fee_gwei,
                         'value': value_wei
-                    }
+                        }
                     ).hex()
         except self._web3e.ABIFunctionNotFound:
             message: str = (
@@ -2063,10 +2063,7 @@ class Contract:
 
         """
         try:
-            with open(
-                self._artifact_abi_filepath,
-                encoding='UTF-8'
-            ) as abi_file:
+            with open(self._artifact_abi_filepath, encoding='UTF-8') as abi_file:
                 abi: T_ABI = json.load(abi_file)
         except FileNotFoundError:
             message: str = (
@@ -2101,10 +2098,7 @@ class Contract:
 
         """
         try:
-            with open(
-                self._artifact_address_filepath,
-                encoding='UTF-8'
-            ) as address_file:
+            with open(self._artifact_address_filepath, encoding='UTF-8') as address_file:
                 artifact_address: str = address_file.read().rstrip()
         except FileNotFoundError:
             message: str = (
@@ -2138,10 +2132,7 @@ class Contract:
 
         """
         try:
-            with open(
-                self._artifact_bytecode_filepath,
-                encoding='UTF-8'
-            ) as bytecode_file:
+            with open(self._artifact_bytecode_filepath, encoding='UTF-8') as bytecode_file:
                 bytecode: T_BYTECODE = bytecode_file.read()
         except FileNotFoundError:
             message: str = (
@@ -2252,11 +2243,7 @@ class Contract:
             raise SimplEthError(message, code='C-150-010') from None
 
         try:
-            with open(
-                self._artifact_address_filepath,
-                'w',
-                encoding='UTF-8'
-            ) as address_file:
+            with open(self._artifact_address_filepath, 'w', encoding='UTF-8') as address_file:
                 address_file.write(contract_address)
         except FileNotFoundError:
             message = (
@@ -2326,7 +2313,7 @@ class Convert:
                 f'{to_denomination}): \n'
                 f'the from_denomination is bad.\n'
                 f'HINT: Check spelling and make sure it is a string.'
-            )
+                )
             raise SimplEthError(message, code='V-010-010') from None
         if to_denomination not in self.denominations_to_wei():
             message = (
@@ -2334,7 +2321,7 @@ class Convert:
                 f'{to_denomination}): \n'
                 f'the to_denomination is bad.\n'
                 f'HINT: Check spelling and make sure it is a string.'
-            )
+                )
             raise SimplEthError(message, code='V-010-020') from None
         from_units_wei = self.denominations_to_wei()[from_denomination]
         to_units_wei = self.denominations_to_wei()[to_denomination]
@@ -2469,7 +2456,7 @@ class Convert:
                 f'TypeError says {exception}.\n'
                 f't_format must be a string with strftime format codes.\n'
                 f'HINT: Make sure t_format is a string.'
-            )
+                )
             raise SimplEthError(message, code='V-020-010') from None
         return local_time_string
 
@@ -2512,7 +2499,7 @@ class Convert:
                 f'TypeError says {exception}\n'
                 f't_format must be a string with strftime format codes.\n'
                 f'HINT: Make sure t_format is a string.'
-            )
+                )
             raise SimplEthError(message, code='V-030-010') from None
         return to_local_time_string
 # end of Convert()
@@ -2659,7 +2646,7 @@ class Filter:
             >>> len(events_NumsStored)
             1
             >>> events_NumsStored
-            [{'block_number': 137, 'args': {'num0': 5, 'num1': 6, ... c44a'}]
+            [{'block_number': 137, 'args': {'num0': 5, 'num1': 6, ... c44a'}  }]
             >>> result1_NumsStored = c.run_trx(user,'storeNums',5,6,7)
             >>> result2_NumsStored = c.run_trx(user,'storeNums',5,6,7)
             >>> result3_NumsStored = c.run_trx(user,'storeNums',5,6,7)
@@ -2828,8 +2815,8 @@ class Results:
     -  :meth:`contract_address` - address of contract with the transaction
     -  :meth:`contract_name` - name of contract with the transaction
     -  :meth:`event_args` - arg(s) for event(s) emitted by transaction
-    -  :meth:`event_log` - event log from transaction for ``event_name``
-    -  :meth:`event_name` - ``event_name`` arg
+    -  :meth:`event_logs` - event log(s) from transaction for ``event_name``
+    -  :meth:`event_names` - event name(s) emitted by transaction
     -  :meth:`gas_price_wei` - price of gas used by transaction, in wei
     -  :meth:`gas_used` - units of gas needed for transaction
     -  :meth:`transaction` - `web3.eth` transaction dictionary info
@@ -2850,6 +2837,8 @@ class Results:
 
     -  ``_contract`` - :meth:`Contract` object passed in as arg to `Results()`
     -  ``web3_contract_object`` - `web3` object passed in as arg to `Results()`
+    -  ``web3_event_logs`` - `web3` format of the event log(s) generated by
+        the transaction
     -  ``web3_function_object`` - `web3` object for the Solidity function that
        ran the transaction.
     -  ``web3_receipt`` - `web3` format of the transaction receipt data. Should
@@ -2938,20 +2927,20 @@ class Results:
         #
         self._trx_name: str = ''
         self._trx_args: dict = {}
-        self._web3_function_object = None
+        self.web3_function_object = None
         if self._transaction['to']:
             # If there is a value for `to`, this was a transaction using
             # a deployed contract. Proceed to get interesting info.
             function_obj, function_params = \
                 self.web3_contract_object.decode_function_input(
                     self._transaction['input']
-                )
+                    )
             # Get trx_name from the name of the function object
             self._trx_name = \
                 str(function_obj).strip('<Function ').split('(')[0]
             self._trx_args = function_params
             # Not surfaced as a property. Available as a private attribute only.
-            self._web3_function_object = function_obj
+            self.web3_function_object = function_obj
         else:
             # This was a `deploy()`. The input is the ABI and can't be
             # decoded. Assign 'deploy' to the trx_name. (A `deploy()` does
@@ -2984,7 +2973,7 @@ class Results:
                     f'the `web3 contract` object list of `events`. This is not '
                     f'a typical error.\n'
                     f'HINT: try recompiling and redeploying the contract.'
-                )
+                    )
                 raise SimplEthError(message, code='R-010-020') from None
 
             try:
@@ -3442,7 +3431,7 @@ class Results:
                 'data': log['data'],
                 'topics': [topic.hex() for topic in log['topics']],
                 'type': log['type']
-            }
+                }
             simpleth_logs.append(simpleth_log)
 
         return {
@@ -3497,11 +3486,11 @@ class Results:
             }
 
     def __str__(self) -> str:
-        """Print most of the result properties.
+        """Print most of the results properties.
 
         This overrides the print() function.
 
-        User does:  `print(<result_oject>)`
+        User does:  `print(<results_oject>)`
 
         :rtype: str
         :return: multi-line output of most `Results` properties
@@ -3512,14 +3501,15 @@ class Results:
             >>> c = Contract('Test')
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',4,5,6)
-            >>> print(trx_result)
+            >>> receipt = c.run_trx(user,'storeNums',4,5,6)
+            >>> trx_results = Results(receipt, c)
+            >>> print(trx_results)
             Block number = 450
             Block time_epoch = 1640055579
             Contract address = 0x2f1E0A12de6741f26FCC34776764c87f46a1B7aA
             Contract name = Test
             Event args = {'num0': 4, 'num1': 5, 'num2': 6}
-            Event log = [{'args': {'num0': 4, 'num1': 5, 'num2': 6}, ',
+            Event log = [{'args': {'num0': 4, 'num1': 5, 'num2': 6}, ',   }  ]
             Event name = NumsStored
             Gas price wei = 20000000000
             Gas used = 83443
@@ -3543,13 +3533,13 @@ class Results:
         """
         string = (
             f'Block number     = {self.block_number}\n'
-            f'Block time_epoch = {self.block_time_epoch}\n'
+            f'Block time epoch = {self.block_time_epoch}\n'
             f'Contract name    = {self.contract_name}\n'
             f'Contract address = {self.contract_address}\n'
             f'Trx name         = {self.trx_name}\n'
             f'Trx args         = {self.trx_args}\n'
             f'Trx sender       = {self.trx_sender}\n'
-            f'Trx value_wei    = {self.trx_value_wei}\n'
+            f'Trx value wei    = {self.trx_value_wei}\n'
             f'Trx hash         = {self.trx_hash}\n'
             f'Gas price wei    = {self.gas_price_wei}\n'
             f'Gas used         = {self.gas_used}\n'

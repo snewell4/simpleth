@@ -1,7 +1,7 @@
 """conftest.py for simpleth class test cases"""
 import pytest
 
-from simpleth import Contract
+from simpleth import Contract, Results
 import testconstants as constants
 
 
@@ -49,8 +49,16 @@ def connect_to_test_contract(construct_test_contract):
 
 
 @pytest.fixture(scope='class')
-def result_from_test_trx(connect_to_test_contract):
-    """Return simpleth Results object with outcomes from running store_nums()"""
+def results_from_test_trx(connect_to_test_contract):
+    """Return simpleth Results object with outcomes from running
+    `store_nums()`"""
     contract_obj = connect_to_test_contract
-    return contract_obj.run_trx(constants.TRX_SENDER, constants.TRX_NAME, constants.TRX_ARG0, constants.TRX_ARG1,
-                                constants.TRX_ARG2)
+    trx_receipt = contract_obj.run_trx(
+        constants.TRX_SENDER,
+        constants.TRX_NAME,
+        constants.TRX_ARG0,
+        constants.TRX_ARG1,
+        constants.TRX_ARG2
+        )
+    results = Results(trx_receipt, contract_obj)
+    return results
