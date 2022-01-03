@@ -6,7 +6,7 @@ Classes
 - `Blockchain` - interact with Ethereum blockchain
 - `Contract` - interact with Solidity contracts
 - `Convert` - conversion methods for Ether denominations and time values
-- `Result` - outcomes resulting from a transaction being mined
+- `Results` - outcomes resulting from a transaction being mined
 - `Filter` - search for events emitted by transactions
 
 Exceptions
@@ -31,7 +31,7 @@ __all__ = [
     'Contract',
     'Convert',
     'Filter',
-    'Result',
+    'Results',
     'SimplEthError'
     ]
 __author__ = 'Stephen Newell'
@@ -189,7 +189,7 @@ Created by `web3.py` methods."""
 T_RESULT = Any
 """``Transaction result`` is a class object with the various outcomes
 from mining a transaction. Created by the `simpleth` class,
-``Result``. Use Any for now."""
+``Results``. Use Any for now."""
 
 T_TRANSACTION = Any
 """``Transaction`` type is class `web3.datastructures.AttributeDict`.
@@ -831,8 +831,8 @@ class Contract:
     -  :meth:`connect` - enable the use of a deployed contract
     -  :meth:`deploy` - deploy a contract onto the blockchain
     -  :meth:`get_gas_estimate` - return units of gas to run a transaction
-    -  :meth:`get_trx_result` - get the results of a transaction
-    -  :meth:`get_trx_result_wait` - wait for the results of a transaction
+    -  :meth:`get_trx_receipt` - get the results of a transaction
+    -  :meth:`get_trx_receipt_wait` - wait for the results of a transaction
     -  :meth:`get_var` - return value of a contract variable
     -  :meth:`run_trx` - submit a transaction and wait for the results
     -  :meth:`submit_trx` - send a transaction to be mined
@@ -1257,7 +1257,7 @@ class Contract:
                gas_limit: int = GAS_LIMIT,
                max_priority_fee_gwei: Union[float, int] = MAX_PRIORITY_FEE_GWEI,
                max_fee_gwei: Union[float, int] = MAX_FEE_GWEI
-               ) -> T_RESULT:
+               ) -> T_RECEIPT:
         """Deploy the contract onto the blockchain.
 
         This installs the contract onto the blockchain and
@@ -1282,9 +1282,8 @@ class Contract:
             transaction mined, in gwei (**optional**, default:
             :const:`MAX_FEE_GWEI`)
         :type max_fee_gwei: int
-        :rtype: :class:`Result`
-        :return: `trx_result` holding the details of mining
-            this transaction
+        :rtype: T_RECEIPT
+        :return: transaction receipt for the deploy
 
         :raises SimplEthError:
             - if unable to get artifact info and create contract class
@@ -1305,7 +1304,6 @@ class Contract:
         :TBD: Can you have a list for a constructor arg?
 
         """
-        trx_result: T_RESULT = []
         try:
             self._web3_contract = self._blockchain.eth.contract(
                     abi=self.abi,
@@ -1356,20 +1354,19 @@ class Contract:
             raise SimplEthError(message, code='C-030-040') from None
 
         try:
-            trx_receipt = self._blockchain.eth.wait_for_transaction_receipt(
-                trx_hash,
-                timeout=TIMEOUT,
-                poll_latency=POLL_LATENCY
-                )
+            trx_receipt: T_RECEIPT = \
+                self._blockchain.eth.wait_for_transaction_receipt(
+                    trx_hash,
+                    timeout=TIMEOUT,
+                    poll_latency=POLL_LATENCY
+                    )
         except self._web3e.TimeExhausted:
             # Timed out. Trx not yet mined. Return empty result
-            return trx_result
+            return None
 
         self._set_artifact_address(trx_receipt.contractAddress)
         self.connect()
-
-        trx_result = Result(trx_receipt, self)
-        return trx_result
+        return trx_receipt
 
     def get_gas_estimate(
             self,
@@ -1474,17 +1471,16 @@ class Contract:
             raise SimplEthError(message, code='C-040-070') from None
         return gas_estimate
 
-    def get_trx_result(self, trx_hash: T_HASH) -> T_RESULT:
-        """Return the results of a transaction.
+    def get_trx_receipt(self, trx_hash: T_HASH) -> Union[T_RECEIPT | None]:
+        """Return the receipt after a transaction has been mined.
 
-        This is used after :meth:`submit_trx` to get the results of the
-        transaction. If the transaction is not yet mined, the results
-        will be empty.
+        This is used after :meth:`submit_trx` to get the mining receipt.
+        Returns ``None`` if the transaction has not yet been mined.
 
         :param trx_hash: transaction hash from :meth:`submit_trx`
         :type trx_hash: str
-        :rtype: object
-        :return: :class:`Result` with transaction result
+        :rtype: T_RECEIPT | None
+        :return: `web3` transaction receipt
         :example:
 
             >>> from simpleth import Contract, Blockchain
@@ -1494,47 +1490,39 @@ class Contract:
             >>> b = Blockchain()
             >>> user = b.accounts[0]
             >>> t_hash = c.submit_trx(user, 'storeNums', 7, 8, 9)
-            >>> c.get_trx_result(t_hash)
+            >>> c.get_trx_receipt(t_hash)
             {'address': None, 'gas_used': 83421,  ...snip... }
-
-        :notes:
-            - ``trx_name`` must match the name used in :meth:`submit_trx`.
-            - Only the event args from the ``trx_name`` transaction are
-              returned in ``Result``. If this transaction, in turn
-              calls other transactions, those subsequent transactions
-              may have their own events, but they will not be returned
-              as part of the ``Result``.
 
         :see:
             - :meth:`submit_trx` for submitting a transaction to be
               mined and returning ``trx_hash``.
-            - :meth:`get_trx_result_wait` which will make repeated
+            - :meth:`get_trx_receipt_wait` which will make repeated
               checks on the transaction and returns when the mining
               has completed (or times out).
-            - :class:`Result` for attributes available in the
-              return.
+            - :class:`Results` to examine the outcome.
 
         """
         try:
-            trx_receipt = self._blockchain.eth.getTransactionReceipt(
-                trx_hash
-                )
+            trx_receipt: T_RECEIPT = \
+                self._blockchain.eth.getTransactionReceipt(trx_hash)
         except self._web3e.TransactionNotFound:
             # Receipt not found. Not yet mined. Will return empty trx_result
-            trx_result: Optional[T_RESULT] = None
-        else:
-            trx_result = Result(trx_receipt, self)
-        return trx_result
+            return None
+        return trx_receipt
 
-    def get_trx_result_wait(self, trx_hash: T_HASH, timeout: Union[int, float] = TIMEOUT,
-                            poll_latency: Union[int, float] = POLL_LATENCY) -> T_RESULT:
-        """Wait for transaction to be mined and then return the results
-           of that transaction.
+    def get_trx_receipt_wait(
+            self,
+            trx_hash: T_HASH,
+            timeout: Union[int, float] = TIMEOUT,
+            poll_latency: Union[int, float] = POLL_LATENCY
+        ) -> Union[T_RECEIPT | None]:
+        """Wait for transaction to be mined and then return the receipt
+           for that transaction.
 
         This is used after :meth:`submit_trx` to get the results of the
         transaction. Will block the caller and wait until either the
-        transaction is mined or ``timeout`` is reached. The results
-        will be empty if it returns after timing out.
+        transaction is mined or ``timeout`` is reached. The return
+        will be ''None'' if it times out.
 
         Setting ``timeout`` and ``poll_latency`` gives the caller
         flexiblity in the frequency of checking for the transaction
@@ -1551,8 +1539,8 @@ class Contract:
             for transaction completion (optional, default:
             :const:`POLL_LATENCY`)
         :type poll_latency: int | float
-        :rtype: Result
-        :return: :class:`Result` with transaction return
+        :rtype: T_RECEIPT | None
+        :return: transaction receipt
         :example:
 
             >>> from simpleth import Blockchain, Contract
@@ -1562,47 +1550,40 @@ class Contract:
             >>> b = Blockchain()
             >>> user = b.accounts[0]
             >>> t_hash = c.submit_trx(user, 'storeNums', 7, 8, 9)
-            >>> r = c.get_trx_result_wait(t_hash)
+            >>> r = c.get_trx_receipt_wait(t_hash)
             >>> print(r)
             Address        = None
                 ...
 
         :notes:
-            - Typically, :meth:`get_trx_result_wait` is used following
+            - Typically, :meth:`get_trx_receipt_wait` is used following
               :meth:`submit_trx` which sends the transaction to be mined
               and returns the ``trx_hash``.
-            - Only the event args from the `trx_name` transaction are
-              returned in ``Result``. If this transaction, in turn
-              calls other transactions, those subsequent transactions
-              may have their own events, but they will not be returned
-              as part of the ``Result``.
-            - If it times out, you can use :meth:`get_trx_result` or
-              :meth:`get_trx_result_wait` to continue to periodically
+            - If it times out, you can use :meth:`get_trx_receipt` or
+              :meth:`get_trx_receipt_wait` to continue to periodically
               check for completion.
 
         :see:
             - :meth:`submit_trx` for submitting a transaction to be
               carried out and mined and returning ``trx_hash``.
-            - :meth:`get_trx_result` which will make one check and
-              either return the results or an empty ``Result``.
+            - :meth:`get_trx_receipt` which will make one check and
+              either return the results or an empty ``Results``.
             - :meth:`run_trx` which combines the call to
-              :meth:`submit_trx` and :meth:`get_trx_result_wait`.
-            - :class:`Result` for attributes available in the
-              return.
+              :meth:`submit_trx` and :meth:`get_trx_receipt_wait`.
+            - :class:`Results` to examine the outcome.
 
         """
         try:
-            trx_receipt = self._blockchain.eth.wait_for_transaction_receipt(
-                trx_hash,
-                timeout=timeout,
-                poll_latency=poll_latency
-                )
+            trx_receipt: T_RECEIPT = \
+                self._blockchain.eth.wait_for_transaction_receipt(
+                    trx_hash,
+                    timeout=timeout,
+                    poll_latency=poll_latency
+                    )
         except self._web3e.TimeExhausted:
             # Timed out. Trx not yet mined. Will return None for trx_result.
             return None
-        else:
-            trx_result: T_RESULT = Result(trx_receipt, self)
-        return trx_result
+        return trx_receipt
 
     def get_var(
             self,
@@ -1694,17 +1675,23 @@ class Contract:
                 value_wei: int = 0,
                 timeout: Union[int, float] = TIMEOUT,
                 poll_latency: Union[int, float] = POLL_LATENCY
-                ) -> T_RESULT:
-        """Send a transaction and return the results.
+                ) -> Union[T_RECEIPT | None]:
+        """Submit a transaction to be mined and return the receipt.
 
         This is the method typically used for running transactions.
 
         :meth:`run_trx` is a combination of :meth:`submit_trx` and
-        :meth:`get_trx_result_wait`. The caller uses a single method
+        :meth:`get_trx_receipt_wait`. The caller uses a single method
         to submit a transaction to the blockchain and get back the
         results of the transaction after it is mined.
 
         The caller is blocked until :meth:`run_trx` returns or times out.
+
+        Returns ``None`` if it times out waiting for the mining to
+        be completed. Try running again with higher value for
+        ``timeout``. Or, consider using :meth:`submit_trx` along with
+        either :meth:`get_trx_receipt` or :meth:`get_trx_receipt_wait`
+        to give you more flexibility and control.
 
         :param sender: address of account sending the transaction
         :type sender: str
@@ -1736,8 +1723,8 @@ class Contract:
             for transaction completion
             (**optional**, default: :const:`POLL_LATENCY`)
         :type poll_latency: int | float
-        :rtype: object
-        :return: :class:`Result` with transaction result
+        :rtype: T_RECEIPT | None
+        :return: `web3` transaction receipt
         :raises SimplEthError: if unable to submit the transaction
 
         :example:
@@ -1774,27 +1761,15 @@ class Contract:
                 )
             raise SimplEthError(message, code='C-070-010') from None
 
-        trx_result: T_RESULT = self.get_trx_result_wait(
+        trx_receipt: T_RECEIPT = self.get_trx_receipt_wait(
             trx_hash,
             timeout=timeout,
             poll_latency=poll_latency
             )
-        if not trx_result:
-            message = (
-                f'ERROR in {self.name}().run_trx():\n'
-                f'No trx results were returned from '
-                f'get_trx_result_wait() for transaction "{trx_name}" '
-                f'when it timed out after {timeout} seconds.\n'
-                f'trx_hash = {trx_hash}\n'
-                f'Use get_trx_result() or get_trx_result_wait() with '
-                f'that hash to get the results.\n'
-                f'In the future, consider:\n'
-                f'HINT 1: Use a higher value for the timeout parameter.\n'
-                f'HINT 2: Make sure poll_frequency is less than the '
-                f'timeout.\n'
-                )
-            raise SimplEthError(message, code='C-070-020') from None
-        return trx_result
+        if not trx_receipt:
+            return None
+        else:
+            return trx_receipt
 
     def submit_trx(
             self,
@@ -1902,8 +1877,8 @@ class Contract:
                `London Fork`). They use the new max fee and max priority
                fee fields instead of a gas price field.
             -  ``trx_hash`` is the transaction hash that can be used
-               to check for the transaction outcome in :meth:`get_trx_result`
-               or :meth:`get_trx_result_wait`
+               to check for the transaction outcome in :meth:`get_trx_receipt`
+               or :meth:`get_trx_receipt_wait`
             -  ``trx_name`` must match the spelling and capitalization
                of a function in the Solidity contract.
             -  ``value`` is Ether that is sent to the transaction. It is
@@ -1925,12 +1900,12 @@ class Contract:
 
         :see:
 
-            -  :meth:`get_trx_result` and :meth:`get_trx_result_wait`
+            -  :meth:`get_trx_receipt` and :meth:`get_trx_receipt_wait`
                to retrieve the result of the transaction using the
                ``trx_hash``.
             -  :meth:`run_trx` which combiness the call to
                :meth:`submit_trx` with a call to
-               :meth:`get_trx_result_wait`.
+               :meth:`get_trx_receipt_wait`.
 
         """
         try:
@@ -2830,7 +2805,7 @@ class Filter:
 # end of Filter
 
 
-class Result:
+class Results:
     """Data class created after a transaction is mined making most of
     the transaction information easily accessible.
 
@@ -2838,8 +2813,8 @@ class Result:
     create and return `result` objects:
 
     -  :meth:`Contract.run_trx`
-    -  :meth:`Contract.get_trx_result`
-    -  :meth:`Contract.get_trx_result_wait`
+    -  :meth:`Contract.get_trx_receipt`
+    -  :meth:`Contract.get_trx_receipt_wait`
 
     By accessing the `result` object returned from one of these methods,
     the following properties make it simple to access the outcome
@@ -2873,8 +2848,8 @@ class Result:
     For debugging or using the `web3` data formatting the following attributes
     are available:
 
-    -  ``_contract`` - :meth:`Contract` object passed in as arg to `Result()`
-    -  ``web3_contract_object`` - `web3` object passed in as arg to `Result()`
+    -  ``_contract`` - :meth:`Contract` object passed in as arg to `Results()`
+    -  ``web3_contract_object`` - `web3` object passed in as arg to `Results()`
     -  ``web3_function_object`` - `web3` object for the Solidity function that
        ran the transaction.
     -  ``web3_receipt`` - `web3` format of the transaction receipt data. Should
@@ -2884,7 +2859,7 @@ class Result:
        same as :meth:`transaction` but `web3` uses `AttributeDict` and
        `HexBytes`.
 
-    One of the easiest ways to use :class:`Result` is to `print` the `result`
+    One of the easiest ways to use :class:`Results` is to `print` the `result`
     as shown below.
 
     :example:
@@ -3529,7 +3504,7 @@ class Result:
         User does:  `print(<result_oject>)`
 
         :rtype: str
-        :return: multi-line output of most `Result` properties
+        :return: multi-line output of most `Results` properties
         :example:
             >>> from simpleth import Blockchain, Contract
             >>> b = Blockchain()
@@ -3583,7 +3558,7 @@ class Result:
             string += f'Event name[{i}]    = {self.event_names[i]}\n'
             string += f'Event args[{i}]    = {self.event_args[i]}\n'
         return string
-# end of Result
+# end of Results
 
 
 class SimplEthError(Exception):

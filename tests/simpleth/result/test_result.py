@@ -1,4 +1,4 @@
-"""Test Result() class properties"""
+"""Test Results() class properties"""
 # I'm not testing the constructor. Not sure if/where to have those test cases.
 import pytest
 
@@ -8,7 +8,7 @@ import testconstants as constants
 
 @pytest.mark.usefixtures('result_from_test_trx')
 class TestResultProperties:
-    """Test properties in the Result object returned from running the test trx"""
+    """Test properties in the Results object returned from running the test trx"""
 
     def test_block_number(self, result_from_test_trx):
         """Test result block_number is an integer"""
