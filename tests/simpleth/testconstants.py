@@ -7,12 +7,13 @@ CONTRACT_NAME = 'Test'
 
 # Parameters for CONTRACT_NAME's constructor
 CONSTRUCTOR_SENDER = Blockchain().address(0)
-CONSTRUCTOR_ARG = 10  # Test constructor expects a uint
+CONSTRUCTOR_ARG = 10  # Test constructor expects uint to set `initNum`
 CONSTRUCTOR_EVENT_NAME = 'TestConstructed'
 CONSTRUCTOR_GAS_LIMIT = 2_000_000    # deploy() currently takes 698,571 gas units
 
 # Parameters for a test transaction in CONTRACT_NAME
-# SNFIX - looks like I ought to prepend 'TEST_' to all these
+#
+# TBD - looks like I ought to prepend 'TEST_' to all these
 # and move CONTRACT_NAME into this stanza and call it TEST_CONTRACT_NAME, right?
 TRX_SENDER = Blockchain().address(0)
 TRX_NAME = 'storeNums'
@@ -59,3 +60,20 @@ MAX_FEE_GWEI = 205    # arbitrary value
 INIT_NUM0 = 0      # nums[0] is initialized to 0
 INIT_NUM1 = 1
 INIT_NUM2 = 2
+
+# Parameters for a test transaction in CONTRACT_NAME
+# This is used to set a variety of types for public state variables.
+#
+# TBD - should I redo TRX_* (see above) into TRX1_*?
+TRX2_SENDER = Blockchain().address(0)
+TRX2_NAME = 'storeTypes'
+INT_VAR_NAME = 'test_int'
+INT_VAR_VALUE = -123
+UINT_VAR_NAME = 'test_uint'
+UINT_VAR_VALUE = 100
+ADDR_VAR_NAME = 'test_addr'
+STR_VAR_NAME = 'test_str'
+ADDR_VAR_VALUE = Blockchain().address(1)
+STR_VAR_VALUE = 'test string'
+ARRAY_VAR_NAME = 'nums'
+ARRAY_VAR_VALUE = TRX_ARG0     # nums[0] value

@@ -18,10 +18,10 @@ to create and write the specified artifact files to the ``out_dir`` directory.
 .. code-block:: none
 
    compile.py HelloWorld2.solc
-   compile.py -c ..\solc\solc.exe HelloWorld2.sol
+   compile.py -c ..\\solc\\solc.exe HelloWorld2.sol
    compile.py -o . HelloWorld2.sol
    compile.py -O "--abi --overwrite" HelloWorld2.sol
-   compile.py -c ..\solc\solc.exe -o . -O "--abi --overwrite" HelloWorld1.sol HelloWorld2.sol
+   compile.py -c ..\\solc\\solc.exe -o . -O "--abi --overwrite" HelloWorld1.sol HelloWorld2.sol
 
 
 **TERMINAL OUTPUT**
@@ -122,6 +122,7 @@ def main():
             f'{file}'
             )
         os.system(command)
+
 
 if __name__ == '__main__':
     main()

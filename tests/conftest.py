@@ -62,3 +62,34 @@ def results_from_test_trx(connect_to_test_contract):
         )
     results = Results(trx_receipt, contract_obj)
     return results
+
+
+@pytest.fixture(scope='class')
+def run_test_trx_to_store_array(connect_to_test_contract):
+    """Run `store_nums()`. Makes an array in the contract
+    ready for testing. Return the contract object."""
+    contract_obj = connect_to_test_contract
+    contract_obj.run_trx(
+        constants.TRX_SENDER,
+        constants.TRX_NAME,
+        constants.TRX_ARG0,
+        constants.TRX_ARG1,
+        constants.TRX_ARG2
+        )
+    return contract_obj
+
+
+@pytest.fixture(scope='class')
+def run_test_trx_to_store_all_types(connect_to_test_contract):
+    """Run `store_types()`. Stores various types into the
+    contract. Return the contract object."""
+    contract_obj = connect_to_test_contract
+    contract_obj.run_trx(
+        constants.TRX2_SENDER,
+        constants.TRX2_NAME,
+        constants.UINT_VAR_VALUE,
+        constants.INT_VAR_VALUE,
+        constants.ADDR_VAR_VALUE,
+        constants.STR_VAR_VALUE
+        )
+    return contract_obj

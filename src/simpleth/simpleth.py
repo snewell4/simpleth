@@ -1645,6 +1645,10 @@ class Contract:
                 f'ERROR in {self.name}().getvar(): '
                 f'Unable to get public state variable {var_name}.\n'
                 f'ValidationError says: {exception}\n'
+                f'HINT1: Did you specify an array index arg with a non-array '
+                f'variable name?\n'
+                f'HINT2: Did you specify an array variable but did not '
+                f'specify an index value?\n'
                 )
             raise SimplEthError(message, code='C-060-030') from None
         except self._web3e.ContractLogicError as exception:
@@ -1768,8 +1772,8 @@ class Contract:
             )
         if not trx_receipt:
             return None
-        else:
-            return trx_receipt
+
+        return trx_receipt
 
     def submit_trx(
             self,
@@ -3108,11 +3112,12 @@ class Results:
 
         :rtype: list[dict]
         :return: one dict for each event emitted; key is the arg name
-        and the value is the value of the arg
+             and the value is the value of the arg
         :notes:
-        - The event name that emitted these args is found in
-          :meth:`event_names`. Use the same index into list to get the
-          `event name`.
+
+        -  The event name that emitted these args is found in
+           :meth:`event_names`. Use the same index into list to get the
+           `event name`.
 
         :example:
             >>> from simpleth import Blockchain, Contract
@@ -3164,9 +3169,10 @@ class Results:
         :rtype: list[str]
         :return: list with names of each event emitted
         :notes:
-        - The event args that were emitted for this event are found in
-          :meth:`event_args`. Use the same index into list to get the
-          `event args`.
+
+        -  The event args that were emitted for this event are found in
+           :meth:`event_args`. Use the same index into list to get the
+           `event args`.
 
         :example:
             >>> from simpleth import Blockchain, Contract

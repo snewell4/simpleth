@@ -96,7 +96,7 @@ import simpleth
 # for a parent class methods and events. The child class has everything
 # but for the parent only the .docuser info shows up. You'll find that
 # events and methods for the parent will not output the "Notes:" and
-# "Parameters:". I see this missing from the .docdev file so it's happening
+# "Parameters:". I see this missing from the .docdev file, so it's happening
 # in solc. A newer release may fix.
 #
 
@@ -365,17 +365,17 @@ def print_blank_line() -> None:
 def print_c_section(c_comments: dict) -> None:
     """Output comments for one contract - formatted for restructured text.
 
-    :param c_comments: all comments for the just the contract
+    :param c_comments: all comments for the contract
     :type c_comments: dict
     :rtype: None
     """
-    print(':Description: {}'.format(c_comments['title']))
+    print(f':Description: {c_comments["title"]}')
     print_blank_line()
-    print(':Purpose:  {}'.format(c_comments['notice']))
+    print(f':Purpose:  {c_comments["notice"]}')
     print_blank_line()
-    print(':Notes:  {}'.format(c_comments['dev']))
+    print(f':Notes:  {c_comments["dev"]}')
     print_blank_line()
-    print(':Author:  {}'.format(c_comments['author']))
+    print(f':Author:  {c_comments["author"]}')
 
     # Natspec custom tags are ``custom:<tag> <str>``.
     custom_tags: list = get_custom_tags(c_comments)
@@ -594,12 +594,12 @@ def print_dict_as_list(dct: dict,) -> None:
 
 
 def escape_underscores(in_str: str) -> str:
-    """Return var_name with a underscores escaped for rst and Sphinx.
+    """Return var_name with all underscores escaped for rst and Sphinx.
 
     Some coding standards for Solidity smart contracts add a ``_`` at the
     end of variables defined in the function; for example: `address_`.
 
-    `rST` considers a term ending in ``_`` as a single word hyperlink to
+    `reST` considers a term ending in ``_`` as a single word hyperlink to
     a target in the document. This means when Sphinx processes these local
     variables in a contract it gives a warning message: ``Unknown target name``
     since it can not find the target to complete the hyperlink.
@@ -636,7 +636,7 @@ def get_custom_tags(dct: dict) -> list:
     This function will find any custom tags in a comments dictionary and
     return a list of the tags.
 
-    :param dct: a comments dictionary from the `docdev` file.
+    :param dct: a dictionary of comments from the `docdev` file.
     :type dct: dict
     :rtype: list
     :returns: custom tags found in ``dct``; returned as ``'custom:<tag>'``
@@ -718,12 +718,12 @@ def main():
         contract: str = contract.replace('.sol', '')
 
         #
-        # Setup the output file. If user asked to use STDOUT,
-        # no need to setup any output file.
+        # Set up the output file. If user asked to use STDOUT,
+        # no need to set up any output file.
         #
         if not args.stdout:
             out_file: str = f'{args.out_dir}/{contract}{RST_FILE_SUFFIX}'
-            sys.stdout = open(out_file, 'w', encoding="latin-1")
+            sys.stdout = open(out_file, 'w', encoding="utf-8")
 
         #
         # Read the JSON info from the .docdev and .docuser files

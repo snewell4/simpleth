@@ -18,7 +18,7 @@ Filter class
 .. autoclass:: simpleth.Filter
 
 Results class
-************
+*************
 .. autoclass:: simpleth.Results
 
 SimplEthError class

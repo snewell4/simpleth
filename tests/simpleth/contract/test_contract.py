@@ -5,12 +5,16 @@ from simpleth import Blockchain, Contract, SimplEthError, Results
 import testconstants as constants
 
 
-class TestContractConstructorAll:
-    """Test cases for Contract() with both good and bad test cases"""
+class TestContractConstructorGood:
+    """Test case for Contract() with good args"""
 
     def test_constructor_with_good_contract_name(self):
         """Instantiate Contract() object with valid constructor arg"""
         assert Contract(constants.CONTRACT_NAME)._name is constants.CONTRACT_NAME
+
+
+class TestContractConstructorError:
+    """Test cases for Contract() with bad args"""
 
     def test_constructor_with_bad_contract_name_raises_c_100_010(self):
         """SimplEthError is raised when constructor has bad contract name"""
@@ -22,7 +26,6 @@ class TestContractConstructorAll:
     def test_constructor_with_missing_contract_name_raises_type_error(self):
         """TypeError is raised when constructor has no contract name"""
         with pytest.raises(TypeError):
-            # noinspection PyArgumentList
             Contract()
 
 
@@ -498,3 +501,143 @@ class TestContractGetGasEstimateBad:
                 constants.TRX_ARG2
                 )
         assert excp.value.code == 'C-040-070'
+
+
+@pytest.mark.usefixtures(
+    'run_test_trx_to_store_array',
+    'run_test_trx_to_store_all_types'
+    )
+class TestContractGetVarGood:
+    # Move this after testing `run_trx()`. `get_var()`
+    # test cases, good and bad, depend on running trx for
+    # fixtures.
+    """Test cases for Contract().get_var() with good values"""
+
+    def test_get_var_for_int(
+            self,
+            run_test_trx_to_store_all_types
+            ):
+        """Test getting an int public state variable."""
+        c = run_test_trx_to_store_all_types
+        int_value = c.get_var(constants.INT_VAR_NAME)
+        assert int_value == constants.INT_VAR_VALUE
+
+    def test_get_var_for_uint(
+            self,
+            run_test_trx_to_store_all_types
+            ):
+        """Test getting a uint public state variable."""
+        c = run_test_trx_to_store_all_types
+        uint_value = c.get_var(constants.UINT_VAR_NAME)
+        assert uint_value == constants.UINT_VAR_VALUE
+
+    def test_get_var_for_str(
+            self,
+            run_test_trx_to_store_all_types
+            ):
+        """Test getting a str public state variable."""
+        c = run_test_trx_to_store_all_types
+        str_value = c.get_var(constants.STR_VAR_NAME)
+        assert str_value == constants.STR_VAR_VALUE
+
+    def test_get_var_for_addr(
+            self,
+            run_test_trx_to_store_all_types
+            ):
+        """Test getting an addr public state variable."""
+        c = run_test_trx_to_store_all_types
+        addr_value = c.get_var(constants.ADDR_VAR_NAME)
+        assert addr_value == constants.ADDR_VAR_VALUE
+
+    def test_get_var_for_array_element(
+            self,
+            run_test_trx_to_store_array
+            ):
+        """Test getting first element from uint array."""
+        c = run_test_trx_to_store_array
+        addr_value = c.get_var(constants.ARRAY_VAR_NAME, 0)
+        assert addr_value == constants.ARRAY_VAR_VALUE
+
+
+@pytest.mark.usefixtures(
+    'construct_never_deployed_test_contract',
+    'run_test_trx_to_store_array',
+    'run_test_trx_to_store_all_types'
+    )
+class TestContractGetVarError:
+    """Test cases for Contract().get_var() with bad args"""
+    # Don't know how to create the error condition that raises
+    # code of C-060-020.
+
+    def test_get_missing_var_name_raises_type_error(
+            self,
+            run_test_trx_to_store_all_types
+            ):
+        """Test get_var() with bad var name."""
+        c = run_test_trx_to_store_all_types
+        with pytest.raises(TypeError):
+            c.get_var()
+
+    def test_get_var_with_bad_var_name_raises_c_060_010(
+            self,
+            run_test_trx_to_store_all_types
+            ):
+        """Test get_var() with bad var name."""
+        c = run_test_trx_to_store_all_types
+        bad_var_name = 'bad_name'
+        with pytest.raises(SimplEthError) as excp:
+            c.get_var(bad_var_name)
+        assert excp.value.code == 'C-060-010'
+
+    def test_get_var_with_bad_type_index_raises_c_060_030(
+            self,
+            run_test_trx_to_store_array
+            ):
+        """Test get_var() for array element with str for an index."""
+        c = run_test_trx_to_store_array
+        bad_type_index = 'string'
+        with pytest.raises(SimplEthError) as excp:
+            c.get_var(constants.ARRAY_VAR_NAME, bad_type_index)
+        assert excp.value.code == 'C-060-030'
+
+    def test_get_var_with_missing_index_raises_c_060_030(
+            self,
+            run_test_trx_to_store_array
+            ):
+        """Test get_var() with array element without an index."""
+        c = run_test_trx_to_store_array
+        with pytest.raises(SimplEthError) as excp:
+            c.get_var(constants.ARRAY_VAR_NAME)
+        assert excp.value.code == 'C-060-030'
+
+    def test_get_var_with_unneeded_index_raises_c_060_030(
+            self,
+            run_test_trx_to_store_all_types
+            ):
+        """Test get_var() with an index for a non-array."""
+        c = run_test_trx_to_store_all_types
+        with pytest.raises(SimplEthError) as excp:
+            c.get_var(constants.INT_VAR_NAME, 0)
+        assert excp.value.code == 'C-060-030'
+
+    def test_get_var_with_oob_index_raises_c_060_040(
+            self,
+            run_test_trx_to_store_array
+            ):
+        """Test get_var() for array element with out-of-bounds
+        index."""
+        c = run_test_trx_to_store_array
+        oob_index = 100
+        with pytest.raises(SimplEthError) as excp:
+            c.get_var(constants.ARRAY_VAR_NAME, oob_index)
+        assert excp.value.code == 'C-060-040'
+
+    def test_get_var_for_unconnected_contract_raises_c_060_050(
+            self,
+            construct_never_deployed_test_contract
+            ):
+        """Test get_var() raises C-060-050 if connect() is needed."""
+        c = construct_never_deployed_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.get_var(constants.INT_VAR_NAME)
+        assert excp.value.code == 'C-060-050'
