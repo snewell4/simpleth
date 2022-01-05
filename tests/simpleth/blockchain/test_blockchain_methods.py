@@ -45,6 +45,12 @@ def test_balance():
     assert(isinstance(Blockchain().balance(addr3), int))
 
 
+def test_balance_with_missing_addr_raises_type_error():
+    """Test balance() with missing address."""
+    with pytest.raises(TypeError):
+        Blockchain().balance()
+
+
 def test_balance_bad_address_type_raises_b_030_010():
     """balance() with bad address type raises SimplEthError"""
     bad_addr_type = 200
@@ -288,6 +294,12 @@ def test_trx_count():
     Blockchain().send_ether(user6, user7, amount)
     num_trx = Blockchain().trx_count(user6)
     assert (isinstance(num_trx, int) and (num_trx > 0))
+
+
+def test_trx_count_with_no_arg_raises_type_error():
+    """Test trx_count() with no args fails."""
+    with pytest.raises(TypeError):
+        Blockchain().trx_count()
 
 
 def test_trx_count_with_bad_address_type_raises_b_090_010():

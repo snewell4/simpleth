@@ -78,7 +78,7 @@ class TestContractDeployGood:
     'construct_test_contract',
     'construct_never_deployed_test_contract'
     )
-class TestContractDeployBad:
+class TestContractDeployError:
     """Test cases for Contract().deploy() with bad values"""
 
     # Not testing bad values for ``max_priority_fee_gwei`` and
@@ -170,8 +170,9 @@ class TestContractDeployBad:
 
 
 @pytest.mark.usefixtures('construct_test_contract')
-class TestContractConnectBad:
+class TestContractConnectError:
     """Test cases for Contract().connect() with bad values"""
+
     # The good test case has already been run in fixtures
     # and elsewhere. No test class TestContractConnectGood.
 
@@ -195,6 +196,7 @@ class TestContractConnectBad:
 @pytest.mark.usefixtures('connect_to_test_contract')
 class TestContractPropertiesGood:
     """Test cases for Contract() properties"""
+
     # There are no bad test cases. There are no args for
     # any of these properties.
 
@@ -252,6 +254,7 @@ class TestContractPropertiesGood:
 @pytest.mark.usefixtures('deploy_test_contract')
 class TestCallFcnGood:
     """Test cases for Contract().call_fcn() with good values"""
+
     # Safest to deploy a new contract every time to insure we get the
     # expected initialization values.
 
@@ -278,12 +281,28 @@ class TestCallFcnGood:
         assert c.call_fcn('getNum', 2) == constants.INIT_NUM2
 
 
-@pytest.mark.usefixtures('connect_to_test_contract')
-class TestCallFcnBad:
+@pytest.mark.usefixtures(
+    'construct_never_deployed_test_contract',
+    'connect_to_test_contract'
+    )
+class TestCallFcnError:
     """Test cases for Contract().call_fcn() with bad values"""
+
     # OK to just do connect() instead of deploy(). These tests
     # all give bad args so doesn't matter that we have a fresh
     # contract.
+
+    # I don't know how to create the error that causes the
+    # exception with code of C-010-020.
+
+    def test_call_fcn_with_no_fcn_name_raises_type_error(
+            self,
+            connect_to_test_contract
+            ):
+        """"Attempt to call_fcn with missing fcn_name fails"""
+        c = connect_to_test_contract
+        with pytest.raises(TypeError):
+            c.call_fcn()
 
     def test_call_fcn_with_bad_fcn_name_raises_c_010_010(
             self,
@@ -296,23 +315,21 @@ class TestCallFcnBad:
             c.call_fcn(bad_fcn_name)
         assert excp.value.code == 'C-010-010'
 
-    def test_call_fcn_with_no_fcn_name_raises_type_error(
+    def test_call_fcn_with_unconnected_contract_raises_c_010_010(
             self,
-            connect_to_test_contract
+            construct_never_deployed_test_contract
             ):
-        """"Attempt to call_fcn with missing fcn_name raises type
-        error"""
-        # SN_FIX - Don't understand why this doesn't raise SimplEthError
-        # with code of C-010-050
-        c = connect_to_test_contract
-        with pytest.raises(TypeError):
-            c.call_fcn()
+        """Test call_fcn() fails if connect() is needed."""
+        c = construct_never_deployed_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.call_fcn('getNum0')
+        assert excp.value.code == 'C-010-010'
 
     def test_call_fcn_with_bad_arg_type_raises_c_010_020(
             self,
             connect_to_test_contract
             ):
-        """"Attempt to call_fcn with bad arg type raises C-010-020"""
+        """"Attempt to call_fcn with bad arg type fails"""
         c = connect_to_test_contract
         bad_arg_type = 'bad'
         with pytest.raises(SimplEthError) as excp:
@@ -323,8 +340,7 @@ class TestCallFcnBad:
             self,
             connect_to_test_contract
             ):
-        """"Attempt to call_fcn with bad number of args raises
-        C-010-020"""
+        """"Attempt to call_fcn with bad number of args fails"""
         c = connect_to_test_contract
         with pytest.raises(SimplEthError) as excp:
             c.call_fcn('getNum', 1, 2)
@@ -334,8 +350,7 @@ class TestCallFcnBad:
             self,
             connect_to_test_contract
             ):
-        """"Attempt to call_fcn with an out of bounds arg raises
-        C-010-040"""
+        """"Attempt to call_fcn with an out of bounds arg fails"""
         c = connect_to_test_contract
         with pytest.raises(SimplEthError) as excp:
             c.call_fcn('getNum', 3)
@@ -366,8 +381,17 @@ class TestContractGetGasEstimateGood:
     'connect_to_test_contract',
     'construct_never_deployed_test_contract'
     )
-class TestContractGetGasEstimateBad:
+class TestContractGetGasEstimateError:
     """Test cases for Contract().get_gas_estimate() with bad values"""
+
+    def test_get_gas_estimate_with_no_args_raises_type_error(
+            self,
+            connect_to_test_contract
+            ):
+        """"Attempt to get_gas_estimate() with no args fails"""
+        c = connect_to_test_contract
+        with pytest.raises(TypeError):
+            c.get_gas_estimate()
 
     def test_get_gas_estimate_with_bad_trx_name_raises_c_040_010(
             self,
@@ -431,7 +455,7 @@ class TestContractGetGasEstimateBad:
             self,
             connect_to_test_contract
             ):
-        """Test get_gas_estimate() with too many trx args"""
+        """Test get_gas_estimate() with out-of-bounds arg"""
         c = connect_to_test_contract
         with pytest.raises(SimplEthError) as excp:
             c.get_gas_estimate(
@@ -632,7 +656,7 @@ class TestContractGetVarError:
             c.get_var(constants.ARRAY_VAR_NAME, oob_index)
         assert excp.value.code == 'C-060-040'
 
-    def test_get_var_for_unconnected_contract_raises_c_060_050(
+    def test_get_var_with_unconnected_contract_raises_c_060_050(
             self,
             construct_never_deployed_test_contract
             ):

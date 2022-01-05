@@ -1204,12 +1204,7 @@ class Contract:
                 f'HINT: Did you use an out of bounds array index?\n'
                 )
             raise SimplEthError(message, code='C-010-040') from None
-        except TypeError as exception:
-            message = (
-                f'ERROR in {self.name}().call_fcn().\n'
-                f'TypeError says: {exception}'
-                )
-            raise SimplEthError(message, code='C-010-050') from None
+
         return fcn_return
 
     def connect(self) -> str:
