@@ -44,23 +44,6 @@ contract Test {
 
 
     /**
-     * @notice Emitted when the contract is deployed.
-     *
-     * @dev Parameters are arbitrary.
-     *
-     * @param timestamp block time, in epoch seconds, when deployed
-     * @param sender becomes the address of owner
-     * @param initNum value assigned with constructor()
-     * @param Test address of this contract
-     */
-    event TestConstructed(
-        uint timestamp,
-        address indexed sender,
-        int initNum,
-        address Test
-    );
-
-    /**
      * @notice Emitted when new num1 is stored
      *
      * @param timestamp block time when initNum was updated
@@ -71,34 +54,6 @@ contract Test {
         uint timestamp,
         int divisor,
         int result
-    );
-
-    /**
-     * @notice Emitted when a selected nums[] is stored
-     *
-     * @param timestamp block time when nums was updated
-     * @param index into nums[]
-     * @param num stored in nums[`index`]
-     */
-    event NumStored(
-        uint timestamp,
-        uint index,
-        uint num
-    );
-
-    /**
-     * @notice Emitted when new nums are stored
-     *
-     * @param timestamp block time when nums were updated
-     * @param num0 stored in nums[0]
-     * @param num1 stored in nums[1]
-     * @param num2 stored in nums[2]
-     */
-    event NumsStored(
-        uint timestamp,
-        uint num0,
-        uint num1,
-        uint num2
     );
 
     /**
@@ -135,6 +90,61 @@ contract Test {
     );
 
     /**
+     * @notice Emitted when a selected nums[] is stored
+     *
+     * @param timestamp block time when nums was updated
+     * @param index into nums[]
+     * @param num stored in nums[`index`]
+     */
+    event NumStored(
+        uint timestamp,
+        uint index,
+        uint num
+    );
+
+    /**
+     * @notice Emitted when new nums are stored
+     *
+     * @param timestamp block time when nums were updated
+     * @param num0 stored in nums[0]
+     * @param num1 stored in nums[1]
+     * @param num2 stored in nums[2]
+     */
+    event NumsStored(
+        uint timestamp,
+        uint num0,
+        uint num1,
+        uint num2
+    );
+
+    /**
+     * @notice Emitted when new nums are stored along with
+     * a value (in wei) sent as a payment.
+     *
+     * @param timestamp block time when nums were updated
+     * @param num0 stored in nums[0]
+     * @param num1 stored in nums[1]
+     * @param num2 stored in nums[2]
+     * @param paid amount of wei sent
+     * @param balance amount of wei in contract's balance
+     */
+    event NumsStoredAndPaid(
+        uint timestamp,
+        uint num0,
+        uint num1,
+        uint num2,
+        uint paid,
+        uint balance
+    );
+
+    /**
+     * @notice Emitted when nums were stored and then summed
+     *
+     * @param timestamp block time after total was stored
+     */
+    event NumsStoredAndSummed(uint timestamp);
+
+    /**
      * @notice Emitted when nums[] total is stored
      *
      * @param timestamp block time when total is stored
@@ -152,13 +162,6 @@ contract Test {
     );
 
     /**
-     * @notice Emitted when nums were stored and then summed
-     *
-     * @param timestamp block time after total was stored
-     */
-    event NumsStoredAndSummed(uint timestamp);
-
-    /**
      * @notice Emitted when owner is changed
      *
      * @param timestamp block time when owner was set
@@ -167,6 +170,23 @@ contract Test {
     event OwnerSet(
         uint timestamp,
         address newOwner
+    );
+
+    /**
+     * @notice Emitted when the contract is deployed.
+     *
+     * @dev Parameters are arbitrary.
+     *
+     * @param timestamp block time, in epoch seconds, when deployed
+     * @param sender becomes the address of owner
+     * @param initNum value assigned with constructor()
+     * @param Test address of this contract
+     */
+    event TestConstructed(
+        uint timestamp,
+        address indexed sender,
+        int initNum,
+        address Test
     );
 
     /**
@@ -297,6 +317,32 @@ contract Test {
             nums[0],
             nums[1],
             nums[2]
+        );
+    }
+
+    /**
+     * @notice Stores the three args in nums[]
+     *
+     * @dev Emits NumsStored()
+     *
+     * @param _num0 value to store in nums[0]
+     * @param _num1 value to store in nums[1]
+     * @param _num2 value to store in nums[2]
+     */
+    function storeNumsAndPay(uint _num0, uint _num1, uint _num2)
+        public
+        payable
+    {
+        nums[0] = _num0;
+        nums[1] = _num1;
+        nums[2] = _num2;
+        emit NumsStoredAndPaid(
+            block.timestamp,
+            nums[0],
+            nums[1],
+            nums[2],
+            msg.value,
+            address(this).balance
         );
     }
 

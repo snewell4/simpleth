@@ -23,6 +23,7 @@ class TestContractConstructorError:
             Contract(bad_name)
         assert excp.value.code == 'C-100-010'
 
+    # noinspection PyArgumentList
     def test_constructor_with_missing_contract_name_raises_type_error(self):
         """TypeError is raised when constructor has no contract name"""
         with pytest.raises(TypeError):
@@ -665,3 +666,245 @@ class TestContractGetVarError:
         with pytest.raises(SimplEthError) as excp:
             c.get_var(constants.INT_VAR_NAME)
         assert excp.value.code == 'C-060-050'
+
+
+@pytest.mark.usefixtures(
+    'deploy_test_contract',
+    'connect_to_test_contract'
+    )
+# I think this is what I want. Get a fresh deploy before starting
+# and then do a `connect` in each method to get the contract object.
+class TestContractRunTrxGood:
+    """Test cases for Contract().run_trx() with good values"""
+    # Since run_trx() is a combination of submit_trx() and
+    # get_trx_receipt_wait(), separate tests for those two
+    # methods are not needed. These run_trx() tests cover the
+    # good values tests for them.
+
+    def test_run_trx_with_typical_good_args(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with the typical set of args"""
+        c = connect_to_test_contract
+        receipt = c.run_trx(
+            constants.TRX_SENDER,
+            constants.TRX_NAME,
+            constants.TRX_ARG0,
+            constants.TRX_ARG1,
+            constants.TRX_ARG2
+            )
+        assert receipt is not None
+
+    def test_run_trx_with_all_good_args(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with all params specified."""
+        c = connect_to_test_contract
+        receipt = c.run_trx(
+            constants.TRX_SENDER,
+            'storeNumsAndPay',
+            constants.TRX_ARG0,
+            constants.TRX_ARG1,
+            constants.TRX_ARG2,
+            gas_limit=1_000_000,
+            max_priority_fee_gwei=4,
+            max_fee_gwei=50,
+            value_wei=50_000,
+            timeout=3,
+            poll_latency=0.2
+            )
+        assert receipt is not None
+
+
+@pytest.mark.usefixtures(
+    'connect_to_test_contract',
+    'construct_never_deployed_test_contract'
+    )
+class TestContractRunTrxError:
+    """Test cases for Contract().run_trx() with bad values"""
+    # Since run_trx() is a combination of submit_trx() and
+    # get_trx_receipt_wait(), separate tests for those two
+    # methods are not needed. These run_trx() tests cover the
+    # error values tests for them, with one exception. run_trx()
+    # will throw C-070-010 if no hash is returned from the
+    # submit_trx(). I don't know how to create that error
+    # condition. That stanza of the code is not tested.
+
+    def test_run_trx_with_no_args_raises_type_error(
+            self,
+            connect_to_test_contract
+            ):
+        """"Attempt to run_trx() with no args fails"""
+        c = connect_to_test_contract
+        with pytest.raises(TypeError):
+            c.run_trx()
+
+    def test_run_trx_with_bad_trx_name_raises_c_080_010(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with a bad trx name"""
+        c = connect_to_test_contract
+        bad_trx_name = 'bad_trx'
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                constants.TRX_SENDER,
+                bad_trx_name,
+                constants.TRX_ARG0,
+                constants.TRX_ARG1,
+                constants.TRX_ARG2
+                )
+        assert excp.value.code == 'C-080-010'
+
+    def test_run_trx_with_too_few_trx_args_raises_c_080_020(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with too few trx args"""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                constants.TRX_SENDER,
+                constants.TRX_NAME,
+                constants.TRX_ARG0,
+                constants.TRX_ARG1
+                )
+        assert excp.value.code == 'C-080-020'
+
+    def test_run_trx_with_too_many_trx_args_raises_c_080_020(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with too many trx args"""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                constants.TRX_SENDER,
+                constants.TRX_NAME,
+                constants.TRX_ARG0,
+                constants.TRX_ARG1,
+                constants.TRX_ARG2,
+                constants.TRX_ARG2
+                )
+        assert excp.value.code == 'C-080-020'
+
+    def test_run_trx_with_TBD_raises_c_080_030(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() for a destroyed contract
+        Don't know how to do this yet. Just do assert True
+        for now. """
+        assert True
+
+    def test_run_trx_with_bad_sender_raises_c_080_050(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with a bad sender address"""
+        c = connect_to_test_contract
+        bad_sender = '123'
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                bad_sender,
+                constants.TRX_NAME,
+                constants.TRX_ARG0,
+                constants.TRX_ARG1,
+                constants.TRX_ARG2
+                )
+        assert excp.value.code == 'C-080-050'
+
+    def test_run_trx_with_bad_max_fee_gwei_raises_c_080_060(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with invalid max fee."""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                constants.TRX_SENDER,
+                'storeNumsAndPay',
+                constants.TRX_ARG0,
+                constants.TRX_ARG1,
+                constants.TRX_ARG2,
+                max_priority_fee_gwei=4,
+                max_fee_gwei=1
+                )
+        assert excp.value.code == 'C-080-060'
+
+    def test_run_trx_using_never_deployed_contract_raises_c_080_070(
+            self,
+            construct_never_deployed_test_contract
+            ):
+        """Test run_trx() without doing a `connect()` first"""
+        c = construct_never_deployed_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                constants.NEVER_DEPLOYED_TRX_SENDER,
+                constants.NEVER_DEPLOYED_TRX_NAME
+                )
+        assert excp.value.code == 'C-080-070'
+
+    def test_run_trx_with_missing_sender_raises_c_080_080(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with a missing sender arg"""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                constants.TRX_NAME,
+                constants.TRX_ARG0,
+                constants.TRX_ARG1,
+                constants.TRX_ARG2
+                )
+        assert excp.value.code == 'C-080-080'
+
+    def test_run_trx_with_oob_arg_raises_c_080_090(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with out-of-bounds arg"""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                constants.OOB_TRX_SENDER,
+                constants.OOB_TRX_NAME,
+                constants.OOB_TRX_ARG0,
+                constants.OOB_TRX_ARG1
+                )
+        assert excp.value.code == 'C-080-090'
+
+    def test_run_trx_with_db0_arg_raises_c_080_090(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with an arg that causes a
+        divide-by-zero error"""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                constants.DB0_TRX_SENDER,
+                constants.DB0_TRX_NAME,
+                constants.DB0_TRX_ARG0
+                )
+        assert excp.value.code == 'C-080-090'
+
+    def test_run_trx_with_low_gas_limit_raises_c_080_090(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with too low gas limit."""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                constants.TRX_SENDER,
+                'storeNumsAndPay',
+                constants.TRX_ARG0,
+                constants.TRX_ARG1,
+                constants.TRX_ARG2,
+                gas_limit=1_000
+                )
+        assert excp.value.code == 'C-080-090'

@@ -17,7 +17,7 @@ def construct_never_deployed_test_contract():
     """Set up a simpleth contract object. Return contract object. Do not deploy.
 
     There are a set of test cases that expect to use a contract which was compiled
-    but never `deploy()`-ed. They are testing the exception handling when a transaction
+    but never had a `deploy()`. They are testing the exception handling when a transaction
     is run without a `connect()` being done.
 
     In other words, the `.abi` and `.bin` artifact files exist but there is no
@@ -39,6 +39,7 @@ def deploy_test_contract(construct_test_contract):
     return contract_obj
 
 
+# Should this be (scope='fixture')?
 @pytest.fixture(scope='class')
 def connect_to_test_contract(construct_test_contract):
     """Connect to previously deployed contract. Return contract_obj ready to

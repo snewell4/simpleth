@@ -1957,13 +1957,22 @@ class Contract:
                 f'sender arg has a bad address.\n'
                 )
             raise SimplEthError(message, code='C-080-050') from None
+        except self._web3e.InvalidTransaction as exception:
+            message = (
+                f'ERROR in {self.name}().submit_trx(): '
+                f'InvalidTransaction says: {exception}\n'
+                f'HINT1: Do you need to swap max priority fee and max fee?.\n'
+                f'HINT2: Max_fee_gwei (total you will be willing to pay) must ',
+                f'be >= Max_priority_fee_gwei (the tip).\n'
+                )
+            raise SimplEthError(message, code='C-080-060') from None
         except AttributeError:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
                 f'Contract does not have a valid contract object.\n'
                 f'HINT: Do you need to do a connect()?\n'
                 )
-            raise SimplEthError(message, code='C-080-060') from None
+            raise SimplEthError(message, code='C-080-070') from None
         except TypeError:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
@@ -1971,10 +1980,9 @@ class Contract:
                 f'HINT 1: Check transaction argument types.\n'
                 f'HINT 2: Check all transaction arguments were specified.\n'
                 )
-            raise SimplEthError(message, code='C-080-070') from None
+            raise SimplEthError(message, code='C-080-080') from None
         except ValueError as exception:
-            value_error_message: str = \
-                dict(exception.args[0])['message']
+            value_error_message: str = dict(exception.args[0])['message']
             if 'revert' in value_error_message:
                 message = self._format_revert_message(value_error_message)
             else:
@@ -1991,7 +1999,7 @@ class Contract:
                     f'HINT 6: Fee args need to be integers. Did you use '
                     f'float?\n'
                     )
-            raise SimplEthError(message, code='C-080-080') from None
+            raise SimplEthError(message, code='C-080-090') from None
         return trx_hash
 
     def _format_revert_message(self, value_error_msg: str) -> str:
