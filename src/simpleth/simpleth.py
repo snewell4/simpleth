@@ -2612,13 +2612,6 @@ class Filter:
                 f'HINT: Check the spelling of your event_name.\n'
                 )
             raise SimplEthError(message, code='F-020-010') from None
-        except AttributeError as exception:
-            message = (
-                f'ERROR in create({event_name}).\n'
-                f'Attribute Error says: {exception}.\n'
-                f'HINT: Did you do a connect()?\n'
-                )
-            raise SimplEthError(message, code='F-020-020') from None
         return event_filter
 
     def get_new_events(self, event_filter: T_FILTER_OBJ) -> List:
@@ -2717,21 +2710,32 @@ class Filter:
             -  :meth:`get_old_events` looks backward and searches old
                blocks. :meth:`get_new_events` looks forward at the
                newly mined blocks.
+            -  Future: could add get_old_events_range(event_name, from, to)
+               that is similar but will search in the range of blocks
+               specified.
 
         :see: :attr:`Contract.events` for the list of valid events
                emitted by this contract.
 
         """
+        if not isinstance(num_blocks, int):
+            message: str = (
+                f'ERROR in get_old_events({event_name}).\n'
+                f'num_blocks = {num_blocks} is invalid.\n'
+                f'It must be between an integer.\n'
+                f'HINT: Provide a valid number for num_blocks.\n'
+                )
+            raise SimplEthError(message, code='F-030-010') from None
         latest_block: int = self._contract.blockchain.block_number
         if not 1 <= num_blocks <= latest_block:
             message: str = (
                 f'ERROR in get_old_events({event_name}).\n'
-                f'num_preceding_blocks = {num_blocks} is invalid.\n'
+                f'num_blocks = {num_blocks} is invalid.\n'
                 f'It must be between 1 and {latest_block} (the latest block '
                 f'on the chain).\n'
-                f'HINT: Provide a valid number for num_preceding_blocks.\n'
+                f'HINT: Provide a valid number for num_blocks.\n'
                 )
-            raise SimplEthError(message, code='F-030-010') from None
+            raise SimplEthError(message, code='F-030-020') from None
 
         from_block: int = latest_block - (num_blocks - 1)
         to_block: Union[str, int] = 'latest'
@@ -2750,13 +2754,6 @@ class Filter:
                 f'Valid event_names: {self._contract.event_names}\n'
                 f'HINT: Check spelling of event_name arg.\n'
                 )
-            raise SimplEthError(message, code='F-030-020') from None
-        except AttributeError as exception:
-            message = (
-                f'ERROR in get_old_events({event_name}).\n'
-                f'Attribute Error says: {exception}.\n'
-                f'HINT: Did you do a connect()?\n'
-                )
             raise SimplEthError(message, code='F-030-030') from None
         except TypeError as exception:
             message = (
@@ -2764,7 +2761,7 @@ class Filter:
                 f'Type Error says: {exception}.\n'
                 f'HINT: Check the type for the args.\n'
                 )
-            raise SimplEthError(message, code='F-030-030') from None
+            raise SimplEthError(message, code='F-030-040') from None
 
         # getattr() worked. we have a valid filter to use
         filter_list: T_FILTER_LIST = event_filter.get_all_entries()
