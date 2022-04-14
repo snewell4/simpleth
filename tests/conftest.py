@@ -85,6 +85,7 @@ def run_test_trx_to_store_nums_again(connect_to_test_contract):
     results = Results(trx_receipt, contract_obj)
     return results
 
+
 @pytest.fixture(scope='class')
 def run_test_trx_to_store_array(connect_to_test_contract):
     """Run `store_nums()`. Makes an array in the contract

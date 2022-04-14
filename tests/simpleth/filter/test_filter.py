@@ -1,7 +1,7 @@
 """Test Filter() class"""
 import pytest
 
-from simpleth import Filter, SimplEthError
+from simpleth import Filter, SimplEthError, Results
 import testconstants as constants
 
 
@@ -221,6 +221,8 @@ class TestFilterGetOldEventsBad:
     )
 class TestFilterGetNewEventsGood:
     """Test cases for Filter().get_new_events() with good test cases"""
+    # 4/14/22 - I'm stumped. I can run this in Python interpreter. Just
+    # don't know why I get 0 new events instead of 2. Giving it a rest for now.
 
     def test_get_new_events(
             self,
@@ -228,13 +230,25 @@ class TestFilterGetNewEventsGood:
             run_test_trx_to_store_nums,
             run_test_trx_to_store_nums_again
             ):
-        """Create filter and run one trx. Should return 1 event"""
+        """Create filter and run two trx. Should return 2 event"""
         c = deploy_test_contract
+        print(c)
+        print()
         f = Filter(c)
+        print(f)
+        print()
         store_nums_filter = f.create_filter(constants.EVENT_NAME)
-        run_test_trx_to_store_nums
-        run_test_trx_to_store_nums_again
+        print(constants.EVENT_NAME)
+        print(store_nums_filter)
+        print()
+        r1=run_test_trx_to_store_nums
+        print(r1)
+        print()
+        r2=run_test_trx_to_store_nums_again
+        print(r2)
+        print()
         events = f.get_new_events(store_nums_filter)
+        print(events)
         assert len(events) == 2
 
 

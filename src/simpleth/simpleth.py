@@ -511,7 +511,7 @@ class Blockchain:
                 f'ERROR in block_time_epoch({block_num}): '
                 f'the block_num must be an integer between '
                 f'0 and {self.block_number}.\n'
-                f'HINT: check type and value for account_num.\n'
+                f'HINT: check type and value for block_num.\n'
                 )
             raise SimplEthError(message, code='B-040-010') from None
         return self.eth.get_block(block_num).timestamp
