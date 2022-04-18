@@ -13,7 +13,7 @@ class TestContractConstructorGood:
         assert Contract(constants.CONTRACT_NAME)._name is constants.CONTRACT_NAME
 
 
-class TestContractConstructorError:
+class TestContractConstructorBad:
     """Test cases for Contract() with bad args"""
 
     def test_constructor_with_bad_contract_name_raises_c_100_010(self):
@@ -79,7 +79,7 @@ class TestContractDeployGood:
     'construct_test_contract',
     'construct_never_deployed_test_contract'
     )
-class TestContractDeployError:
+class TestContractDeployBad:
     """Test cases for Contract().deploy() with bad values"""
 
     # Not testing bad values for ``max_priority_fee_gwei`` and
@@ -171,7 +171,7 @@ class TestContractDeployError:
 
 
 @pytest.mark.usefixtures('construct_test_contract')
-class TestContractConnectError:
+class TestContractConnectBad:
     """Test cases for Contract().connect() with bad values"""
 
     # The good test case has already been run in fixtures
@@ -286,7 +286,7 @@ class TestCallFcnGood:
     'construct_never_deployed_test_contract',
     'connect_to_test_contract'
     )
-class TestCallFcnError:
+class TestCallFcnBad:
     """Test cases for Contract().call_fcn() with bad values"""
 
     # OK to just do connect() instead of deploy(). These tests
@@ -382,7 +382,7 @@ class TestContractGetGasEstimateGood:
     'connect_to_test_contract',
     'construct_never_deployed_test_contract'
     )
-class TestContractGetGasEstimateError:
+class TestContractGetGasEstimateBad:
     """Test cases for Contract().get_gas_estimate() with bad values"""
 
     def test_get_gas_estimate_with_no_args_raises_type_error(
@@ -589,7 +589,7 @@ class TestContractGetVarGood:
     'run_test_trx_to_store_array',
     'run_test_trx_to_store_all_types'
     )
-class TestContractGetVarError:
+class TestContractGetVarBad:
     """Test cases for Contract().get_var() with bad args"""
     # Don't know how to create the error condition that raises
     # code of C-060-020.
@@ -722,7 +722,7 @@ class TestContractRunTrxGood:
     'connect_to_test_contract',
     'construct_never_deployed_test_contract'
     )
-class TestContractRunTrxError:
+class TestContractRunTrxBad:
     """Test cases for Contract().run_trx() with bad values"""
     # Since run_trx() is a combination of submit_trx() and
     # get_trx_receipt_wait(), separate tests for those two
