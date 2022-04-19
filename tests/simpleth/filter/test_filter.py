@@ -1,7 +1,7 @@
 """Test Filter() class"""
 import pytest
 
-from simpleth import Filter, SimplEthError, Results
+from simpleth import Filter, SimplEthError, Results, Contract
 import testconstants as constants
 
 
@@ -232,6 +232,8 @@ class TestFilterGetNewEventsGood:
             ):
         """Create filter and run two trx. Should return 2 event"""
         c = deploy_test_contract
+        c = Contract('test')
+        c.connect()
         print(c)
         print()
         f = Filter(c)
