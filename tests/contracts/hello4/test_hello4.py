@@ -5,34 +5,46 @@ from simpleth import Blockchain, Contract, Results, Filter
 
 
 def test_HelloWorld4_deploy():
-    """Deploy HelloWorld4.sol with a greeting string in constructor arg,
-    check for good deploy, call function to get that greeting and test
-    it is the expected greeting."""
+    """Deploy and check constructor arg becomes the greeting"""
     c = Contract('HelloWorld4')
     u = Blockchain().address(0)
-    f = Filter(c)
-    hello_str = 'Hello World!'
+    hello_str = 'Hello World 4!'
     receipt = c.deploy(u, hello_str)
     results = Results(receipt, c)
     greeting = c.call_fcn('getGreeting')
     assert greeting == hello_str and results.trx_name == 'deploy'
 
 
-def test_HelloWorld4_setGreeting():
-    """Continue with the deployed contract. Run trx to set a new
-    greeting, get that greeting, test it is the expected string,
-    and check event emitted with the greeting."""
+def test_HelloWorld4_deploy_event():
+    """Get the constructor event and check the greeting"""
     c = Contract('HelloWorld4')
-    u = Blockchain().address(0)
     c.connect()
     f = Filter(c)
+    n = 1    # number of mined blocks to check; 1 == last block mined
+    hello_str = 'Hello World 4!'
+    events = f.get_old_events('HelloWorld4Constructed', n)
+    assert events[0]['args']['initGreeting'] == hello_str
+
+
+def test_HelloWorld4_setGreeting():
+    """Run trx to change greeting and check the change was made"""
+    c = Contract('HelloWorld4')
+    c.connect()
+    u = Blockchain().address(0)
     hello_str = 'Hello Again!'
-    n_blocks = 1       # look at last block mined for constructor event
+    n = 1    # number of mined blocks to check; 1 == last block mined
     receipt = c.run_trx(u, 'setGreeting', hello_str)
     results = Results(receipt, c)
     greeting = c.call_fcn('getGreeting')
-    event = f.get_old_events('GreetingSet', n_blocks)
-    assert greeting == hello_str and \
-        results.trx_name == 'setGreeting' and \
-        event[0]['args']['greeting'] == hello_str
+    assert greeting == hello_str and results.trx_name == 'setGreeting'
 
+
+def test_HelloWorld4_setGreeting_event():
+    """Check for the event with the new greeting"""
+    c = Contract('HelloWorld4')
+    c.connect()
+    f = Filter(c)
+    n = 1    # number of mined blocks to check; 1 == last block mined
+    hello_str = 'Hello Again!'
+    events = f.get_old_events('GreetingSet', n)
+    assert events[0]['args']['greeting'] == hello_str

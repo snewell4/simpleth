@@ -221,36 +221,28 @@ class TestFilterGetOldEventsBad:
     )
 class TestFilterGetNewEventsGood:
     """Test cases for Filter().get_new_events() with good test cases"""
-    # 4/14/22 - I'm stumped. I can run this in Python interpreter. Just
-    # don't know why I get 0 new events instead of 2. Giving it a rest for now.
 
-    def test_get_new_events(
-            self,
-            deploy_test_contract,
-            run_test_trx_to_store_nums,
-            run_test_trx_to_store_nums_again
-            ):
-        """Create filter and run two trx. Should return 2 event"""
-        c = deploy_test_contract
-        c = Contract('test')
+    def test_get_new_events(self):
+        """Create filter and run two trx. Should return 2 events"""
+        c = Contract(constants.CONTRACT_NAME)
         c.connect()
-        print(c)
-        print()
         f = Filter(c)
-        print(f)
-        print()
         store_nums_filter = f.create_filter(constants.EVENT_NAME)
-        print(constants.EVENT_NAME)
-        print(store_nums_filter)
-        print()
-        r1=run_test_trx_to_store_nums
-        print(r1)
-        print()
-        r2=run_test_trx_to_store_nums_again
-        print(r2)
-        print()
+        c.run_trx(
+            constants.TRX_SENDER,
+            constants.TRX_NAME,
+            constants.TRX_ARG0,
+            constants.TRX_ARG1,
+            constants.TRX_ARG2
+            )
+        c.run_trx(
+            constants.TRX_SENDER,
+            constants.TRX_NAME,
+            constants.TRX_ARG0 + 10,
+            constants.TRX_ARG1 + 10,
+            constants.TRX_ARG2 + 10
+            )
         events = f.get_new_events(store_nums_filter)
-        print(events)
         assert len(events) == 2
 
 

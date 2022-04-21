@@ -1361,7 +1361,6 @@ class Contract:
 
         self._set_artifact_address(trx_receipt.contractAddress)
         self.connect()
-        print(f'DEBUG (deploy) - web3 contract =  {self._web3_contract}')
         return trx_receipt
 
     def get_gas_estimate(
@@ -2565,7 +2564,6 @@ class Filter:
         self._web3_contract: T_WEB3_CONTRACT_OBJ = \
             self._contract.web3_contract
         """Private :attr:`Contract.web3_contract` instance"""
-        print(f'DEBUG (Filter constructor) - web3 contract =  {self._web3_contract}')
 
     def create_filter(self, event_name: str) -> T_FILTER_OBJ:
         """Return a filter used to watch for a specific event.
@@ -2748,7 +2746,6 @@ class Filter:
 
         from_block: int = latest_block - (num_blocks - 1)
         to_block: Union[str, int] = 'latest'
-        print(f'DEBUG (get_old_events) - web3 contract =  {self._web3_contract}')
         try:
             event_filter: T_FILTER_OBJ = getattr(
                 self._web3_contract.events,
