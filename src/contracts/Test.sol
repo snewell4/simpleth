@@ -264,7 +264,7 @@ contract Test {
      *
      * @dev Emits OwnerSet().
      *
-     * @param _newOwner divide initNum by this value
+     * @param _newOwner address of the account to be the new owner
      */
     function setOwner(address _newOwner)
         public
@@ -321,7 +321,7 @@ contract Test {
     }
 
     /**
-     * @notice Stores the three args in nums[]
+     * @notice Stores the three args in nums[] and accepts a payment.
      *
      * @dev Emits NumsStored()
      *
