@@ -36,7 +36,7 @@ __all__ = [
     'SimplEthError'
     ]
 __author__ = 'Stephen Newell'
-__copyright__ = 'Copyright 2021, Stephen Newell'
+__copyright__ = 'Copyright 2022, Stephen Newell'
 __license__ = 'MIT'
 __version__ = '0.17'
 __maintainer__ = 'Stephen Newell'
@@ -1963,7 +1963,7 @@ class Contract:
                 f'ERROR in {self.name}().submit_trx(): '
                 f'InvalidTransaction says: {exception}\n'
                 f'HINT1: Do you need to swap max priority fee and max fee?.\n'
-                f'HINT2: Max_fee_gwei (total you will be willing to pay) must ',
+                f'HINT2: Max_fee_gwei (total you will be willing to pay) must '
                 f'be >= Max_priority_fee_gwei (the tip).\n'
                 )
             raise SimplEthError(message, code='C-080-060') from None
@@ -2625,8 +2625,8 @@ class EventSearch:
             >>> e = EventSearch(c, 'NumsStored')
             >>> e.get_new()
             []
-            >>> receipt = c.run_trx(u, 'storeNums', 10, 20, 30)
-            >>> receipt = c.run_trx(u, 'storeNums', 100, 200, 300)
+            >>> c.run_trx(u, 'storeNums', 10, 20, 30)
+            >>> c.run_trx(u, 'storeNums', 100, 200, 300)
             >>> len(e.get_new())
             2
             >>> e.get_new()
@@ -2687,12 +2687,11 @@ class EventSearch:
             >>> from simpleth import Blockchain, Contract, EventSearch
             >>> c = Contract('Test')
             >>> c.connect()
-            '0xf84044B6b63292Ae742cf8A50C73e17Deec3DCA5'
             >>> u = Blockchain().address(0)
             >>> e = EventSearch(c, 'NumsStored')
-            >>> r = c.run_trx(u, 'storeNums', 1, 2, 3)
-            >>> r = c.run_trx(u, 'storeNums', 5, 6, 7)
-            >>> r = c.run_trx(u, 'storeNums', 8, 9, 10)
+            >>> c.run_trx(u, 'storeNums', 1, 2, 3)
+            >>> c.run_trx(u, 'storeNums', 5, 6, 7)
+            >>> c.run_trx(u, 'storeNums', 8, 9, 10)
             >>> e.get_old()
             [{
                 'block_number': 2738,
@@ -3363,7 +3362,6 @@ class Results:
             {'transactionHash': HexBytes('0x0e36d22f42dbf641cef1e9f26daeb00f28a4850fccde39f ... ')}
 
         """
-        # TBD simplethify()
         return dict(self._trx_receipt)
 
     @property
@@ -3605,14 +3603,14 @@ class SimplEthError(Exception):
 
     Besides, passing back the details from the original Python exception,
     :class:`SimplEthError` offers hints as to the cause of the problem.
-    Some exceptions, esp. the ones caused by a problem with the Solidity
+    Some exceptions, esp. the ones caused by an error with the Solidity
     contract, can be rather mysterious, esp. to someone just starting out
     with Ethereum. The hints may quickly point you to the cause.
 
     At the time of the early version of `simpleth` (circa 2020), the exceptions
     being thrown had very little explanation and could be difficult to
     locate the cause. More recent versions of `web3.py` are adding good
-    descriptions of the problem in their exception ``Message`` parameter.
+    descriptions of the error in their exception ``Message`` parameter.
     If all `web3.py` exceptions add helpful messages, one of the big
     reasons for `SimplEthError` is fixed and time to consider doing away
     with it.

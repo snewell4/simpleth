@@ -171,8 +171,12 @@ def test_local_time_string_raises_v_020_010():
 def test_to_local_time_string_int():
     """to_local_time_string() with integer epoch seconds returns a
     formatted time string"""
+    time_format = '%Y-%m-%d %H:%M:%S'  # must match simpleth TIME_FORMAT
     test_epoch_sec = 1639932637
-    test_local_time = '2021-12-19 10:50:37'
+    test_local_time = time.strftime(
+        time_format,
+        time.localtime(test_epoch_sec)
+        )
     assert(
         Convert().to_local_time_string(test_epoch_sec) == test_local_time
         )
@@ -181,8 +185,12 @@ def test_to_local_time_string_int():
 def test_to_local_time_string_float():
     """to_local_time_string() returns a float epoch seconds returns a
     formatted time string"""
+    time_format = '%Y-%m-%d %H:%M:%S'  # must match simpleth TIME_FORMAT
     test_epoch_sec = 1639932637.00
-    test_local_time = '2021-12-19 10:50:37'
+    test_local_time = time.strftime(
+        time_format,
+        time.localtime(test_epoch_sec)
+        )
     assert(
         Convert().to_local_time_string(test_epoch_sec) == test_local_time
         )
@@ -192,7 +200,10 @@ def test_to_local_time_with_time_format():
     """to_local_time() returns a specified formatted time string"""
     t_format = '%I:%M'    # use a simple time string format of HH:MM
     test_epoch_sec = 1639932637
-    test_local_time = '10:50'
+    test_local_time = time.strftime(
+        t_format,
+        time.localtime(test_epoch_sec)
+        )
     assert(
         Convert().to_local_time_string(test_epoch_sec, t_format) ==
         test_local_time
