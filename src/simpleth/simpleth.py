@@ -2546,6 +2546,8 @@ class EventSearch:
         :type contract: object
         :param event_name: name of event defined in the contract
         :type event_name: str
+        :raises SimplEthError:
+            - if ``event_name`` is not found in the ``contract``
         :example:
 
             >>> from simpleth import Contract, EventSearch
