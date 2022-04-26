@@ -2514,7 +2514,7 @@ class Convert:
 
 
 class EventSearch:
-    """Search for an event emitted a by transaction.
+    """Search for an event emitted a by contract.
 
     Returns the event info for a named event within a set of blocks.
 
@@ -2660,6 +2660,12 @@ class EventSearch:
         :type from_block: int
         :param to_block: ending block to search mined blocks
         :type to_block: int
+        :raises SimplEthError:
+            - if ``from_block`` is not integer
+            - if ``to_block`` is not integer
+            - if ``from_block`` is greater than ``Blockchain().block_number``
+            
+
         :rtype: list
         :return: one item for each event found; empty list if
             no events found
@@ -2668,8 +2674,8 @@ class EventSearch:
             -  `get_old(-x)` searches the most recently mined `x` blocks; where '-1' is
                the most recently mined block, '-2' is the two most recently mined blocks,
                etc.
-            -  `get_old(x)` searches from block `x` to the end of the chain.
-            -  `get_old(m,n)` searches from block 'm' to block 'n'.
+            -  `get_old(x)` searches block `x` to the end of the chain.
+            -  `get_old(m,n)` searches block 'm' to block 'n'.
 
         :example:
 
@@ -2683,9 +2689,16 @@ class EventSearch:
             >>> r = c.run_trx(u, 'storeNums', 5, 6, 7)
             >>> r = c.run_trx(u, 'storeNums', 8, 9, 10)
             >>> e.get_old()
-            [{'block_number': 2738, 'args': {
-                'timestamp': 1650916533, 'num0': 8, 'num1': 9, 'num2': 10
-                }, 'trx_hash': '0xf3629545d ... 3982ad3e2d07d9'}]
+            [{
+                'block_number': 2738,
+                'args': {
+                    'timestamp': 1650916533,
+                    'num0': 8,
+                    'num1': 9,
+                    'num2': 10
+                },
+                'trx_hash': '0xf3629545d ... 3982ad3e2d07d9'
+            }]
             >>> len(e.get_old(-2))
             2
             >>> len(e.get_old(2736, 2737))
@@ -2702,6 +2715,7 @@ class EventSearch:
                emitted by this contract.
 
         """
+        latest_block: int = self._contract.blockchain.block_number
         if not isinstance(from_block, int):
             message: str = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
@@ -2723,14 +2737,20 @@ class EventSearch:
                 f'HINT: When searching relative to the last block do not specify to_block.\n'
                 )
             raise SimplEthError(message, code='E-030-030') from None
+        if from_block < 0 and abs(from_block) > latest_block:
+            message: str = (
+                f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
+                f'from_block is beyond the start of the chain.\n'
+                f'HINT: Provide a number between 0 and -{latest_block}.\n'
+                )
+            raise SimplEthError(message, code='E-030-040') from None
         if to_block != 0 and from_block > to_block:
             message: str = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
                 f'The from_block needs to be less than or equal to the to_block.\n'
                 f'HINT: Provide a valid range.\n'
                 )
-            raise SimplEthError(message, code='E-030-040') from None
-        latest_block: int = self._contract.blockchain.block_number
+            raise SimplEthError(message, code='E-030-050') from None
         if from_block > latest_block:
             message: str = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
@@ -2738,7 +2758,7 @@ class EventSearch:
                 f'{latest_block} is the latest block mined and the end of the chain.\n'
                 f'HINT: Provide a valid block number.\n'
                 )
-            raise SimplEthError(message, code='E-030-050') from None
+            raise SimplEthError(message, code='E-030-060') from None
         if to_block > latest_block:
             message: str = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
@@ -2746,7 +2766,7 @@ class EventSearch:
                 f'{latest_block} is the last block mined and the end of the chain.\n'
                 f'HINT: Provide a valid block number.\n'
                 )
-            raise SimplEthError(message, code='E-030-060') from None
+            raise SimplEthError(message, code='E-030-070') from None
 
         if from_block == 0 and to_block == 0:
             _from_block = latest_block

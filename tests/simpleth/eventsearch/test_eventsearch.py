@@ -117,6 +117,15 @@ class TestEventSearchGetOldBad:
             e.get_old(-2, 20)
         assert excp.value.code == 'E-030-030'
 
+    def test_get_old_oob_from(self):
+        """Test get_old() with from beyond start of change (out of bounds)"""
+        c = Contract('Test')
+        c.connect()
+        e = EventSearch(c, 'NumsStored')
+        with pytest.raises(SimplEthError) as excp:
+            e.get_old(-(Blockchain().block_number + 1))
+        assert excp.value.code == 'E-030-040'
+
     def test_get_old_bad_range(self):
         """Test get_old() relative search with from greater than to"""
         c = Contract('Test')
@@ -124,7 +133,7 @@ class TestEventSearchGetOldBad:
         e = EventSearch(c, 'NumsStored')
         with pytest.raises(SimplEthError) as excp:
             e.get_old(30, 20)
-        assert excp.value.code == 'E-030-040'
+        assert excp.value.code == 'E-030-050'
 
     def test_get_old_bad_from(self):
         """Test get_old() with from greater than last block on chain"""
@@ -134,7 +143,7 @@ class TestEventSearchGetOldBad:
         n = Blockchain().block_number
         with pytest.raises(SimplEthError) as excp:
             e.get_old(n+1, n+2)
-        assert excp.value.code == 'E-030-050'
+        assert excp.value.code == 'E-030-060'
 
     def test_get_old_bad_to(self):
         """Test get_old() with to greater than last block on chain"""
@@ -144,10 +153,10 @@ class TestEventSearchGetOldBad:
         n = Blockchain().block_number
         with pytest.raises(SimplEthError) as excp:
             e.get_old(n-1, n+2)
-        assert excp.value.code == 'E-030-060'
+        assert excp.value.code == 'E-030-070'
 
 
-class TestFilterGetNewEventsGood:
+class TestEventSearchGetNewGood:
     """Test cases for EventSearch().get_new() with good test cases"""
 
     def test_get_new_with_zero_one_two_good_events(self):
