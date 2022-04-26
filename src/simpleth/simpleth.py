@@ -6,13 +6,14 @@ Classes
 - `Blockchain` - interact with Ethereum blockchain
 - `Contract` - interact with Solidity contracts
 - `Convert` - conversion methods for Ether denominations and time values
+- `EventSearch` - search for events emitted by transactions
 - `Results` - outcomes resulting from a transaction being mined
-- `Filter` - search for events emitted by transactions
+
 
 Exceptions
 ----------
 - `SimplEthError` - raised on errors from methods in `Blockchain`,
-  `Contract`, or `Filter`.
+  `Contract`, or `EventSearch`.
 
 """
 import sys
@@ -30,7 +31,7 @@ __all__ = [
     'Blockchain',
     'Contract',
     'Convert',
-    'Filter',
+    'EventSearch',
     'Results',
     'SimplEthError'
     ]
@@ -168,11 +169,11 @@ T_EVENT_LOG_OBJ = list
 """``Event log`` type is a list of T_EVENT items."""
 
 T_FILTER_OBJ = Any
-"""``Filter object`` type is `web3._utils.filters.LogFilter`.
+"""``EventSearch object`` type is `web3._utils.filters.LogFilter`.
 Use `Any` for now. Created by `web3.py` methods."""
 
 T_FILTER_LIST = Any
-"""``Filter list`` type is created by `web3.py` `event_filter`.
+"""``EventSearch list`` type is created by `web3.py` `event_filter`.
 Use `Any` for now."""
 
 T_HASH = Any
@@ -2512,265 +2513,263 @@ class Convert:
 # end of Convert()
 
 
-class Filter:
-    """Create event filter and use to search for events.
+class EventSearch:
+    """Search for an event emitted a by transaction.
 
-    In order to search for particular events emitted by transactions,
-    you create a filter with the search criteria and use that filter
-    to perform your search.
-
-    `simpleth` implements the ability to search for events by `event name`.
-    You can search blocks already on the blockchain using
-    :meth:`get_old_events()`.
-    Besides, the name of the event, you specify how far back, by giving the
-    number of blocks, to search. You can watch new blocks as they are
-    added to the blockchain with :meth:`get_new_events()`.
+    Returns the event info for a named event within a set of blocks.
 
     **PROPERTIES**
 
-    -  None
+    -  :meth:`name` - name of event being sought
 
     **METHODS**
 
-    -  :meth:`create_filter` - return a filter for an event
-    -  :meth:`get_new_events` - return event info from newly mined blocks
-    -  :meth:`get_old_events` - return event info from blocks on chain
+    -  :meth:`get_old` - return event info from specified range of
+       previously mined blocks
+    -  :meth:`get_new` - return event info from newly mined blocks
 
     :notes:
         -  The `web3.py` API documentation describes more powerful filters
-           at: https://web3py.readthedocs.io/en/stable/web3.eth.html#filters.
-        -  :attr:`Blockchain.eth` can be used to access the methods
+           that enable a wide variety of searches for events. See:
+           https://web3py.readthedocs.io/en/stable/web3.eth.html#filters.
+           :attr:`Blockchain.eth` can be used to access the methods
            described.
 
     """
-    def __init__(self, contract: Contract) -> None:
-        """Create instance for filters using the contract instance.
-
-        This ``Filter`` will be used to find events emitted by
-        transactions in ``Contract``.
+    def __init__(self,
+                 contract: Contract,
+                 event_name: str
+                 ) -> None:
+        """Create instance to search for the event emitted by the contract.
 
         :param contract: :class:`Contract` object
         :type contract: object
+        :param event_name: name of event defined in the contract
+        :type event_name: str
         :example:
-            >>> from simpleth import Contract, Filter
+
+            >>> from simpleth import Contract, EventSearch
             >>> c = Contract('Test')
-            >>> f = Filter(c)
-            >>> f
-            <simpleth.Filter object at 0x0000021FB2FD5DE0>
+            >>> c.connect()
+            '0xf84044B6b63292Ae742cf8A50C73e17Deec3DCA5'
+            >>> e = EventSearch(c, 'NumsStored')
+            >>> e
+            <simpleth.EventSearch object at 0x00000207818D9F00>
 
         """
         self._contract: Contract = contract
         """Private :class"`Contract' instance"""
+        self._event_name: str = event_name
+        """Private variable with the searched for event name"""
         self._web3_contract: T_WEB3_CONTRACT_OBJ = \
             self._contract.web3_contract
         """Private :attr:`Contract.web3_contract` instance"""
-
-    def create_filter(self, event_name: str) -> T_FILTER_OBJ:
-        """Return a filter used to watch for a specific event.
-
-        Only needed for use with :meth:`get_new_events` to
-        create a filter to be used when watching for future emissions
-        of ``event_name``.
-
-        :param event_name: name of the event
-        :type event_name: str
-        :rtype: object
-        :return: `web3._utils.filters.LogFilter` object
-        :raises SimplEthError:
-
-            -  if ``event_name`` is bad
-            -  if a :meth:`connect` is needed
-
-        :example:
-            >>> from simpleth import Contract, Filter
-            >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> f = Filter(c)
-            >>> f_NumsStored = f.create_filter('NumsStored')
-            >>> f_NumsStored
-            <web3._utils.filters.LogFilter object at 0x0000021FB2FB1C
-
-        :see:
-
-            -  :meth:`get_new_events()` for using this new `event_filter`
-               to watch for the event.
-            -  :attr:`Contract.events` for the list of valid events emitted
-               by this contract.
-
-        """
         try:
-            event_filter: T_FILTER_OBJ = getattr(
+            self._event_filter: T_FILTER_OBJ = getattr(
                 self._web3_contract.events,
-                event_name
+                self._event_name
                 )().createFilter(fromBlock='latest')
         except self._contract.web3e.ABIEventFunctionNotFound:
             message: str = (
-                f'ERROR in create({event_name}).\n'
-                f'The event: {event_name} was not found.\n'
+                f'ERROR in Event({self._contract.name},{self._event_name}).\n'
+                f'The event: {self._event_name} was not found.\n'
                 f'Valid event_names: {self._contract.event_names}\n'
                 f'HINT: Check the spelling of your event_name.\n'
                 )
-            raise SimplEthError(message, code='F-020-010') from None
-        return event_filter
+            raise SimplEthError(message, code='E-010-010') from None
 
-    def get_new_events(self, event_filter: T_FILTER_OBJ) -> List:
-        """Search newly mined blocks for a specific event.
+    @property
+    def event_name(self) -> str:
+        """Return the name of the event used for the search.
+
+        :rtype: str
+        :return: event name used for the search
+        :example:
+
+            >>> from simpleth import Contract, EventSearch
+            >>> c = Contract('Test')
+            >>> c.connect()
+            '0xf84044B6b63292Ae742cf8A50C73e17Deec3DCA5'
+            >>> e = EventSearch(c, 'NumsStored')
+            >>> e
+            <simpleth.EventSearch object at 0x00000207818D9F00>
+            >>> e.event_name
+            'NumsStored'
+
+        """
+        return self._event_name
+
+    def get_new(self) -> List:
+        """Search newly mined blocks for the specific event.
 
         The first call checks for the event in the blocks mined
-        since ``event_filter`` was created. Each subsequent call
+        since ``Event()`` was created. Each subsequent call
         checks for the event in the blocks mined since the previous call.
 
-        :param event_filter: specifies the event to find
-        :type event_filter: object
         :rtype: list
         :return:
 
             -  list with one item for each event emitted since the
-               previous use of ``event_filter``.
-            -  empty list if no events were emitted since previous
-               use of ``event_filter``.
+               previous call.
+            -  empty list if no events were emitted since the previous
+               call.
 
         :example:
 
-            >>> from simpleth import Blockchain, Contract, Filter
-            >>> b = Blockchain()
-            >>> user = b.accounts[3]
+            >>> from simpleth import Contract, Blockchain, EventSearch
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> f = Filter(c)
-            >>> filter_NumsStored = f.create_filter('NumsStored')
-            >>> result_NumsStored =_NumsStored = c.run_trx(user,'storeNums',5,6,7)
-            >>> events_NumsStored = f.get_new_events(filter_NumsStored)
-            >>> len(events_NumsStored)
-            1
-            >>> events_NumsStored
-            [{'block_number': 137, 'args': {'num0': 5, 'num1': 6, ... c44a'}  }]
-            >>> result1_NumsStored = c.run_trx(user,'storeNums',5,6,7)
-            >>> result2_NumsStored = c.run_trx(user,'storeNums',5,6,7)
-            >>> result3_NumsStored = c.run_trx(user,'storeNums',5,6,7)
-            >>> result4_NumsStored = c.run_trx(user,'storeNums',5,6,7)
-            >>> events_NumsStored = f.get_new_events(filter_NumsStored)
-            >>> len(events_NumsStored)
-            4
-            >>> events_NumsStored
-            [{'block_number': 138, 'args': {'num0': 5, 'num1':  ... }}]
+            >>> address = c.connect()
+            >>> u = Blockchain().address(0)
+            >>> e = EventSearch(c, 'NumsStored')
+            >>> e.get_new()
+            []
+            >>> receipt = c.run_trx(u, 'storeNums', 10, 20, 30)
+            >>> receipt = c.run_trx(u, 'storeNums', 100, 200, 300)
+            >>> len(e.get_new())
+            2
+            >>> e.get_new()
+            []
+            >>> receipt = c.run_trx(u, 'storeNums', 101, 201, 301)
+            >>> e.get_new()
+            [{'block_number': 2733,
+               'args': {
+                  'timestamp': 1650915279, 'num0': 101, 'num1': 201, 'num2': 301
+                  },
+               'trx_hash': '0x45345fb27043b978875d13 ... 8c80708c0d813cd'}]
 
-        :notes: :meth:`get_past_events` looks backward and searches old
-            blocks. :meth:`get_new_events` looks forward at the
+        :notes: :meth:`get_past` looks backward and searches old
+            blocks. :meth:`get_new` looks forward at the
             newly mined blocks.
 
         :see:
-            -  :meth:`create_filter` to create ``event_filter``.
             -  :attr:`Contract.events` for the list of valid events
                emitted by this contract.
 
         """
-        filter_list: T_FILTER_LIST = event_filter.get_new_entries()
+        filter_list: T_FILTER_LIST = self._event_filter.get_new_entries()
         return self._create_simple_events(filter_list)
 
-    def get_old_events(
+    def get_old(
             self,
-            event_name: str,
-            num_blocks: int
+            from_block: Optional[int] = 0,
+            to_block: Optional[int] = 0
             ) -> List:
         """Search previously mined blocks for a specific event.
 
-        :param event_name: name of the event to find
-        :type event_name: str
-        :param num_blocks: number of mined blocks to search
-        :type num_blocks: int
+        :param from_block: starting block to search mined blocks
+        :type from_block: int
+        :param to_block: ending block to search mined blocks
+        :type to_block: int
         :rtype: list
         :return: one item for each event found; empty list if
             no events found
-
-        :raises SimplEthError:
-
-            -  if ``event_name`` was bad
-            -  if no :meth:`connect`
+        :usage:
+            -  `get_old()` searches the most recently mined block.
+            -  `get_old(-x)` searches the most recently mined `x` blocks; where '-1' is
+               the most recently mined block, '-2' is the two most recently mined blocks,
+               etc.
+            -  `get_old(x)` searches from block `x` to the end of the chain.
+            -  `get_old(m,n)` searches from block 'm' to block 'n'.
 
         :example:
-            >>> from simpleth import Contract, Filter
+
+            >>> from simpleth import Blockchain, Contract, EventSearch
             >>> c = Contract('Test')
             >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> f = Filter(c)
-            >>> events_NumsStored = f.get_old_events('NumsStored', 3)
-            >>> len(events_NumsStored)
-            3
-            >>> events_NumsStored
-            [{'block_number': 139, 'args': {'num0': 5, 'num1': 6, ...}}]
+            '0xf84044B6b63292Ae742cf8A50C73e17Deec3DCA5'
+            >>> u = Blockchain().address(0)
+            >>> e = EventSearch(c, 'NumsStored')
+            >>> r = c.run_trx(u, 'storeNums', 1, 2, 3)
+            >>> r = c.run_trx(u, 'storeNums', 5, 6, 7)
+            >>> r = c.run_trx(u, 'storeNums', 8, 9, 10)
+            >>> e.get_old()
+            [{'block_number': 2738, 'args': {
+                'timestamp': 1650916533, 'num0': 8, 'num1': 9, 'num2': 10
+                }, 'trx_hash': '0xf3629545d ... 3982ad3e2d07d9'}]
+            >>> len(e.get_old(-2))
+            2
+            >>> len(e.get_old(2736, 2737))
+            2
 
         :notes:
 
-            -  Unlike :meth:`get_new_events`, an ``event_filter`` is not
-               needed. This method builds its own event filter based on
-               ``event_name``.
-            -  :meth:`get_old_events` looks backward and searches old
-               blocks. :meth:`get_new_events` looks forward at the
+            -  :meth:`get_old` looks backward and searches old
+               blocks. :meth:`get_new` looks forward at the
                newly mined blocks.
-            -  Future: could add get_old_events_range(event_name, from, to)
-               that is similar but will search in the range of blocks
-               specified.
-            -  Beware: seems like doing a meth:`get_old_events` after a
-               meth:`deploy` doesn't work. You must do it after a
-               meth:`connect`. See test_hello4:test_HelloWorld4_deploy.
-               I tried to do a get_old_events() and check the initGreeting,
-               but could not get it to work. web3_contract was null. Didn't make
-               sense so I pulled that piece of the test.
-               (TBD: investigate and fix)
 
-        :see: :attr:`Contract.events` for the list of valid events
+        :see:
+            -  :attr:`Contract.events` for the list of valid events
                emitted by this contract.
 
         """
-        if not isinstance(num_blocks, int):
+        if not isinstance(from_block, int):
             message: str = (
-                f'ERROR in get_old_events({event_name}).\n'
-                f'num_blocks = {num_blocks} is invalid.\n'
-                f'It must be between an integer.\n'
-                f'HINT: Provide a valid number for num_blocks.\n'
+                f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
+                f'The block numbers must be an integer.\n'
+                f'HINT: Provide integers for from_block.\n'
                 )
-            raise SimplEthError(message, code='F-030-010') from None
+            raise SimplEthError(message, code='E-030-010') from None
+        if not isinstance(to_block, int):
+            message: str = (
+                f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
+                f'The block numbers must be an integer.\n'
+                f'HINT: Provide integers for to_block.\n'
+                )
+            raise SimplEthError(message, code='E-030-020') from None
+        if from_block < 0 and to_block != 0:
+            message: str = (
+                f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
+                f'Do not specify to_block when you provide a negative from_block.\n'
+                f'HINT: When searching relative to the last block do not specify to_block.\n'
+                )
+            raise SimplEthError(message, code='E-030-030') from None
+        if to_block != 0 and from_block > to_block:
+            message: str = (
+                f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
+                f'The from_block needs to be less than or equal to the to_block.\n'
+                f'HINT: Provide a valid range.\n'
+                )
+            raise SimplEthError(message, code='E-030-040') from None
         latest_block: int = self._contract.blockchain.block_number
-        if not 1 <= num_blocks <= latest_block:
+        if from_block > latest_block:
             message: str = (
-                f'ERROR in get_old_events({event_name}).\n'
-                f'num_blocks = {num_blocks} is invalid.\n'
-                f'It must be between 1 and {latest_block} (the latest block '
-                f'on the chain).\n'
-                f'HINT: Provide a valid number for num_blocks.\n'
+                f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
+                f'from_block is beyond the end of the chain.\n'
+                f'{latest_block} is the latest block mined and the end of the chain.\n'
+                f'HINT: Provide a valid block number.\n'
                 )
-            raise SimplEthError(message, code='F-030-020') from None
+            raise SimplEthError(message, code='E-030-050') from None
+        if to_block > latest_block:
+            message: str = (
+                f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
+                f'from_block is beyond the end of the chain. \n'
+                f'{latest_block} is the last block mined and the end of the chain.\n'
+                f'HINT: Provide a valid block number.\n'
+                )
+            raise SimplEthError(message, code='E-030-060') from None
 
-        from_block: int = latest_block - (num_blocks - 1)
-        to_block: Union[str, int] = 'latest'
-        try:
-            event_filter: T_FILTER_OBJ = getattr(
-                self._web3_contract.events,
-                event_name
-                )().createFilter(
-                fromBlock=from_block,
-                toBlock=to_block
-                )
-        except self._contract.web3e.ABIEventFunctionNotFound:
-            message = (
-                f'ERROR in get_old_events({event_name}).\n'
-                f'The event: {event_name} was not found in contract.\n'
-                f'Valid event_names: {self._contract.event_names}\n'
-                f'HINT: Check spelling of event_name arg.\n'
-                )
-            raise SimplEthError(message, code='F-030-030') from None
-        except TypeError as exception:
-            message = (
-                f'ERROR in get_old_events({event_name}).\n'
-                f'Type Error says: {exception}.\n'
-                f'HINT: Check the type for the args.\n'
-                )
-            raise SimplEthError(message, code='F-030-040') from None
+        if from_block == 0 and to_block == 0:
+            _from_block = latest_block
+            _to_block = latest_block
+        elif from_block < 0:
+            _from_block = latest_block + from_block + 1
+            _to_block = latest_block
+        elif from_block > 0 and to_block == 0:
+            _from_block = from_block
+            _to_block = latest_block
+        else:
+            _from_block = from_block
+            _to_block = to_block
 
-        # getattr() worked. we have a valid filter to use
+        # CreateFilter should not fail. It was already created before
+        # in the constructor. No need to put this line in a try/except
+        event_filter: T_FILTER_OBJ = getattr(
+            self._web3_contract.events,
+            self._event_name
+            )().createFilter(
+            fromBlock=_from_block,
+            toBlock=_to_block
+            )
         filter_list: T_FILTER_LIST = event_filter.get_all_entries()
         return self._create_simple_events(filter_list)
 
@@ -2800,7 +2799,7 @@ class Filter:
                 }
             simple_events.append(simple_event)
         return simple_events
-# end of Filter
+# end of EventSearch
 
 
 class Results:
@@ -3568,7 +3567,7 @@ class SimplEthError(Exception):
     """Simple Ethereum Error exception class.
 
     It is used by :class:`Contract()`, :class:`Blockchain()`
-    and :class:`Filter` to throw exceptions for
+    and :class:`EventSearch` to throw exceptions for
     errors resulting from interacting with Solidity contracts and the
     Ethereum blockchain.
 

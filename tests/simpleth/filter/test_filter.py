@@ -1,281 +1,165 @@
-"""Test Filter() class"""
+"""Test EventSearch() class"""
 import pytest
 
-from simpleth import Filter, SimplEthError, Results, Contract
+from simpleth import EventSearch, SimplEthError, Contract, Blockchain
 import testconstants as constants
 
 
-@pytest.mark.usefixtures('construct_test_contract')
-class TestFilterConstructorGood:
-    """Test case for Filter() constructor with good arg."""
+class TestEventSearchConstructorGood:
+    """Test case for EventSearch() constructor with good arg."""
 
-    def test_constructor_with_good_contract_object(
-            self,
-            construct_test_contract
-            ):
-        """Instantiate Filter() object with valid constructor arg"""
-        c = construct_test_contract
-        assert Filter(c)
+    def test_constructor_with_good_contract_object(self):
+        """Instantiate EventSearch() object with valid constructor arg"""
+        u = Blockchain().address(0)
+        c = Contract('Test')
+        c.deploy(u, 42)
+        assert EventSearch(c, 'NumsStored')
 
 
-@pytest.mark.usefixtures('construct_test_contract')
-class TestFilterConstructorBad:
-    """Test case for Filter() constructor with bad args."""
+class TestEventSearchConstructorBad:
+    """Test case for EventSearch() constructor with bad event name"""
 
-    def test_constructor_with_missing_contract_object(
-            self,
-            construct_test_contract
-            ):
-        """Missing constructor arg"""
-        with pytest.raises(TypeError):
-            Filter()
-
-    def test_constructor_with_bogus_contract_object(
-            self,
-            construct_test_contract
-            ):
-        """Test bogus constructor arg"""
-        with pytest.raises(AttributeError):
-            Filter('bogus')
-
-
-@pytest.mark.usefixtures('deploy_test_contract')
-class TestFilterCreateFilterGood:
-    """Test cases for Filter().create_filter() with good test cases"""
-
-    def test_create_filter(self, deploy_test_contract):
-        """Create filter for storeNums() trx."""
-        c = deploy_test_contract
-        f = Filter(c)
-        store_nums_filter = f.create_filter(constants.EVENT_NAME)
-        assert isinstance(store_nums_filter, object)
-
-
-@pytest.mark.usefixtures('deploy_test_contract')
-class TestFilterCreateFilterBad:
-    """Test cases for Filter().create_filter() with bad args"""
-
-    def test_create_filter_with_missing_arg(self, deploy_test_contract):
-        """Missing event name"""
-        c = deploy_test_contract
-        f = Filter(c)
-        with pytest.raises(TypeError):
-            f.create_filter()
-
-    def test_create_filter_with_bogus_arg(self, deploy_test_contract):
-        """Wrong type of event name"""
-        c = deploy_test_contract
-        f = Filter(c)
-        with pytest.raises(TypeError):
-            f.create_filter(123)
-
-    def test_create_filter_with_bad_event_name(self, deploy_test_contract):
-        """Bogus event name"""
-        c = deploy_test_contract
-        f = Filter(c)
-        with pytest.raises(SimplEthError) as excp:
-            f.create_filter('bogus')
-        assert excp.value.code == 'F-020-010'
-
-
-@pytest.mark.usefixtures(
-    'deploy_test_contract',
-    'run_test_trx_to_store_nums',
-    'run_test_trx_to_store_nums_again'
-    )
-class TestFilterGetOldEventsGood:
-    """Test cases for Filter().get_old_events() with good test cases"""
-
-    def test_get_old_events_two(
-            self,
-            deploy_test_contract,
-            run_test_trx_to_store_nums,
-            run_test_trx_to_store_nums_again
-            ):
-        """Run two store_num() trxs. Verify get two events by looking
-        in the past two blocks."""
-        c = deploy_test_contract
-        f = Filter(c)
-        run_test_trx_to_store_nums
-        run_test_trx_to_store_nums_again
-        events = f.get_old_events(constants.EVENT_NAME, 3)
-        assert len(events) == 2
-
-    def test_get_old_events_one(
-            self,
-            deploy_test_contract,
-            run_test_trx_to_store_nums,
-            run_test_trx_to_store_nums_again
-            ):
-        """Run two store_num() trxs. Verify get one event by looking
-        in just the most recent block."""
-        c = deploy_test_contract
-        run_test_trx_to_store_nums
-        run_test_trx_to_store_nums_again
-        f = Filter(c)
-        events = f.get_old_events(constants.EVENT_NAME, 1)
-        assert len(events) == 1
-
-
-@pytest.mark.usefixtures(
-    'deploy_test_contract',
-    'run_test_trx_to_store_nums',
-    'run_test_trx_to_store_nums_again'
-    )
-class TestFilterGetOldEventsBad:
-    """Test cases for Filter().get_old_events() with bad test cases"""
-
-    def test_get_old_events_with_no_num_blocks(
-            self,
-            deploy_test_contract,
-            run_test_trx_to_store_nums
-            ):
-        """Test without specifying the number of blocks"""
-        c = deploy_test_contract
-        f = Filter(c)
-        run_test_trx_to_store_nums
-        with pytest.raises(TypeError):
-            f.get_old_events(constants.EVENT_NAME)
-
-    def test_get_old_events_with_no_event_name(
-            self,
-            deploy_test_contract,
-            run_test_trx_to_store_nums
-            ):
-        """Test without specifying the event name"""
-        c = deploy_test_contract
-        f = Filter(c)
-        run_test_trx_to_store_nums
-        with pytest.raises(TypeError):
-            f.get_old_events(1)
-
-    def test_get_old_events_with_no_args(
-            self,
-            deploy_test_contract,
-            run_test_trx_to_store_nums
-            ):
-        """Test without specifying any args"""
-        c = deploy_test_contract
-        f = Filter(c)
-        run_test_trx_to_store_nums
-        with pytest.raises(TypeError):
-            f.get_old_events()
-
-    def test_get_old_events_with_bad_num_blocks_type(
-            self,
-            deploy_test_contract,
-            run_test_trx_to_store_nums
-            ):
-        """Test a string as the num blocks"""
-        c = deploy_test_contract
-        run_test_trx_to_store_nums
-        f = Filter(c)
-        with pytest.raises(SimplEthError) as excp:
-            f.get_old_events(constants.EVENT_NAME, 'abc')
-        assert excp.value.code == 'F-030-010'
-
-    def test_get_old_events_with_bad_num_blocks(
-            self,
-            deploy_test_contract,
-            run_test_trx_to_store_nums
-            ):
-        """Test a negative block number"""
-        c = deploy_test_contract
-        run_test_trx_to_store_nums
-        f = Filter(c)
-        with pytest.raises(SimplEthError) as excp:
-            f.get_old_events(constants.EVENT_NAME, -1)
-        assert excp.value.code == 'F-030-020'
-
-    def test_get_old_events_with_bad_event_name(
-            self,
-            deploy_test_contract,
-            run_test_trx_to_store_nums
-            ):
-        """Test a bogus event name"""
-        c = deploy_test_contract
-        run_test_trx_to_store_nums
-        f = Filter(c)
-        with pytest.raises(SimplEthError) as excp:
-            f.get_old_events('bogus', 1)
-        assert excp.value.code == 'F-030-030'
-
-    def test_get_old_events_with_bad_event_name_type(
-            self,
-            deploy_test_contract,
-            run_test_trx_to_store_nums
-            ):
-        """Test an integer as the event name"""
-        c = deploy_test_contract
-        run_test_trx_to_store_nums
-        f = Filter(c)
-        with pytest.raises(SimplEthError) as excp:
-            f.get_old_events(123, 1)
-        assert excp.value.code == 'F-030-040'
-
-
-@pytest.mark.usefixtures(
-    'deploy_test_contract',
-    'run_test_trx_to_store_nums',
-    'run_test_trx_to_store_nums_again'
-    )
-class TestFilterGetNewEventsGood:
-    """Test cases for Filter().get_new_events() with good test cases"""
-
-    def test_get_new_events(self):
-        """Create filter and run two trx. Should return 2 events"""
-        c = Contract(constants.CONTRACT_NAME)
+    def test_constructor_with_bad_event_name(self):
+        """Create EventSearch with bad event name"""
+        c = Contract('Test')
         c.connect()
-        f = Filter(c)
-        store_nums_filter = f.create_filter(constants.EVENT_NAME)
-        c.run_trx(
-            constants.TRX_SENDER,
-            constants.TRX_NAME,
-            constants.TRX_ARG0,
-            constants.TRX_ARG1,
-            constants.TRX_ARG2
-            )
-        c.run_trx(
-            constants.TRX_SENDER,
-            constants.TRX_NAME,
-            constants.TRX_ARG0 + 10,
-            constants.TRX_ARG1 + 10,
-            constants.TRX_ARG2 + 10
-            )
-        events = f.get_new_events(store_nums_filter)
-        assert len(events) == 2
+        with pytest.raises(SimplEthError) as excp:
+            EventSearch(c, 'bogus')
+        assert excp.value.code == 'E-010-010'
 
 
-@pytest.mark.usefixtures(
-    'deploy_test_contract',
-    'run_test_trx_to_store_nums',
-    'run_test_trx_to_store_nums_again'
-    )
-class TestFilterGetNewEventsBad:
-    """Test cases for Filter().get_new_events() with bad test cases"""
+class TestEventSearchMethodsGood:
+    def test_event_name(self):
+        """Check event name is set correctly"""
+        u = Blockchain().address(0)
+        c = Contract('Test')
+        c.deploy(u, 42)
+        event_name = 'NumsStored'
+        e = EventSearch(c, event_name)
+        assert e.event_name == event_name
 
-    def test_get_new_events_with_bad_filter_arg_type(
-            self,
-            deploy_test_contract,
-            run_test_trx_to_store_nums
-            ):
-        """Create filter and run one trx. Should return 1 event"""
-        c = deploy_test_contract
-        f = Filter(c)
-        f.create_filter(constants.EVENT_NAME)
-        run_test_trx_to_store_nums
-        with pytest.raises(AttributeError):
-            f.get_new_events('bad')
 
-    def test_get_new_events_with_missing_filter_arg(
-            self,
-            deploy_test_contract,
-            run_test_trx_to_store_nums
-            ):
-        """Create filter and run one trx. Should return 1 event"""
-        c = deploy_test_contract
-        f = Filter(c)
-        f.create_filter(constants.EVENT_NAME)
-        run_test_trx_to_store_nums
-        with pytest.raises(TypeError):
-            f.get_new_events()
+class TestEventSearchGetOldGood:
+    """Test cases for EventSearch().get_old() with good test cases"""
+
+    def test_get_old_with_none_and_negative_args(self):
+        """Run three store_num() trxs. Verify get_old() with negative args"""
+        c = Contract('Test')
+        c.connect()
+        u = Blockchain().address(0)
+        e = EventSearch(c, 'NumsStored')
+        c.run_trx(u, 'storeNums', 1, 1, 1)
+        c.run_trx(u, 'storeNums', 2, 2, 2)
+        c.run_trx(u, 'storeNums', 3, 3, 3)
+        e1 = len(e.get_old())
+        e2 = len(e.get_old(-2))
+        e3 = len(e.get_old(-3))
+        assert e1 == 1 and e2 == 2 and e3 == 3
+
+    def test_get_old_one_arg(self):
+        """Run three store_num() trxs. Verify get_old() with single arg"""
+        c = Contract('Test')
+        c.connect()
+        u = Blockchain().address(0)
+        e = EventSearch(c, 'NumsStored')
+        c.run_trx(u, 'storeNums', 1, 1, 1)
+        c.run_trx(u, 'storeNums', 2, 2, 2)
+        c.run_trx(u, 'storeNums', 3, 3, 3)
+        n = Blockchain().block_number
+        e1 = len(e.get_old(n))
+        e2 = len(e.get_old(n-1))
+        e3 = len(e.get_old(n-2))
+        assert e1 == 1 and e2 == 2 and e3 == 3
+
+    def test_get_old_range(self):
+        """Run three store_num() trxs. Verify get_old() with range args"""
+        c = Contract('Test')
+        c.connect()
+        u = Blockchain().address(0)
+        e = EventSearch(c, 'NumsStored')
+        c.run_trx(u, 'storeNums', 1, 1, 1)
+        c.run_trx(u, 'storeNums', 2, 2, 2)
+        c.run_trx(u, 'storeNums', 3, 3, 3)
+        n = Blockchain().block_number
+        e1 = len(e.get_old(n, n))
+        e2 = len(e.get_old(n-1, n))
+        e3 = len(e.get_old(n-2, n))
+        assert e1 == 1 and e2 == 2 and e3 == 3
+
+
+class TestEventSearchGetOldBad:
+    """Test cases for EventSearch().get_old() with bad test cases"""
+
+    def test_get_old_bad_from_type(self):
+        """Test get_old() with string for from"""
+        c = Contract('Test')
+        c.connect()
+        e = EventSearch(c, 'NumsStored')
+        with pytest.raises(SimplEthError) as excp:
+            e.get_old('bogus', 100)
+        assert excp.value.code == 'E-030-010'
+
+    def test_get_old_bad_to_type(self):
+        """Test get_old() with string for to"""
+        c = Contract('Test')
+        c.connect()
+        e = EventSearch(c, 'NumsStored')
+        with pytest.raises(SimplEthError) as excp:
+            e.get_old(100, 'bogus')
+        assert excp.value.code == 'E-030-020'
+
+    def test_get_old_bad_relative_search(self):
+        """Test get_old() relative search with bad to block"""
+        c = Contract('Test')
+        c.connect()
+        e = EventSearch(c, 'NumsStored')
+        with pytest.raises(SimplEthError) as excp:
+            e.get_old(-2, 20)
+        assert excp.value.code == 'E-030-030'
+
+    def test_get_old_bad_range(self):
+        """Test get_old() relative search with from greater than to"""
+        c = Contract('Test')
+        c.connect()
+        e = EventSearch(c, 'NumsStored')
+        with pytest.raises(SimplEthError) as excp:
+            e.get_old(30, 20)
+        assert excp.value.code == 'E-030-040'
+
+    def test_get_old_bad_from(self):
+        """Test get_old() with from greater than last block on chain"""
+        c = Contract('Test')
+        c.connect()
+        e = EventSearch(c, 'NumsStored')
+        n = Blockchain().block_number
+        with pytest.raises(SimplEthError) as excp:
+            e.get_old(n+1, n+2)
+        assert excp.value.code == 'E-030-050'
+
+    def test_get_old_bad_to(self):
+        """Test get_old() with to greater than last block on chain"""
+        c = Contract('Test')
+        c.connect()
+        e = EventSearch(c, 'NumsStored')
+        n = Blockchain().block_number
+        with pytest.raises(SimplEthError) as excp:
+            e.get_old(n-1, n+2)
+        assert excp.value.code == 'E-030-060'
+
+
+class TestFilterGetNewEventsGood:
+    """Test cases for EventSearch().get_new() with good test cases"""
+
+    def test_get_new_with_zero_one_two_good_events(self):
+        """Test get_new() of zero, one, and two events"""
+        c = Contract('Test')
+        c.connect()
+        u = Blockchain().address(0)
+        e = EventSearch(c, 'NumsStored')
+        e0 = len(e.get_new())
+        c.run_trx(u, 'storeNums', 1, 1, 1)
+        e1 = len(e.get_new())
+        c.run_trx(u, 'storeNums', 2, 2, 2)
+        c.run_trx(u, 'storeNums', 3, 3, 3)
+        e2 = len(e.get_new())
+        assert e0 == 0 and e1 == 1 and e2 == 2

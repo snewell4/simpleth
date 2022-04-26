@@ -5,7 +5,7 @@ import pytest
 from simpleth import Blockchain, \
     Contract, \
     Results, \
-    Filter, \
+    EventSearch, \
     Convert, \
     SimplEthError
 
@@ -24,11 +24,10 @@ def test_test_deploy_constructor():
     """Check constructor event was emitted."""
     init_num = 42    # from above test case doing deploy()
     u = Blockchain().address(0)     # ditto
-    n = 1  # number of recent blocks to look for event
     c = Contract('test')
     c.connect()
-    f = Filter(c)
-    event = f.get_old_events('TestConstructed', n)
+    e = EventSearch(c, 'TestConstructed')
+    event = e.get_old()
     assert event[0]['args']['initNum'] == init_num and \
         event[0]['args']['sender'] == u
 
@@ -48,11 +47,10 @@ def test_test_divideInitNum_event():
     """Test trx that divides the initNum emitted expected values."""
     divisor = 2
     new_init_num = 42 / divisor
-    n = 1  # number of recent blocks to look for event
     c = Contract('test')
     c.connect()
-    f = Filter(c)
-    event = f.get_old_events('InitNumDivided', n)
+    e = EventSearch(c, 'InitNumDivided')
+    event = e.get_old()
     assert event[0]['args']['result'] == new_init_num and \
         event[0]['args']['divisor'] == divisor
 
@@ -71,11 +69,10 @@ def test_test_setOwner():
 def test_test_setOwner_event():
     """Test trx that set the owner emitted expected value."""
     new_owner = Blockchain().address(1)
-    n = 1  # number of recent blocks to look for event
     c = Contract('test')
     c.connect()
-    f = Filter(c)
-    event = f.get_old_events('OwnerSet', n)
+    e = EventSearch(c, 'OwnerSet')
+    event = e.get_old()
     assert event[0]['args']['newOwner'] == new_owner
 
 
@@ -103,13 +100,12 @@ def test_test_storeNum():
 
 def test_test_storeNum_event():
     """Test trx that stored one number emitted expected values."""
-    n = 1  # number of recent blocks to look for event
     new_num = 100     # must match test_storeNum() above
     nums_index = 0     # ditto
     c = Contract('test')
     c.connect()
-    f = Filter(c)
-    event = f.get_old_events('NumStored', n)
+    e = EventSearch(c, 'NumStored')
+    event = e.get_old()
     assert event[0]['args']['index'] == nums_index and \
         event[0]['args']['num'] == new_num
 
@@ -126,12 +122,11 @@ def test_test_storeNums():
 
 def test_test_storeNums_event():
     """Test trx that stored new numbers emitted expected values."""
-    n = 1  # number of recent blocks to look for event
     new_nums = [1000, 2000, 3000]  # must match test_storeNums() above
     c = Contract('test')
     c.connect()
-    f = Filter(c)
-    event = f.get_old_events('NumsStored', n)
+    e = EventSearch(c, 'NumsStored')
+    event = e.get_old()
     assert event[0]['args']['num0'] == new_nums[0] and \
         event[0]['args']['num1'] == new_nums[1] and \
         event[0]['args']['num2'] == new_nums[2]
@@ -167,7 +162,6 @@ def test_test_storeNumsAndPay():
 
 def test_test_storeNumsAndPay_event():
     """Test trx that stored new numbers emitted expected values."""
-    n = 1  # number of recent blocks to look for event
     new_nums = [1001, 2001, 3001]  # must match test_storeNumsAndPay()
     payment_eth = 1   # ditto
     payment_wei = int(
@@ -176,8 +170,8 @@ def test_test_storeNumsAndPay_event():
     b = Blockchain()
     c = Contract('test')
     c.connect()
-    f = Filter(c)
-    event = f.get_old_events('NumsStoredAndPaid', n)
+    e = EventSearch(c, 'NumsStoredAndPaid')
+    event = e.get_old()
     assert event[0]['args']['num0'] == new_nums[0] and \
         event[0]['args']['num1'] == new_nums[1] and \
         event[0]['args']['num2'] == new_nums[2] and \
@@ -197,12 +191,11 @@ def test_test_storeNumsAndSum():
 
 def test_test_storeNumsAndSum_NumsStored_event():
     """Test trx emitted its NumsStored event."""
-    n = 1  # number of recent blocks to look for event
     new_nums = [20, 30, 50]  # must match test_storeNumsAndSum() above
     c = Contract('test')
     c.connect()
-    f = Filter(c)
-    event = f.get_old_events('NumsStored', n)
+    e = EventSearch(c, 'NumsStored')
+    event = e.get_old()
     assert event[0]['args']['num0'] == new_nums[0] and \
         event[0]['args']['num1'] == new_nums[1] and \
         event[0]['args']['num2'] == new_nums[2]
@@ -211,13 +204,12 @@ def test_test_storeNumsAndSum_NumsStored_event():
 def test_test_storeNumsAndSum_NumsSummed_event():
     """Test trx call the sumNums() function and that fcn, in turn,
     emitted its NumsSummed event."""
-    n = 1  # number of recent blocks to look for event
     new_nums = [20, 30, 50]  # must match test_storeNumsAndSum() above
     nums_total = sum(new_nums)
     c = Contract('test')
     c.connect()
-    f = Filter(c)
-    event = f.get_old_events('NumsSummed', n)
+    e = EventSearch(c, 'NumsSummed')
+    event = e.get_old()
     assert event[0]['args']['num0'] == new_nums[0] and \
         event[0]['args']['num1'] == new_nums[1] and \
         event[0]['args']['num2'] == new_nums[2] and \
@@ -229,11 +221,10 @@ def test_test_storeNumsAndSum_NumsStoredAndSummed_event():
 
     # This event only emits timestamp. Easiest to test if the
     # event was found and assume timestamp is OK.
-    n = 1  # number of recent blocks to look for event
     c = Contract('test')
     c.connect()
-    f = Filter(c)
-    event = f.get_old_events('NumsStoredAndSummed', n)
+    e = EventSearch(c, 'NumsStoredAndSummed')
+    event = e.get_old()
     assert len(event) == 1
 
 
@@ -267,14 +258,15 @@ def test_test_storeNumsWithThreeEvents():
 
 def test_test_storeNumsWithThreeEvents_NumXStored_event():
     """Test trx emitted its NumsStored event."""
-    n = 1  # number of recent blocks to look for event
     new_nums = [200, 300, 500]  # must match test_storeNumsWithThreeEvents()
     c = Contract('test')
     c.connect()
-    f = Filter(c)
-    event0 = f.get_old_events('Num0Stored', n)
-    event1 = f.get_old_events('Num1Stored', n)
-    event2 = f.get_old_events('Num2Stored', n)
+    e0 = EventSearch(c, 'Num0Stored')
+    e1 = EventSearch(c, 'Num1Stored')
+    e2 = EventSearch(c, 'Num2Stored')
+    event0 = e0.get_old()
+    event1 = e1.get_old()
+    event2 = e2.get_old()
     assert event0[0]['args']['num0'] == new_nums[0] and \
         event1[0]['args']['num1'] == new_nums[1] and \
         event2[0]['args']['num2'] == new_nums[2]
@@ -302,15 +294,14 @@ def test_test_typesStored():
 
 def test_test_typesStored_storeTypes_event():
     """Test trx emitted its event."""
-    n = 1  # number of recent blocks to look for event
     test_uint = 42   # must match test_typesStored() above
     test_int = -42    # ditto
     test_addr = Blockchain().address(4)   # ditto
     test_str = 'Test String.'   # ditto
     c = Contract('test')
     c.connect()
-    f = Filter(c)
-    event = f.get_old_events('TypesStored', n)
+    e = EventSearch(c, 'TypesStored')
+    event = e.get_old()
     assert event[0]['args']['test_uint'] == test_uint and \
         event[0]['args']['test_int'] == test_int and \
         event[0]['args']['test_addr'] == test_addr and \

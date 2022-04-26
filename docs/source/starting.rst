@@ -58,7 +58,7 @@ following line.
 
 .. code-block:: python
 
-   from simpleth import Blockchain, Contract, Filter
+   from simpleth import Blockchain, Contract, EventSearch
 
 *Note:* You may not need all three classes. Import just the classes you
 need.

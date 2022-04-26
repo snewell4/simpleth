@@ -1,7 +1,7 @@
 """Test HelloWorld4 smart contract"""
 import pytest
 
-from simpleth import Blockchain, Contract, Results, Filter
+from simpleth import Blockchain, Contract, Results, EventSearch
 
 
 def test_HelloWorld4_deploy():
@@ -19,10 +19,9 @@ def test_HelloWorld4_deploy_event():
     """Get the constructor event and check the greeting"""
     c = Contract('HelloWorld4')
     c.connect()
-    f = Filter(c)
-    n = 1    # number of mined blocks to check; 1 == last block mined
+    e = EventSearch(c, 'HelloWorld4Constructed')
     hello_str = 'Hello World 4!'
-    events = f.get_old_events('HelloWorld4Constructed', n)
+    events = e.get_old()
     assert events[0]['args']['initGreeting'] == hello_str
 
 
@@ -32,7 +31,6 @@ def test_HelloWorld4_setGreeting():
     c.connect()
     u = Blockchain().address(0)
     hello_str = 'Hello Again!'
-    n = 1    # number of mined blocks to check; 1 == last block mined
     receipt = c.run_trx(u, 'setGreeting', hello_str)
     results = Results(receipt, c)
     greeting = c.call_fcn('getGreeting')
@@ -43,8 +41,7 @@ def test_HelloWorld4_setGreeting_event():
     """Check for the event with the new greeting"""
     c = Contract('HelloWorld4')
     c.connect()
-    f = Filter(c)
-    n = 1    # number of mined blocks to check; 1 == last block mined
+    e = EventSearch(c, 'GreetingSet')
     hello_str = 'Hello Again!'
-    events = f.get_old_events('GreetingSet', n)
+    events= e.get_old()
     assert events[0]['args']['greeting'] == hello_str

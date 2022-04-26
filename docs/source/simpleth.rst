@@ -13,9 +13,9 @@ Convert class
 **************
 .. autoclass:: simpleth.Convert
 
-Filter class
+EventSearch class
 ************
-.. autoclass:: simpleth.Filter
+.. autoclass:: simpleth.EventSearch
 
 Results class
 *************

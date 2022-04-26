@@ -33,11 +33,11 @@ Example 3 - finding events emitted by a transaction
 ***************************************************
 .. code-block:: python
 
-   from simpleth import Blockchain, Contract, Filter
+   from simpleth import Blockchain, Contract, EventSearch
    b = Blockchain()
    user = b.accounts[0]
    c = Contract('TestTrx')
-   f = Filter(c)
+   f = EventSearch(c)
    events = f.get_old_events('NumsStored', 10)
    print(events)
    filter = f.create_filter('NumsStored')
