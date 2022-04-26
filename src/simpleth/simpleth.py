@@ -2663,8 +2663,11 @@ class EventSearch:
         :raises SimplEthError:
             - if ``from_block`` is not integer
             - if ``to_block`` is not integer
+            - if ``-from_block`` is used and ``to_block`` is also specified.
+            - if ``-from_block`` is less than ``-Blockchain().block_number``
+            - if ``from_block`` is greater than ``to_block``
             - if ``from_block`` is greater than ``Blockchain().block_number``
-            
+            - if ``to_block`` is greater than ``Blockchain().block_number``
 
         :rtype: list
         :return: one item for each event found; empty list if
@@ -2781,8 +2784,8 @@ class EventSearch:
             _from_block = from_block
             _to_block = to_block
 
-        # CreateFilter should not fail. It was already created before
-        # in the constructor. No need to put this line in a try/except
+        # CreateFilter should not fail. It was created once before
+        # in the constructor. No need to put this line in a try/except.
         event_filter: T_FILTER_OBJ = getattr(
             self._web3_contract.events,
             self._event_name
