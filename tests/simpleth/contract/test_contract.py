@@ -1,4 +1,6 @@
-"""Test Contract() class"""
+"""Test Contract() with no mining delay class"""
+# Uses ganache with automining set to 'on'
+
 import pytest
 
 from simpleth import Blockchain, Contract, SimplEthError, Results
