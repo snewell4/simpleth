@@ -684,7 +684,8 @@ class Blockchain:
                 f'ValueError says: {exception}.\n'
                 f'HINT 1: Amount exceeds sender balance\n'
                 f'HINT 2: Amount must be positive\n'
-                f'HINT 3: Bad address used for to or from\n'
+                f'HINT 3: Attempt to send to a non-payable contract\n'
+                f'HINT 4: Bad address used for to or from\n'
                 )
             raise SimplEthError(message, code='B-070-010') from None
         except TypeError as exception:
@@ -697,6 +698,9 @@ class Blockchain:
                 )
             raise SimplEthError(message, code='B-070-020') from None
         except AttributeError as exception:
+            # Non-payable contract seems to throw B-070-010. Not able
+            # to get this exception with unit tests. Leaving it in place
+            # for now.
             message = (
                 f'ERROR in transfer(): '
                 f'AttributeError says: {exception}.\n'

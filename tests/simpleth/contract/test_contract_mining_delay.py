@@ -2,7 +2,6 @@
 import pytest
 import time
 
-from simpleth import Blockchain, Contract, SimplEthError, Results
 import testconstants as constants
 
 # Set True to skip this module. Otherwise, set False to run all.

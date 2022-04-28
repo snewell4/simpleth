@@ -173,6 +173,19 @@ contract Test {
     );
 
     /**
+     * @notice Emitted when contract address is sent ether
+     *
+     * @param timestamp block time when paid
+     * @param sender address sending the ether
+     * @param amount_gwei of ether received (in gwei)
+     */
+    event Received(
+        uint timestamp,
+        address sender,
+        uint amount_gwei
+    );
+
+    /**
      * @notice Emitted when the contract is deployed.
      *
      * @dev Parameters are arbitrary.
@@ -495,5 +508,18 @@ contract Test {
      */
     function getNums() public view returns(uint[3] memory) {
         return nums;
+    }
+
+    /**
+     * @notice Fallback function to make contract payable
+     *
+     * @dev Adds value sent to contract balance
+     */
+    receive() external payable {
+        emit Received(
+            block.timestamp,
+            msg.sender,
+            msg.value
+        );
     }
 }

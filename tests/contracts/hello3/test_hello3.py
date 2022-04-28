@@ -1,6 +1,4 @@
 """Test HelloWorld3 smart contract"""
-import pytest
-
 from simpleth import Blockchain, Contract, Results
 
 

@@ -2,7 +2,6 @@
 import pytest
 
 from simpleth import EventSearch, SimplEthError, Contract, Blockchain
-import testconstants as constants
 
 
 class TestEventSearchConstructorGood:

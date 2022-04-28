@@ -1,7 +1,7 @@
 """Test Blockchain() methods"""
 import pytest
 import re
-from simpleth import Blockchain, SimplEthError
+from simpleth import Contract, Blockchain, SimplEthError
 
 
 class TestBlockchainMethodsGood:
@@ -237,6 +237,21 @@ class TestBlockchainMethodsBad:
             Blockchain().send_ether(user6, bad_address_user7, amount)
         assert excp.value.code == 'B-070-010'
 
+    @pytest.mark.parametrize('bad_address',
+                             ['0xF0E9C98500f34BE7C7c4a99700e4c56C0D9d6e6', 'xxx']
+                             )
+    def test_send_ether_with_bad_address_from_raises_b_070_010(
+            self,
+            bad_address
+            ):
+        """send_ethers() with bad address for from raises SimplEthError"""
+        bad_address_user6 = bad_address
+        user7 = Blockchain().address(7)
+        amount = 2_000_000_000
+        with pytest.raises(SimplEthError) as excp:
+            Blockchain().send_ether(bad_address_user6, user7, amount)
+        assert excp.value.code == 'B-070-010'
+
     def test_send_ether_with_bad_type_to_raises_b_070_020(self):
         """send_ether() with bad address for to raises SimplEthError"""
         user6 = Blockchain().address(6)
@@ -264,29 +279,17 @@ class TestBlockchainMethodsBad:
             Blockchain().send_ether(user6, user7, float_amount)
         assert excp.value.code == 'B-070-020'
 
-    @pytest.mark.skip(reason='run this as a Contract() test case')
-    def test_send_ether_raises_b_070_030_placeholder(self):
+    def test_send_ether_to_nonpayable_contract_raises_b_070_020(self):
         """send_ether() to a non-payable account raises SimplEthError"""
-        # This requires a non-payable contract to be deployed on chain.
-        # Will run this test when testing Contract().
-        # Just a placeholder to remind me to make sure an appropriate
-        # test case is included in the future.
-        assert True
-
-    @pytest.mark.parametrize('bad_address',
-                             ['0xF0E9C98500f34BE7C7c4a99700e4c56C0D9d6e6', 'xxx']
-                             )
-    def test_send_ether_with_bad_address_from_raises_b_070_010(
-            self,
-            bad_address
-            ):
-        """send_ethers() with bad address for from raises SimplEthError"""
-        bad_address_user6 = bad_address
-        user7 = Blockchain().address(7)
+        # HelloWorld1 is a non-payable contract. User will attempt to
+        # send ether to it.
+        user0 = Blockchain().address(0)
+        hello_contract = Contract('HelloWorld1')
+        hello_contract.deploy(user0)
         amount = 2_000_000_000
         with pytest.raises(SimplEthError) as excp:
-            Blockchain().send_ether(bad_address_user6, user7, amount)
-        assert excp.value.code == 'B-070-010'
+            Blockchain().send_ether(user0, hello_contract, amount)
+        assert excp.value.code == 'B-070-020'
 
     @pytest.mark.parametrize('bad_hash',
                              ['0xF0E9C98500f34BE7C7c4a99700e4c56C0D9d6e6', 123]

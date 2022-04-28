@@ -1,6 +1,4 @@
 """Test HelloWorld4 smart contract"""
-import pytest
-
 from simpleth import Blockchain, Contract, Results, EventSearch
 
 
@@ -43,5 +41,5 @@ def test_HelloWorld4_setGreeting_event():
     c.connect()
     e = EventSearch(c, 'GreetingSet')
     hello_str = 'Hello Again!'
-    events= e.get_old()
+    events = e.get_old()
     assert events[0]['args']['greeting'] == hello_str
