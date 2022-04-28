@@ -1503,7 +1503,6 @@ class Contract:
 
         """
         try:
-#               self._blockchain.eth.getTransactionReceipt(trx_hash)
             trx_receipt: T_RECEIPT = \
                 self._blockchain.eth.get_transaction_receipt(trx_hash)
         except self._web3e.TransactionNotFound:
