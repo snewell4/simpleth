@@ -2911,6 +2911,12 @@ class Results:
         Trx sender = 0xa894b8d26Cd25eCD3E154a860A86f7c75B12D993
         Trx value_wei = 0
 
+    ** RAISES **
+
+    -  SimplEthError if constructor params are bad.
+    -  SimplEthError if unable to gather data for events (internal error
+       that should not happen).
+
     """
     def __init__(self,
                  receipt: T_RECEIPT,
@@ -2925,15 +2931,32 @@ class Results:
         :type contract: object
 
         """
+        if not isinstance(contract, Contract):
+            message = (
+                f'ERROR in Result(): '
+                f'contract is invalid.\n'
+                f'HINT: Did you specify a valid and connected contract?\n'
+            )
+            raise SimplEthError(message, code='R-010-010')
+
         #
-        # Gather information from the transaction's web3 receipt data
+        # Gather information from the transaction's web3 receipt data.
+        # Raise exception if bad value or type for receipt.
         #
-        self.web3_receipt: T_RECEIPT = receipt
-        self._trx_receipt: dict = self._to_simpleth_receipt(self.web3_receipt)
-        self._gas_used: int = self._trx_receipt['gasUsed']
-        self._trx_sender: str = self._trx_receipt['from']
-        self._trx_hash: T_HASH = self._trx_receipt['transactionHash']
-        self._block_number: int = self._trx_receipt['blockNumber']
+        try:
+            self.web3_receipt: T_RECEIPT = receipt
+            self._trx_receipt: dict = self._to_simpleth_receipt(self.web3_receipt)
+            self._gas_used: int = self._trx_receipt['gasUsed']
+            self._trx_sender: str = self._trx_receipt['from']
+            self._trx_hash: T_HASH = self._trx_receipt['transactionHash']
+            self._block_number: int = self._trx_receipt['blockNumber']
+        except TypeError as exception:
+            message: str = (
+                f'ERROR in Result(): '
+                f'receipt is invalid.\n'
+                f'HINT: Did you specify a valid transaction receipt?\n'
+            )
+            raise SimplEthError(message, code='R-010-020')
 
         #
         # Gather information from the web3 transaction data
@@ -3008,7 +3031,7 @@ class Results:
                     f'a typical error.\n'
                     f'HINT: try recompiling and redeploying the contract.'
                     )
-                raise SimplEthError(message, code='R-010-020') from None
+                raise SimplEthError(message, code='R-010-030') from None
 
             try:
                 # use the `web3` contract event object to get the details for the
@@ -3038,7 +3061,7 @@ class Results:
                     f'of the contract?\n'
                     f'HINT2: try recompiling and redeploying the contract.'
                     )
-                raise SimplEthError(message, code='R-010-020') from None
+                raise SimplEthError(message, code='R-010-040') from None
 
     @property
     def block_number(self) -> int:

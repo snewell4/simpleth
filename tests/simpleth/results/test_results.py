@@ -3,8 +3,29 @@
 import pytest
 import re
 
-import simpleth
+from simpleth import Contract, Results, SimplEthError
 import testconstants as constants
+
+
+@pytest.mark.usefixtures('run_test_trx_to_store_nums')
+class TestResultsBadConstructorParams:
+    """Test using bad params for constructor"""
+
+    def test_bad_contract(self, run_test_trx_to_store_nums):
+        """Check using a bogus receipt value"""
+        bogus_contract = 10
+        r = run_test_trx_to_store_nums.trx_receipt
+        with pytest.raises(SimplEthError) as excp:
+            Results(r, bogus_contract)
+        assert excp.value.code == 'R-010-010'
+
+    def test_bad_receipt(self, run_test_trx_to_store_nums):
+        """Check using a bogus receipt value"""
+        bogus_receipt = 10
+        c = run_test_trx_to_store_nums.contract
+        with pytest.raises(SimplEthError) as excp:
+            Results(bogus_receipt, c)
+        assert excp.value.code == 'R-010-020'
 
 
 @pytest.mark.usefixtures('run_test_trx_to_store_nums')
@@ -23,7 +44,7 @@ class TestResultsProperties:
         """Test result contract_address is a string"""
         assert isinstance(
             run_test_trx_to_store_nums.contract,
-            simpleth.Contract
+            Contract
             )
 
     def test_contract_address(self, run_test_trx_to_store_nums):
