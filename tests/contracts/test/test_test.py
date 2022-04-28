@@ -327,3 +327,17 @@ def test_test_getNum():
     c.connect()
     c.run_trx(u, 'storeNum', i, new_num)
     assert c.call_fcn('getNum', i) == new_num
+
+
+def test_test_receive():
+    """Test fallback fcn accepts payment to contract and emits expected amount"""
+    amount = 20
+    b = Blockchain()
+    u = b.address(0)
+    c = Contract('Test')
+    c.connect()
+    b.send_ether(u, c.address, amount)
+    e = EventSearch(c,'Received')
+    event = e.get_old()
+    assert event[0]['args']['amount_gwei'] == amount and \
+        event[0]['args']['sender'] == u

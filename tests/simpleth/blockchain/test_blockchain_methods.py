@@ -87,6 +87,18 @@ class TestBlockchainMethodsGood:
             (end_bal7 == (start_bal7 + amount))
             )
 
+    def test_send_ether_to_contract(self):
+        """send_ether() transfers Ether from one account to a payable contract"""
+        user6 = Blockchain().address(6)
+        contract = Contract('test')
+        contract.deploy(user6, 10)   # has a fallback receive() function
+        start_bal = Blockchain().balance(contract.address)
+        amount = 2_000  # wei
+        Blockchain().send_ether(user6, contract.address, amount)
+        end_bal = Blockchain().balance(contract.address)
+        change_in_balance = end_bal - start_bal
+        assert change_in_balance == amount
+
     def test_transaction(self):
         """transaction() returns a string for the transaction result"""
         # Use the valid send_ether test to create a trx hash

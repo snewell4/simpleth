@@ -1503,8 +1503,9 @@ class Contract:
 
         """
         try:
+#               self._blockchain.eth.getTransactionReceipt(trx_hash)
             trx_receipt: T_RECEIPT = \
-                self._blockchain.eth.getTransactionReceipt(trx_hash)
+                self._blockchain.eth.get_transaction_receipt(trx_hash)
         except self._web3e.TransactionNotFound:
             # Receipt not found. Not yet mined. Will return empty trx_result
             return None
@@ -2940,7 +2941,7 @@ class Results:
                 f'ERROR in Result(): '
                 f'contract is invalid.\n'
                 f'HINT: Did you specify a valid and connected contract?\n'
-            )
+                )
             raise SimplEthError(message, code='R-010-010')
 
         #
@@ -2954,12 +2955,12 @@ class Results:
             self._trx_sender: str = self._trx_receipt['from']
             self._trx_hash: T_HASH = self._trx_receipt['transactionHash']
             self._block_number: int = self._trx_receipt['blockNumber']
-        except TypeError as exception:
+        except TypeError:
             message: str = (
                 f'ERROR in Result(): '
                 f'receipt is invalid.\n'
                 f'HINT: Did you specify a valid transaction receipt?\n'
-            )
+                )
             raise SimplEthError(message, code='R-010-020')
 
         #
