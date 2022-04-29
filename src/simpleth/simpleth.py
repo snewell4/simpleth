@@ -259,8 +259,9 @@ class Blockchain:
             default: `GANACHE_URL`)
         :type url: str
         :rtype: None
-        :raises SimplEthError: if unable to connect to the blockchain
-            client
+        :raises SimplEthError:
+            -  if unable to connect to the blockchain client (`B-010-010`)
+        
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
@@ -432,7 +433,9 @@ class Blockchain:
         :type account_num: int
         :rtype: str
         :return: blockchain ``address`` of the requested account
-        :raises SimplEthError: if ``account_num`` is bad
+        :raises SimplEthError:
+            -  if ``account_num`` is out of range (`B-020-010`)
+            
         :example:
             >>> from simpleth import Blockchain
             >>> b=Blockchain()
@@ -460,8 +463,10 @@ class Blockchain:
         :type address: str
         :rtype: int
         :return: account's ether balance, in wei
+        :raises SimplEthError:
+            -  if ``address`` is not a string (`B-030-010`)
+            -  if ``address`` is not a valid account (`B-030-020`)
 
-        :raises SimplEthError: if ``address`` is bad
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
@@ -488,14 +493,16 @@ class Blockchain:
             raise SimplEthError(message, code='B-030-020') from None
         return balance
 
-    def block_time_epoch(self, block_num: int) -> int:
+    def block_time_epoch(self, block_number: int) -> int:
         """Return the time, as epoch seconds, when a block was mined.
 
-        :param block_num: number of the block on the chain
-        :type block_num: int
+        :param block_number: number of the block on the chain
+        :type block_number: int
         :rtype: int
         :return: time block was mined, in epoch seconds.
-        :raises SimplEthError: if block_num is bad
+        :raises SimplEthError:
+            -  if ``block_number`` is invalid (`B-040-010`)
+            
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
@@ -503,15 +510,15 @@ class Blockchain:
             1638120893
 
         """
-        if block_num not in range(0, self.block_number + 1):
+        if block_number not in range(0, self.block_number + 1):
             message: str = (
-                f'ERROR in block_time_epoch({block_num}): '
-                f'the block_num must be an integer between '
+                f'ERROR in block_time_epoch({block_number}): '
+                f'the block_number must be an integer between '
                 f'0 and {self.block_number}.\n'
-                f'HINT: check type and value for block_num.\n'
+                f'HINT: check type and value for block_number.\n'
                 )
             raise SimplEthError(message, code='B-040-010') from None
-        return self.eth.get_block(block_num).timestamp
+        return self.eth.get_block(block_number).timestamp
 
     def block_time_string(
             self,
@@ -527,6 +534,10 @@ class Blockchain:
         :type time_format: str
         :rtype: str
         :return: time block was mined, in local timezone, as a string
+        :raises SimplEthError:
+            -  if ``block_number`` is invalid (`B-050-010`)
+            -  if ``time_format`` is not a string (`B-050-020`)
+
         :example:
             >>> from simpleth import Blockchain
             >>> Blockchain().block_time_string(20)
@@ -534,21 +545,32 @@ class Blockchain:
             >>> Blockchain().block_time_string(20, '%A %I:%M %p')
             'Sunday 11:34 AM'
 
-        :see: List of format codes:
+        :notes: Does not check for valid time format code string.
+
+        :see: List of time format codes:
               https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
 
         """
+        if block_number not in range(0, self.block_number + 1):
+            message: str = (
+                f'ERROR in block_time_epoch({block_number}): '
+                f'the block_num must be an integer between '
+                f'0 and {self.block_number}.\n'
+                f'HINT: check type and value for block_num.\n'
+                )
+            raise SimplEthError(message, code='B-050-010') from None
         if isinstance(time_format, str):
             epoch_seconds: int = self.block_time_epoch(block_number)
-            return datetime.datetime. \
-                fromtimestamp(epoch_seconds). \
-                strftime(time_format)
-        message = (
-            f'ERROR in block_time_string({block_number}, {time_format}).\n'
-            f'time_format must be a string.\n'
-            f'HINT: Use a string of valid strftime format codes for '
-            f'time_format.')
-        raise SimplEthError(message, code='B-050-010') from None
+        else:
+            message = (
+                f'ERROR in block_time_string({block_number}, {time_format}).\n'
+                f'time_format must be a string.\n'
+                f'HINT: Use a string of valid strftime format codes for '
+                f'time_format.')
+            raise SimplEthError(message, code='B-050-020') from None
+        return datetime.datetime. \
+            fromtimestamp(epoch_seconds). \
+            strftime(time_format)
 
     def fee_history(self, num_blocks: int = 3) -> dict:
         """Return fee information for recently mined blocks.
@@ -570,6 +592,9 @@ class Blockchain:
             -  `'gasUsedRatio'`: `gasUsed`/`gasLimit` for this block
             -  `'oldestBlock'`: `block number` for the oldest block in
                the list and will be :attr:`block_number` - ``num_blocks``
+
+        :raises SimplEthError:
+            -  if the method is called (`B-060-010`)
 
         :warning: **This does not work.** The `w3.eth.fee_history()`
           method is specified in the `web3.py` documentation but does
@@ -644,11 +669,12 @@ class Blockchain:
         :rtype: str
         :return: `trx_hash` of the transfer transaction
         :raises SimplEthError:
-            - if ``sender`` is bad
-            - if ``receiver`` is bad
-            - if ``amount`` is not an int
-            - if ``amount`` exceeds the ``sender`` balance
-            - if ``receiver`` is a `non-payable` contract
+            -  if ``sender`` is bad (`B-070-010`)
+            -  if ``receiver`` is bad (`B-070-010`)
+            -  if ``amount`` exceeds the ``sender`` balance  (`B-070-010`)
+            -  if ``receiver`` is a `non-payable` contract  (`B-070-010`)
+            -  if ``amount`` is not an int (`B-070-020`)
+            -  if ``receiver`` is a `non-payable` contract  (`B-070-030`)
 
         :example:
 
@@ -659,11 +685,10 @@ class Blockchain:
             >>> b.send_ether(user4, user8, 1000)
 
         :see:
-
-            - :meth:`balance` to get amount of Ether owned by
-              an account.
-            - :meth:`transaction` to get details of the transfer
-              transaction using the `trx_hash`.
+            -  :meth:`balance` to get amount of Ether owned by
+               an account.
+            -  :meth:`transaction` to get details of the transfer
+               transaction using the `trx_hash`.
 
         """
         try:
@@ -715,6 +740,10 @@ class Blockchain:
         :type trx_hash: str
         :rtype: dict
         :return: transaction details as a dictionary
+        :raises SimplEthError:
+            -  if transaction for ``trx_hash`` is not found (`B-080-010`)
+            -  if ``trx_hash`` is not a valid type (`B-080-020`)
+
         :example:
             >>> from simpleth import Blockchain
             >>> t = '0xe6bbbc34f53ef4137de80dc63f156b820d71f9f176b8210a42 ...'
@@ -753,7 +782,10 @@ class Blockchain:
         :type address: str
         :rtype: int
         :return: number of transactions
-        :raises SimplEthError: if ``address`` is bad
+        :raises SimplEthError:
+            -  if ``address`` is not a string (`B-090-010`)
+            -  if ``address`` is not a valid account (`B-090-020`)
+
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
@@ -853,11 +885,11 @@ class Contract:
             <simpleth.Contract object at 0x0000028A7262B580>
 
         :notes:
-            - ``name`` must match the Solidity filename for the
-              contract source code. For example, if the Solidity file is
-              ``Example.sol``, use ``Contract(\'Example\')``.
-            - Due to DOS filename convention case does not matter and
-              ``Contract(\'example\')`` will also work.
+            -  ``name`` must match the Solidity filename for the
+               contract source code. For example, if the Solidity file is
+               ``Example.sol``, use ``Contract(\'Example\')``.
+            -  Due to DOS filename convention case does not matter and
+               ``Contract(\'example\')`` will also work.
 
         """
         self._name: str = name
@@ -2237,7 +2269,6 @@ class Contract:
         :rtype: bool
         :return: ``True`` if successfully set the address
         :raises SimplEthError:
-
             -  if ``contract_address`` is bad
             -  if unable to write to the artifact `address` file
 

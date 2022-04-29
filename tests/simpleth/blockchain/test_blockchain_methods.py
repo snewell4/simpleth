@@ -190,9 +190,19 @@ class TestBlockchainMethodsBad:
             Blockchain().block_time_epoch(bad_block_num)
         assert excp.value.code == 'B-040-010'
 
-    def test_block_time_with_bad_time_format_type_raises_b_050_010(self):
+    def test_block_time_with_bad_block_number_raises_b_050_010(self):
+        """block_time_string() with bad block_number type raises SimplEthError"""
+        block_num = Blockchain().block_number + 10
+        time_format_string = "%M"
+        with pytest.raises(SimplEthError) as excp:
+            Blockchain().block_time_string(
+                block_num,
+                time_format_string
+                )
+        assert excp.value.code == 'B-050-010'
+
+    def test_block_time_with_bad_time_format_type_raises_b_050_020(self):
         """block_time_string() with bad block_format type raises SimplEthError"""
-        # Use last block in chain
         block_num = Blockchain().block_number
         bad_format_type = 100
         with pytest.raises(SimplEthError) as excp:
@@ -200,7 +210,7 @@ class TestBlockchainMethodsBad:
                 block_num,
                 bad_format_type
                 )
-        assert excp.value.code == 'B-050-010'
+        assert excp.value.code == 'B-050-020'
 
     @pytest.mark.parametrize('bad_address',
                              ['0xF0E9C98500f34BE7C7c4a99700e4c56C0D9d6e6',
