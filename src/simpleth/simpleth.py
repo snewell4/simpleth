@@ -3718,4 +3718,18 @@ class SimplEthError(Exception):
             msg = f'{message}'
 
         super().__init__(msg)    # let Exception take over
+
+
+#
+# This stanza allows the use of Python doctest() to test all the
+# example code.
+#
+# See: https://docs.python.org/3/library/doctest.html
+#
+# Usage: python simpleth.py
+#
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+
 # end of SimplEthError

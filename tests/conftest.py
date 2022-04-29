@@ -72,7 +72,7 @@ def run_test_trx_to_store_nums_again(connect_to_test_contract):
     # pytest does not let you call the same fixture twice in a test
     # case. For some test cases (see test_get_old_events_two() as an
     # example), store_nums() trx is called twice. Use this fixture
-    # for the second call.  (Hmmm, a later comment, I think it is because the first
+    # for the second call.  (A later comment, I think it is because the first
     # run_test_trx_to_store_nums() creates its contract_obj and this function
     # creates a different contract object. I'm not going to try to investigate
     # and fix. Tests are working.)
