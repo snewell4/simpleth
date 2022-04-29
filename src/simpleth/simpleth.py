@@ -47,7 +47,6 @@ __status__ = 'Prototype'
 #
 # Directories and filenames
 #
-# TBD - I think all SUFFIX should have a leading "."
 PROJECT_HOME: str = 'C:/Users/snewe/OneDrive/Desktop/simpleth'
 """Directory for the prototype project home"""
 
@@ -60,17 +59,14 @@ SOLC_SUBDIR: str = 'solc'
 RST_DOC_SUBDIR: str = 'docs/source'
 """Directory, under project directory, for the rST files."""
 
-ABI_SUFFIX: str = 'abi'
+ABI_SUFFIX: str = '.abi'
 """Filename suffix for the ABI files."""
 
-BYTECODE_SUFFIX: str = 'bin'
+BYTECODE_SUFFIX: str = '.bin'
 """Filename suffix for the bytecode files."""
 
-ADDRESS_SUFFIX: str = 'addr'
+ADDRESS_SUFFIX: str = '.addr'
 """Filename suffix for the contract address files."""
-
-BIN_RUNTIME_SUFFIX: str = 'bin-runtime'
-"""Filename suffix for bin-runtime files. Used to get compiled size."""
 
 SOLIDITY_CONTRACT_SUFFIX: str = '.sol'
 """Filename suffix for smart contract source file."""
@@ -88,7 +84,7 @@ SOLC_FILENAME: str = 'solc.exe'
 GAS_LIMIT: int = 6_000_000
 """Gas limit for a transaction, in units of gas."""
 
-# Currently, has no effect with Ganache. It is valid for main net.
+# Currently, has no effect with Ganache. It is valid for mainnet.
 MAX_BASE_FEE_GWEI: Union[int, float] = 100
 """Maximum tip to pay the miners, per unit of gas in gwei."""
 
@@ -874,19 +870,19 @@ class Contract:
 
         self._artifact_abi_filepath: str = \
             self._artifact_dir + '/' + \
-            self._name + '.' + \
+            self._name + \
             ABI_SUFFIX
         """Private filepath to the ABI file"""
 
         self._artifact_address_filepath: str = \
             self._artifact_dir + '/' + \
-            self._name + '.' + \
+            self._name + \
             ADDRESS_SUFFIX
         """Private filepath to the address file"""
 
         self._artifact_bytecode_filepath: str = \
             self._artifact_dir + '/' + \
-            self._name + '.' + \
+            self._name + \
             BYTECODE_SUFFIX
         """Private filepath to the bytecode file"""
 
