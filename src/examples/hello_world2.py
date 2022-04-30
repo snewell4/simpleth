@@ -1,6 +1,6 @@
 from simpleth import Blockchain, Contract
 
-sender = Blockchain().get_address(0)
+sender = Blockchain().address(0)
 
 c = Contract('HelloWorld2')
 c.deploy(sender)

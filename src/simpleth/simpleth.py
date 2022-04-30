@@ -1177,9 +1177,10 @@ class Contract:
             (**optional**, default: None)
         :type fcn_args: int | float | str | None
         :raises SimplEthError:
-            - if ``fcn_name`` is bad
-            - if ``fcn_args`` are the wrong type or number
-            - if contract has been destroyed
+            -  if ``fcn_name`` is bad or a :meth:`connect` is needed (`C-010-010`)
+            -  if ``fcn_args`` are the wrong type or number (`C-010-020`)
+            -  if unable to call ``fcn_name`` (C-010-030`)
+            -  if ``fcn_args`` had out of bounds array index (C-010-040`)
 
         :rtype: int | float | string | list
         :return: value returned from the Solidity function
@@ -1314,11 +1315,12 @@ class Contract:
         :return: transaction receipt for `deploy()`
 
         :raises SimplEthError:
-            - if unable to get artifact info and create contract class
-            - if ``sender`` address is bad
-            - if ``constructor_args`` are bad
-            - if the `deploy` ran out of gas
-            - if ``gas_limit`` exceeded the block limit
+            -  if unable to get artifact info and create contract
+               class (`C-030-010`)
+            -  if ``sender`` address is bad (`C-030-020`)
+            -  if ``constructor_args`` are wrong type or number (`C-030-030`)
+            -  if `deploy` ran out of gas (`C-030-040`)
+            -  if ``gas_limit`` exceeded the block limit (`C-030-040`)
 
         :example:
 
@@ -1417,10 +1419,14 @@ class Contract:
         :rtype: int
         :return: estimated number of gas units to run the transaction
         :raises SimplEthError:
-            - if ``trx_name`` is bad
-            - if ``args`` are bad
-            - if :meth:`connect` is needed
-            - if ``sender`` is bad
+            -  if ``trx_name`` is bad (`C-040-010`)
+            -  if ``args`` are bad; either wrong type or number (`C-040-020`)
+            -  if contract is bad, either not deployed or destroyed (`C-040-030`)
+            -  if ``args`` has an out-of-bounds index value (`C-040-040`)
+            -  if ``sender`` is bad (`C-040-050`)
+            -  if :meth:`connect` is needed (`C-040-060`)
+            -  if ``sender`` or one or more ``args`` is missing (`C-040-070`)
+
 
         :example:
             >>> from simpleth import Contract
@@ -1505,6 +1511,9 @@ class Contract:
         This is used after :meth:`submit_trx` to get the mining receipt.
         Returns ``None`` if the transaction has not yet been mined.
 
+        Does not check for a valid ``trx_hash``. Returns ``None`` for
+        a bad ``trx_hash``.
+
         :param trx_hash: transaction hash from :meth:`submit_trx`
         :type trx_hash: str
         :rtype: T_RECEIPT | None
@@ -1534,7 +1543,7 @@ class Contract:
             trx_receipt: T_RECEIPT = \
                 self._blockchain.eth.get_transaction_receipt(trx_hash)
         except self._web3e.TransactionNotFound:
-            # Receipt not found. Not yet mined. Will return empty trx_result
+            # Receipt not found or not yet mined. Return empty trx_receipt.
             return None
         return trx_receipt
 
@@ -1557,6 +1566,9 @@ class Contract:
         completion and the length of time to keep checking before
         timing out.
 
+        Does not check for a valid ``trx_hash``. Returns ``None`` for
+        a bad ``trx_hash``.
+
         :param trx_hash: transaction hash
         :type trx_hash: str
         :param timeout: maximum number of seconds to wait for
@@ -1569,6 +1581,10 @@ class Contract:
         :type poll_latency: int | float
         :rtype: T_RECEIPT | None
         :return: transaction receipt
+        :raises SimplEthError:
+            -  if ``timeout`` is not float or int (`C-0X0-010`)
+            -  if ``poll_latency`` is not float or int (`C-0X0-020`)
+
         :example:
 
             >>> from simpleth import Blockchain, Contract
@@ -1601,6 +1617,24 @@ class Contract:
             - :class:`Results` to examine the outcome.
 
         """
+        if not (isinstance(timeout, int) or
+                isinstance(timeout, float)):
+            message = (
+                f'ERROR in get_trx_receipt_wait(\n'
+                f'{trx_hash}, {timeout}, {poll_latency}): '
+                f'Bad type for timeout: {timeout}.\n'
+                f'HINT: Specify an integer or float for timeout.\n'
+            )
+            raise SimplEthError(message, code='C-0X0-010') from None
+        if not (isinstance(poll_latency, int) or
+                isinstance(poll_latency, float)):
+            message = (
+                f'ERROR in get_trx_receipt_wait(\n'
+                f'{trx_hash}, {timeout}, {poll_latency}): '
+                f'Bad type for poll_latency: {poll_latency}.\n'
+                f'HINT: Specify an integer or float for poll_latency.\n'
+            )
+            raise SimplEthError(message, code='C-0X0-020') from None
         try:
             trx_receipt: T_RECEIPT = \
                 self._blockchain.eth.wait_for_transaction_receipt(
@@ -1631,9 +1665,14 @@ class Contract:
         :rtype: int | string | float | list | None
         :return: value of the variable
         :raises SimplEthError:
-            - if ``var_name`` is bad
-            - if ``args`` specifies an out of bound index value
-            - if a :meth:`connect` is needed
+            -  if ``var_name`` is bad (`C-060-010`)
+            -  if ``var_name`` is not a variable (`C-060-020`)
+            -  if ``var_name`` is an array but ``args`` did not specify an
+               index value (`C-060-030`)
+            -  if ``var_name`` is not an array yet ``args`` specifies an
+               index value (`C-060-030`)
+            -  if ``args`` specifies an out of bound index value (`C-060-040`)
+            -  if a :meth:`connect` is needed (`C-060-050`)
 
         :example:
             >>> from simpleth import Contract
@@ -1757,7 +1796,10 @@ class Contract:
         :type poll_latency: int | float
         :rtype: T_RECEIPT | None
         :return: `web3` transaction receipt
-        :raises SimplEthError: if unable to submit the transaction
+        :raises SimplEthError:
+            -  if ``sender`` is bad type XXX
+            -  if unable to submit the transaction; no hash was returned
+                (`C-070-090`)
 
         :example:
 
@@ -1776,6 +1818,66 @@ class Contract:
             explanation about fees.
 
         """
+        if not isinstance(sender, str):
+            message = (
+                f'ERROR in run_trx({trx_name})\n'
+                f'Bad type for sender: {sender}.\n'
+                f'HINT: Specify a string with sender address.\n'
+                )
+            raise SimplEthError(message, code='C-070-010') from None
+        if not isinstance(trx_name, str):
+            message = (
+                f'ERROR in run_trx({trx_name})\n'
+                f'Bad type for trx_name: {trx_name}.\n'
+                f'HINT: Specify a string for trx_name.\n'
+                )
+            raise SimplEthError(message, code='C-070-020') from None
+        if not isinstance(gas_limit, int):
+            message = (
+                f'ERROR in run_trx({trx_name})\n'
+                f'Bad type for gas_limit: {gas_limit}.\n'
+                f'HINT: Specify an integer for gas_limit.\n'
+                )
+            raise SimplEthError(message, code='C-070-030') from None
+        if not (isinstance(max_priority_fee_gwei, int) or
+                isinstance(max_priority_fee_gwei, float)):
+            message = (
+                f'ERROR in run_trx({trx_name})\n'
+                f'Bad type for max_priority_fee_gwei: {max_priority_fee_gwei}.\n'
+                f'HINT: Specify an integer or float for max_priority_fee_gwei.\n'
+                )
+            raise SimplEthError(message, code='C-070-040') from None
+        if not (isinstance(max_fee_gwei, int) or
+                isinstance(max_fee_gwei, float)):
+            message = (
+                f'ERROR in run_trx({trx_name})\n'
+                f'Bad type for max_fee_gwei: {max_fee_gwei}.\n'
+                f'HINT: Specify an integer or float for max_fee_gwei.\n'
+                )
+            raise SimplEthError(message, code='C-070-050') from None
+        if not isinstance(value_wei, int):
+            message = (
+                f'ERROR in run_trx({trx_name})\n'
+                f'Bad type for value_wei: {value_wei}.\n'
+                f'HINT: Specify an integer for value_wei.\n'
+                )
+            raise SimplEthError(message, code='C-070-060') from None
+        if not (isinstance(timeout, int) or
+                isinstance(timeout, float)):
+            message = (
+                f'ERROR in run_trx({trx_name})\n'
+                f'Bad type for timeout: {timeout}.\n'
+                f'HINT: Specify an integer or float for timeout.\n'
+                )
+            raise SimplEthError(message, code='C-070-070') from None
+        if not (isinstance(poll_latency, int) or
+                isinstance(poll_latency, float)):
+            message = (
+                f'ERROR in run_trx({trx_name})\n'
+                f'Bad type for poll_latency: {poll_latency}.\n'
+                f'HINT: Specify an integer or float for poll_latency.\n'
+                )
+            raise SimplEthError(message, code='C-070-080') from None
         trx_hash: T_HASH = self.submit_trx(
             sender,
             trx_name,
@@ -1791,7 +1893,7 @@ class Contract:
                 f'No transaction hash was returned after submit_trx() of '
                 f'transaction: {trx_name}.\n'
                 )
-            raise SimplEthError(message, code='C-070-010') from None
+            raise SimplEthError(message, code='C-070-090') from None
 
         trx_receipt: T_RECEIPT = self.get_trx_receipt_wait(
             trx_hash,

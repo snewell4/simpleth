@@ -1,10 +1,9 @@
-from simpleth import Blockchain, Contract, PPrint, Convert
+from simpleth import Blockchain, Contract, Convert
 
-p = PPrint()
 b = Blockchain()
 convert = Convert()
 
-sender = b.get_address(0)
+sender = b.address(0)
 contract_name = 'HelloWorld4'
 
 c = Contract(contract_name)

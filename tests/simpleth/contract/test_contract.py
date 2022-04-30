@@ -730,7 +730,7 @@ class TestContractRunTrxBad:
     # get_trx_receipt_wait(), separate tests for those two
     # methods are not needed. These run_trx() tests cover the
     # error values tests for them, with one exception. run_trx()
-    # will throw C-070-010 if no hash is returned from the
+    # will throw C-070-090 if no hash is returned from the
     # submit_trx(). I don't know how to create that error
     # condition. That stanza of the code is not tested.
 
