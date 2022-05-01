@@ -118,6 +118,13 @@ contract Test {
     );
 
     /**
+     * @notice Emitted when nums were stored and then divided
+     *
+     * @param timestamp block time after nums[] divided
+     */
+    event NumsStoredAndDivided(uint timestamp);
+
+    /**
      * @notice Emitted when new nums are stored along with
      * a value (in wei) sent as a payment.
      *
@@ -143,6 +150,23 @@ contract Test {
      * @param timestamp block time after total was stored
      */
     event NumsStoredAndSummed(uint timestamp);
+
+    /**
+     * @notice Emitted when nums[] are divided
+     *
+     * @param timestamp block time when nums divided
+     * @param num0 value in nums[0] after dividing
+     * @param num1 value in nums[1] after dividing
+     * @param num2 value in nums[2] after dividing
+     * @param divisor value used to divide nums[]
+     */
+    event NumsDivided(
+        uint timestamp,
+        uint num0,
+        uint num1,
+        uint num2,
+        uint divisor
+    );
 
     /**
      * @notice Emitted when nums[] total is stored
@@ -200,6 +224,21 @@ contract Test {
         address indexed sender,
         int initNum,
         address Test
+    );
+
+    /**
+     * @notice Emitted when nums[0] and nums[1] total is stored
+     *
+     * @param timestamp block time when total is stored
+     * @param num0 value in nums[0]
+     * @param num1 value in nums[1]
+     * @param total sum of the first two nums assigned to numsTotal
+     */
+    event TwoNumsSummed(
+        uint timestamp,
+        uint num0,
+        uint num1,
+        uint total
     );
 
     /**
@@ -273,6 +312,28 @@ contract Test {
     }
 
     /**
+     * @notice Divides values in nums[]. There is no test for
+     * _divisor being zero. This is used to test a transaction
+     * that fails.
+     *
+     * @dev Emits NumsDivided()
+     */
+    function divideNums(uint _divisor)
+        public
+    {
+        nums[0] = nums[0] / _divisor;
+        nums[1] = nums[1] / _divisor;
+        nums[2] = nums[2] / _divisor;
+        emit NumsDivided(
+            block.timestamp,
+            nums[0],
+            nums[1],
+            nums[2],
+            _divisor
+        );
+    }
+
+    /**
      * @notice Allows current owner to assign a new owner
      *
      * @dev Emits OwnerSet().
@@ -331,6 +392,39 @@ contract Test {
             nums[1],
             nums[2]
         );
+    }
+
+    /**
+     * @notice Stores the three args in nums[] and call
+     * sumNums() to divide nums
+     *
+     * @dev Used to test calling a function that fails
+     *
+     * @param _num0 value to store in nums[0]
+     * @param _num1 value to store in nums[1]
+     * @param _num2 value to store in nums[2]
+     * @param _divisor pass to divideNums() to divide
+     * the three nums
+     */
+    function storeNumsAndDivide(
+            uint _num0,
+            uint _num1,
+            uint _num2,
+            uint _divisor
+        )
+        public
+    {
+        nums[0] = _num0;
+        nums[1] = _num1;
+        nums[2] = _num2;
+        emit NumsStored(
+            block.timestamp,
+            nums[0],
+            nums[1],
+            nums[2]
+        );
+        divideNums(_divisor);
+        emit NumsStoredAndDivided(block.timestamp);
     }
 
     /**
@@ -449,6 +543,25 @@ contract Test {
             nums[0],
             nums[1],
             nums[2],
+            numsTotal
+        );
+    }
+
+    /**
+     * @notice Sums values in nums[0] and nums[1] and stores in
+     * numsTotal. Required to be owner to call
+     *
+     * @dev Emits TwoNumsSummed()
+     */
+    function sumTwoNums()
+        public
+    {
+        require(msg.sender == owner, "must be owner to sum two nums");
+        numsTotal = nums[0] + nums[1];
+        emit TwoNumsSummed(
+            block.timestamp,
+            nums[0],
+            nums[1],
             numsTotal
         );
     }

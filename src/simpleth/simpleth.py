@@ -1797,9 +1797,9 @@ class Contract:
         :rtype: T_RECEIPT | None
         :return: `web3` transaction receipt
         :raises SimplEthError:
-            -  if ``sender`` is bad type XXX
+            -  :meth:`submit_trx` will raise exceptions for bad args
             -  if unable to submit the transaction; no hash was returned
-                (`C-070-090`)
+                (`C-070-010`)
 
         :example:
 
@@ -1818,66 +1818,6 @@ class Contract:
             explanation about fees.
 
         """
-        if not isinstance(sender, str):
-            message = (
-                f'ERROR in run_trx({trx_name})\n'
-                f'Bad type for sender: {sender}.\n'
-                f'HINT: Specify a string with sender address.\n'
-                )
-            raise SimplEthError(message, code='C-070-010') from None
-        if not isinstance(trx_name, str):
-            message = (
-                f'ERROR in run_trx({trx_name})\n'
-                f'Bad type for trx_name: {trx_name}.\n'
-                f'HINT: Specify a string for trx_name.\n'
-                )
-            raise SimplEthError(message, code='C-070-020') from None
-        if not isinstance(gas_limit, int):
-            message = (
-                f'ERROR in run_trx({trx_name})\n'
-                f'Bad type for gas_limit: {gas_limit}.\n'
-                f'HINT: Specify an integer for gas_limit.\n'
-                )
-            raise SimplEthError(message, code='C-070-030') from None
-        if not (isinstance(max_priority_fee_gwei, int) or
-                isinstance(max_priority_fee_gwei, float)):
-            message = (
-                f'ERROR in run_trx({trx_name})\n'
-                f'Bad type for max_priority_fee_gwei: {max_priority_fee_gwei}.\n'
-                f'HINT: Specify an integer or float for max_priority_fee_gwei.\n'
-                )
-            raise SimplEthError(message, code='C-070-040') from None
-        if not (isinstance(max_fee_gwei, int) or
-                isinstance(max_fee_gwei, float)):
-            message = (
-                f'ERROR in run_trx({trx_name})\n'
-                f'Bad type for max_fee_gwei: {max_fee_gwei}.\n'
-                f'HINT: Specify an integer or float for max_fee_gwei.\n'
-                )
-            raise SimplEthError(message, code='C-070-050') from None
-        if not isinstance(value_wei, int):
-            message = (
-                f'ERROR in run_trx({trx_name})\n'
-                f'Bad type for value_wei: {value_wei}.\n'
-                f'HINT: Specify an integer for value_wei.\n'
-                )
-            raise SimplEthError(message, code='C-070-060') from None
-        if not (isinstance(timeout, int) or
-                isinstance(timeout, float)):
-            message = (
-                f'ERROR in run_trx({trx_name})\n'
-                f'Bad type for timeout: {timeout}.\n'
-                f'HINT: Specify an integer or float for timeout.\n'
-                )
-            raise SimplEthError(message, code='C-070-070') from None
-        if not (isinstance(poll_latency, int) or
-                isinstance(poll_latency, float)):
-            message = (
-                f'ERROR in run_trx({trx_name})\n'
-                f'Bad type for poll_latency: {poll_latency}.\n'
-                f'HINT: Specify an integer or float for poll_latency.\n'
-                )
-            raise SimplEthError(message, code='C-070-080') from None
         trx_hash: T_HASH = self.submit_trx(
             sender,
             trx_name,
@@ -1893,7 +1833,7 @@ class Contract:
                 f'No transaction hash was returned after submit_trx() of '
                 f'transaction: {trx_name}.\n'
                 )
-            raise SimplEthError(message, code='C-070-090') from None
+            raise SimplEthError(message, code='C-070-010') from None
 
         trx_receipt: T_RECEIPT = self.get_trx_receipt_wait(
             trx_hash,
@@ -1983,18 +1923,26 @@ class Contract:
         :return: ``trx_hash`` the transaction hash that identifies
            this transaction on the blockchain
         :raises SimplEthError:
-
-            -  if ``trx_name`` is bad
+            -  if ``trx_name`` is bad (`C-080-010`)
             -  if ``args`` are missing, wrong number of args, or wrong type
+               (`C-080-020`)
+            -  if contract has been destroyed or not deployed (`C-080-030`)
             -  if ``args`` had an out of bounds index value for an array
-            -  if ``sender`` is a bad address
-            -  if :meth:`connect` is needed
-            -  if ``args`` caused a divied-by-zero in the transaction
-            -  if ``gas_limit`` was too low and you ran out of gas
-            -  if a transaction `Guard` failed and the transaction was
-               reverted
-            -  if a transaction `require()` failed and the transaction
-               was reverted
+               (`C-080-040`)
+            -  if ``sender`` is a bad address (`C-080-050`)
+            -  if ``max_priority_fee_gwei`` is greater than ``max_fee_gwei``
+               (`C-080-060`)
+            -  if :meth:`connect` is needed (`C-080-070`)
+            -  if ``args`` were wrong type (`C-080-080`)
+            -  if transaction was failed a GUARD or require() (`C-080-090`)
+            -  if transaction was reverted when it ran in the VM (`C-080-0A0`)
+                -  if ``args`` caused a divied-by-zero in the transaction
+                -  if ``args`` caused an out-of-bounds array index
+                -  if ``gas_limit`` was too low and you ran out of gas
+                -  if ``gas_limit`` was too high and you exceeded the block
+                   gas limit.
+                -  If ``max_priority_fee_gwei`` was a float
+                -  If ``max_fee
 
         :example:
             >>> from simpleth import Blockchain, Contract
@@ -2057,7 +2005,7 @@ class Contract:
                     ).hex()
         except self._web3e.ABIFunctionNotFound:
             message: str = (
-                f'ERROR in {self.name}().submit_trx(): '
+                f'ERROR in {self.name}().submit_trx({trx_name}): '
                 f'transaction {trx_name}() not found in contract.\n'
                 f'HINT: Check spelling of transaction name.\n'
                 )
@@ -2096,8 +2044,8 @@ class Contract:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
                 f'InvalidTransaction says: {exception}\n'
-                f'HINT1: Do you need to swap max priority fee and max fee?.\n'
-                f'HINT2: Max_fee_gwei (total you will be willing to pay) must '
+                f'HINT: Do you need to swap max priority fee and max fee?. '
+                f'Max_fee_gwei (total you will be willing to pay) must '
                 f'be >= Max_priority_fee_gwei (the tip).\n'
                 )
             raise SimplEthError(message, code='C-080-060') from None
@@ -2119,76 +2067,39 @@ class Contract:
         except ValueError as exception:
             value_error_message: str = dict(exception.args[0])['message']
             if 'revert' in value_error_message:
-                message = self._format_revert_message(value_error_message)
-            else:
-                message = (
-                    f'ERROR in {self.name}().submit_trx(): '
-                    f'ValueError says {value_error_message}\n'
-                    f'HINT 1: Did you divide by zero?\n'
-                    f'HINT 2: Did you pass in an out-of-bounds array index?\n'
-                    f'HINT 3: Did you pass in a bad sender address?\n'
-                    f'HINT 4: If base fee exceeds gas limit, you ran out '
-                    f'of gas. Use a higher gas_limit.\n'
-                    f'HINT 5: If you exceeded block gas limit, you set the '
-                    f'gas_limit too high. Use a lower gas_limit.\n'
-                    f'HINT 6: Fee args need to be integers. Did you use '
-                    f'float?\n'
-                    )
-            raise SimplEthError(message, code='C-080-090') from None
-        return trx_hash
-
-    def _format_revert_message(self, value_error_msg: str) -> str:
-        """Return a message to explain why a transaction was reverted.
-
-        A `ValueError` exception message will have one of two strings
-        that will be reformatted:
-        1) 'VM Exception while processing transaction: revert
-           <modifier's message>'
-        2) 'VM Exception while processing transaction: revert'
-
-        The first is due to a `GUARD` modifier and the failure reason is
-        the `<modifier's message>`, which comes from the Solidity code.
-        This is the more typical case.
-
-        The second is due to a transaction being reverted. So far, the
-        only reason I have seen that is when the initial transaction
-        calls other transactions and one of those called transactions
-        fails.
-
-        This method will parse the `ValueError` message, determine
-        which of the conditions caused the exception, and return an
-        explanation the caller can put in the ``SimplEthError`` back to
-        the user.
-
-        :param value_error_msg: `ValueError` exception message.
-        :type value_error_msg: str
-        :rtype: str
-        :return: message explaining the Solidity transaction revert
-
-        :note: This is the method that adds the eye-catcher, `GUARDMSG:`,
-            that appears in the SimplEthError explanation message
-            to flag a transaction was stopped because it failed to
-            pass one of the pre-conditions in a modifier for the
-            contract.  You can change this eye-catcher but some apps
-            may be watching for that string.
-
-        """
-        # TBD - what happens when a contract transaction assert()
-        # fails? Does that go through this as well?
-        # TBD - does this get called when a transaction sends
-        # Ether to a non-payable contract? If so, update the docstrings
-        # to explain that as well.
-        revert_reason: str = value_error_msg.split('revert')[1].strip()
-        if revert_reason == '':
-            revert_message: str = (
-                f'Transaction from {self._name} was reverted. '
-                f'Possible reasons:\n'
-                f'1) This trx called another trx which failed.\n'
-                f'2) Attempt to send Ether to non-payable trx.\n'
+                # Strip off boilerplate in the ValueError message:
+                #     "VM Exception while processing transaction: revert"
+                # This leaves a string, if any, explaining the revert.
+                # So far, I've seen a revert reason from a transaction's
+                # GUARD message or require() message.
+                revert_reason: str = \
+                    value_error_message.split('revert')[1].strip()
+                if revert_reason != '':
+                    message = (
+                        f'ERROR in {self.name}().submit_trx({trx_name}).\n'
+                        f'Transaction says: {revert_reason}\n'
+                        f'HINT1: Did you fail to pass a transaction GUARD?\n'
+                        f'HINT2: Did you fail to pass a transaction require()?\n'
+                        )
+                    raise SimplEthError(message, code='C-080-090') from None
+            # There is no revert reason sent back by the transaction so
+            # show the ValueError message.
+            message = (
+                f'ERROR in {self.name}().submit_trx({trx_name}).\n'
+                f'ValueError says: {value_error_message}\n'
+                f'HINT 1: Did you divide by zero?\n'
+                f'HINT 2: Did you pass in an out-of-bounds array index?\n'
+                f'HINT 3: If base fee exceeds gas limit, you ran out '
+                f'of gas. Use a higher gas_limit.\n'
+                f'HINT 4: If you exceeded block gas limit, you set the '
+                f'gas_limit too high. Use a lower gas_limit.\n'
+                f'HINT 5: Fee args need to be integers. Did you use '
+                f'float?\n'
+                f'HINT 6: Did this trx call another trx, which failed?\n'
+                f'HINT 7: Did you attempt to send ether to a non-payable trx?\n'
                 )
-        else:
-            revert_message = 'GUARDMSG: ' + revert_reason
-        return revert_message
+            raise SimplEthError(message, code='C-080-0A0') from None
+        return trx_hash
 
     def _get_artifact_abi(self) -> List[str]:
         """Return the contract ABI saved in the ABI file.

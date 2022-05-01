@@ -730,7 +730,7 @@ class TestContractRunTrxBad:
     # get_trx_receipt_wait(), separate tests for those two
     # methods are not needed. These run_trx() tests cover the
     # error values tests for them, with one exception. run_trx()
-    # will throw C-070-090 if no hash is returned from the
+    # will throw C-070-010 if no hash is returned from the
     # submit_trx(). I don't know how to create that error
     # condition. That stanza of the code is not tested.
 
@@ -864,7 +864,7 @@ class TestContractRunTrxBad:
                 )
         assert excp.value.code == 'C-080-080'
 
-    def test_run_trx_with_oob_arg_raises_c_080_090(
+    def test_run_trx_with_oob_arg_raises_c_080_0A0(
             self,
             connect_to_test_contract
             ):
@@ -877,9 +877,9 @@ class TestContractRunTrxBad:
                 constants.OOB_TRX_ARG0,
                 constants.OOB_TRX_ARG1
                 )
-        assert excp.value.code == 'C-080-090'
+        assert excp.value.code == 'C-080-0A0'
 
-    def test_run_trx_with_db0_arg_raises_c_080_090(
+    def test_run_trx_with_db0_arg_raises_c_080_0A0(
             self,
             connect_to_test_contract
             ):
@@ -892,9 +892,9 @@ class TestContractRunTrxBad:
                 constants.DB0_TRX_NAME,
                 constants.DB0_TRX_ARG0
                 )
-        assert excp.value.code == 'C-080-090'
+        assert excp.value.code == 'C-080-0A0'
 
-    def test_run_trx_with_low_gas_limit_raises_c_080_090(
+    def test_run_trx_with_low_gas_limit_raises_c_080_0A0(
             self,
             connect_to_test_contract
             ):
@@ -909,4 +909,4 @@ class TestContractRunTrxBad:
                 constants.TRX_ARG2,
                 gas_limit=1_000
                 )
-        assert excp.value.code == 'C-080-090'
+        assert excp.value.code == 'C-080-0A0'
