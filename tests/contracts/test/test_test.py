@@ -10,7 +10,7 @@ from simpleth import Blockchain, \
     SimplEthError
 
 
-def test_test_deploy():
+def test_deploy():
     """Deploy test.sol and check for successful trx. """
     init_num = 42
     u = Blockchain().address(0)
@@ -20,7 +20,7 @@ def test_test_deploy():
     assert results.trx_name == 'deploy'
 
 
-def test_test_deploy_constructor():
+def test_deploy_constructor():
     """Check constructor event was emitted."""
     init_num = 42    # from above test case doing deploy()
     u = Blockchain().address(0)     # ditto
@@ -32,7 +32,7 @@ def test_test_deploy_constructor():
         event[0]['args']['sender'] == u
 
 
-def test_test_divideInitNum():
+def test_divideInitNum():
     """Test trx that divides the initNum."""
     divisor = 2
     u = Blockchain().address(0)
@@ -43,7 +43,7 @@ def test_test_divideInitNum():
     assert result.trx_name == 'divideInitNum'
 
 
-def test_test_divideInitNum_event():
+def test_divideInitNum_event():
     """Test trx that divides the initNum emitted expected values."""
     divisor = 2
     new_init_num = 42 / divisor
@@ -55,7 +55,7 @@ def test_test_divideInitNum_event():
         event[0]['args']['divisor'] == divisor
 
 
-def test_test_setOwner():
+def test_setOwner():
     """Test trx that changes the owner of the contract."""
     current_owner = Blockchain().address(0)  # from deploy() test case
     new_owner = Blockchain().address(1)
@@ -66,7 +66,7 @@ def test_test_setOwner():
     assert result.trx_name == 'setOwner'
 
 
-def test_test_setOwner_event():
+def test_setOwner_event():
     """Test trx that set the owner emitted expected value."""
     new_owner = Blockchain().address(1)
     c = Contract('test')
@@ -76,8 +76,8 @@ def test_test_setOwner_event():
     assert event[0]['args']['newOwner'] == new_owner
 
 
-def test_test_setOwner_with_bad_owner():
-    """Test trx reverts if non-owner attempts to set a new owner"""
+def test_setOwner_with_bad_owner():
+    """Test trx GUARD reverts if non-owner attempts to set a new owner"""
     bogus_owner = Blockchain().address(5)
     new_owner = Blockchain().address(1)
     c = Contract('test')
@@ -87,7 +87,18 @@ def test_test_setOwner_with_bad_owner():
     assert excp.value.code == 'C-080-090'
 
 
-def test_test_storeNum():
+def test_setOwner_back_to_original():
+    """Run trx to put the original owner back in place."""
+    original_owner = Blockchain().address(0)
+    current_owner = Blockchain().address(1)
+    c = Contract('test')
+    c.connect()
+    receipt = c.run_trx(current_owner, 'setOwner', original_owner)
+    result = Results(receipt, c)
+    assert result.trx_name == 'setOwner'
+
+
+def test_storeNum():
     """Test trx that stores one number into nums array."""
     new_num = 100
     nums_index = 0
@@ -98,7 +109,7 @@ def test_test_storeNum():
     assert c.get_var('nums', nums_index) == new_num
 
 
-def test_test_storeNum_event():
+def test_storeNum_event():
     """Test trx that stored one number emitted expected values."""
     new_num = 100     # must match test_storeNum() above
     nums_index = 0     # ditto
@@ -110,7 +121,7 @@ def test_test_storeNum_event():
         event[0]['args']['num'] == new_num
 
 
-def test_test_storeNums():
+def test_storeNums():
     """Test trx that stores new numbers into nums array."""
     new_nums = [1000, 2000, 3000]
     u = Blockchain().address(0)  # btw, this account is no longer owner
@@ -120,7 +131,7 @@ def test_test_storeNums():
     assert c.call_fcn('getNums') == new_nums
 
 
-def test_test_storeNums_event():
+def test_storeNums_event():
     """Test trx that stored new numbers emitted expected values."""
     new_nums = [1000, 2000, 3000]  # must match test_storeNums() above
     c = Contract('test')
@@ -132,7 +143,7 @@ def test_test_storeNums_event():
         event[0]['args']['num2'] == new_nums[2]
 
 
-def test_test_storeNumsAndPay():
+def test_storeNumsAndPay():
     """Test trx that stores new numbers into nums array and payment is
     received."""
 
@@ -160,7 +171,7 @@ def test_test_storeNumsAndPay():
            end_contract_bal_wei == b.balance(c.address)
 
 
-def test_test_storeNumsAndPay_event():
+def test_storeNumsAndPay_event():
     """Test trx that stored new numbers emitted expected values."""
     new_nums = [1001, 2001, 3001]  # must match test_storeNumsAndPay()
     payment_eth = 1   # ditto
@@ -179,7 +190,7 @@ def test_test_storeNumsAndPay_event():
         event[0]['args']['balance'] == b.balance(c.address)
 
 
-def test_test_storeNumsAndSum():
+def test_storeNumsAndSum():
     """Test trx that stores new numbers into nums array."""
     new_nums = [20, 30, 50]
     u = Blockchain().address(0)  # btw, this account is no longer owner
@@ -189,7 +200,7 @@ def test_test_storeNumsAndSum():
     assert c.call_fcn('getNums') == new_nums
 
 
-def test_test_storeNumsAndSum_NumsStored_event():
+def test_storeNumsAndSum_NumsStored_event():
     """Test trx emitted its NumsStored event."""
     new_nums = [20, 30, 50]  # must match test_storeNumsAndSum() above
     c = Contract('test')
@@ -201,7 +212,7 @@ def test_test_storeNumsAndSum_NumsStored_event():
         event[0]['args']['num2'] == new_nums[2]
 
 
-def test_test_storeNumsAndSum_NumsSummed_event():
+def test_storeNumsAndSum_NumsSummed_event():
     """Test trx call the sumNums() function and that fcn, in turn,
     emitted its NumsSummed event."""
     new_nums = [20, 30, 50]  # must match test_storeNumsAndSum() above
@@ -216,7 +227,7 @@ def test_test_storeNumsAndSum_NumsSummed_event():
         event[0]['args']['total'] == nums_total
 
 
-def test_test_storeNumsAndSum_NumsStoredAndSummed_event():
+def test_storeNumsAndSum_NumsStoredAndSummed_event():
     """Test trx emitted its second event."""
 
     # This event only emits timestamp. Easiest to test if the
@@ -228,7 +239,7 @@ def test_test_storeNumsAndSum_NumsStoredAndSummed_event():
     assert len(event) == 1
 
 
-def test_test_storeNumsWithNoEvent():
+def test_storeNumsWithNoEvent():
     """Test trx that stores new numbers into nums array."""
 
     # This trx does not emit an event. This is the only test for this
@@ -241,10 +252,10 @@ def test_test_storeNumsWithNoEvent():
     assert c.call_fcn('getNums') == new_nums
 
 
-def test_test_storeNumsWithThreeEvents():
+def test_storeNumsWithThreeEvents():
     """Test trx that stores new numbers and emits multiple events"""
     new_nums = [200, 300, 500]
-    u = Blockchain().address(0)  # btw, this account is no longer owner
+    u = Blockchain().address(0)
     c = Contract('test')
     c.connect()
     c.run_trx(u,
@@ -256,8 +267,8 @@ def test_test_storeNumsWithThreeEvents():
     assert c.call_fcn('getNums') == new_nums
 
 
-def test_test_storeNumsWithThreeEvents_NumXStored_event():
-    """Test trx emitted its NumsStored event."""
+def test_storeNumsWithThreeEvents_NumXStored_event():
+    """Test trx emitted its NumsStored events."""
     new_nums = [200, 300, 500]  # must match test_storeNumsWithThreeEvents()
     c = Contract('test')
     c.connect()
@@ -272,7 +283,28 @@ def test_test_storeNumsWithThreeEvents_NumXStored_event():
         event2[0]['args']['num2'] == new_nums[2]
 
 
-def test_test_typesStored():
+def test_sumTwoNums_by_owner():
+    """Test owner can call trx to sum two nums[] with require(owner)"""
+    new_nums = [200, 300, 500]
+    u = Blockchain().address(0)
+    c = Contract('test')
+    c.connect()
+    c.run_trx(u, 'sumTwoNums')
+    assert c.call_fcn('getNums') == new_nums
+
+
+def test_sumTwoNums_by_non_owner():
+    """Test trx is reverted if non-owner calls with require(owner)"""
+    new_nums = [200, 300, 500]
+    u = Blockchain().address(9)
+    c = Contract('test')
+    c.connect()
+    with pytest.raises(SimplEthError) as excp:
+        c.run_trx(u, 'sumTwoNums')
+    assert excp.value.code == 'C-080-090'
+
+
+def test_storeTypes():
     """Test trx that stores various data types as parameters"""
     test_uint = 42
     test_int = -42
@@ -292,7 +324,7 @@ def test_test_typesStored():
     assert results.trx_name == 'storeTypes'
 
 
-def test_test_typesStored_storeTypes_event():
+def test_typesStored_storeTypes_event():
     """Test trx emitted its event."""
     test_uint = 42   # must match test_typesStored() above
     test_int = -42    # ditto
@@ -308,7 +340,7 @@ def test_test_typesStored_storeTypes_event():
         event[0]['args']['test_str'] == test_str
 
 
-def test_test_getNum0():
+def test_getNum0():
     """Test fcn that returns nums[0]"""
     new_num0 = 123
     u = Blockchain().address(0)  # btw, this account is no longer owner
@@ -318,7 +350,7 @@ def test_test_getNum0():
     assert c.call_fcn('getNum0') == new_num0
 
 
-def test_test_getNum():
+def test_getNum():
     """Test fcn that returns selected nums[i]"""
     new_num = 321
     i = 2
@@ -329,7 +361,7 @@ def test_test_getNum():
     assert c.call_fcn('getNum', i) == new_num
 
 
-def test_test_receive():
+def test_receive():
     """Test fallback fcn accepts payment to contract and emits expected amount"""
     amount = 20
     b = Blockchain()

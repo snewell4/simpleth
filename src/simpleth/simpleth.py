@@ -1927,15 +1927,13 @@ class Contract:
             -  if ``args`` are missing, wrong number of args, or wrong type
                (`C-080-020`)
             -  if contract has been destroyed or not deployed (`C-080-030`)
-            -  if ``args`` had an out of bounds index value for an array
-               (`C-080-040`)
-            -  if ``sender`` is a bad address (`C-080-050`)
+            -  if ``sender`` is a bad address (`C-080-040`)
             -  if ``max_priority_fee_gwei`` is greater than ``max_fee_gwei``
-               (`C-080-060`)
-            -  if :meth:`connect` is needed (`C-080-070`)
-            -  if ``args`` were wrong type (`C-080-080`)
-            -  if transaction was failed a GUARD or require() (`C-080-090`)
-            -  if transaction was reverted when it ran in the VM (`C-080-0A0`)
+               (`C-080-050`)
+            -  if :meth:`connect` is needed (`C-080-060`)
+            -  if ``sender`` or ``trx_name`` are missing (`C-080-070`)
+            -  if transaction was failed a GUARD or require() (`C-080-080`)
+            -  if transaction was reverted when it ran in the VM (`C-080-090`)
                 -  if ``args`` caused a divied-by-zero in the transaction
                 -  if ``args`` caused an out-of-bounds array index
                 -  if ``gas_limit`` was too low and you ran out of gas
@@ -2027,19 +2025,12 @@ class Contract:
                 f'        the contract been deployed yet?\n'
                 )
             raise SimplEthError(message, code='C-080-030') from None
-        except self._web3e.ContractLogicError as exception:
-            message = (
-                f'ERROR in {self.name}().submit_trx(): '
-                f'ContractLogicError says: {exception}\n'
-                f'HINT: Did you use an out of bounds index value?\n'
-                )
-            raise SimplEthError(message, code='C-080-040') from None
         except self._web3e.InvalidAddress:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
                 f'sender arg has a bad address.\n'
                 )
-            raise SimplEthError(message, code='C-080-050') from None
+            raise SimplEthError(message, code='C-080-040') from None
         except self._web3e.InvalidTransaction as exception:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
@@ -2048,22 +2039,21 @@ class Contract:
                 f'Max_fee_gwei (total you will be willing to pay) must '
                 f'be >= Max_priority_fee_gwei (the tip).\n'
                 )
-            raise SimplEthError(message, code='C-080-060') from None
+            raise SimplEthError(message, code='C-080-050') from None
         except AttributeError:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
                 f'Contract does not have a valid contract object.\n'
                 f'HINT: Do you need to do a connect()?\n'
                 )
-            raise SimplEthError(message, code='C-080-070') from None
+            raise SimplEthError(message, code='C-080-060') from None
         except TypeError:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
-                f'Bad type for trx_name: "{trx_name}"\n'
-                f'HINT 1: Check transaction argument types.\n'
-                f'HINT 2: Check all transaction arguments were specified.\n'
+                f'sender or trx_name are missing."\n'
+                f'HINT: Check all arguments are specified.\n'
                 )
-            raise SimplEthError(message, code='C-080-080') from None
+            raise SimplEthError(message, code='C-080-070') from None
         except ValueError as exception:
             value_error_message: str = dict(exception.args[0])['message']
             if 'revert' in value_error_message:
@@ -2081,7 +2071,7 @@ class Contract:
                         f'HINT1: Did you fail to pass a transaction GUARD?\n'
                         f'HINT2: Did you fail to pass a transaction require()?\n'
                         )
-                    raise SimplEthError(message, code='C-080-090') from None
+                    raise SimplEthError(message, code='C-080-080') from None
             # There is no revert reason sent back by the transaction so
             # show the ValueError message.
             message = (
@@ -2098,7 +2088,7 @@ class Contract:
                 f'HINT 6: Did this trx call another trx, which failed?\n'
                 f'HINT 7: Did you attempt to send ether to a non-payable trx?\n'
                 )
-            raise SimplEthError(message, code='C-080-0A0') from None
+            raise SimplEthError(message, code='C-080-090') from None
         return trx_hash
 
     def _get_artifact_abi(self) -> List[str]:

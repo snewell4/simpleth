@@ -18,7 +18,7 @@ class TestContractConstructorGood:
 class TestContractConstructorBad:
     """Test cases for Contract() with bad args"""
 
-    def test_constructor_with_bad_contract_name_raises_c_100_010(self):
+    def test_constructor_with_bad_contract_name_raises_C_100_010(self):
         """SimplEthError is raised when constructor has bad contract name"""
         bad_name = 'bad_contract_name'
         with pytest.raises(SimplEthError) as excp:
@@ -89,7 +89,7 @@ class TestContractDeployBad:
     # by Ganache. Add tests later once Ganache has support
     # for them.
 
-    def test_deploy_with_bad_sender_raises_c_030_020(
+    def test_deploy_with_bad_sender_raises_C_030_020(
             self,
             construct_test_contract
             ):
@@ -100,7 +100,7 @@ class TestContractDeployBad:
             c.deploy(bad_sender, constants.CONSTRUCTOR_ARG)
         assert excp.value.code == 'C-030-020'
 
-    def test_deploy_with_wrong_type_constructor_arg_raises_c_030_030(
+    def test_deploy_with_wrong_type_constructor_arg_raises_C_030_030(
             self,
             construct_test_contract
             ):
@@ -112,7 +112,7 @@ class TestContractDeployBad:
             c.deploy(constants.CONSTRUCTOR_SENDER, bad_constructor_arg)
         assert excp.value.code == 'C-030-030'
 
-    def test_deploy_with_too_many_constructor_args_raises_c_030_030(
+    def test_deploy_with_too_many_constructor_args_raises_C_030_030(
             self,
             construct_test_contract
             ):
@@ -128,7 +128,7 @@ class TestContractDeployBad:
                 )
         assert excp.value.code == 'C-030-030'
 
-    def test_deploy_with_missing_constructor_arg_raises_c_030_030(
+    def test_deploy_with_missing_constructor_arg_raises_C_030_030(
             self,
             construct_test_contract
             ):
@@ -139,7 +139,7 @@ class TestContractDeployBad:
             c.deploy(constants.CONSTRUCTOR_SENDER)
         assert excp.value.code == 'C-030-030'
 
-    def test_deploy_with_insufficient_gas_raises_c_030_040(
+    def test_deploy_with_insufficient_gas_raises_C_030_040(
             self,
             construct_test_contract
             ):
@@ -155,7 +155,7 @@ class TestContractDeployBad:
                 )
         assert excp.value.code == 'C-030-040'
 
-    def test_deploy_with_excessive_gas_raises_c_030_040(
+    def test_deploy_with_excessive_gas_raises_C_030_040(
             self,
             construct_test_contract
             ):
@@ -307,7 +307,7 @@ class TestCallFcnBad:
         with pytest.raises(TypeError):
             c.call_fcn()
 
-    def test_call_fcn_with_bad_fcn_name_raises_c_010_010(
+    def test_call_fcn_with_bad_fcn_name_raises_C_010_010(
             self,
             connect_to_test_contract
             ):
@@ -318,7 +318,7 @@ class TestCallFcnBad:
             c.call_fcn(bad_fcn_name)
         assert excp.value.code == 'C-010-010'
 
-    def test_call_fcn_with_unconnected_contract_raises_c_010_010(
+    def test_call_fcn_with_unconnected_contract_raises_C_010_010(
             self,
             construct_never_deployed_test_contract
             ):
@@ -328,7 +328,7 @@ class TestCallFcnBad:
             c.call_fcn('getNum0')
         assert excp.value.code == 'C-010-010'
 
-    def test_call_fcn_with_bad_arg_type_raises_c_010_020(
+    def test_call_fcn_with_bad_arg_type_raises_C_010_020(
             self,
             connect_to_test_contract
             ):
@@ -339,7 +339,7 @@ class TestCallFcnBad:
             c.call_fcn('getNum', bad_arg_type)
         assert excp.value.code == 'C-010-020'
 
-    def test_call_fcn_with_wrong_num_args_raises_c_010_020(
+    def test_call_fcn_with_wrong_num_args_raises_C_010_020(
             self,
             connect_to_test_contract
             ):
@@ -349,7 +349,7 @@ class TestCallFcnBad:
             c.call_fcn('getNum', 1, 2)
         assert excp.value.code == 'C-010-020'
 
-    def test_call_fcn_with_out_of_bounds_arg_raises_c_010_040(
+    def test_call_fcn_with_out_of_bounds_arg_raises_C_010_040(
             self,
             connect_to_test_contract
             ):
@@ -396,7 +396,7 @@ class TestContractGetGasEstimateBad:
         with pytest.raises(TypeError):
             c.get_gas_estimate()
 
-    def test_get_gas_estimate_with_bad_trx_name_raises_c_040_010(
+    def test_get_gas_estimate_with_bad_trx_name_raises_C_040_010(
             self,
             connect_to_test_contract
             ):
@@ -413,7 +413,7 @@ class TestContractGetGasEstimateBad:
                 )
         assert excp.value.code == 'C-040-010'
 
-    def test_get_gas_estimate_with_too_few_trx_args_raises_c_040_020(
+    def test_get_gas_estimate_with_too_few_trx_args_raises_C_040_020(
             self,
             connect_to_test_contract
             ):
@@ -428,7 +428,7 @@ class TestContractGetGasEstimateBad:
                 )
         assert excp.value.code == 'C-040-020'
 
-    def test_get_gas_estimate_with_too_many_trx_args_raises_c_040_020(
+    def test_get_gas_estimate_with_too_many_trx_args_raises_C_040_020(
             self,
             connect_to_test_contract
             ):
@@ -445,7 +445,7 @@ class TestContractGetGasEstimateBad:
                 )
         assert excp.value.code == 'C-040-020'
 
-    def test_get_gas_estimate_with_TBD_raises_c_040_030(
+    def test_get_gas_estimate_with_TBD_raises_C_040_030(
             self,
             connect_to_test_contract
             ):
@@ -454,7 +454,7 @@ class TestContractGetGasEstimateBad:
         for now. """
         assert True
 
-    def test_get_gas_estimate_with_oob_arg_raises_c_040_040(
+    def test_get_gas_estimate_with_oob_arg_raises_C_040_040(
             self,
             connect_to_test_contract
             ):
@@ -469,7 +469,7 @@ class TestContractGetGasEstimateBad:
                 )
         assert excp.value.code == 'C-040-040'
 
-    def test_get_gas_estimate_with_db0_arg_raises_c_040_040(
+    def test_get_gas_estimate_with_db0_arg_raises_C_040_040(
             self,
             connect_to_test_contract
             ):
@@ -484,7 +484,7 @@ class TestContractGetGasEstimateBad:
                 )
         assert excp.value.code == 'C-040-040'
 
-    def test_get_gas_estimate_with_bad_sender_raises_c_040_050(
+    def test_get_gas_estimate_with_bad_sender_raises_C_040_050(
             self,
             connect_to_test_contract
             ):
@@ -501,7 +501,7 @@ class TestContractGetGasEstimateBad:
                 )
         assert excp.value.code == 'C-040-050'
 
-    def test_get_gas_estimate_using_never_deployed_contract_raises_c_040_060(
+    def test_get_gas_estimate_using_never_deployed_contract_raises_C_040_060(
             self,
             construct_never_deployed_test_contract
             ):
@@ -514,7 +514,7 @@ class TestContractGetGasEstimateBad:
                 )
         assert excp.value.code == 'C-040-060'
 
-    def test_get_gas_estimate_with_missing_sender_raises_c_040_070(
+    def test_get_gas_estimate_with_missing_sender_raises_C_040_070(
             self,
             connect_to_test_contract
             ):
@@ -605,7 +605,7 @@ class TestContractGetVarBad:
         with pytest.raises(TypeError):
             c.get_var()
 
-    def test_get_var_with_bad_var_name_raises_c_060_010(
+    def test_get_var_with_bad_var_name_raises_C_060_010(
             self,
             run_test_trx_to_store_all_types
             ):
@@ -616,7 +616,7 @@ class TestContractGetVarBad:
             c.get_var(bad_var_name)
         assert excp.value.code == 'C-060-010'
 
-    def test_get_var_with_bad_type_index_raises_c_060_030(
+    def test_get_var_with_bad_type_index_raises_C_060_030(
             self,
             run_test_trx_to_store_array
             ):
@@ -627,7 +627,7 @@ class TestContractGetVarBad:
             c.get_var(constants.ARRAY_VAR_NAME, bad_type_index)
         assert excp.value.code == 'C-060-030'
 
-    def test_get_var_with_missing_index_raises_c_060_030(
+    def test_get_var_with_missing_index_raises_C_060_030(
             self,
             run_test_trx_to_store_array
             ):
@@ -637,7 +637,7 @@ class TestContractGetVarBad:
             c.get_var(constants.ARRAY_VAR_NAME)
         assert excp.value.code == 'C-060-030'
 
-    def test_get_var_with_unneeded_index_raises_c_060_030(
+    def test_get_var_with_unneeded_index_raises_C_060_030(
             self,
             run_test_trx_to_store_all_types
             ):
@@ -647,7 +647,7 @@ class TestContractGetVarBad:
             c.get_var(constants.INT_VAR_NAME, 0)
         assert excp.value.code == 'C-060-030'
 
-    def test_get_var_with_oob_index_raises_c_060_040(
+    def test_get_var_with_oob_index_raises_C_060_040(
             self,
             run_test_trx_to_store_array
             ):
@@ -659,7 +659,7 @@ class TestContractGetVarBad:
             c.get_var(constants.ARRAY_VAR_NAME, oob_index)
         assert excp.value.code == 'C-060-040'
 
-    def test_get_var_with_unconnected_contract_raises_c_060_050(
+    def test_get_var_with_unconnected_contract_raises_C_060_050(
             self,
             construct_never_deployed_test_contract
             ):
@@ -743,7 +743,7 @@ class TestContractRunTrxBad:
         with pytest.raises(TypeError):
             c.run_trx()
 
-    def test_run_trx_with_bad_trx_name_raises_c_080_010(
+    def test_run_trx_with_bad_trx_name_raises_C_080_010(
             self,
             connect_to_test_contract
             ):
@@ -760,7 +760,7 @@ class TestContractRunTrxBad:
                 )
         assert excp.value.code == 'C-080-010'
 
-    def test_run_trx_with_too_few_trx_args_raises_c_080_020(
+    def test_run_trx_with_too_few_trx_args_raises_C_080_020(
             self,
             connect_to_test_contract
             ):
@@ -775,7 +775,7 @@ class TestContractRunTrxBad:
                 )
         assert excp.value.code == 'C-080-020'
 
-    def test_run_trx_with_too_many_trx_args_raises_c_080_020(
+    def test_run_trx_with_too_many_trx_args_raises_C_080_020(
             self,
             connect_to_test_contract
             ):
@@ -792,16 +792,17 @@ class TestContractRunTrxBad:
                 )
         assert excp.value.code == 'C-080-020'
 
-    def test_run_trx_with_TBD_raises_c_080_030(
+    @pytest.mark.skip(reason='no way to currently test a destroyed contract')
+    def test_run_trx_with_TBD_raises_C_080_030(
             self,
             connect_to_test_contract
             ):
-        """Test run_trx() for a destroyed contract
+        """Test run_trx() for a destroyed contract.
         Don't know how to do this yet. Just do assert True
         for now. """
         assert True
 
-    def test_run_trx_with_bad_sender_raises_c_080_050(
+    def test_run_trx_with_bad_sender_raises_C_080_040(
             self,
             connect_to_test_contract
             ):
@@ -816,13 +817,13 @@ class TestContractRunTrxBad:
                 constants.TRX_ARG1,
                 constants.TRX_ARG2
                 )
-        assert excp.value.code == 'C-080-050'
+        assert excp.value.code == 'C-080-040'
 
-    def test_run_trx_with_bad_max_fee_gwei_raises_c_080_060(
+    def test_run_trx_with_bad_max_fee_gwei_raises_C_080_050(
             self,
             connect_to_test_contract
             ):
-        """Test run_trx() with invalid max fee."""
+        """Test run_trx() with max fee < max priority fee."""
         c = connect_to_test_contract
         with pytest.raises(SimplEthError) as excp:
             c.run_trx(
@@ -834,9 +835,9 @@ class TestContractRunTrxBad:
                 max_priority_fee_gwei=4,
                 max_fee_gwei=1
                 )
-        assert excp.value.code == 'C-080-060'
+        assert excp.value.code == 'C-080-050'
 
-    def test_run_trx_using_never_deployed_contract_raises_c_080_070(
+    def test_run_trx_using_unconnected_contract_raises_C_080_060(
             self,
             construct_never_deployed_test_contract
             ):
@@ -847,9 +848,9 @@ class TestContractRunTrxBad:
                 constants.NEVER_DEPLOYED_TRX_SENDER,
                 constants.NEVER_DEPLOYED_TRX_NAME
                 )
-        assert excp.value.code == 'C-080-070'
+        assert excp.value.code == 'C-080-060'
 
-    def test_run_trx_with_missing_sender_raises_c_080_080(
+    def test_run_trx_with_missing_sender_raises_C_080_070(
             self,
             connect_to_test_contract
             ):
@@ -862,24 +863,52 @@ class TestContractRunTrxBad:
                 constants.TRX_ARG1,
                 constants.TRX_ARG2
                 )
-        assert excp.value.code == 'C-080-080'
+        assert excp.value.code == 'C-080-070'
 
-    def test_run_trx_with_oob_arg_raises_c_080_0A0(
+    def test_run_trx_with_missing_trx_name_raises_C_080_070(
             self,
             connect_to_test_contract
             ):
-        """Test run_trx() with out-of-bounds arg"""
+        """Test run_trx() with too many trx args"""
         c = connect_to_test_contract
         with pytest.raises(SimplEthError) as excp:
             c.run_trx(
-                constants.OOB_TRX_SENDER,
-                constants.OOB_TRX_NAME,
-                constants.OOB_TRX_ARG0,
-                constants.OOB_TRX_ARG1
+                constants.TRX_SENDER,
+                constants.TRX_ARG0,
+                constants.TRX_ARG1
                 )
-        assert excp.value.code == 'C-080-0A0'
+        assert excp.value.code == 'C-080-070'
 
-    def test_run_trx_with_db0_arg_raises_c_080_0A0(
+    def test_run_trx_with_GUARD_fail_raises_C_080_080(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with a GUARD for isOwner by a non-owner"""
+        c = connect_to_test_contract
+        non_owner = Blockchain().address(9)
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                non_owner,
+                'setOwner',
+                non_owner
+                )
+        assert excp.value.code == 'C-080-080'
+
+    def test_run_trx_with_require_fail_raises_C_080_080(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with require(owner) with non-owner"""
+        c = connect_to_test_contract
+        non_owner = Blockchain().address(9)
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                non_owner,
+                'sumTwoNums'
+                )
+        assert excp.value.code == 'C-080-080'
+
+    def test_run_trx_with_db0_arg_raises_C_080_0A0(
             self,
             connect_to_test_contract
             ):
@@ -892,9 +921,24 @@ class TestContractRunTrxBad:
                 constants.DB0_TRX_NAME,
                 constants.DB0_TRX_ARG0
                 )
-        assert excp.value.code == 'C-080-0A0'
+        assert excp.value.code == 'C-080-090'
 
-    def test_run_trx_with_low_gas_limit_raises_c_080_0A0(
+    def test_run_trx_with_oob_arg_raises_C_080_090(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with out-of-bounds arg"""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                constants.OOB_TRX_SENDER,
+                constants.OOB_TRX_NAME,
+                constants.OOB_TRX_ARG0,
+                constants.OOB_TRX_ARG1
+                )
+        assert excp.value.code == 'C-080-090'
+
+    def test_run_trx_with_low_gas_limit_raises_C_080_090(
             self,
             connect_to_test_contract
             ):
@@ -902,11 +946,88 @@ class TestContractRunTrxBad:
         c = connect_to_test_contract
         with pytest.raises(SimplEthError) as excp:
             c.run_trx(
-                constants.TRX_SENDER,
-                'storeNumsAndPay',
+                constants.TRX_NAME,
                 constants.TRX_ARG0,
                 constants.TRX_ARG1,
                 constants.TRX_ARG2,
                 gas_limit=1_000
                 )
+        assert excp.value.code == 'C-080-090'
+
+    def test_run_trx_with_high_gas_limit_raises_C_080_090(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with too high gas limit."""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                constants.TRX_NAME,
+                constants.TRX_ARG0,
+                constants.TRX_ARG1,
+                constants.TRX_ARG2,
+                gas_limit=10_000_000
+                )
         assert excp.value.code == 'C-080-0A0'
+
+    def test_run_trx_with_float_max_fee_raises_C_080_090(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with a float value for max_fee_gwei"""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                constants.TRX_NAME,
+                constants.TRX_ARG0,
+                constants.TRX_ARG1,
+                constants.TRX_ARG2,
+                max_fee_gwei=10.7
+                )
+        assert excp.value.code == 'C-080-090'
+
+    def test_run_trx_with_float_max_priority_fee_raises_C_080_090(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with a float value for max_priority_fee_gwei"""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                constants.TRX_NAME,
+                constants.TRX_ARG0,
+                constants.TRX_ARG1,
+                constants.TRX_ARG2,
+                max_priority_fee_gwei=10.7
+                )
+        assert excp.value.code == 'C-080-090'
+
+    def test_run_trx_calling_2nd_trx_that_fails_raises_C_080_090(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with trx1 calling trx2 and trx2 fails"""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                constants.TRX_SENDER,
+                'divideNums',
+                0
+                )
+        assert excp.value.code == 'C-080-090'
+
+    def test_send_ether_to_non_payable_trx_raises_C_080_090(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() with trx1 calling trx2 and trx2 fails"""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                constants.TRX_NAME,
+                constants.TRX_ARG0,
+                constants.TRX_ARG1,
+                constants.TRX_ARG2,
+                value_wei=100
+                )
+        assert excp.value.code == 'C-080-090'
