@@ -1582,8 +1582,8 @@ class Contract:
         :rtype: T_RECEIPT | None
         :return: transaction receipt
         :raises SimplEthError:
-            -  if ``timeout`` is not float or int (`C-0X0-010`)
-            -  if ``poll_latency`` is not float or int (`C-0X0-020`)
+            -  if ``timeout`` is not float or int (`C-050-010`)
+            -  if ``poll_latency`` is not float or int (`C-050-020`)
 
         :example:
 
@@ -1625,7 +1625,7 @@ class Contract:
                 f'Bad type for timeout: {timeout}.\n'
                 f'HINT: Specify an integer or float for timeout.\n'
                 )
-            raise SimplEthError(message, code='C-0X0-010') from None
+            raise SimplEthError(message, code='C-050-010') from None
         if not (isinstance(poll_latency, int) or
                 isinstance(poll_latency, float)):
             message = (
@@ -1634,7 +1634,7 @@ class Contract:
                 f'Bad type for poll_latency: {poll_latency}.\n'
                 f'HINT: Specify an integer or float for poll_latency.\n'
                 )
-            raise SimplEthError(message, code='C-0X0-020') from None
+            raise SimplEthError(message, code='C-050-020') from None
         try:
             trx_receipt: T_RECEIPT = \
                 self._blockchain.eth.wait_for_transaction_receipt(
@@ -1797,9 +1797,10 @@ class Contract:
         :rtype: T_RECEIPT | None
         :return: `web3` transaction receipt
         :raises SimplEthError:
-            -  :meth:`submit_trx` will raise exceptions for bad args
             -  if unable to submit the transaction; no hash was returned
                 (`C-070-010`)
+            -  :meth:`submit_trx` and :meth:`get_receipt_wait` will raise
+               exceptions due to errors in arguments or contract logic.
 
         :example:
 
@@ -2101,7 +2102,7 @@ class Contract:
                 f'ERROR in {self.name}().submit_trx({trx_name}): '
                 f'ContractLogicError exception says:\n{exception}\n'
                 f'HINT: ABI may not be valid. Try a new deploy().\n'
-            )
+                )
             raise SimplEthError(message, code='C-080-090') from None
         return trx_hash
 
@@ -2116,7 +2117,8 @@ class Contract:
         :rtype: list
         :return: contract `ABI`
 
-        :raises SimplEthError: if ABI artifact file not found
+        :raises SimplEthError:
+            -  if ABI artifact file not found (`C-100-010`)
 
         """
         try:
@@ -2149,9 +2151,8 @@ class Contract:
         :rtype: str
         :return: contract blockchain address
         :raises SimplEthError:
-
-            -  if artifact address file is not found
-            -  if the address is not valid
+            -  if artifact address file is not found (`C-110-010`)
+            -  if the address is not valid (`C-110-020`)
 
         """
         try:
@@ -2186,6 +2187,8 @@ class Contract:
 
         :rtype: str
         :return: contract bytecode
+        :raises SimplEthError:
+            -  if unable to read bytecode file (`C-120-010`)
 
         """
         try:
@@ -2206,7 +2209,8 @@ class Contract:
 
         :rtype: list
         :return: events, if any, defined in the Solidity contract
-        :raises SimplEthError: if a :meth:`connect` is needed
+        :raises SimplEthError:
+            -  if a :meth:`connect` is needed (`C-130-010`)
 
         """
         try:
@@ -2231,7 +2235,8 @@ class Contract:
 
         :rtype: list
         :return: functions defined in the Solidity contract.
-        :raises SimplEthError: if a :meth:`connect` is needed
+        :raises SimplEthError:
+            -  if a :meth:`connect` is needed (`C-140-010`)
 
         """
         try:
@@ -2286,8 +2291,9 @@ class Contract:
         :rtype: bool
         :return: ``True`` if successfully set the address
         :raises SimplEthError:
-            -  if ``contract_address`` is bad
+            -  if ``contract_address`` is bad (`C-150-010`)
             -  if unable to write to the artifact `address` file
+               (`C-150-020`)
 
         """
         if not self._blockchain.is_valid_address(contract_address):
@@ -2345,6 +2351,9 @@ class Convert:
         :type to_denomination: str
         :rtype: Decimal
         :return: converted ``amount``
+        :raises SimplEthError:
+            -  if ``from_denomination`` is bad (`V-010-010`)
+            -  if ``to_denomination`` is bad (`V-010-020`)
         :example:
             >>> from simpleth import Convert
             >>> c = Convert()
@@ -2490,6 +2499,9 @@ class Convert:
         :param t_format: str
         :rtype: str
         :return: current time
+        :raises SimplEthError:
+            -  if ``t_format`` is bad (`V-020-010`)
+
         :example:
             >>> from simpleth import Convert
             >>> c = Convert()
@@ -2530,6 +2542,9 @@ class Convert:
         :param t_format: str
         :rtype: str
         :return: local time equivalent to epoch seconds
+        :raises SimplEthError:
+            -  if ``t_format`` is bad (`V-030-010`)
+
         :example:
                 >>> from simpleth import Convert
                 >>> c = Convert()
@@ -2595,7 +2610,7 @@ class EventSearch:
         :param event_name: name of event defined in the contract
         :type event_name: str
         :raises SimplEthError:
-            - if ``event_name`` is not found in the ``contract``
+            - if ``event_name`` is not found in the ``contract`` (`E-010-010`)
         :example:
 
             >>> from simpleth import Contract, EventSearch
@@ -2711,13 +2726,13 @@ class EventSearch:
         :param to_block: ending block to search mined blocks
         :type to_block: int
         :raises SimplEthError:
-            - if ``from_block`` is not integer
-            - if ``to_block`` is not integer
-            - if ``-from_block`` is used and ``to_block`` is also specified.
-            - if ``-from_block`` is less than ``-Blockchain().block_number``
-            - if ``from_block`` is greater than ``to_block``
-            - if ``from_block`` is greater than ``Blockchain().block_number``
-            - if ``to_block`` is greater than ``Blockchain().block_number``
+            -  if ``from_block`` is not integer (`E-030-010`)
+            -  if ``to_block`` is not integer (`E-030-020`)
+            -  if ``from_block`` is used and ``to_block`` is also specified (`E-030-030`)
+            -  if ``from_block`` exceeds the number of blocks in chain (`E-030-040`)
+            -  if ``from_block`` is greater than ``to_block`` (`E-030-050`)
+            -  if ``from_block`` is greater than ``Blockchain().block_number`` (`E-030-060`)
+            -  if ``to_block`` is greater than ``Blockchain().block_number`` (`E-030-070`)
 
         :rtype: list
         :return: one item for each event found; empty list if
@@ -2792,7 +2807,7 @@ class EventSearch:
         if from_block < 0 and abs(from_block) > latest_block:
             message: str = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
-                f'from_block is beyond the start of the chain.\n'
+                f'from_block exceeds the number of blocks in the chain.\n'
                 f'HINT: Provide a number between 0 and -{latest_block}.\n'
                 )
             raise SimplEthError(message, code='E-030-040') from None
@@ -2961,9 +2976,9 @@ class Results:
 
     ** RAISES **
 
-    -  SimplEthError if constructor params are bad.
+    -  SimplEthError if constructor params are bad (`R-010-010`)
     -  SimplEthError if unable to gather data for events (internal error
-       that should not happen).
+       that should not happen) (`R-010-020`, `R-010-030`, `R-010-040`)
 
     """
     def __init__(self,
