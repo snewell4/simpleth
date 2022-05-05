@@ -373,3 +373,21 @@ def test_receive():
     event = e.get_old()
     assert event[0]['args']['amount_gwei'] == amount and \
         event[0]['args']['sender'] == u
+
+
+def test_destroy():
+    """Test selfdestruct() sends ether balance and emits expected event"""
+    amount = 20
+    b = Blockchain()
+    u = b.address(0)
+    u6 = b.address(6)
+    c = Contract('Test')
+    c.connect()
+    b.send_ether(u, c.address, amount)
+    contract_bal = b.balance(c.address)
+    init_u6_bal = b.balance(u6)
+    c.run_trx(u, 'destroy', u6)
+    amount = b.balance(u6) - init_u6_bal
+    e = EventSearch(c, 'Destroyed')
+    event = e.get_old()
+    assert event[0]['args']['amount_gwei'] == amount

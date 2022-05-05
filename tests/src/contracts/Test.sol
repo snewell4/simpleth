@@ -43,6 +43,18 @@ contract Test {
     string public test_str;
 
 
+
+    /**
+     * @notice Emitted when contract is destroyed
+     *
+     * @param timestamp block time when paid
+     * @param amount_gwei contract's ether balance sent to owner
+     */
+    event Destroyed(
+        uint timestamp,
+        uint amount_gwei
+    );
+
     /**
      * @notice Emitted when new num1 is stored
      *
@@ -289,6 +301,28 @@ contract Test {
             initNum,
             address(this)
         );
+    }
+
+    /**
+     * @notice Destroy the deployed test contract. Make it unusable.
+     *
+     * @dev This is irreversible. Once destroyed, a contract is still
+     * on the blockchain and transactions can be sent to it, but they will
+     * not have any effect. Any ether in the contract's balance is sent
+     * to _to. After a contract is destroyed, its either is
+     * inaccessible. Emits Destroyed event. Must be owner to use.
+     *
+     * @param _to address to receive contract's ether balance
+     */
+    function destroy(address payable _to)
+        public
+        isOwner
+    {
+        emit Destroyed(
+            block.timestamp,
+            address(this).balance
+        );
+        selfdestruct(_to);
     }
 
     /**
