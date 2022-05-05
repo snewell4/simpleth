@@ -1624,7 +1624,7 @@ class Contract:
                 f'{trx_hash}, {timeout}, {poll_latency}): '
                 f'Bad type for timeout: {timeout}.\n'
                 f'HINT: Specify an integer or float for timeout.\n'
-            )
+                )
             raise SimplEthError(message, code='C-0X0-010') from None
         if not (isinstance(poll_latency, int) or
                 isinstance(poll_latency, float)):
@@ -1633,7 +1633,7 @@ class Contract:
                 f'{trx_hash}, {timeout}, {poll_latency}): '
                 f'Bad type for poll_latency: {poll_latency}.\n'
                 f'HINT: Specify an integer or float for poll_latency.\n'
-            )
+                )
             raise SimplEthError(message, code='C-0X0-020') from None
         try:
             trx_receipt: T_RECEIPT = \
@@ -1923,7 +1923,7 @@ class Contract:
         :return: ``trx_hash`` the transaction hash that identifies
            this transaction on the blockchain
         :raises SimplEthError:
-            -  if ``trx_name`` is bad (`C-080-010`)
+            -  if ``trx_name`` is not in the contract (`C-080-010`)
             -  if ``args`` are missing, wrong number of args, or wrong type
                (`C-080-020`)
             -  if contract has been destroyed or not deployed (`C-080-030`)
@@ -1932,15 +1932,18 @@ class Contract:
                (`C-080-050`)
             -  if :meth:`connect` is needed (`C-080-060`)
             -  if ``sender`` or ``trx_name`` are missing (`C-080-070`)
-            -  if transaction was failed a GUARD or require() (`C-080-080`)
-            -  if transaction was reverted when it ran in the VM (`C-080-090`)
-                -  if ``args`` caused a divied-by-zero in the transaction
-                -  if ``args`` caused an out-of-bounds array index
-                -  if ``gas_limit`` was too low and you ran out of gas
-                -  if ``gas_limit`` was too high and you exceeded the block
-                   gas limit.
-                -  If ``max_priority_fee_gwei`` was a float
-                -  If ``max_fee
+            -  if transaction was reverted when it ran in the VM (`C-080-080`) due to:
+                -  ``trx_name`` GUARD failed
+                -  ``trx_name`` require() failed                
+                -  ``args`` caused a divide-by-zero in the transaction
+                -  ``args`` caused an out-of-bounds array index
+                -  ``gas_limit`` was lower than the base fee
+                -  ``gas_limit`` was higher than the block gas limit
+                -  ``max_fee_gwei`` was a float
+                -  ``max_priority_fee_gwei`` was a float
+                -  ``trx_name`` called another trx, and that called trx failed
+                -  ``value_wei`` was specified but ``trx_name`` is not payable
+                -  ``sender`` is not valid for sending a trx
 
         :example:
             >>> from simpleth import Blockchain, Contract
@@ -2010,10 +2013,11 @@ class Contract:
             raise SimplEthError(message, code='C-080-010') from None
         except self._web3e.ValidationError:
             message = (
-                f'ERROR in {self.name}().submit_trx(): '
-                f'Wrong number or type of args for transaction "{trx_name}".\n'
-                f'HINT: Check parameter definition(s) of transaction in '
-                f'contract.\n'
+                f'ERROR in {self.name}().submit_trx({trx_name}): '
+                f'Wrong number or type of args"".\n'
+                f'HINT1: Check parameter definition(s) for the transaction in '
+                f'the contract.\n'
+                f'HINT2: Check run_trx() optional parameter types.\n'
                 )
             raise SimplEthError(message, code='C-080-020') from None
         except self._web3e.BadFunctionCallOutput:
@@ -2050,44 +2054,54 @@ class Contract:
         except TypeError:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
-                f'sender or trx_name are missing."\n'
-                f'HINT: Check all arguments are specified.\n'
+                f'sender or trx_name are missing.\n'
+                f'HINT1: Check all arguments are specified.\n'
                 )
             raise SimplEthError(message, code='C-080-070') from None
         except ValueError as exception:
-            value_error_message: str = dict(exception.args[0])['message']
+            # ValueError returns details about the error in a variety of forms.
+            # Seems like, currently, it can be a string, a tuple with a string,
+            # or a dict with a key of 'message'. Try each and pull out the
+            # details. If it is something else, just print the ValueError
+            # exception and incorporate that new form into this stanza.
+            # BEWARE - this is an area that seems in flux and will change
+            # in newer web3.py releases.
+            if isinstance(exception.args, str):
+                value_error_message = exception.args
+            elif isinstance(exception.args[0], str):
+                value_error_message = exception.args[0]
+            elif isinstance(exception.args[0], dict):
+                value_error_message = exception.args[0]["message"]
+            else:
+                value_error_message = exception
             if 'revert' in value_error_message:
-                # Strip off boilerplate in the ValueError message:
-                #     "VM Exception while processing transaction: revert"
-                # This leaves a string, if any, explaining the revert.
-                # So far, I've seen a revert reason from a transaction's
-                # GUARD message or require() message.
-                revert_reason: str = \
+                # If message has "revert", there's boilerplate to the
+                # left we do not need. Gist of reason is to the right
+                # in the string.
+                value_error_message = \
                     value_error_message.split('revert')[1].strip()
-                if revert_reason != '':
-                    message = (
-                        f'ERROR in {self.name}().submit_trx({trx_name}).\n'
-                        f'Transaction says: {revert_reason}\n'
-                        f'HINT1: Did you fail to pass a transaction GUARD?\n'
-                        f'HINT2: Did you fail to pass a transaction require()?\n'
-                        )
-                    raise SimplEthError(message, code='C-080-080') from None
-            # There is no revert reason sent back by the transaction so
-            # show the ValueError message.
             message = (
                 f'ERROR in {self.name}().submit_trx({trx_name}).\n'
                 f'ValueError says: {value_error_message}\n'
-                f'HINT 1: Did you divide by zero?\n'
-                f'HINT 2: Did you pass in an out-of-bounds array index?\n'
-                f'HINT 3: If base fee exceeds gas limit, you ran out '
-                f'of gas. Use a higher gas_limit.\n'
-                f'HINT 4: If you exceeded block gas limit, you set the '
-                f'gas_limit too high. Use a lower gas_limit.\n'
-                f'HINT 5: Fee args need to be integers. Did you use '
-                f'float?\n'
-                f'HINT 6: Did this trx call another trx, which failed?\n'
-                f'HINT 7: Did you attempt to send ether to a non-payable trx?\n'
+                f'HINT1: Did you fail to pass a transaction require()?\n'
+                f'HINT2: Did you fail to pass a transaction GUARD?\n'
+                f'HINT3: Did you divide by zero?\n'
+                f'HINT4: Did you pass in an out-of-bounds array index?\n'
+                f'HINT5: Was the gas limit too low (less than the base fee)?\n'
+                f'HINT6: Was the gas limit too high (greater than the block gas limit)?\n'
+                f'HINT7: Was max_fee_gwei a float? (It must be an int)\n'
+                f'HINT8: Was max_priority_fee_gwei a float? (It must be an int)\n'
+                f'HINT9: Did this trx call another trx, which failed?\n'
+                f'HINT10: Did you attempt to send ether to a non-payable trx?\n'
+                f'HINT11: Was sender a valid account that can submit a trx?\n'
                 )
+            raise SimplEthError(message, code='C-080-080') from None
+        except self._web3e.ContractLogicError as exception:
+            message = (
+                f'ERROR in {self.name}().submit_trx({trx_name}): '
+                f'ContractLogicError exception says:\n{exception}\n'
+                f'HINT: ABI may not be valid. Try a new deploy().\n'
+            )
             raise SimplEthError(message, code='C-080-090') from None
         return trx_hash
 

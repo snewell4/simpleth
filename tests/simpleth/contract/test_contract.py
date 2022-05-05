@@ -787,13 +787,12 @@ class TestContractRunTrxBad:
                 constants.TRX_NAME,
                 constants.TRX_ARG0,
                 constants.TRX_ARG1,
-                constants.TRX_ARG2,
-                constants.TRX_ARG2
+                'extra arg'
                 )
         assert excp.value.code == 'C-080-020'
 
     @pytest.mark.skip(reason='no way to currently test a destroyed contract')
-    def test_run_trx_with_TBD_raises_C_080_030(
+    def test_run_trx_with_TBD_destroyed_contract_raises_C_080_030(
             self,
             connect_to_test_contract
             ):
@@ -854,7 +853,7 @@ class TestContractRunTrxBad:
             self,
             connect_to_test_contract
             ):
-        """Test run_trx() with a missing sender arg"""
+        """Test run_trx() without the sender arg"""
         c = connect_to_test_contract
         with pytest.raises(SimplEthError) as excp:
             c.run_trx(
@@ -869,7 +868,7 @@ class TestContractRunTrxBad:
             self,
             connect_to_test_contract
             ):
-        """Test run_trx() with too many trx args"""
+        """Test run_trx() without the trx_name arg"""
         c = connect_to_test_contract
         with pytest.raises(SimplEthError) as excp:
             c.run_trx(
@@ -908,7 +907,7 @@ class TestContractRunTrxBad:
                 )
         assert excp.value.code == 'C-080-080'
 
-    def test_run_trx_with_db0_arg_raises_C_080_0A0(
+    def test_run_trx_with_db0_arg_raises_C_080_080(
             self,
             connect_to_test_contract
             ):
@@ -921,9 +920,9 @@ class TestContractRunTrxBad:
                 constants.DB0_TRX_NAME,
                 constants.DB0_TRX_ARG0
                 )
-        assert excp.value.code == 'C-080-090'
+        assert excp.value.code == 'C-080-080'
 
-    def test_run_trx_with_oob_arg_raises_C_080_090(
+    def test_run_trx_with_oob_arg_raises_C_080_080(
             self,
             connect_to_test_contract
             ):
@@ -936,9 +935,9 @@ class TestContractRunTrxBad:
                 constants.OOB_TRX_ARG0,
                 constants.OOB_TRX_ARG1
                 )
-        assert excp.value.code == 'C-080-090'
+        assert excp.value.code == 'C-080-080'
 
-    def test_run_trx_with_low_gas_limit_raises_C_080_090(
+    def test_run_trx_with_low_gas_limit_raises_C_080_080(
             self,
             connect_to_test_contract
             ):
@@ -946,15 +945,16 @@ class TestContractRunTrxBad:
         c = connect_to_test_contract
         with pytest.raises(SimplEthError) as excp:
             c.run_trx(
+                constants.TRX_SENDER,
                 constants.TRX_NAME,
                 constants.TRX_ARG0,
                 constants.TRX_ARG1,
                 constants.TRX_ARG2,
                 gas_limit=1_000
                 )
-        assert excp.value.code == 'C-080-090'
+        assert excp.value.code == 'C-080-080'
 
-    def test_run_trx_with_high_gas_limit_raises_C_080_090(
+    def test_run_trx_with_high_gas_limit_raises_C_080_080(
             self,
             connect_to_test_contract
             ):
@@ -962,15 +962,16 @@ class TestContractRunTrxBad:
         c = connect_to_test_contract
         with pytest.raises(SimplEthError) as excp:
             c.run_trx(
+                constants.TRX_SENDER,
                 constants.TRX_NAME,
                 constants.TRX_ARG0,
                 constants.TRX_ARG1,
                 constants.TRX_ARG2,
                 gas_limit=10_000_000
                 )
-        assert excp.value.code == 'C-080-0A0'
+        assert excp.value.code == 'C-080-080'
 
-    def test_run_trx_with_float_max_fee_raises_C_080_090(
+    def test_run_trx_with_float_max_fee_raises_C_080_080(
             self,
             connect_to_test_contract
             ):
@@ -978,15 +979,16 @@ class TestContractRunTrxBad:
         c = connect_to_test_contract
         with pytest.raises(SimplEthError) as excp:
             c.run_trx(
+                constants.TRX_SENDER,
                 constants.TRX_NAME,
                 constants.TRX_ARG0,
                 constants.TRX_ARG1,
                 constants.TRX_ARG2,
                 max_fee_gwei=10.7
                 )
-        assert excp.value.code == 'C-080-090'
+        assert excp.value.code == 'C-080-080'
 
-    def test_run_trx_with_float_max_priority_fee_raises_C_080_090(
+    def test_run_trx_with_float_max_priority_fee_raises_C_080_080(
             self,
             connect_to_test_contract
             ):
@@ -994,15 +996,16 @@ class TestContractRunTrxBad:
         c = connect_to_test_contract
         with pytest.raises(SimplEthError) as excp:
             c.run_trx(
+                constants.TRX_SENDER,
                 constants.TRX_NAME,
                 constants.TRX_ARG0,
                 constants.TRX_ARG1,
                 constants.TRX_ARG2,
                 max_priority_fee_gwei=10.7
                 )
-        assert excp.value.code == 'C-080-090'
+        assert excp.value.code == 'C-080-080'
 
-    def test_run_trx_calling_2nd_trx_that_fails_raises_C_080_090(
+    def test_run_trx_calling_2nd_trx_that_fails_raises_C_080_080(
             self,
             connect_to_test_contract
             ):
@@ -1014,9 +1017,9 @@ class TestContractRunTrxBad:
                 'divideNums',
                 0
                 )
-        assert excp.value.code == 'C-080-090'
+        assert excp.value.code == 'C-080-080'
 
-    def test_send_ether_to_non_payable_trx_raises_C_080_090(
+    def test_send_ether_to_non_payable_trx_raises_C_080_080(
             self,
             connect_to_test_contract
             ):
@@ -1024,10 +1027,24 @@ class TestContractRunTrxBad:
         c = connect_to_test_contract
         with pytest.raises(SimplEthError) as excp:
             c.run_trx(
+                constants.TRX_SENDER,
                 constants.TRX_NAME,
                 constants.TRX_ARG0,
                 constants.TRX_ARG1,
                 constants.TRX_ARG2,
                 value_wei=100
                 )
-        assert excp.value.code == 'C-080-090'
+        assert excp.value.code == 'C-080-080'
+
+    @pytest.mark.skip(reason='do not know a test case for ContractLogicError')
+    def test_run_trx_with_TBD_contract_logic_error_raises_C_080_090(
+            self,
+            connect_to_test_contract
+            ):
+        """Test run_trx() for ContractLogicError. This exception
+        is in the list for web3 exceptions and I saw a mention of
+        it in forum posts. submit_trx() will catch it and print
+        the exception message. I haven't been able to throw it in
+        any of my testing.  Just leaving this test case as a placeholder
+        and reminder. Just do assert True for now. """
+        assert True

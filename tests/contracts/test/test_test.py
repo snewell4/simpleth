@@ -84,7 +84,7 @@ def test_setOwner_with_bad_owner():
     c.connect()
     with pytest.raises(SimplEthError) as excp:
         c.run_trx(bogus_owner, 'setOwner', new_owner)
-    assert excp.value.code == 'C-080-090'
+    assert excp.value.code == 'C-080-080'
 
 
 def test_setOwner_back_to_original():
@@ -301,7 +301,7 @@ def test_sumTwoNums_by_non_owner():
     c.connect()
     with pytest.raises(SimplEthError) as excp:
         c.run_trx(u, 'sumTwoNums')
-    assert excp.value.code == 'C-080-090'
+    assert excp.value.code == 'C-080-080'
 
 
 def test_storeTypes():
