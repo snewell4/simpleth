@@ -674,8 +674,6 @@ class TestContractGetVarBad:
     'deploy_test_contract',
     'connect_to_test_contract'
     )
-# I think this is what I want. Get a fresh deploy before starting
-# and then do a `connect` in each method to get the contract object.
 class TestContractRunTrxGood:
     """Test cases for Contract().run_trx() with good values"""
     # Since run_trx() is a combination of submit_trx() and
@@ -1048,3 +1046,79 @@ class TestContractRunTrxBad:
         any of my testing.  Just leaving this test case as a placeholder
         and reminder. Just do assert True for now. """
         assert True
+
+
+@pytest.mark.usefixtures(
+    'deploy_test_contract',
+    'connect_to_test_contract'
+    )
+class TestContractSelfdestructGood:
+    """Test cases for using selfdestruct() to destroy a deployed contract"""
+    def test_selfdestruct_contract_with_good_arg(
+            self,
+            connect_to_test_contract
+            ):
+        """Test selfdestruct() in the destroy() trx"""
+        c = connect_to_test_contract
+        u6 = Blockchain().address(6)    # destroy() sends ether to u6
+        receipt = c.run_trx(
+            constants.TRX_SENDER,
+            'destroy',
+            u6
+            )
+        assert receipt is not None
+
+    def test_get_var_fails_after_selfdestruct(
+            self,
+            connect_to_test_contract
+            ):
+        """Test get_var() throws expected exception"""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.get_var('initNum')
+        assert excp.value.code == 'C-060-020'
+
+    def test_call_fcn_fails_after_selfdestruct(
+            self,
+            connect_to_test_contract
+            ):
+        """Test call_fcn() throws expected exception"""
+        c = connect_to_test_contract
+        with pytest.raises(SimplEthError) as excp:
+            c.call_fcn('getNums')
+        assert excp.value.code == 'C-010-030'
+
+    def test_run_trx_completes_after_selfdestruct(
+            self,
+            connect_to_test_contract
+            ):
+        """Test a transaction returns a receipt"""
+        # A trx will successfully return a receipt from the destroyed
+        # contract, but the trx will not have any effect. No chain
+        # data is updated.
+        c = connect_to_test_contract
+        receipt = c.run_trx(
+            constants.TRX_SENDER,
+            constants.TRX_NAME,
+            constants.TRX_ARG0,
+            constants.TRX_ARG1,
+            constants.TRX_ARG2
+            )
+        assert receipt is not None
+
+    def test_get_gas_estimate_completes_after_selfdestruct(
+            self,
+            connect_to_test_contract
+            ):
+        """Test get gas estimate runs for a trx in a destroyed contract"""
+        # The gas estimate will still be calculated even though the
+        # contract is destroyed.
+        c = connect_to_test_contract
+        estimate = c.get_gas_estimate(
+            constants.TRX_SENDER,
+            constants.TRX_NAME,
+            constants.TRX_ARG0,
+            constants.TRX_ARG1,
+            constants.TRX_ARG2
+            )
+        assert isinstance(estimate, int)

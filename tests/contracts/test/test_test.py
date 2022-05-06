@@ -391,3 +391,13 @@ def test_destroy():
     e = EventSearch(c, 'Destroyed')
     event = e.get_old()
     assert event[0]['args']['amount_gwei'] == amount
+
+
+def test_destroy_confirm():
+    """Test getting a variable fails because contract is destroyed"""
+
+    c = Contract('test')
+    c.connect()
+    with pytest.raises(SimplEthError) as excp:
+        c.get_var('initNum')
+    assert excp.value.code == 'C-060-020'

@@ -1179,7 +1179,8 @@ class Contract:
         :raises SimplEthError:
             -  if ``fcn_name`` is bad or a :meth:`connect` is needed (`C-010-010`)
             -  if ``fcn_args`` are the wrong type or number (`C-010-020`)
-            -  if unable to call ``fcn_name`` (C-010-030`)
+            -  if :class:`contract` has done a selfdestruct() or not yet
+               been deployed to a new chain (C-010-030`)
             -  if ``fcn_args`` had out of bounds array index (C-010-040`)
 
         :rtype: int | float | string | list
@@ -1229,6 +1230,8 @@ class Contract:
                 f'ERROR in {self.name}().call_fcn().\n'
                 f'Unable to call function {fcn_name}.\n'
                 f'BadFunctionCallOutput says {exception}\n'
+                f'HINT1: Has contract been destroyed with a selfdestruct()?\n'
+                f'HINT2: Has contract been deployed on a new chain?\n'
                 )
             raise SimplEthError(message, code='C-010-030') from None
         except self._web3e.ContractLogicError as exception:
@@ -1421,7 +1424,8 @@ class Contract:
         :raises SimplEthError:
             -  if ``trx_name`` is bad (`C-040-010`)
             -  if ``args`` are bad; either wrong type or number (`C-040-020`)
-            -  if contract is bad, either not deployed or destroyed (`C-040-030`)
+            -  if :class:`contract` has not yet been deployed on a new chain
+               (`C-040-030`)
             -  if ``args`` has an out-of-bounds index value (`C-040-040`)
             -  if ``sender`` is bad (`C-040-050`)
             -  if :meth:`connect` is needed (`C-040-060`)
@@ -1469,8 +1473,7 @@ class Contract:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
                 f'Can not run transaction {trx_name}.\n'
-                f'HINT1: Has the contract been destroyed?\n'
-                f'HINT2: If you just switched Ganache workspace, has '
+                f'HINT: If you just switched Ganache workspace, has '
                 f'        the contract been deployed yet?\n'
                 )
             raise SimplEthError(message, code='C-040-030') from None
@@ -1666,7 +1669,8 @@ class Contract:
         :return: value of the variable
         :raises SimplEthError:
             -  if ``var_name`` is bad (`C-060-010`)
-            -  if ``var_name`` is not a variable (`C-060-020`)
+            -  if :class:`contract` has done a selfdestruct() or not yet
+               deployed on a new chain (`C-060-020`)
             -  if ``var_name`` is an array but ``args`` did not specify an
                index value (`C-060-030`)
             -  if ``var_name`` is not an array yet ``args`` specifies an
@@ -1696,7 +1700,8 @@ class Contract:
                 f'ERROR in {self.name}().getvar(): '
                 f'Unable to get public state variable {var_name}.\n'
                 f'ABIFunctionNotFound says {exception}\n'
-                f'HINT: Check spelling of variable name.\n'
+                f'HINT1: Is ABI old? Do you need to do a new deploy()?\n'
+                f'HINT2: Check spelling of variable name.\n'
                 )
             raise SimplEthError(message, code='C-060-010') from None
         except self._web3e.BadFunctionCallOutput as exception:
@@ -1704,7 +1709,8 @@ class Contract:
                 f'ERROR in {self.name}().getvar(): '
                 f'Unable to get variable {var_name}.\n'
                 f'BadFunctionCallOutput says {exception}\n'
-                f'HINT: Check spelling of variable name.\n'
+                f'HINT1: Has contract been destroyed with selfdestruct()?\n.'
+                f'HINT2: Has contract not yet been deployed on a new chain?\n'
                 )
             raise SimplEthError(message, code='C-060-020') from None
         except self._web3e.ValidationError as exception:
@@ -1927,7 +1933,8 @@ class Contract:
             -  if ``trx_name`` is not in the contract (`C-080-010`)
             -  if ``args`` are missing, wrong number of args, or wrong type
                (`C-080-020`)
-            -  if contract has been destroyed or not deployed (`C-080-030`)
+            -  if :class:`contract` has not yet been deployed on a new chain
+               (`C-080-030`)
             -  if ``sender`` is a bad address (`C-080-040`)
             -  if ``max_priority_fee_gwei`` is greater than ``max_fee_gwei``
                (`C-080-050`)
@@ -2025,8 +2032,7 @@ class Contract:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
                 f'Can not run transaction {trx_name}.\n'
-                f'HINT 1: Has the contract been destroyed?\n'
-                f'HINT 2: If you just switched Ganache workspace, has '
+                f'HINT: If you just switched Ganache workspace, has '
                 f'        the contract been deployed yet?\n'
                 )
             raise SimplEthError(message, code='C-080-030') from None
