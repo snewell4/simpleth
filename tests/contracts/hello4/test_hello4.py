@@ -8,7 +8,7 @@ def test_HelloWorld4_deploy():
     u = Blockchain().address(0)
     hello_str = 'Hello World 4!'
     receipt = c.deploy(u, hello_str)
-    results = Results(receipt, c)
+    results = Results(c, receipt)
     greeting = c.call_fcn('getGreeting')
     assert greeting == hello_str and results.trx_name == 'deploy'
 
@@ -30,7 +30,7 @@ def test_HelloWorld4_setGreeting():
     u = Blockchain().address(0)
     hello_str = 'Hello Again!'
     receipt = c.run_trx(u, 'setGreeting', hello_str)
-    results = Results(receipt, c)
+    results = Results(c, receipt)
     greeting = c.call_fcn('getGreeting')
     assert greeting == hello_str and results.trx_name == 'setGreeting'
 

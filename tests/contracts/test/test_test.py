@@ -16,7 +16,7 @@ def test_deploy():
     u = Blockchain().address(0)
     c = Contract('test')
     receipt = c.deploy(u, init_num)
-    results = Results(receipt, c)
+    results = Results(c, receipt)
     assert results.trx_name == 'deploy'
 
 
@@ -39,7 +39,7 @@ def test_divideInitNum():
     c = Contract('test')
     c.connect()
     receipt = c.run_trx(u, 'divideInitNum', divisor)
-    result = Results(receipt, c)
+    result = Results(c, receipt)
     assert result.trx_name == 'divideInitNum'
 
 
@@ -62,7 +62,7 @@ def test_setOwner():
     c = Contract('test')
     c.connect()
     receipt = c.run_trx(current_owner, 'setOwner', new_owner)
-    result = Results(receipt, c)
+    result = Results(c, receipt)
     assert result.trx_name == 'setOwner'
 
 
@@ -94,7 +94,7 @@ def test_setOwner_back_to_original():
     c = Contract('test')
     c.connect()
     receipt = c.run_trx(current_owner, 'setOwner', original_owner)
-    result = Results(receipt, c)
+    result = Results(c, receipt)
     assert result.trx_name == 'setOwner'
 
 
@@ -320,7 +320,7 @@ def test_storeTypes():
                         test_addr,
                         test_str
                         )
-    results = Results(receipt, c)
+    results = Results(c, receipt)
     assert results.trx_name == 'storeTypes'
 
 

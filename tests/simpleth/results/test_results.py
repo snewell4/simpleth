@@ -16,7 +16,7 @@ class TestResultsBadConstructorParams:
         bogus_contract = 10
         r = run_test_trx_to_store_nums.trx_receipt
         with pytest.raises(SimplEthError) as excp:
-            Results(r, bogus_contract)
+            Results(bogus_contract, r)
         assert excp.value.code == 'R-010-010'
 
     def test_bad_receipt(self, run_test_trx_to_store_nums):
@@ -24,7 +24,7 @@ class TestResultsBadConstructorParams:
         bogus_receipt = 10
         c = run_test_trx_to_store_nums.contract
         with pytest.raises(SimplEthError) as excp:
-            Results(bogus_receipt, c)
+            Results(c, bogus_receipt)
         assert excp.value.code == 'R-010-020'
 
 

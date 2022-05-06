@@ -7,6 +7,6 @@ def test_HelloWorld2():
     the greeting and test it is the expected greeting"""
     c = Contract('HelloWorld2')
     receipt = c.deploy(Blockchain().address(0))
-    results = Results(receipt, c)
+    results = Results(c, receipt)
     greeting = c.call_fcn('getGreeting')
     assert greeting == 'Hello World!' and results.trx_name == 'deploy'

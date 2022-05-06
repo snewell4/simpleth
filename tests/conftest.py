@@ -61,7 +61,7 @@ def run_test_trx_to_store_nums(connect_to_test_contract):
         constants.TRX_ARG1,
         constants.TRX_ARG2
         )
-    results = Results(trx_receipt, contract_obj)
+    results = Results(contract_obj, trx_receipt)
     return results
 
 
@@ -84,7 +84,7 @@ def run_test_trx_to_store_nums_again(connect_to_test_contract):
         constants.TRX_ARG1+10,
         constants.TRX_ARG2+10
         )
-    results = Results(trx_receipt, contract_obj)
+    results = Results(contract_obj, trx_receipt)
     return results
 
 

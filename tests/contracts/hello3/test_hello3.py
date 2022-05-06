@@ -9,10 +9,10 @@ def test_HelloWorld3():
     c = Contract('HelloWorld3')
     u = Blockchain().address(0)
     receipt1 = c.deploy(u)
-    results1 = Results(receipt1, c)
+    results1 = Results(c, receipt1)
     hello_str = 'Hello World!!'
     receipt2 = c.run_trx(u, 'setGreeting', hello_str)
-    results2 = Results(receipt2, c)
+    results2 = Results(c, receipt2)
     greeting = c.call_fcn('getGreeting')
     assert greeting == hello_str and \
         results1.trx_name == 'deploy' and \

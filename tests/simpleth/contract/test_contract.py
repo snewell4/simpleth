@@ -40,7 +40,7 @@ class TestContractDeployGood:
         """deploy() returns results with correct transaction name"""
         c = Contract(constants.CONTRACT_NAME)
         receipt = c.deploy(constants.CONSTRUCTOR_SENDER, constants.CONSTRUCTOR_ARG)
-        results = Results(receipt, c)
+        results = Results(c, receipt)
         assert results.trx_name == 'deploy'
 
     def test_deploy_with_good_args_plus_gas_limit(
@@ -55,7 +55,7 @@ class TestContractDeployGood:
             constants.CONSTRUCTOR_ARG,
             gas_limit=constants.CONSTRUCTOR_GAS_LIMIT
             )
-        results = Results(receipt, c)
+        results = Results(c, receipt)
         assert results.trx_name == 'deploy'
 
     def test_deploy_with_good_args_plus_gas_limit_and_fees(
@@ -73,7 +73,7 @@ class TestContractDeployGood:
             max_priority_fee_gwei=constants.MAX_PRIORITY_FEE_GWEI,
             max_fee_gwei=constants.MAX_FEE_GWEI
             )
-        results = Results(receipt, c)
+        results = Results(c, receipt)
         assert results.trx_name == 'deploy'
 
 

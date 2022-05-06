@@ -2988,16 +2988,16 @@ class Results:
 
     """
     def __init__(self,
-                 receipt: T_RECEIPT,
-                 contract: Contract
+                 contract: Contract,
+                 receipt: T_RECEIPT
                  ) -> None:
         """Create data object with the result of a transaction.
 
+        :param contract: :class:`Contract` containing the transaction
+        :type contract: object
         :param receipt: transaction receipt created after the
              transaction was mined
         :type receipt: T_RECEIPT
-        :param contract: :class:`Contract` containing the transaction
-        :type contract: object
 
         """
         if not isinstance(contract, Contract):
@@ -3629,7 +3629,7 @@ class Results:
             >>> c.connect()
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
             >>> receipt = c.run_trx(user,'storeNums',4,5,6)
-            >>> trx_results = Results(receipt, c)
+            >>> trx_results = Results(c, receipt)
             >>> print(trx_results)
             Block number = 450
             Block time_epoch = 1640055579
