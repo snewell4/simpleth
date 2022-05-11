@@ -299,7 +299,7 @@ class Blockchain:
         :return: list of blockchain `addresses`
         :example:
             >>> from simpleth import Blockchain
-            >>> Blockchain().accounts
+            >>> Blockchain().accounts    #doctest: +SKIP
             ['0x235A686386d03a5Bb986Fb13E71A0dC86846c636',   ...snip... ]
 
         """
@@ -314,7 +314,7 @@ class Blockchain:
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
-            >>> b.api_version
+            >>> b.api_version   #doctest: +SKIP
             '5.24.0'
 
         """
@@ -329,7 +329,7 @@ class Blockchain:
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
-            >>> b.block_number
+            >>> b.block_number   #doctest: +SKIP
             2284
 
         """
@@ -344,7 +344,7 @@ class Blockchain:
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
-            >>> b.client_version
+            >>> b.client_version    #doctest: +SKIP
             'EthereumJS TestRPC/v2.13.1/ethereum-js'
 
         """
@@ -359,7 +359,7 @@ class Blockchain:
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
-            >>> b.eth
+            >>> b.eth   #doctest: +SKIP
             <web3.eth.Eth object at 0x0000019CEBAC8760>
             >>> b.eth.gas_price
             20000000000
@@ -381,7 +381,7 @@ class Blockchain:
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
-            >>> b.web3
+            >>> b.web3   #doctest: +SKIP
             <web3.main.Web3 object at 0x0000019CE7AF3520>
             >>> b.web3.toWei(1, 'ether')
             1000000000000000000
@@ -439,7 +439,7 @@ class Blockchain:
         :example:
             >>> from simpleth import Blockchain
             >>> b=Blockchain()
-            >>> b.address(2)
+            >>> b.address(2)    #doctest: +SKIP
             '0x02F6903D426Be890BA4F882eD19cF6780ecdfA5b'
 
         :see: :meth:`accounts` to get all addresses.
@@ -471,7 +471,7 @@ class Blockchain:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> user0 = b.address(0)
-            >>> b.balance(user0)
+            >>> b.balance(user0)    #doctest: +SKIP
             99977013240000000000
 
         """
@@ -506,7 +506,7 @@ class Blockchain:
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
-            >>> b.block_time_epoch(20)
+            >>> b.block_time_epoch(20)    #doctest: +SKIP
             1638120893
 
         """
@@ -540,9 +540,9 @@ class Blockchain:
 
         :example:
             >>> from simpleth import Blockchain
-            >>> Blockchain().block_time_string(20)
+            >>> Blockchain().block_time_string(20)   #doctest: +SKIP
             '2021-11-28 11:34:53'
-            >>> Blockchain().block_time_string(20, '%A %I:%M %p')
+            >>> Blockchain().block_time_string(20, '%A %I:%M %p')   #doctest: +SKIP
             'Sunday 11:34 AM'
 
         :notes: Does not check for valid time format code string.
@@ -603,7 +603,7 @@ class Blockchain:
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
-            >>> b.fee_history()
+            >>> b.fee_history()   #doctest: +SKIP
             ...
             HINT: method not yet implemented in Ganache.
 
@@ -682,7 +682,7 @@ class Blockchain:
             >>> b = Blockchain()
             >>> user4 = b.address(4)
             >>> user8 = b.address(8)
-            >>> b.send_ether(user4, user8, 1000)
+            >>> b.send_ether(user4, user8, 1000)    #doctest: +SKIP
 
         :see:
             -  :meth:`balance` to get amount of Ether owned by
@@ -747,7 +747,7 @@ class Blockchain:
         :example:
             >>> from simpleth import Blockchain
             >>> t = '0xe6bbbc34f53ef4137de80dc63f156b820d71f9f176b8210a42 ...'
-            >>> Blockchain().transaction(t)
+            >>> Blockchain().transaction(t)   #doctest: +SKIP
             {'hash': HexBytes('0xe6bbbc34f53ef4137de80dc63f156b820d71 )...}'
 
         :see: :meth:`run_trx` and :meth:`send_trx` return a
@@ -790,7 +790,7 @@ class Blockchain:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> user0 = b.address(0)
-            >>> b.trx_count(user0)
+            >>> b.trx_count(user0)   #doctest: +SKIP
             48
 
         """
@@ -824,11 +824,10 @@ class Blockchain:
             >>> from simpleth import Blockchain, Contract
             >>> user = Blockchain().accounts[3]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0x3F1c8adCB6E8F89dc2d0a32c947CaA6Af95d4448'
+            >>> addr = c.connect()
             >>> r = c.run_trx(user,'storeNums',1,2,3)
-            >>> thash = r.trx_hash
-            >>> Blockchain().trx_sender(thash)
+            >>> thash = r['transactionHash']
+            >>> Blockchain().trx_sender(thash)    #doctest: +SKIP
             '0xfEeB074976F8a2B53d2F8c737BD94cd16ad599F0'
 
         """
@@ -881,7 +880,7 @@ class Contract:
             not been compiled.
         :example:
             >>> from simpleth import Contract
-            >>> Contract('Test')
+            >>> Contract('Test')   #doctest: +SKIP
             <simpleth.Contract object at 0x0000028A7262B580>
 
         :notes:
@@ -956,7 +955,7 @@ class Contract:
         :example:
             >>> from simpleth import Contract
             >>> c = Contract('Test')
-            >>> c.abi
+            >>> c.abi    #doctest: +SKIP
             [{'inputs': [{'internalType': 'int256', 'name':  ...snip... } ]
 
         """
@@ -971,8 +970,8 @@ class Contract:
         :example:
             >>> from simpleth import Contract
             >>> c = Contract('Test')
-            >>> c.connect()
-            >>> c.address
+            >>> addr = c.connect()
+            >>> c.address    #doctest: +SKIP
             '0x0F802Cf8C7929C5E0CC140314d1501e21b18a6A8'
 
         :notes: Returns empty string if no ``connect()`` was done.
@@ -991,9 +990,8 @@ class Contract:
         :example:
             >>> from simpleth import Contract
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0x3F1c8adCB6E8F89dc2d0a32c947CaA6Af95d4448'
-            >>> c.blockchain
+            >>> addr = c.connect()
+            >>> c.blockchain    #doctest: +SKIP
             <simpleth.Blockchain object at 0x000001E867C698A0>
 
         """
@@ -1008,8 +1006,8 @@ class Contract:
         :example:
             >>> from simpleth import Contract
             >>> c = Contract('Test')
-            >>> c.connect()
-            >>> c.bytecode
+            >>> addr = c.connect()
+            >>> c.bytecode    #doctest: +SKIP
             '6080604052602a60015534801561001557600080  ...snip...
 
         :notes: Contract bytecode is not the same as the contract
@@ -1028,9 +1026,8 @@ class Contract:
         :example:
             >>> from simpleth import Contract
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
-            >>> c.deployed_code
+            >>> addr = c.connect()
+            >>> c.deployed_code    #doctest: +SKIP
             '0x608060405234801561001057600080fd5b50600436106100ea576
 
         :notes: :attr:`deployed_code` contains the bytes that
@@ -1055,9 +1052,8 @@ class Contract:
         :example:
             >>> from simpleth import Contract
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
-            >>> c.event_names
+            >>> addr = c.connect()
+            >>> c.event_names    #doctest: +SKIP
             ['NumsStored', 'TestConstructed', 'TypesStored']
 
         """
@@ -1072,8 +1068,8 @@ class Contract:
         :example:
             >>> from simpleth import Contract
             >>> c = Contract('Test')
-            >>> c.connect()
-            >>> c.functions
+            >>> addr = c.connect()
+            >>> c.functions    #doctest: +SKIP
             ['getContractSize(address)', 'getNum(uint8)',  ...snip... ]
 
         :notes: The list of functions includes all transactions, all
@@ -1092,7 +1088,6 @@ class Contract:
         :example:
             >>> from simpleth import Contract
             >>> c = Contract('Test')
-            '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
             >>> c.name
             'Test'
 
@@ -1108,9 +1103,8 @@ class Contract:
         :example:
             >>> from simpleth import Contract
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
-            >>> c.size
+            >>> addr = c.connect()
+            >>> c.size    #doctest: +SKIP
             4218
 
         :notes: This is the number of bytes required to store the
@@ -1131,9 +1125,8 @@ class Contract:
         :example:
             >>> from simpleth import Contract
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
-            >>> c.web3_contract
+            >>> addr = c.connect()
+            >>> c.web3_contract    #doctest: +SKIP
             <web3._utils.datatypes.Contract object at 0x000001E867CFABF0>
 
         """
@@ -1152,9 +1145,8 @@ class Contract:
         :example:
             >>> from simpleth import Contract
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
-            >>> c.web3_contract
+            >>> addr = c.connect()
+            >>> c.web3_contract    #doctest: +SKIP
             <module 'web3.exceptions' ... >
 
         """
@@ -1163,8 +1155,8 @@ class Contract:
     def call_fcn(
             self,
             fcn_name: str,
-            *fcn_args: Optional[Union[int, str, float]]
-            ) -> Union[int, str, list]:
+            *fcn_args: Optional[Union[int, str, float, list, bool]]
+            ) -> Union[int, str, list, float, bool]:
         """Return results from calling a contract function.
 
         Contract functions are those that do not alter state
@@ -1187,11 +1179,8 @@ class Contract:
         :return: value returned from the Solidity function
         :Example:
             >>> from simpleth import Contract
-            >>> c = Contract('testtrx')
-            >>> c.connect()
-            '0xF37b6b8180052B6753Cc34192Dfb901a48732ed0'
-            >>> c.call_fcn('getNum0')
-            1
+            >>> c = Contract('test')
+            >>> addr = c.connect()
             >>> c.call_fcn('getNum', 2)
             3
             >>> c.call_fcn('getNums')
@@ -1257,9 +1246,8 @@ class Contract:
 
         :example:
             >>> from simpleth import Contract
-            >>> c = Contract('testtrx')
-            >>> c.connect()
-            '0x6FDce3428A455372AE43b3cE90B60E6B0cb95188'
+            >>> c = Contract('Test')
+            >>> addr = c.connect()
             >>> c.name
             'Test'
 
@@ -1285,7 +1273,7 @@ class Contract:
 
     def deploy(self,
                sender: str,
-               *constructor_args: Union[int, float, str, list],
+               *constructor_args: Union[int, float, str, list, bool],
                gas_limit: int = GAS_LIMIT,
                max_priority_fee_gwei: Union[float, int] = MAX_PRIORITY_FEE_GWEI,
                max_fee_gwei: Union[float, int] = MAX_FEE_GWEI
@@ -1328,13 +1316,10 @@ class Contract:
         :example:
 
             >>> from simpleth import Contract, Blockchain
-            >>> c = Contract('testtrx')
-            >>> c.connect()
-            '0x6FDce3428A455372AE43b3cE90B60E6B0cb95188'
+            >>> c = Contract('Test')
+            >>> addr = c.connect()
             >>> user = Blockchain().accounts[0]
             >>> r = c.deploy(user,42)
-
-        :TBD: Can you have a list for a constructor arg?
 
         """
         try:
@@ -1405,7 +1390,7 @@ class Contract:
             self,
             sender: str,
             trx_name: str,
-            *args: Any
+            *args: Optional[Union[int, str, float, list, bool]]
             ) -> int:
         """Return the units of gas needed to run a transaction.
 
@@ -1435,17 +1420,14 @@ class Contract:
         :example:
             >>> from simpleth import Contract
             >>> from simpleth import Blockchain
-            >>> c = Contract('testtrx')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
+            >>> c = Contract('Test')
+            >>> addr = c.connect()
             >>> b = Blockchain()
             >>> user = b.accounts[0]
-            >>> c.get_gas_estimate(user, 'storeNums', 1, 2, 3)
+            >>> c.get_gas_estimate(user, 'storeNums', 1, 2, 3)   #doctest: +SKIP
             38421
 
         """
-        # TBD can you send a list as an arg? If so, add to the docstring
-        # and Type Hints
         try:
             gas_estimate: int = getattr(
                 self._web3_contract.functions,
@@ -1524,13 +1506,12 @@ class Contract:
         :example:
 
             >>> from simpleth import Contract, Blockchain
-            >>> c = Contract('testtrx')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
+            >>> c = Contract('Test')
+            >>> addr = c.connect()
             >>> b = Blockchain()
             >>> user = b.accounts[0]
             >>> t_hash = c.submit_trx(user, 'storeNums', 7, 8, 9)
-            >>> c.get_trx_receipt(t_hash)
+            >>> c.get_trx_receipt(t_hash)    #doctest: +SKIP
             {'address': None, 'gas_used': 83421,  ...snip... }
 
         :see:
@@ -1592,13 +1573,12 @@ class Contract:
 
             >>> from simpleth import Blockchain, Contract
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
+            >>> addr = c.connect()
             >>> b = Blockchain()
             >>> user = b.accounts[0]
             >>> t_hash = c.submit_trx(user, 'storeNums', 7, 8, 9)
             >>> r = c.get_trx_receipt_wait(t_hash)
-            >>> print(r)
+            >>> print(r)    #doctest: +SKIP
             Address        = None
                 ...
 
@@ -1654,7 +1634,7 @@ class Contract:
             self,
             var_name: str,
             *args: Any
-            ) -> Optional[Union[int, float, str, list]]:
+            ) -> Optional[Union[int, str, float, list, bool]]:
         """Return the value of a contract variable.
 
         The variable must be declared as `public` in the Solidity
@@ -1679,17 +1659,17 @@ class Contract:
             -  if a :meth:`connect` is needed (`C-060-050`)
 
         :example:
-            >>> from simpleth import Contract
-            >>> c = Contract('testtrx')
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> c.get_var('specialNum')
+            >>> from simpleth import Blockchain, Contract
+            >>> u = Blockchain().address(0)
+            >>> c = Contract('test')
+            >>> r = c.deploy(u, 42)
+            >>> c.get_var('initNum')
             42
 
         :notes:
             - Uses the built-in Solidity public getter.
 
         """
-        # TBD - what are the possible types for args? Just int?
         try:
             var_value: Union[int, str, float, list] = getattr(
                 self._web3_contract.functions,
@@ -1812,12 +1792,11 @@ class Contract:
 
             >>> from simpleth import Blockchain, Contract
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
+            >>> addr = c.connect()
             >>> b = Blockchain()
             >>> user = b.accounts[0]
             >>> results = c.run_trx(user,'storeNums',2,4,6)
-            >>> print(results)
+            >>> print(results)    #doctest: +SKIP
             Address        = None
                  ...
 
@@ -1957,9 +1936,9 @@ class Contract:
             >>> from simpleth import Blockchain, Contract
             >>> c = Contract('Test')
             >>> b = Blockchain()
-            >>> c.connect()
+            >>> addr = c.connect()
             >>> user = b.accounts[0]
-            >>> c.submit_trx(user, 'storeNums', 4, 5, 6)
+            >>> c.submit_trx(user, 'storeNums', 4, 5, 6)    #doctest: +SKIP
             HexBytes('0x6fc9deaf6052504a8  ..snip.. 50af2cb320278b476')
 
         :notes:
@@ -1975,8 +1954,8 @@ class Contract:
             -  ``value`` is Ether that is sent to the transaction. It is
                a payment from the sender to the contract. The transaction
                should be defined as a `payable` function in the Solidity
-               contract or the contract will need a TBD (what's the
-               default payable thing?)
+               contract or the contract will need a payable fallback
+               function.
             -  See https://ethereum.org/en/developers/docs/gas/ for the
                details on fees and gas.
 
@@ -2490,7 +2469,7 @@ class Convert:
         :return: current time, in epoch seconds
         :example:
             >>> from simpleth import Convert
-            >>> Convert().epoch_time()
+            >>> Convert().epoch_time()    #doctest: +SKIP
             1638825195.6231368
 
         """
@@ -2511,9 +2490,9 @@ class Convert:
         :example:
             >>> from simpleth import Convert
             >>> c = Convert()
-            >>> c.local_time_string()
+            >>> c.local_time_string()    #doctest: +SKIP
             '2021-12-06 15:35:28'
-            >>> c.local_time_string('%A %I:%M:%S %p')
+            >>> c.local_time_string('%A %I:%M:%S %p')    #doctest: +SKIP
             'Monday 03:36:48 PM'
 
         :see: https://strftime.org/ for time format codes.
@@ -2555,11 +2534,11 @@ class Convert:
                 >>> from simpleth import Convert
                 >>> c = Convert()
                 >>> epoch = c.epoch_time()
-                >>> epoch
+                >>> epoch    #doctest: +SKIP
                 1638825248.9298458
-                >>> c.to_local_time_string(epoch)
+                >>> c.to_local_time_string(epoch)    #doctest: +SKIP
                 '2021-12-06 15:14:08'
-                >>> c.to_local_time_string(epoch, '%A %I:%M:%S %p')
+                >>> c.to_local_time_string(epoch, '%A %I:%M:%S %p')   #doctest: +SKIP
                 'Monday 03:14:08 PM'
 
         :see: https://strftime.org/ for time format codes.
@@ -2621,10 +2600,9 @@ class EventSearch:
 
             >>> from simpleth import Contract, EventSearch
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xf84044B6b63292Ae742cf8A50C73e17Deec3DCA5'
+            >>> addr = c.connect()
             >>> e = EventSearch(c, 'NumsStored')
-            >>> e
+            >>> e    #doctest: +SKIP
             <simpleth.EventSearch object at 0x00000207818D9F00>
 
         """
@@ -2659,10 +2637,9 @@ class EventSearch:
 
             >>> from simpleth import Contract, EventSearch
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xf84044B6b63292Ae742cf8A50C73e17Deec3DCA5'
+            >>> addr = c.connect()
             >>> e = EventSearch(c, 'NumsStored')
-            >>> e
+            >>> e    #doctest: +SKIP
             <simpleth.EventSearch object at 0x00000207818D9F00>
             >>> e.event_name
             'NumsStored'
@@ -2694,14 +2671,14 @@ class EventSearch:
             >>> e = EventSearch(c, 'NumsStored')
             >>> e.get_new()
             []
-            >>> c.run_trx(u, 'storeNums', 10, 20, 30)
-            >>> c.run_trx(u, 'storeNums', 100, 200, 300)
+            >>> r = c.run_trx(u, 'storeNums', 10, 20, 30)
+            >>> r = c.run_trx(u, 'storeNums', 100, 200, 300)
             >>> len(e.get_new())
             2
             >>> e.get_new()
             []
             >>> receipt = c.run_trx(u, 'storeNums', 101, 201, 301)
-            >>> e.get_new()
+            >>> e.get_new()    #doctest: +SKIP
             [{'block_number': 2733,
                'args': {
                   'timestamp': 1650915279, 'num0': 101, 'num1': 201, 'num2': 301
@@ -2755,13 +2732,13 @@ class EventSearch:
 
             >>> from simpleth import Blockchain, Contract, EventSearch
             >>> c = Contract('Test')
-            >>> c.connect()
+            >>> addr = c.connect()
             >>> u = Blockchain().address(0)
             >>> e = EventSearch(c, 'NumsStored')
-            >>> c.run_trx(u, 'storeNums', 1, 2, 3)
-            >>> c.run_trx(u, 'storeNums', 5, 6, 7)
-            >>> c.run_trx(u, 'storeNums', 8, 9, 10)
-            >>> e.get_old()
+            >>> r = c.run_trx(u, 'storeNums', 1, 2, 3)
+            >>> r = c.run_trx(u, 'storeNums', 5, 6, 7)
+            >>> r = c.run_trx(u, 'storeNums', 8, 9, 10)
+            >>> e.get_old()    #doctest: +SKIP
             [{
                 'block_number': 2738,
                 'args': {
@@ -2774,7 +2751,7 @@ class EventSearch:
             }]
             >>> len(e.get_old(-2))
             2
-            >>> len(e.get_old(2736, 2737))
+            >>> len(e.get_old(2736, 2737))    #doctest: +SKIP
             2
 
         :notes:
@@ -2959,10 +2936,9 @@ class Results:
         >>> b = Blockchain()
         >>> user = b.accounts[2]
         >>> c = Contract('Test')
-        >>> c.connect()
-        '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
+        >>> addr = c.connect()
         >>> trx_result = c.run_trx(user,'storeNums',30,20,10)
-        >>> print(trx_result)
+        >>> print(trx_result)    #doctest: +SKIP
         Block number = 450
         Block time_epoch = 1640055579
         Contract address = 0x2f1E0A12de6741f26FCC34776764c87f46a1B7aA
@@ -3139,14 +3115,14 @@ class Results:
         :rtype: int
         :return: number of block with transaction
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
-            >>> trx_result.block_number
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums',10,10,10)
+            >>> trx_result = Results(c, receipt)
+            >>> trx_result.block_number    #doctest: +SKIP
             142
 
         """
@@ -3160,14 +3136,14 @@ class Results:
         :rtype: int
         :return: time, in epoch seconds, when block was mined.
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
-            >>> trx_result.block_time_epoch
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums',10,10,10)
+            >>> trx_result = Results(c, receipt)
+            >>> trx_result.block_time_epoch    #doctest: +SKIP
             1638751644
 
         """
@@ -3182,8 +3158,15 @@ class Results:
         :rtype: obj
         :return: `simpleth` :meth:`Contract` object
         :example:
-
-        TBD
+            >>> from simpleth import Blockchain, Contract, Results
+            >>> b = Blockchain()
+            >>> user = b.accounts[8]
+            >>> c = Contract('Test')
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums',10,10,10)
+            >>> trx_result = Results(c, receipt)
+            >>> trx_result.contract    #doctest: +SKIP
+            <simpleth.Contract object at 0x000001246CE5CA60>
 
         """
         return self._contract
@@ -3195,14 +3178,14 @@ class Results:
         :rtype: str
         :return: address of contract
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
-            >>> trx_result.contract_address
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums',10,10,10)
+            >>> trx_result = Results(c, receipt)
+            >>> trx_result.contract_address    #doctest: +SKIP
             '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
 
         """
@@ -3215,13 +3198,13 @@ class Results:
         :rtype: str
         :return: name of contract
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums',10,10,10)
+            >>> trx_result = Results(c, receipt)
             >>> trx_result.contract_name
             'Test'
 
@@ -3242,15 +3225,15 @@ class Results:
            `event name`.
 
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
-            >>> trx_result.event_args
-            {'num0': 10, 'num1': 10, 'num2': 10}
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums',10,10,10)
+            >>> trx_result = Results(c, receipt)
+            >>> trx_result.event_args      #doctest: +SKIP
+            [{'timestamp': 1652307149, 'num0': 10, 'num1': 10, 'num2': 10}]
 
         """
         return self._event_args
@@ -3271,14 +3254,14 @@ class Results:
         :rtype: list
         :return: one dict per event emitted
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
-            >>> trx_result.event_logs
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums',10,10,10)
+            >>> trx_result = Results(c, receipt)
+            >>> trx_result.event_logs          #doctest: +SKIP
             [{'args': {'num0': 10, 'num1': 20, 'num2': 20}, 'event': 'NumsStored'
 
         """
@@ -3297,13 +3280,13 @@ class Results:
            `event args`.
 
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums',10,10,10)
+            >>> trx_result = Results(c, receipt)
             >>> trx_result.event_names
             ['NumsStored']
 
@@ -3318,14 +3301,14 @@ class Results:
         :rtype: int
         :return: gas price, in wei
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
-            >>> trx_result.gas_price_wei
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums',10,10,10)
+            >>> trx_result = Results(c, receipt)
+            >>> trx_result.gas_price_wei    #doctest: +SKIP
             20000000000
 
         """
@@ -3338,14 +3321,14 @@ class Results:
         :rtype: int
         :return: units of gas used to run transaction
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
-            >>> trx_result.gas_used
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums',10,10,10)
+            >>> trx_result = Results(c, receipt)
+            >>> trx_result.gas_used    #doctest: +SKIP
             25863
 
         """
@@ -3358,14 +3341,14 @@ class Results:
         :rtype: dict
         :return: transaction info
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
-            >>> trx_result.transaction
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums',10,10,10)
+            >>> trx_result = Results(c, receipt)
+            >>> trx_result.transaction    #doctest: +SKIP
             {'hash': '0x81d725c47a94e71aa40561ff96da8d99ce105a1327239a867099bb0e480e492b',
 
         """
@@ -3379,13 +3362,13 @@ class Results:
         :return: `key` is `param name`; `value` is arg value passed to
             transaction
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums',10,10,10)
+            >>> trx_result = Results(c, receipt)
             >>> trx_result.trx_args
             {'_num0': 10, '_num1': 10, '_num2': 10}
 
@@ -3399,14 +3382,14 @@ class Results:
         :rtype: str
         :return: hash that identifies this transaction on blockchain.
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
-            >>> trx_result.trx_hash
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums',10,10,10)
+            >>> trx_result = Results(c, receipt)
+            >>> trx_result.trx_hash    #doctest: +SKIP
             '0x0e36d22f42dbf641cef1e9f26daeb00f28a4850fccde39fb11886a980b8f59d6'
 
         """
@@ -3419,13 +3402,13 @@ class Results:
         :rtype: str
         :return: name of transaction
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums',10,10,10)
+            >>> trx_result = Results(c, receipt)
             >>> trx_result.trx_name
             'storeNums'
 
@@ -3443,14 +3426,14 @@ class Results:
         :rtype: dict
         :return: receipt after transaction was mined.
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
-            >>> trx_result.trx_receipt
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums',10,10,10)
+            >>> trx_result = Results(c, receipt)
+            >>> trx_result.trx_receipt    #doctest: +SKIP
             {'transactionHash': HexBytes('0x0e36d22f42dbf641cef1e9f26daeb00f28a4850fccde39f ... ')}
 
         """
@@ -3463,14 +3446,14 @@ class Results:
         :rtype: int
         :return: gas price, in wei
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
-            >>> trx_result.trx_sender
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums',10,10,10)
+            >>> trx_result = Results(c, receipt)
+            >>> trx_result.trx_sender     #doctest: +SKIP
             '0xB7fc6B28ea0c1c0d4ec54143A552aF67260905cF'
 
         """
@@ -3483,15 +3466,15 @@ class Results:
         :rtype: int
         :return: amount of Ether, in wei, sent with the transaction
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> trx_result = c.run_trx(user,'storeNums',10,10,10)
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNumsAndPay',10,10,10,value_wei=10)
+            >>> trx_result = Results(c, receipt)
             >>> trx_result.trx_value_wei
-            0
+            10
 
         """
         return self._trx_value_wei
@@ -3622,15 +3605,16 @@ class Results:
         :rtype: str
         :return: multi-line output of most `Results` properties
         :example:
-            >>> from simpleth import Blockchain, Contract
+            >>> from simpleth import Blockchain, Contract, Results
             >>> b = Blockchain()
             >>> user = b.accounts[8]
             >>> c = Contract('Test')
-            >>> c.connect()
-            '0xD34dB707D084fdd1D99Cf9Af77896283a083c470'
-            >>> receipt = c.run_trx(user,'storeNums',4,5,6)
+            >>> addr = c.connect()
+            >>> receipt = c.run_trx(user,'storeNums', 4, 5, 6)
             >>> trx_results = Results(c, receipt)
-            >>> print(trx_results)
+
+
+            print(trx_results)    #doctest: +SKIP
             Block number = 450
             Block time_epoch = 1640055579
             Contract address = 0x2f1E0A12de6741f26FCC34776764c87f46a1B7aA
@@ -3792,6 +3776,7 @@ class SimplEthError(Exception):
 # See: https://docs.python.org/3/library/doctest.html
 #
 # Usage: python simpleth.py
+#        python simpleth.py -v
 #
 if __name__ == "__main__":
     import doctest
