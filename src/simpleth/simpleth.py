@@ -261,7 +261,7 @@ class Blockchain:
         :rtype: None
         :raises SimplEthError:
             -  if unable to connect to the blockchain client (`B-010-010`)
-        
+
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
@@ -435,7 +435,7 @@ class Blockchain:
         :return: blockchain ``address`` of the requested account
         :raises SimplEthError:
             -  if ``account_num`` is out of range (`B-020-010`)
-            
+
         :example:
             >>> from simpleth import Blockchain
             >>> b=Blockchain()
@@ -502,7 +502,7 @@ class Blockchain:
         :return: time block was mined, in epoch seconds.
         :raises SimplEthError:
             -  if ``block_number`` is invalid (`B-040-010`)
-            
+
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
@@ -1181,7 +1181,8 @@ class Contract:
             >>> from simpleth import Blockchain, Contract
             >>> c = Contract('test')
             >>> u = Blockchain().address(0)
-            >>> r = c.deploy(u, 42)     # r keeps doctest from dealing with returned contract address
+            >>> # r keeps doctest from dealing with returned contract address
+            >>> r = c.deploy(u, 42)
             >>> c.call_fcn('getNum', 2)
             2
             >>> c.call_fcn('getNums')
@@ -1601,8 +1602,7 @@ class Contract:
             - :class:`Results` to examine the outcome.
 
         """
-        if not (isinstance(timeout, int) or
-                isinstance(timeout, float)):
+        if not isinstance(timeout, (int, float)):
             message = (
                 f'ERROR in get_trx_receipt_wait(\n'
                 f'{trx_hash}, {timeout}, {poll_latency}): '
@@ -1610,8 +1610,7 @@ class Contract:
                 f'HINT: Specify an integer or float for timeout.\n'
                 )
             raise SimplEthError(message, code='C-050-010') from None
-        if not (isinstance(poll_latency, int) or
-                isinstance(poll_latency, float)):
+        if not isinstance(timeout, (int, float)):
             message = (
                 f'ERROR in get_trx_receipt_wait(\n'
                 f'{trx_hash}, {timeout}, {poll_latency}): '
@@ -2047,6 +2046,16 @@ class Contract:
                 f'HINT1: Check all arguments are specified.\n'
                 )
             raise SimplEthError(message, code='C-080-070') from None
+        except self._web3e.ContractLogicError as exception:
+            # pylint said to test this exception before ValueError.
+            # Made the exception codes out of order. Too much trouble
+            # to redo for now. Maybe in future? (TBD)
+            message = (
+                f'ERROR in {self.name}().submit_trx({trx_name}): '
+                f'ContractLogicError exception says:\n{exception}\n'
+                f'HINT: ABI may not be valid. Try a new deploy().\n'
+                )
+            raise SimplEthError(message, code='C-080-090') from None
         except ValueError as exception:
             # ValueError returns details about the error in a variety of forms.
             # Seems like, currently, it can be a string, a tuple with a string,
@@ -2062,7 +2071,7 @@ class Contract:
             elif isinstance(exception.args[0], dict):
                 value_error_message = exception.args[0]["message"]
             else:
-                value_error_message = exception
+                value_error_message = str(exception)
             if 'revert' in value_error_message:
                 # If message has "revert", there's boilerplate to the
                 # left we do not need. Gist of reason is to the right
@@ -2088,13 +2097,6 @@ class Contract:
                 f'HINT14: Was sender a valid account that can submit a trx?\n'
                 )
             raise SimplEthError(message, code='C-080-080') from None
-        except self._web3e.ContractLogicError as exception:
-            message = (
-                f'ERROR in {self.name}().submit_trx({trx_name}): '
-                f'ContractLogicError exception says:\n{exception}\n'
-                f'HINT: ABI may not be valid. Try a new deploy().\n'
-                )
-            raise SimplEthError(message, code='C-080-090') from None
         return trx_hash
 
     def _get_artifact_abi(self) -> List[str]:
@@ -2776,43 +2778,44 @@ class EventSearch:
 
         """
         latest_block: int = self._contract.blockchain.block_number
+        message: str = ''
         if not isinstance(from_block, int):
-            message: str = (
+            message = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
                 f'The block numbers must be an integer.\n'
                 f'HINT: Provide integers for from_block.\n'
                 )
             raise SimplEthError(message, code='E-030-010') from None
         if not isinstance(to_block, int):
-            message: str = (
+            message = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
                 f'The block numbers must be an integer.\n'
                 f'HINT: Provide integers for to_block.\n'
                 )
             raise SimplEthError(message, code='E-030-020') from None
         if from_block < 0 and to_block != 0:
-            message: str = (
+            message = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
                 f'Do not specify to_block when you provide a negative from_block.\n'
                 f'HINT: When searching relative to the last block do not specify to_block.\n'
                 )
             raise SimplEthError(message, code='E-030-030') from None
         if from_block < 0 and abs(from_block) > latest_block:
-            message: str = (
+            message = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
                 f'from_block exceeds the number of blocks in the chain.\n'
                 f'HINT: Provide a number between 0 and -{latest_block}.\n'
                 )
             raise SimplEthError(message, code='E-030-040') from None
         if to_block != 0 and from_block > to_block:
-            message: str = (
+            message = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
                 f'The from_block needs to be less than or equal to the to_block.\n'
                 f'HINT: Provide a valid range.\n'
                 )
             raise SimplEthError(message, code='E-030-050') from None
         if from_block > latest_block:
-            message: str = (
+            message = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
                 f'from_block is beyond the end of the chain.\n'
                 f'{latest_block} is the latest block mined and the end of the chain.\n'
@@ -2820,7 +2823,7 @@ class EventSearch:
                 )
             raise SimplEthError(message, code='E-030-060') from None
         if to_block > latest_block:
-            message: str = (
+            message = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
                 f'from_block is beyond the end of the chain. \n'
                 f'{latest_block} is the last block mined and the end of the chain.\n'
@@ -2986,11 +2989,12 @@ class Results:
         :type receipt: T_RECEIPT
 
         """
+        message: str = ''
         if not isinstance(contract, Contract):
             message = (
-                f'ERROR in Result(): '
-                f'contract is invalid.\n'
-                f'HINT: Did you specify a valid and connected contract?\n'
+                'ERROR in Result(): '
+                'contract is invalid.\n'
+                'HINT: Did you specify a valid and connected contract?\n'
                 )
             raise SimplEthError(message, code='R-010-010')
 
@@ -3006,12 +3010,12 @@ class Results:
             self._trx_hash: T_HASH = self._trx_receipt['transactionHash']
             self._block_number: int = self._trx_receipt['blockNumber']
         except TypeError:
-            message: str = (
-                f'ERROR in Result(): '
-                f'receipt is invalid.\n'
-                f'HINT: Did you specify a valid transaction receipt?\n'
+            message = (
+                'ERROR in Result(): '
+                'receipt is invalid.\n'
+                'HINT: Did you specify a valid transaction receipt?\n'
                 )
-            raise SimplEthError(message, code='R-010-020')
+            raise SimplEthError(message, code='R-010-020') from None
 
         #
         # Gather information from the web3 transaction data
@@ -3049,7 +3053,7 @@ class Results:
                     )
             # Get trx_name from the name of the function object
             self._trx_name = \
-                str(function_obj).strip('<Function ').split('(')[0]
+                str(function_obj).replace('<Function ', '').split('(', maxsplit=1)[0]
             self._trx_args = function_params
             # Not surfaced as a property. Available as a private attribute only.
             self.web3_function_object = function_obj
@@ -3777,6 +3781,7 @@ class SimplEthError(Exception):
             msg = f'{message}'
 
         super().__init__(msg)    # let Exception take over
+# end of SimplEthError
 
 
 #
@@ -3791,5 +3796,3 @@ class SimplEthError(Exception):
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
-
-# end of SimplEthError

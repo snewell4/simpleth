@@ -1,9 +1,13 @@
 #!
 """
-Compile Solidity contract source file(s).
+Compile Solidity contract source file(s) for use by ``simpleth``.
 
 Uses the Solidity ``compiler`` with ``options`` to compile the ``contract``
 to create and write the specified artifact files to the ``out_dir`` directory.
+
+With the defaults, the result makes the contract ready to be used by
+the ``simpleth`` classes. The newly compiled contract can be loaded onto
+the Ganache blockchain by doing a :class:`Contract`().:meth:`deploy`().
 
 
 **USAGE**
@@ -60,16 +64,15 @@ The file type, `.py`, has been associated with `Python`. Otherwise, use:
 **MODULES**
 """
 import os
-from argparse import ArgumentParser, RawTextHelpFormatter
+from argparse import ArgumentParser
 
 import simpleth
 
 
 def main():
-    """Start script processing here."""
+    """Compile Solidity contract source file(s) for use by simpleth"""
     parser = ArgumentParser(
-        description=__doc__,
-        formatter_class=RawTextHelpFormatter
+        description='Compile Solidity contract source file(s) for use by simpleth'
         )
 
     parser.add_argument(

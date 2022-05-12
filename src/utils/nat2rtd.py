@@ -673,7 +673,7 @@ def put_constructor_first_with_parens(m_comments: list) -> list:
 
 
 def main():
-    """Start script processing here"""
+    """Output Natspec comments in contract to Read the Doc format"""
     parser = ArgumentParser(
         description='Output Natspec comments in contract to Read the Doc format.'
         )
