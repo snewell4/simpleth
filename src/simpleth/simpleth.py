@@ -1921,8 +1921,10 @@ class Contract:
             -  if :meth:`connect` is needed (`C-080-060`)
             -  if ``sender`` or ``trx_name`` are missing (`C-080-070`)
             -  if transaction was reverted when it ran in the VM (`C-080-080`) due to:
-                -  ``trx_name`` GUARD failed
-                -  ``trx_name`` require() failed                
+                -  ``trx_name`` modifier() failed
+                -  ``trx_name`` require() failed
+                -  ``trx_name`` assert() failed
+                -  ``trx_name`` issued a revert()
                 -  ``args`` caused a divide-by-zero in the transaction
                 -  ``args`` caused an out-of-bounds array index
                 -  ``gas_limit`` was lower than the base fee
@@ -2071,7 +2073,7 @@ class Contract:
                 f'ERROR in {self.name}().submit_trx({trx_name}).\n'
                 f'ValueError says: {value_error_message}\n'
                 f'HINT1:  Did you fail to pass a transaction require()?\n'
-                f'HINT2:  Did you fail to pass a transaction GUARD?\n'
+                f'HINT2:  Did you fail to pass a transaction guard modifier()?\n'
                 f'HINT3:  Did you fail an assert()?\n'
                 f'HINT4:  Did the transaction do a revert()?\n'
                 f'HINT5:  Did you divide by zero?\n'
