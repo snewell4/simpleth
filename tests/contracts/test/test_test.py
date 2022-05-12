@@ -295,7 +295,6 @@ def test_sumTwoNums_by_owner():
 
 def test_sumTwoNums_by_non_owner():
     """Test trx is reverted if non-owner calls with require(owner)"""
-    new_nums = [200, 300, 500]
     u = Blockchain().address(9)
     c = Contract('test')
     c.connect()
@@ -306,19 +305,25 @@ def test_sumTwoNums_by_non_owner():
 
 def test_storeTypes():
     """Test trx that stores various data types as parameters"""
+    test_bool = True
+    test_enum = 1          # Corresponds to MEDIUM
     test_uint = 42
     test_int = -42
     test_addr = Blockchain().address(4)
     test_str = 'Test String.'
+    test_array = [10, 20, 30]
     u = Blockchain().address(0)  # btw, this account is no longer owner
     c = Contract('test')
     c.connect()
     receipt = c.run_trx(u,
                         'storeTypes',
+                        test_bool,
+                        test_enum,
                         test_uint,
                         test_int,
                         test_addr,
-                        test_str
+                        test_str,
+                        test_array
                         )
     results = Results(c, receipt)
     assert results.trx_name == 'storeTypes'
@@ -326,18 +331,46 @@ def test_storeTypes():
 
 def test_typesStored_storeTypes_event():
     """Test trx emitted its event."""
-    test_uint = 42   # must match test_typesStored() above
-    test_int = -42    # ditto
+    test_bool = True    # must match test_typesStored() above
+    test_enum = 1                         # ditto
+    test_uint = 42                        # ditto
+    test_int = -42                        # ditto
     test_addr = Blockchain().address(4)   # ditto
-    test_str = 'Test String.'   # ditto
+    test_str = 'Test String.'             # ditto
+    test_array = [10, 20, 30]             # ditto
     c = Contract('test')
     c.connect()
     e = EventSearch(c, 'TypesStored')
     event = e.get_old()
-    assert event[0]['args']['test_uint'] == test_uint and \
-        event[0]['args']['test_int'] == test_int and \
-        event[0]['args']['test_addr'] == test_addr and \
-        event[0]['args']['test_str'] == test_str
+    assert event[0]['args']['testBool'] == test_bool and \
+        event[0]['args']['testEnum'] == test_enum and \
+        event[0]['args']['testUint'] == test_uint and \
+        event[0]['args']['testInt'] == test_int and \
+        event[0]['args']['testAddr'] == test_addr and \
+        event[0]['args']['testStr'] == test_str and \
+        event[0]['args']['testArray'] == test_array
+
+
+def test_get_var_of_storeTypes():
+    """Test using get_var() to get all the stored types."""
+    test_bool = True    # must match test_typesStored() above
+    test_enum = 1                         # ditto
+    test_uint = 42                        # ditto
+    test_int = -42                        # ditto
+    test_addr = Blockchain().address(4)   # ditto
+    test_str = 'Test String.'             # ditto
+    test_array = [10, 20, 30]             # ditto
+    c = Contract('test')
+    c.connect()
+    assert c.get_var('testBool') == test_bool and \
+        c.get_var('testEnum') == test_enum and \
+        c.get_var('testUint') == test_uint and \
+        c.get_var('testInt') == test_int and \
+        c.get_var('testAddr') == test_addr and \
+        c.get_var('testStr') == test_str and \
+        c.get_var('testArray', 0) == test_array[0] and \
+        c.get_var('testArray', 1) == test_array[1] and \
+        c.get_var('testArray', 2) == test_array[2]
 
 
 def test_getNum0():
@@ -361,6 +394,37 @@ def test_getNum():
     assert c.call_fcn('getNum', i) == new_num
 
 
+def test_assertGreaterThan10_passes():
+    """Test passing the assert() statement"""
+    good_num = 12
+    u = Blockchain().address(0)
+    c = Contract('test')
+    c.connect()
+    r = c.run_trx(u, 'assertGreaterThan10', good_num)
+    assert r
+
+
+def test_assertGreaterThan10_fails():
+    """Test failing the assert() statement"""
+    bad_num = 9
+    u = Blockchain().address(0)
+    c = Contract('test')
+    c.connect()
+    with pytest.raises(SimplEthError) as excp:
+        c.run_trx(u, 'assertGreaterThan10', bad_num)
+    assert excp.value.code == 'C-080-080'
+
+
+def test_revertTransaction_reverts():
+    """Test the trx that calls revert()"""
+    u = Blockchain().address(0)
+    c = Contract('test')
+    c.connect()
+    with pytest.raises(SimplEthError) as excp:
+        c.run_trx(u, 'revertTransaction')
+    assert excp.value.code == 'C-080-080'
+
+
 def test_receive():
     """Test fallback fcn accepts payment to contract and emits expected amount"""
     amount = 20
@@ -369,9 +433,9 @@ def test_receive():
     c = Contract('Test')
     c.connect()
     b.send_ether(u, c.address, amount)
-    e = EventSearch(c,'Received')
+    e = EventSearch(c, 'Received')
     event = e.get_old()
-    assert event[0]['args']['amount_gwei'] == amount and \
+    assert event[0]['args']['amountGwei'] == amount and \
         event[0]['args']['sender'] == u
 
 
@@ -384,13 +448,12 @@ def test_destroy():
     c = Contract('Test')
     c.connect()
     b.send_ether(u, c.address, amount)
-    contract_bal = b.balance(c.address)
     init_u6_bal = b.balance(u6)
     c.run_trx(u, 'destroy', u6)
     amount = b.balance(u6) - init_u6_bal
     e = EventSearch(c, 'Destroyed')
     event = e.get_old()
-    assert event[0]['args']['amount_gwei'] == amount
+    assert event[0]['args']['amountGwei'] == amount
 
 
 def test_destroy_confirm():

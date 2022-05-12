@@ -1171,20 +1171,21 @@ class Contract:
         :raises SimplEthError:
             -  if ``fcn_name`` is bad or a :meth:`connect` is needed (`C-010-010`)
             -  if ``fcn_args`` are the wrong type or number (`C-010-020`)
-            -  if :class:`contract` has done a selfdestruct() or not yet
-               been deployed to a new chain (C-010-030`)
+            -  if :class:`contract` has done a selfdestruct() or needs a
+               fresh deploy (C-010-030`)
             -  if ``fcn_args`` had out of bounds array index (C-010-040`)
 
         :rtype: int | float | string | list
         :return: value returned from the Solidity function
         :Example:
-            >>> from simpleth import Contract
+            >>> from simpleth import Blockchain, Contract
             >>> c = Contract('test')
-            >>> addr = c.connect()
+            >>> u = Blockchain().address(0)
+            >>> r = c.deploy(u, 42)     # r keeps doctest from dealing with returned contract address
             >>> c.call_fcn('getNum', 2)
-            3
+            2
             >>> c.call_fcn('getNums')
-            [1, 2, 3]
+            [0, 1, 2]
 
         :notes: ``fcn_name`` must match the spelling and capitalization of
               the function as specified in the Solidity contract.
@@ -1220,7 +1221,7 @@ class Contract:
                 f'Unable to call function {fcn_name}.\n'
                 f'BadFunctionCallOutput says {exception}\n'
                 f'HINT1: Has contract been destroyed with a selfdestruct()?\n'
-                f'HINT2: Has contract been deployed on a new chain?\n'
+                f'HINT2: Does contract need a new deploy?\n'
                 )
             raise SimplEthError(message, code='C-010-030') from None
         except self._web3e.ContractLogicError as exception:
@@ -2069,17 +2070,20 @@ class Contract:
             message = (
                 f'ERROR in {self.name}().submit_trx({trx_name}).\n'
                 f'ValueError says: {value_error_message}\n'
-                f'HINT1: Did you fail to pass a transaction require()?\n'
-                f'HINT2: Did you fail to pass a transaction GUARD?\n'
-                f'HINT3: Did you divide by zero?\n'
-                f'HINT4: Did you pass in an out-of-bounds array index?\n'
-                f'HINT5: Was the gas limit too low (less than the base fee)?\n'
-                f'HINT6: Was the gas limit too high (greater than the block gas limit)?\n'
-                f'HINT7: Was max_fee_gwei a float? (It must be an int)\n'
-                f'HINT8: Was max_priority_fee_gwei a float? (It must be an int)\n'
-                f'HINT9: Did this trx call another trx, which failed?\n'
-                f'HINT10: Did you attempt to send ether to a non-payable trx?\n'
-                f'HINT11: Was sender a valid account that can submit a trx?\n'
+                f'HINT1:  Did you fail to pass a transaction require()?\n'
+                f'HINT2:  Did you fail to pass a transaction GUARD?\n'
+                f'HINT3:  Did you fail an assert()?\n'
+                f'HINT4:  Did the transaction do a revert()?\n'
+                f'HINT5:  Did you divide by zero?\n'
+                f'HINT6:  Did you pass in an out-of-bounds array index?\n'
+                f'HINT7:  Did you pass in an out-of-range enum value?\n'
+                f'HINT8:  Was the gas limit too low (less than the base fee)?\n'
+                f'HINT9:  Was the gas limit too high (greater than the block gas limit)?\n'
+                f'HINT10: Was max_fee_gwei a float? (It must be an int)\n'
+                f'HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n'
+                f'HINT12: Did this trx call another trx, which failed?\n'
+                f'HINT13: Did you attempt to send ether to a non-payable trx?\n'
+                f'HINT14: Was sender a valid account that can submit a trx?\n'
                 )
             raise SimplEthError(message, code='C-080-080') from None
         except self._web3e.ContractLogicError as exception:
@@ -2647,6 +2651,7 @@ class EventSearch:
         """
         return self._event_name
 
+    # noinspection PyRedeclaration
     def get_new(self) -> List:
         """Search newly mined blocks for the specific event.
 
@@ -2671,6 +2676,7 @@ class EventSearch:
             >>> e = EventSearch(c, 'NumsStored')
             >>> e.get_new()
             []
+            >>> # r keeps doctest from dealing with returned contract address
             >>> r = c.run_trx(u, 'storeNums', 10, 20, 30)
             >>> r = c.run_trx(u, 'storeNums', 100, 200, 300)
             >>> len(e.get_new())
@@ -2697,6 +2703,7 @@ class EventSearch:
         filter_list: T_FILTER_LIST = self._event_filter.get_new_entries()
         return self._create_simple_events(filter_list)
 
+    # noinspection PyRedeclaration
     def get_old(
             self,
             from_block: Optional[int] = 0,
@@ -2735,6 +2742,7 @@ class EventSearch:
             >>> addr = c.connect()
             >>> u = Blockchain().address(0)
             >>> e = EventSearch(c, 'NumsStored')
+            >>> # r keeps doctest from dealing with returned contract addr
             >>> r = c.run_trx(u, 'storeNums', 1, 2, 3)
             >>> r = c.run_trx(u, 'storeNums', 5, 6, 7)
             >>> r = c.run_trx(u, 'storeNums', 8, 9, 10)

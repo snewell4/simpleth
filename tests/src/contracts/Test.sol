@@ -17,7 +17,6 @@
  *  PyTest tests that use this contract.
  */
 contract Test {
-
     /// @dev address that constructed and deployed the contract.
     address public owner;
 
@@ -31,28 +30,36 @@ contract Test {
     uint public numsTotal;
 
     /// @dev used to store an unsigned integer
-    uint public test_uint;
+    uint public testUint;
 
     /// @dev used to store a signed integer
-    int public test_int;
+    int public testInt;
 
     /// @dev used to store an address
-    address public test_addr;
+    address public testAddr;
 
     /// @dev used to store a string
-    string public test_str;
+    string public testStr;
 
+    /// @dev used to store a boolean
+    bool public testBool;
 
+    /// @dev used to store an array
+    uint[3] public testArray;
+
+    /// @dev used to store enum
+    enum Size {SMALL, MEDIUM, LARGE}
+    Size public testEnum;
 
     /**
      * @notice Emitted when contract is destroyed
      *
      * @param timestamp block time when paid
-     * @param amount_gwei contract's ether balance sent to owner
+     * @param amountGwei contract's ether balance sent to owner
      */
     event Destroyed(
         uint timestamp,
-        uint amount_gwei
+        uint amountGwei
     );
 
     /**
@@ -213,12 +220,12 @@ contract Test {
      *
      * @param timestamp block time when paid
      * @param sender address sending the ether
-     * @param amount_gwei of ether received (in gwei)
+     * @param amountGwei of ether received (in gwei)
      */
     event Received(
         uint timestamp,
         address sender,
-        uint amount_gwei
+        uint amountGwei
     );
 
     /**
@@ -258,17 +265,23 @@ contract Test {
      * are stored
      *
      * @param timestamp block time when variables were updated
-     * @param test_uint value given to the unsigned integer variable
-     * @param test_int value given to the signed integer variable
-     * @param test_addr value given to the address variable
-     * @param test_str value given to the string variable
+     * @param testBool value given to the boolean variable
+     * @param testEnum value given to the enumerated variable
+     * @param testUint value given to the unsigned integer variable
+     * @param testInt value given to the signed integer variable
+     * @param testAddr value given to the address variable
+     * @param testStr value given to the string variable
+     * @param testArray values given to the array
      */
     event TypesStored(
         uint timestamp,
-        uint test_uint,
-        int test_int,
-        address test_addr,
-        string test_str
+        bool testBool,
+        Size testEnum,
+        uint testUint,
+        int testInt,
+        address testAddr,
+        string testStr,
+        uint[3] testArray
     );
 
 
@@ -301,6 +314,21 @@ contract Test {
             initNum,
             address(this)
         );
+    }
+
+    /**
+     * @notice Allows test of assert()
+     *
+     * @dev If _value <= 10, assert will fail and pass back a message.
+     *
+     * @param _value only used in assert() test. Greater than 10 passes
+     * assert(). 10, or less, fails assert().
+     */
+    function assertGreaterThan10(int _value)
+        public
+        pure
+    {
+        assert(_value > 10);
     }
 
     /**
@@ -365,6 +393,18 @@ contract Test {
             nums[2],
             _divisor
         );
+    }
+
+    /**
+     * @notice Allows test of revert()
+     *
+     * @dev Always reverts. No event emitted. Passes back a message.
+     */
+    function revertTransaction()
+        public
+        pure
+    {
+        revert("Transaction always Reverts.");
     }
 
     /**
@@ -606,29 +646,41 @@ contract Test {
      *
      * @dev Emits TypesStored()
      *
-     * @param _uint unsigned integer to store in test_uint
-     * @param _int signed integer to store into test_int
-     * @param _addr address to store into test_addr
-     * @param _str string to store into test_str
+     * @param _bool boolean to store in testBool
+     * @param _enum enumerated Size to store in testEnum
+     * @param _uint unsigned integer to store in testUint
+     * @param _int signed integer to store into testUnt
+     * @param _addr address to store into testAddr
+     * @param _str string to store into testStr
+     * @param _array array of three unsigned integers to store in testArray
      */
     function storeTypes(
+        bool _bool,
+        Size _enum,
         uint _uint,
         int _int,
         address _addr,
-        string memory _str
+        string memory _str,
+        uint[3] calldata _array
     )
         public
     {
-        test_uint = _uint;
-        test_int = _int;
-        test_addr = _addr;
-        test_str = _str;
+        testBool = _bool;
+        testEnum = _enum;
+        testUint = _uint;
+        testInt = _int;
+        testAddr = _addr;
+        testStr = _str;
+        testArray = _array;
         emit TypesStored(
             block.timestamp,
-            test_uint,
-            test_int,
-            test_addr,
-            test_str
+            testBool,
+            testEnum,
+            testUint,
+            testInt,
+            testAddr,
+            testStr,
+            testArray
         );
     }
 
