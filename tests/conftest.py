@@ -111,9 +111,12 @@ def run_test_trx_to_store_all_types(connect_to_test_contract):
     contract_obj.run_trx(
         constants.TRX2_SENDER,
         constants.TRX2_NAME,
+        constants.BOOL_VAR_VALUE,
+        constants.ENUM_VAR_VALUE,
         constants.UINT_VAR_VALUE,
         constants.INT_VAR_VALUE,
         constants.ADDR_VAR_VALUE,
-        constants.STR_VAR_VALUE
+        constants.STR_VAR_VALUE,
+        constants.TEST_ARRAY_VAR_VALUE
         )
     return contract_obj

@@ -67,13 +67,20 @@ INIT_NUM2 = 2
 # TBD - should I redo TRX_* (see above) into TRX1_*?
 TRX2_SENDER = Blockchain().address(0)
 TRX2_NAME = 'storeTypes'
-INT_VAR_NAME = 'test_int'
+BOOL_VAR_NAME = 'testBool'
+BOOL_VAR_VALUE = True
+ENUM_VAR_NAME = 'testEnum'
+ENUM_VAR_VALUE = 1        # corresponds to MEDIUM Size enum
+INT_VAR_NAME = 'testInt'
 INT_VAR_VALUE = -123
-UINT_VAR_NAME = 'test_uint'
+UINT_VAR_NAME = 'testUint'
 UINT_VAR_VALUE = 100
-ADDR_VAR_NAME = 'test_addr'
-STR_VAR_NAME = 'test_str'
+ADDR_VAR_NAME = 'testAddr'
 ADDR_VAR_VALUE = Blockchain().address(1)
+STR_VAR_NAME = 'testStr'
 STR_VAR_VALUE = 'test string'
+TEST_ARRAY_VAR_NAME = 'testArray'
+TEST_ARRAY_VAR_VALUE = [10, 20, 30]
+
 ARRAY_VAR_NAME = 'nums'
 ARRAY_VAR_VALUE = TRX_ARG0     # nums[0] value
