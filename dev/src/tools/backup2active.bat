@@ -5,7 +5,6 @@ set name=simpleth.zip
 set FILENAME=%year%%month%%day%-%name%
 cd %simplethpath%
 7z a -tzip C:\Users\snewe\OneDrive\Desktop\Active\simpleth-backups\%filename% ^
-C:\Users\snewe\OneDrive\Desktop\Active\commands\ ^
 %simplethpath%\docs\ ^
 %simplethpath%\dev\ ^
 %simplethpath%\src\ ^
