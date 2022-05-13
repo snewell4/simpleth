@@ -14,7 +14,7 @@ Inputs two JSON files,  ``<contract>.docdev`` and ``<contract>.docuser``,
 that are created by the Solidity compiler that hold the Natspec comments
 from the smart contract source.
 
-The default for``in_dir`` is the `artifact` directory.
+The default for ``in_dir`` is the `artifact` directory.
 
 Outputs one `reStructured Text` file, ``<contract>.rst``, with the markup
 suitable for processing by the `Sphinx` command, ``make html``, that is used
@@ -28,7 +28,7 @@ files used to build the documentation for `simpleth`.
 
 .. code-block:: none
 
-   nat2rtd.py [-h] [-i IN_DIR] [-s | -o OUT_DIR] <contract> [<contract> ...]
+   nat2rtd.py [-h] [-i <IN_DIR>] [-s | -o OUT_DIR] <contract> [<contract> ...]
 
 
 **EXAMPLES**

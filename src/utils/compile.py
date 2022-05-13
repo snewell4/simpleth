@@ -1,20 +1,20 @@
 #!
 """
-Compile Solidity contract source file(s) for use by ``simpleth``.
+Compile Solidity contract source file(s) for use by simpleth.
 
-Uses the Solidity ``compiler`` with ``options`` to compile the ``contract``
+Uses the Solidity compiler with ``options`` to compile the ``contract``
 to create and write the specified artifact files to the ``out_dir`` directory.
 
 With the defaults, the result makes the contract ready to be used by
-the ``simpleth`` classes. The newly compiled contract can be loaded onto
-the Ganache blockchain by doing a :class:`Contract`().:meth:`deploy`().
+the simpleth classes. The newly compiled contract can be loaded onto
+the Ganache blockchain by doing a Contract().deploy().
 
 
 **USAGE**
 
 .. code-block:: none
 
-   compile.py [-c ``compiler``] [-O ``options``] [-o ``out_dir``] ``contract`` [``contract``]
+   compile.py [-c <compiler>] [-O <options>] [-o <out_dir>] <contract> [<contract> ...]
 
 
 **EXAMPLES**

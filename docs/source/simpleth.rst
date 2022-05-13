@@ -14,7 +14,7 @@ Convert class
 .. autoclass:: simpleth.Convert
 
 EventSearch class
-************
+*****************
 .. autoclass:: simpleth.EventSearch
 
 Results class
