@@ -12,7 +12,13 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../src/simpleth'))
+
+# 5/13/22 srn - These paths are in PATH env variable. Don't need
+# to specify here. Leaving as an example. I had them in for a while, but
+# they are redundant, so I commented them out.
+#
+# sys.path.insert(0, os.path.abspath('../../src/simpleth'))
+# sys.path.insert(0, os.path.abspath('../../dev/src/tools'))
 
 
 # -- Project information -----------------------------------------------------
@@ -64,4 +70,4 @@ autodoc_default_options = {
         'special-members': '__init__',
         'undoc-members': True,
         'exclude-members': '__weakref__'
-}
+        }

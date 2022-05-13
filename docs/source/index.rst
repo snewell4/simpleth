@@ -7,7 +7,8 @@ Simple Ethereum
    starting.rst
    examples.rst
    simpleth.rst
-   commands.rst
+   utils.rst
+   tools.rst
    contracts.rst
 
 

@@ -1,7 +1,7 @@
 .. image:: ../images/contract_separator.png
 
 
-test
+Test
 ====
 :Description: Test Contract 
 
@@ -24,13 +24,17 @@ STATE VARIABLES
 
 :owner: address that constructed and deployed the contract.
 
-:test\_addr: used to store an address
+:testAddr: used to store an address
 
-:test\_int: used to store a signed integer
+:testArray: used to store an array
 
-:test\_str: used to store a string
+:testBool: used to store a boolean
 
-:test\_uint: used to store an unsigned integer
+:testInt: used to store a signed integer
+
+:testStr: used to store a string
+
+:testUint: used to store an unsigned integer
 
 
 
@@ -52,6 +56,34 @@ constructor()
 
 ________________________________________
 
+assertGreaterThan10(int256)
+---------------------------
+:Purpose:  Allows test of assert()
+
+:Notes:  If _value <= 10, assert will fail and pass back a message.
+
+**Parameters:**
+
+:\_value: only used in assert() test. Greater than 10 passes assert(). 10, or less, fails assert().
+
+
+
+________________________________________
+
+destroy(address)
+----------------
+:Purpose:  Destroy the deployed test contract. Make it unusable.
+
+:Notes:  This is irreversible. Once destroyed, a contract is still on the blockchain and transactions can be sent to it, but they will not have any effect. Any ether in the contract's balance is sent to _to. After a contract is destroyed, its either is inaccessible. Emits Destroyed event. Must be owner to use.
+
+**Parameters:**
+
+:\_to: address to receive contract's ether balance
+
+
+
+________________________________________
+
 divideInitNum(int256)
 ---------------------
 :Purpose:  Divides initNum by a divisor
@@ -62,6 +94,15 @@ divideInitNum(int256)
 
 :\_divisor: divide initNum by this value
 
+
+
+________________________________________
+
+divideNums(uint256)
+-------------------
+:Purpose:  Divides values in nums[]. There is no test for _divisor being zero. This is used to test a transaction that fails.
+
+:Notes:  Emits NumsDivided()
 
 
 ________________________________________
@@ -94,6 +135,15 @@ getNums()
 
 ________________________________________
 
+revertTransaction()
+-------------------
+:Purpose:  Allows test of revert()
+
+:Notes:  Always reverts. No event emitted. Passes back a message.
+
+
+________________________________________
+
 setOwner(address)
 -----------------
 :Purpose:  Allows current owner to assign a new owner
@@ -102,7 +152,7 @@ setOwner(address)
 
 **Parameters:**
 
-:\_newOwner: divide initNum by this value
+:\_newOwner: address of the account to be the new owner
 
 
 
@@ -126,6 +176,39 @@ ________________________________________
 storeNums(uint256,uint256,uint256)
 ----------------------------------
 :Purpose:  Stores the three args in nums[]
+
+:Notes:  Emits NumsStored()
+
+**Parameters:**
+
+:\_num0: value to store in nums[0]
+:\_num1: value to store in nums[1]
+:\_num2: value to store in nums[2]
+
+
+
+________________________________________
+
+storeNumsAndDivide(uint256,uint256,uint256,uint256)
+---------------------------------------------------
+:Purpose:  Stores the three args in nums[] and call sumNums() to divide nums
+
+:Notes:  Used to test calling a function that fails
+
+**Parameters:**
+
+:\_divisor: pass to divideNums() to divide the three nums
+:\_num0: value to store in nums[0]
+:\_num1: value to store in nums[1]
+:\_num2: value to store in nums[2]
+
+
+
+________________________________________
+
+storeNumsAndPay(uint256,uint256,uint256)
+----------------------------------------
+:Purpose:  Stores the three args in nums[] and accepts a payment.
 
 :Notes:  Emits NumsStored()
 
@@ -187,18 +270,21 @@ storeNumsWithThreeEvents(uint256,uint256,uint256)
 
 ________________________________________
 
-storeTypes(uint256,int256,address,string)
------------------------------------------
+storeTypes(bool,uint8,uint256,int256,address,string,uint256[3])
+---------------------------------------------------------------
 :Purpose:  Stores a variety of data types into public state variables
 
 :Notes:  Emits TypesStored()
 
 **Parameters:**
 
-:\_addr: address to store into test\_addr
-:\_int: signed integer to store into test\_int
-:\_str: string to store into test\_str
-:\_uint: unsigned integer to store in test\_uint
+:\_addr: address to store into testAddr
+:\_array: array of three unsigned integers to store in testArray
+:\_bool: boolean to store in testBool
+:\_enum: enumerated Size to store in testEnum
+:\_int: signed integer to store into testUnt
+:\_str: string to store into testStr
+:\_uint: unsigned integer to store in testUint
 
 
 
@@ -211,10 +297,33 @@ sumNums()
 :Notes:  Emits NumsSummed()
 
 
+________________________________________
+
+sumTwoNums()
+------------
+:Purpose:  Sums values in nums[0] and nums[1] and stores in numsTotal. Required to be owner to call
+
+:Notes:  Emits TwoNumsSummed()
+
+
 .. image:: ../images/section_separator.png
 
 EVENTS
 ######
+Destroyed(uint256,uint256)
+--------------------------
+:Purpose:  Emitted when contract is destroyed
+
+
+**Parameters:**
+
+:amountGwei: contract's ether balance sent to owner
+:timestamp: block time when paid
+
+
+
+________________________________________
+
 InitNumDivided(uint256,int256,int256)
 -------------------------------------
 :Purpose:  Emitted when new num1 is stored
@@ -287,6 +396,23 @@ NumStored(uint256,uint256,uint256)
 
 ________________________________________
 
+NumsDivided(uint256,uint256,uint256,uint256,uint256)
+----------------------------------------------------
+:Purpose:  Emitted when nums[] are divided
+
+
+**Parameters:**
+
+:divisor: value used to divide nums[]
+:num0: value in nums[0] after dividing
+:num1: value in nums[1] after dividing
+:num2: value in nums[2] after dividing
+:timestamp: block time when nums divided
+
+
+
+________________________________________
+
 NumsStored(uint256,uint256,uint256,uint256)
 -------------------------------------------
 :Purpose:  Emitted when new nums are stored
@@ -297,6 +423,37 @@ NumsStored(uint256,uint256,uint256,uint256)
 :num0: stored in nums[0]
 :num1: stored in nums[1]
 :num2: stored in nums[2]
+:timestamp: block time when nums were updated
+
+
+
+________________________________________
+
+NumsStoredAndDivided(uint256)
+-----------------------------
+:Purpose:  Emitted when nums were stored and then divided
+
+
+**Parameters:**
+
+:timestamp: block time after nums[] divided
+
+
+
+________________________________________
+
+NumsStoredAndPaid(uint256,uint256,uint256,uint256,uint256,uint256)
+------------------------------------------------------------------
+:Purpose:  Emitted when new nums are stored along with a value (in wei) sent as a payment.
+
+
+**Parameters:**
+
+:balance: amount of wei in contract's balance
+:num0: stored in nums[0]
+:num1: stored in nums[1]
+:num2: stored in nums[2]
+:paid: amount of wei sent
 :timestamp: block time when nums were updated
 
 
@@ -347,6 +504,21 @@ OwnerSet(uint256,address)
 
 ________________________________________
 
+Received(uint256,address,uint256)
+---------------------------------
+:Purpose:  Emitted when contract address is sent ether
+
+
+**Parameters:**
+
+:amountGwei: of ether received (in gwei)
+:sender: address sending the ether
+:timestamp: block time when paid
+
+
+
+________________________________________
+
 TestConstructed(uint256,address,int256,address)
 -----------------------------------------------
 :Purpose:  Emitted when the contract is deployed.
@@ -365,17 +537,36 @@ TestConstructed(uint256,address,int256,address)
 
 ________________________________________
 
-TypesStored(uint256,uint256,int256,address,string)
---------------------------------------------------
+TwoNumsSummed(uint256,uint256,uint256,uint256)
+----------------------------------------------
+:Purpose:  Emitted when nums[0] and nums[1] total is stored
+
+
+**Parameters:**
+
+:num0: value in nums[0]
+:num1: value in nums[1]
+:timestamp: block time when total is stored
+:total: sum of the first two nums assigned to numsTotal
+
+
+
+________________________________________
+
+TypesStored(uint256,bool,uint8,uint256,int256,address,string,uint256[3])
+------------------------------------------------------------------------
 :Purpose:  Emitted when the four different types of variables are stored
 
 
 **Parameters:**
 
-:test\_addr: value given to the address variable
-:test\_int: value given to the signed integer variable
-:test\_str: value given to the string variable
-:test\_uint: value given to the unsigned integer variable
+:testAddr: value given to the address variable
+:testArray: values given to the array
+:testBool: value given to the boolean variable
+:testEnum: value given to the enumerated variable
+:testInt: value given to the signed integer variable
+:testStr: value given to the string variable
+:testUint: value given to the unsigned integer variable
 :timestamp: block time when variables were updated
 
 
