@@ -1,0 +1,24 @@
+set year=%date:~10,4%
+set month=%date:~4,2%
+set day=%date:~7,2%
+set name=simpleth.zip
+set FILENAME=%year%%month%%day%-%name%
+cd %simplethpath%
+7z a -tzip C:\Users\snewe\OneDrive\Desktop\Active\simpleth-backups\%filename% ^
+C:\Users\snewe\OneDrive\Desktop\Active\commands\ ^
+%simplethpath%\docs\ ^
+%simplethpath%\src\ ^
+%simplethpath%\tests\ ^
+%simplethpath%\.gitignore ^
+%simplethpath%\LICENSE.txt ^
+%simplethpath%\MANIFEST.in ^
+%simplethpath%\README.rst ^
+%simplethpath%\README.txt ^
+%simplethpath%\requirements.txt ^
+%simplethpath%\setup.cfg ^
+%simplethpath%\setup.py ^
+%simplethpath%\tox.ini ^
+-xr!.mypy_cache ^
+-xr!__pycache__ ^
+-x!*.swp ^
+-x!*pychache!* ^
