@@ -1,9 +1,9 @@
-Style Guide for Simpleth
-========================
-This document serves as an example of reSTructured Text
+RST Style Guide for Simpleth
+============================
+This document serves as an example of **R**\ e\ **ST**\ ructured Text
 formatting and style to be used.
-Website in `Links`_ has full Sphinx Cheat Sheet.
 
+See the following for all the details of RST and Sphinx.
 
 .. seealso::
 
@@ -321,7 +321,7 @@ Other Content Blocks
 
 .. seealso:: See Also text.
 
-   `Style Guide for Simpleth`_ has an example.
+   `RST Style Guide for Simpleth`_ has an example.
 
 .. deprecated:: V2.3
    Deprecated text
