@@ -2,6 +2,7 @@ Simple Ethereum
 ===============
 
 .. toctree::
+   :maxdepth: 4
 
    intro.rst
    starting.rst
@@ -12,6 +13,8 @@ Simple Ethereum
    contracts.rst
    style.rst
 
+.. automodule:: simpleth
+   :members:
 
 .. Indices and tables
 .. ==================
