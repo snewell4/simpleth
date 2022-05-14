@@ -10,6 +10,7 @@ Simple Ethereum
    utils.rst
    tools.rst
    contracts.rst
+   style.rst
 
 
 .. Indices and tables
