@@ -34,3 +34,9 @@ docsetup.bat
 nat2rtd.py
 **********
 .. automodule:: nat2rtd
+
+.. image:: ../images/contract_separator.png
+
+Style Guide
+***********
+.. include:: style_guide.rst
