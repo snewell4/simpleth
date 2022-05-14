@@ -19,3 +19,6 @@ Be sure to recompile contracts if you make any changes to
 the Natspec comments. A compile updates the 'docdev' and
 'docuser' files in the 'artifacts' directory. nat2rsd.py
 reads those files to get the comments.
+
+:See Also: `Sphinx Tutorial Cheat Sheet <https://sphinx-tutorial.readthedocs.io/cheatsheet/>`_
+    for RTD formatting help.

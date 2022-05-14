@@ -1,9 +1,8 @@
-***************
 Getting Started
-***************
+===============
 
 1) Pre-requisites
-=================
+*****************
 
 #.  Ganache must be installed and running. See: http://trufflesuite.com/ganache/
 #.  ``web3.py`` and ``hexbytes`` must be added to your Python environment.
@@ -16,7 +15,7 @@ Getting Started
    pip install pytest
 
 2) Installation
-===============
+***************
 The package has not yet been installed on PyPi.
 It **cannot** be installed using *pip*.
 
@@ -24,12 +23,12 @@ For now, the suggested method is to put the file, ``simpleth.py``, in
 same directory as your source files.
 
 Solidity compiler
-"""""""""""""""""
+*****************
 Download and install from:
 https://github.com/ethereum/solidity/releases
 
 3) Customizing
-==============
+**************
 
 simpleth.py
 """""""""""
@@ -52,7 +51,7 @@ Python?)
 
 
 4) Usage
-========
+********
 To use `simpleth` from your interpreter, script, or app, include the
 following line.
 
