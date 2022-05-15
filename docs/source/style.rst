@@ -1,14 +1,14 @@
-RST Style Guide for Simpleth
-============================
-This document serves as an example of **R**\ e\ **ST**\ ructured Text
+reST Style Guide for Simpleth
+=============================
+This document serves as an example of **r**\ e\ **ST**\ ructured Text
 formatting and style to be used.
 
-See the following for all the details of RST and Sphinx.
+See the following for all the details of reST and Sphinx.
 
 .. seealso::
 
    1. `Sphinx Tutorial Cheat Sheet <https://sphinx-tutorial.readthedocs.io/cheatsheet/>`_
-   2. `RST / Sphinx / Sublime / Github Cheat Sheet <https://sublime-and-sphinx-guide.readthedocs.io/en/latest/index.html#work-with-rst-content>`_
+   2. `reST / Sphinx / Sublime / Github Cheat Sheet <https://sublime-and-sphinx-guide.readthedocs.io/en/latest/index.html#work-with-rst-content>`_
    3. `Documenting with Sphinx and ReadTheDocs <https://brendanhasz.github.io/2019/01/05/sphinx.html>`_
 
 
@@ -322,7 +322,7 @@ Other Content Blocks
 
 .. seealso:: See Also text.
 
-   `RST Style Guide for Simpleth`_ has an example.
+   `reST Style Guide for Simpleth`_ has an example.
 
 .. deprecated:: V2.3
    Deprecated text

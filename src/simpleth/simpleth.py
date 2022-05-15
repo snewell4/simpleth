@@ -49,7 +49,7 @@ __status__ = 'Prototype'
 # Directories and filenames
 #
 PROJECT_HOME: str = 'C:/Users/snewe/OneDrive/Desktop/simpleth'
-"""Directory for the prototype project home"""
+"""str: Directory for the prototype project home"""
 
 ARTIFACT_SUBDIR: str = 'artifacts'
 """Directory, under project directory, for the artifact files."""
@@ -58,7 +58,7 @@ SOLC_SUBDIR: str = 'solc'
 """Directory, under project directory, for the Solidity compiler."""
 
 RST_DOC_SUBDIR: str = 'docs/source'
-"""Directory, under project directory, for the rST files."""
+"""Directory, under project directory, for the reST files."""
 
 ABI_SUFFIX: str = '.abi'
 """Filename suffix for the ABI files."""
@@ -230,12 +230,12 @@ class Blockchain:
     -  :meth:`account_num` - Return account number for an address
     -  :meth:`address` - Return blockchain address for an account number
     -  :meth:`balance` - Return amount of Ether for an address
-    -  :meth:`fee_history` - Return fee info for recent blocks
-       (**not currently supported by `Ganache`**)
     -  :meth:`block_time_epoch` - Return time block was mined in
        epoch seconds
     -  :meth:`block_time_string` - Return time block was mined in
        a time-format string
+    -  :meth:`fee_history` - Return fee info for recent blocks
+       (**not currently supported by `Ganache`**)
     -  :meth:`is_valid_address` - Test for valid blockchain address
     -  :meth:`send_ether` - Transfer ether from one account to another
     -  :meth:`transaction` - Return details about a transaction
@@ -2612,13 +2612,13 @@ class EventSearch:
 
     **PROPERTIES**
 
-    -  :meth:`name` - name of event being sought
+    -  :meth:`event_name` - name of event being sought
 
     **METHODS**
 
+    -  :meth:`get_new` - return event info from newly mined blocks
     -  :meth:`get_old` - return event info from specified range of
        previously mined blocks
-    -  :meth:`get_new` - return event info from newly mined blocks
 
     .. seealso::
        `web3.py API documentation <https://web3py.readthedocs.io/en/stable/web3.eth.html#filters>`_
@@ -3717,7 +3717,7 @@ class Results:
 class SimplEthError(Exception):
     """Simple Ethereum Error exception class.
 
-    It is used by :class:`Contract`, :class:`Blockchain`,
+    It is used by :class:`Contract`, :class:`Convert`, :class:`Blockchain`,
     :class:`Results`, and :class:`EventSearch` to throw exceptions for
     errors resulting from interacting with Solidity contracts and the
     Ethereum blockchain.
@@ -3796,8 +3796,14 @@ class SimplEthError(Exception):
 
               Where:
 
-              -  ``<c>`` is the first character of the class: **B**\ lockchain,
-                 **C**\ ontract, **R**\ esults or **E**\ vent.
+              -  ``<c>`` is (mostly) the first character of the class:
+
+                 -  **B**\ lockchain
+                 -  **C**\ ontract
+                 -  **E**\ vent
+                 -  **R**\ esults
+                 -  Con\ **V**\ ert
+
               -  ``<method>`` is a 3-digit sequence number for the method
                  in the class.
               -  ``<id>`` is a 3-digit sequence number for the exception
@@ -3837,3 +3843,5 @@ class SimplEthError(Exception):
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
+
+# end of simpleth

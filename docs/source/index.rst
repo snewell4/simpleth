@@ -3,6 +3,7 @@ Simple Ethereum
 
 .. toctree::
    :maxdepth: 4
+   :caption: Contents:
 
    intro.rst
    starting.rst
@@ -13,9 +14,11 @@ Simple Ethereum
    contracts.rst
    style.rst
 
-Indices and tables
-==================
+Indices
+========
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+

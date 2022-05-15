@@ -58,9 +58,9 @@ The file type, ``.py``, has been associated with `Python`. Otherwise, use:
              create artifacts, including JSON documentation files:
              ``<contract>.docdev`` and ``<contract>.docuser``.
           2) ``nat2rtd.py <contract>`` reads those two JSON files and
-             creates the RST formatted documentation file: ``<contract>.rst``.
+             creates the reST formatted documentation file: ``<contract>.rst``.
           3) ``docmake`` runs the Sphinx command, ``make html``. and
-             will convert that RST file to HTML in ReadTheDocs format.
+             will convert that reST file to HTML in ReadTheDocs format.
 
    -  Follows the use of `Natspec tags` as shown in:
       https://docs.soliditylang.org/en/v0.8.9/natspec-format.html

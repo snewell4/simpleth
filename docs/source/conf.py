@@ -11,14 +11,11 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 
-# 5/13/22 srn - These paths are in PATH env variable. Don't need
-# to specify here. Leaving as an example. I had them in for a while, but
-# they are redundant, so I commented them out.
-#
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('../../src/simpleth'))
-# sys.path.insert(0, os.path.abspath('../../dev/src/tools'))
+# 5/13/22 srn - I've also added to PATH environment variable.
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../../src/simpleth'))
+sys.path.insert(0, os.path.abspath('../../dev/src/tools'))
 
 
 # -- Project information -----------------------------------------------------
@@ -73,3 +70,4 @@ autodoc_default_options = {
 # Makes code-block work.
 
 pygments_style = 'sphinx'
+
