@@ -24,7 +24,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'simpleth'
-copyright = '2021, Stephen Newell'
+copyright = '2021-2022, Stephen Newell'
 author = 'Stephen Newell'
 
 # The full version, including alpha/beta/rc tags

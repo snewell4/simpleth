@@ -13,11 +13,8 @@ Simple Ethereum
    contracts.rst
    style.rst
 
-.. automodule:: simpleth
-   :members:
-
-.. Indices and tables
-.. ==================
+Indices and tables
+==================
 
 * :ref:`genindex`
 * :ref:`modindex`

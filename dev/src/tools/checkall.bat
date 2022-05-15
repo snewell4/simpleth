@@ -14,7 +14,7 @@ REM Run linter to find problems with style, types, suspicious code
 REM
 cd C:\Users\snewe\OneDrive\Desktop\simpleth\src\utils
 pylint compile.py
-cd C:\Users\snewe\OneDrive\Desktop\simpleth\src\tools
+cd C:\Users\snewe\OneDrive\Desktop\simpleth\dev\src\tools
 pylint nat2rtd.py
 cd C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth
 pylint simpleth.py
@@ -23,7 +23,7 @@ REM Do static type checking
 REM
 cd C:\Users\snewe\OneDrive\Desktop\simpleth\src\utils
 mypy compile.py
-cd C:\Users\snewe\OneDrive\Desktop\simpleth\src\tools
+cd C:\Users\snewe\OneDrive\Desktop\simpleth\dev\src\tools
 mypy nat2rtd.py
 cd C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth
 mypy simpleth.py

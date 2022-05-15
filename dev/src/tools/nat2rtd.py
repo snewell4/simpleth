@@ -1,8 +1,8 @@
 """
-Convert a smart contract's Natspec comments to Read the Docs format.
+Convert a smart contract's Natspec comments to Read the Docs input format.
 
-This is used to build `simpleth` project `Read the Docs` pages for the
-included smart contracts.
+This is used for one step in building `simpleth` project `Read the Docs` pages
+for the simpleth project's smart contracts.
 
 ``compile.py`` creates the input files and writes them to the `artifact`
 directory.
@@ -16,7 +16,7 @@ from the smart contract source.
 
 The default for ``in_dir`` is the `artifact` directory.
 
-Outputs one `reStructured Text` file, ``<contract>.rst``, with the markup
+Outputs one `ReStructured Text` file, ``<contract>.rst``, with the markup
 suitable for processing by the `Sphinx` command, ``make html``, that is used
 to generate an HTML page that shows the smart contract's `Natspec` comments
 in a `Read the Docs` style.
@@ -28,7 +28,7 @@ files used to build the documentation for `simpleth`.
 
 .. code-block:: none
 
-   nat2rtd.py [-h] [-i <IN_DIR>] [-s | -o OUT_DIR] <contract> [<contract> ...]
+   nat2rtd.py [-h] [-i <IN_DIR>] [-s | -o <OUT_DIR>] <contract> [<contract> ...]
 
 
 **EXAMPLES**
@@ -38,16 +38,6 @@ files used to build the documentation for `simpleth`.
    nat2rtd.py HelloWorld1.sol
    nat2rtd.py -f txt -s HelloWorld1.sol
    nat2rtd.py -f rtd -i ../artifacts -o ../doc HelloWorld1.sol HelloWorld2.sol
-
-
-**TO MAKE SIMPLETH CONTRACT DOCUMENTATION**
-
-From a command prompt, do:
-
-.. code-block:: none
-
-   nat2rtd.py ``contract``
-   make html
 
 
 **ASSUMES**
@@ -60,6 +50,17 @@ The file type, ``.py``, has been associated with `Python`. Otherwise, use:
 
 
 **NOTES**
+
+   -  ``nat2rtd.py`` is one step in the workflow to create RTD HTML pages
+      of documentation. The steps:
+
+          1) ``compile.py <contract>`` will run the Solidity compiler to
+             create artifacts, including JSON documentation files:
+             ``<contract>.docdev`` and ``<contract>.docuser``.
+          2) ``nat2rtd.py <contract>`` reads those two JSON files and
+             creates the RST formatted documentation file: ``<contract>.rst``.
+          3) ``docmake`` runs the Sphinx command, ``make html``. and
+             will convert that RST file to HTML in ReadTheDocs format.
 
    -  Follows the use of `Natspec tags` as shown in:
       https://docs.soliditylang.org/en/v0.8.9/natspec-format.html

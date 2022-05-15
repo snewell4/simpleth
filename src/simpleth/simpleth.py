@@ -1,18 +1,19 @@
-"""Simple Ethereum is a facade of `web3.py` to simplify use of an
+"""
+Simple Ethereum is a facade of `web3.py` to simplify use of an
 Ethereum blockchain and interaction with Solidity contracts.
 
 Classes
 -------
-- `Blockchain` - interact with Ethereum blockchain
-- `Contract` - interact with Solidity contracts
-- `Convert` - conversion methods for Ether denominations and time values
-- `EventSearch` - search for events emitted by transactions
-- `Results` - outcomes resulting from a transaction being mined
+- :class:`Blockchain` - interact with Ethereum blockchain
+- :class:`Contract` - interact with Solidity contracts
+- :class:`Convert` - conversion methods for Ether denominations and time values
+- :class:`EventSearch` - search for events emitted by transactions
+- :class:`Results` - outcomes resulting from a transaction being mined
 
 
 Exceptions
 ----------
-- `SimplEthError` - raised on errors from methods in `Blockchain`,
+- :class:`SimplEthError` - raised on errors from methods in `Blockchain`,
   `Contract`, or `EventSearch`.
 
 """
@@ -242,14 +243,11 @@ class Blockchain:
        an address
     -  :meth:`trx_sender` - Return address that sent a transaction
 
-    :warning:
+    .. warning::
+       This has only been tested with `Ganache <https://trufflesuite.com/ganache/>`_
 
-    -  This has only been tested with `Ganache`.
-    -  Since it is a list, ``accounts[-1]`` returns ``accounts[9]``.
-       Should I try to fix this?
-
-    :see: `Web3` API documentation at
-        https://web3py.readthedocs.io/en/stable/web3.main.html
+    .. seealso::
+       `Web3 API documentation <https://web3py.readthedocs.io/en/stable/web3.main.html>`_
 
     """
     def __init__(self, url: str = GANACHE_URL) -> None:
@@ -260,7 +258,7 @@ class Blockchain:
         :type url: str
         :rtype: None
         :raises SimplEthError:
-            -  if unable to connect to the blockchain client (`B-010-010`)
+            -  if unable to connect to the blockchain client (**R-010-010**)
 
         :example:
             >>> from simpleth import Blockchain
@@ -301,6 +299,10 @@ class Blockchain:
             >>> from simpleth import Blockchain
             >>> Blockchain().accounts    #doctest: +SKIP
             ['0x235A686386d03a5Bb986Fb13E71A0dC86846c636',   ...snip... ]
+
+        .. note::
+           Since this is a list a negative index such as,
+           ``accounts[-1]``, works and will return the last item.
 
         """
         return self._accounts
@@ -364,10 +366,12 @@ class Blockchain:
             >>> b.eth.gas_price
             20000000000
 
-        :notes: This can be used to access any of the ``web3.eth``
-              methods not provided by `simpleth`.
-        :see: `web3,eth API` documentation at:
-            https://web3py.readthedocs.io/en/stable/web3.eth.html
+        .. note::
+           This can be used to access any of the ``web3.eth``
+           methods not provided by `simpleth`.
+
+        .. seealso::
+           `web3.eth API documentation <https://web3py.readthedocs.io/en/stable/web3.eth.html>`_
 
         """
         return self._eth
@@ -386,10 +390,13 @@ class Blockchain:
             >>> b.web3.toWei(1, 'ether')
             1000000000000000000
 
-        :notes: This can be used to access any of the
-            ``web3`` methods not provided by `simpleth`.
-        :see: `Web3 API` documentation at:
-            https://web3py.readthedocs.io/en/stable/web3.main.html
+        .. note::
+           This can be used to access any of the ``web3.eth``
+           methods not provided by `simpleth`.
+
+        .. seealso::
+           `web3.eth API documentation <https://web3py.readthedocs.io/en/stable/web3.eth.html>`_
+
         """
         return self._web3
 
@@ -414,8 +421,8 @@ class Blockchain:
             >>> b.account_num(user)
             6
 
-        :see: :meth:`accounts` for the list of all
-            account addresses.
+        .. seealso:: :meth:`accounts` for the list of all
+           account addresses.
 
         """
         try:
@@ -434,7 +441,7 @@ class Blockchain:
         :rtype: str
         :return: blockchain ``address`` of the requested account
         :raises SimplEthError:
-            -  if ``account_num`` is out of range (`B-020-010`)
+            -  if ``account_num`` is out of range (**R-020-010**)
 
         :example:
             >>> from simpleth import Blockchain
@@ -442,7 +449,7 @@ class Blockchain:
             >>> b.address(2)    #doctest: +SKIP
             '0x02F6903D426Be890BA4F882eD19cF6780ecdfA5b'
 
-        :see: :meth:`accounts` to get all addresses.
+        .. seealso: :meth:`accounts` to get all addresses.
 
         """
         if account_num in range(0, len(self.accounts)):
@@ -464,8 +471,8 @@ class Blockchain:
         :rtype: int
         :return: account's ether balance, in wei
         :raises SimplEthError:
-            -  if ``address`` is not a string (`B-030-010`)
-            -  if ``address`` is not a valid account (`B-030-020`)
+            -  if ``address`` is not a string (**R-030-010**)
+            -  if ``address`` is not a valid account (**R-030-020**)
 
         :example:
             >>> from simpleth import Blockchain
@@ -501,7 +508,7 @@ class Blockchain:
         :rtype: int
         :return: time block was mined, in epoch seconds.
         :raises SimplEthError:
-            -  if ``block_number`` is invalid (`B-040-010`)
+            -  if ``block_number`` is invalid (**R-040-010**)
 
         :example:
             >>> from simpleth import Blockchain
@@ -535,8 +542,8 @@ class Blockchain:
         :rtype: str
         :return: time block was mined, in local timezone, as a string
         :raises SimplEthError:
-            -  if ``block_number`` is invalid (`B-050-010`)
-            -  if ``time_format`` is not a string (`B-050-020`)
+            -  if ``block_number`` is invalid (**R-050-010**)
+            -  if ``time_format`` is not a string (**R-050-020**)
 
         :example:
             >>> from simpleth import Blockchain
@@ -545,10 +552,13 @@ class Blockchain:
             >>> Blockchain().block_time_string(20, '%A %I:%M %p')   #doctest: +SKIP
             'Sunday 11:34 AM'
 
-        :notes: Does not check for valid time format code string.
+        .. note::
+           Does not check for valid time format code string.
 
-        :see: List of time format codes:
-              https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
+        .. seealso::
+           Python page on
+           `time format codes \
+           <https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes>`_
 
         """
         if block_number not in range(0, self.block_number + 1):
@@ -565,7 +575,7 @@ class Blockchain:
             message = (
                 f'ERROR in block_time_string({block_number}, {time_format}).\n'
                 f'time_format must be a string.\n'
-                f'HINT: Use a string of valid strftime format codes for '
+                f'HINT: Use a string with a valid strftime format code for '
                 f'time_format.')
             raise SimplEthError(message, code='B-050-020') from None
         return datetime.datetime. \
@@ -594,12 +604,14 @@ class Blockchain:
                the list and will be :attr:`block_number` - ``num_blocks``
 
         :raises SimplEthError:
-            -  if the method is called (`B-060-010`)
+            -  if the method is called (**R-060-010**)
 
-        :warning: **This does not work.** The `w3.eth.fee_history()`
-          method is specified in the `web3.py` documentation but does
-          not seem to be supported by Ganache yet. Currently, it
-          throws a ``ValueError`` exception.
+        .. warning::
+           **This does not work.** The `w3.eth.fee_history()`
+           method is specified in the `web3.py` documentation but does
+           not seem to be supported by Ganache yet. Currently, it
+           throws a ``ValueError`` exception.
+
         :example:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
@@ -607,10 +619,11 @@ class Blockchain:
             ...
             HINT: method not yet implemented in Ganache.
 
-        :note: this method is being included in `simpleth` in hopes
-          it is soon implemented by Ganache. The method has value
-          for using ``simpleth`` and for now will be coded up and
-          ready to use.
+        .. note::
+           This method is being included in `simpleth` in hopes
+           it is soon implemented by Ganache. The method has value
+           for using ``simpleth`` and for now will be coded up and
+           ready to use.
 
         """
         try:
@@ -669,12 +682,12 @@ class Blockchain:
         :rtype: str
         :return: `trx_hash` of the transfer transaction
         :raises SimplEthError:
-            -  if ``sender`` is bad (`B-070-010`)
-            -  if ``receiver`` is bad (`B-070-010`)
-            -  if ``amount`` exceeds the ``sender`` balance  (`B-070-010`)
-            -  if ``receiver`` is a `non-payable` contract  (`B-070-010`)
-            -  if ``amount`` is not an int (`B-070-020`)
-            -  if ``receiver`` is a `non-payable` contract  (`B-070-030`)
+            -  if ``sender`` is bad (**R-070-010**)
+            -  if ``receiver`` is bad (**R-070-010**)
+            -  if ``amount`` exceeds the ``sender`` balance  (**R-070-010**)
+            -  if ``receiver`` is a `non-payable` contract  (**R-070-010**)
+            -  if ``amount`` is not an int (**R-070-020**)
+            -  if ``receiver`` is a `non-payable` contract  (**R-070-030**)
 
         :example:
 
@@ -684,11 +697,11 @@ class Blockchain:
             >>> user8 = b.address(8)
             >>> b.send_ether(user4, user8, 1000)    #doctest: +SKIP
 
-        :see:
-            -  :meth:`balance` to get amount of Ether owned by
-               an account.
-            -  :meth:`transaction` to get details of the transfer
-               transaction using the `trx_hash`.
+        .. seealso::
+           -  :meth:`balance` to get amount of Ether owned by
+              an account.
+           -  :meth:`transaction` to get details of the transfer
+              transaction using the `trx_hash`.
 
         """
         try:
@@ -741,8 +754,8 @@ class Blockchain:
         :rtype: dict
         :return: transaction details as a dictionary
         :raises SimplEthError:
-            -  if transaction for ``trx_hash`` is not found (`B-080-010`)
-            -  if ``trx_hash`` is not a valid type (`B-080-020`)
+            -  if transaction for ``trx_hash`` is not found (**R-080-010**)
+            -  if ``trx_hash`` is not a valid type (**R-080-020**)
 
         :example:
             >>> from simpleth import Blockchain
@@ -750,8 +763,9 @@ class Blockchain:
             >>> Blockchain().transaction(t)   #doctest: +SKIP
             {'hash': HexBytes('0xe6bbbc34f53ef4137de80dc63f156b820d71 )...}'
 
-        :see: :meth:`run_trx` and :meth:`send_trx` return a
-            ``trx_hash``
+        .. seealso::
+           :meth:`run_trx` and :meth:`send_trx` return a
+           ``trx_hash``
 
         """
         try:
@@ -783,8 +797,8 @@ class Blockchain:
         :rtype: int
         :return: number of transactions
         :raises SimplEthError:
-            -  if ``address`` is not a string (`B-090-010`)
-            -  if ``address`` is not a valid account (`B-090-020`)
+            -  if ``address`` is not a string (**R-090-010**)
+            -  if ``address`` is not a valid account (**R-090-020**)
 
         :example:
             >>> from simpleth import Blockchain
@@ -883,12 +897,12 @@ class Contract:
             >>> Contract('Test')   #doctest: +SKIP
             <simpleth.Contract object at 0x0000028A7262B580>
 
-        :notes:
-            -  ``name`` must match the Solidity filename for the
-               contract source code. For example, if the Solidity file is
-               ``Example.sol``, use ``Contract(\'Example\')``.
-            -  Due to DOS filename convention case does not matter and
-               ``Contract(\'example\')`` will also work.
+        .. note::
+           -  ``name`` must match the Solidity filename for the
+              contract source code. For example, if the Solidity file is
+              ``Example.sol``, use ``Contract(\'Example\')``.
+           -  Due to DOS filename convention case does not matter and
+              ``Contract(\'example\')`` will also work.
 
         """
         self._name: str = name
@@ -974,7 +988,9 @@ class Contract:
             >>> c.address    #doctest: +SKIP
             '0x0F802Cf8C7929C5E0CC140314d1501e21b18a6A8'
 
-        :notes: Returns empty string if no ``connect()`` was done.
+        .. note::
+           Returns empty string if no ``connect()`` was done.
+
         """
         return self._address
 
@@ -1010,10 +1026,12 @@ class Contract:
             >>> c.bytecode    #doctest: +SKIP
             '6080604052602a60015534801561001557600080  ...snip...
 
-        :notes: Contract bytecode is not the same as the contract
-            :attr:`deployed_code`. The :attr:`bytecode` is
-            larger and includes the instructions to deploy
-            the contract.
+        .. note::
+           Contract bytecode is not the same as the contract
+           :attr:`deployed_code`. The :attr:`bytecode` is
+           larger and includes the instructions to deploy
+           the contract.
+
         """
         return self._bytecode
 
@@ -1030,9 +1048,10 @@ class Contract:
             >>> c.deployed_code    #doctest: +SKIP
             '0x608060405234801561001057600080fd5b50600436106100ea576
 
-        :notes: :attr:`deployed_code` contains the bytes that
-            are on the blockchain. This is the same as the
-            :attr:`bytecode` without its additional code to deploy.
+        .. note::
+           :attr:`deployed_code` contains the bytes that
+           are on the blockchain. This is the same as the
+           :attr:`bytecode` without its additional code to deploy.
 
         :TBD: Play with this a bit. After doing a lot of gonzo
             hand-testing to create examples and debug, I had Test
@@ -1072,9 +1091,10 @@ class Contract:
             >>> c.functions    #doctest: +SKIP
             ['getContractSize(address)', 'getNum(uint8)',  ...snip... ]
 
-        :notes: The list of functions includes all transactions, all
-            public functions, and all getters for public state
-            variables.
+        .. note::
+           The list of functions includes all transactions, all
+           public functions, and all getters for public state
+           variables.
 
         """
         return self._functions
@@ -1107,9 +1127,11 @@ class Contract:
             >>> c.size    #doctest: +SKIP
             4218
 
-        :notes: This is the number of bytes required to store the
-            contract on the blockchain. It is the same as
-            `len(c.deployed_code)`.
+        .. note::
+           This is the number of bytes required to store the
+           contract on the blockchain. It is the same as
+           `len(c.deployed_code)`.
+
         """
         return self._size
 
@@ -1169,11 +1191,11 @@ class Contract:
             (**optional**, default: None)
         :type fcn_args: int | float | str | None
         :raises SimplEthError:
-            -  if ``fcn_name`` is bad or a :meth:`connect` is needed (`C-010-010`)
-            -  if ``fcn_args`` are the wrong type or number (`C-010-020`)
+            -  if ``fcn_name`` is bad or a :meth:`connect` is needed (**C-010-010**)
+            -  if ``fcn_args`` are the wrong type or number (**C-010-020**)
             -  if :class:`contract` has done a selfdestruct() or needs a
-               fresh deploy (C-010-030`)
-            -  if ``fcn_args`` had out of bounds array index (C-010-040`)
+               fresh deploy (**C-010-030**)
+            -  if ``fcn_args`` had out of bounds array index (**C-010-040**)
 
         :rtype: int | float | string | list
         :return: value returned from the Solidity function
@@ -1188,8 +1210,9 @@ class Contract:
             >>> c.call_fcn('getNums')
             [0, 1, 2]
 
-        :notes: ``fcn_name`` must match the spelling and capitalization of
-              the function as specified in the Solidity contract.
+        .. note::
+           ``fcn_name`` must match the spelling and capitalization of
+           the function as specified in the Solidity contract.
 
         """
         try:
@@ -1253,13 +1276,13 @@ class Contract:
             >>> c.name
             'Test'
 
-        :notes:
-            - Use :meth:`deploy` to install a contract onto the
-              blockchain. Thereafter, use :meth:`connect` to use
-              that contract.
-            - You may have multiple instances of the contract on the
-              blockchain. :meth:`connect()` will use the most recently
-              deployed version.
+        .. note::
+           - Use :meth:`deploy` to install a contract onto the
+             blockchain. Thereafter, use :meth:`connect` to use
+             that contract.
+           - You may have multiple instances of the contract on the
+             blockchain. :meth:`connect()` will use the most recently
+             deployed version.
 
         """
         self._address = self._get_artifact_address()
@@ -1309,11 +1332,11 @@ class Contract:
 
         :raises SimplEthError:
             -  if unable to get artifact info and create contract
-               class (`C-030-010`)
-            -  if ``sender`` address is bad (`C-030-020`)
-            -  if ``constructor_args`` are wrong type or number (`C-030-030`)
-            -  if `deploy` ran out of gas (`C-030-040`)
-            -  if ``gas_limit`` exceeded the block limit (`C-030-040`)
+               class (**C-030-010**)
+            -  if ``sender`` address is bad (**C-030-020**)
+            -  if ``constructor_args`` are wrong type or number (**C-030-030**)
+            -  if `deploy` ran out of gas (**C-030-040**)
+            -  if ``gas_limit`` exceeded the block limit (**C-030-040**)
 
         :example:
 
@@ -1409,14 +1432,14 @@ class Contract:
         :rtype: int
         :return: estimated number of gas units to run the transaction
         :raises SimplEthError:
-            -  if ``trx_name`` is bad (`C-040-010`)
-            -  if ``args`` are bad; either wrong type or number (`C-040-020`)
+            -  if ``trx_name`` is bad (**C-040-010**)
+            -  if ``args`` are bad; either wrong type or number (**C-040-020**)
             -  if :class:`contract` has not yet been deployed on a new chain
-               (`C-040-030`)
-            -  if ``args`` has an out-of-bounds index value (`C-040-040`)
-            -  if ``sender`` is bad (`C-040-050`)
-            -  if :meth:`connect` is needed (`C-040-060`)
-            -  if ``sender`` or one or more ``args`` is missing (`C-040-070`)
+               (**C-040-030**)
+            -  if ``args`` has an out-of-bounds index value (**C-040-040**)
+            -  if ``sender`` is bad (**C-040-050**)
+            -  if :meth:`connect` is needed (**C-040-060**)
+            -  if ``sender`` or one or more ``args`` is missing (**C-040-070**)
 
 
         :example:
@@ -1516,13 +1539,13 @@ class Contract:
             >>> c.get_trx_receipt(t_hash)    #doctest: +SKIP
             {'address': None, 'gas_used': 83421,  ...snip... }
 
-        :see:
-            - :meth:`submit_trx` for submitting a transaction to be
-              mined and returning ``trx_hash``.
-            - :meth:`get_trx_receipt_wait` which will make repeated
-              checks on the transaction and returns when the mining
-              has completed (or times out).
-            - :class:`Results` to examine the outcome.
+        .. seealso::
+           - :meth:`submit_trx` for submitting a transaction to be
+             mined and returning ``trx_hash``.
+           - :meth:`get_trx_receipt_wait` which will make repeated
+             checks on the transaction and returns when the mining
+             has completed (or times out).
+           - :class:`Results` to examine the outcome.
 
         """
         try:
@@ -1539,8 +1562,9 @@ class Contract:
             timeout: Union[int, float] = TIMEOUT,
             poll_latency: Union[int, float] = POLL_LATENCY
             ) -> Union[T_RECEIPT | None]:
-        """Wait for transaction to be mined and then return the receipt
-           for that transaction.
+        """
+        Wait for transaction to be mined and then return the receipt
+        for that transaction.
 
         This is used after :meth:`submit_trx` to get the results of the
         transaction. Will block the caller and wait until either the
@@ -1568,8 +1592,8 @@ class Contract:
         :rtype: T_RECEIPT | None
         :return: transaction receipt
         :raises SimplEthError:
-            -  if ``timeout`` is not float or int (`C-050-010`)
-            -  if ``poll_latency`` is not float or int (`C-050-020`)
+            -  if ``timeout`` is not float or int (**C-050-010**)
+            -  if ``poll_latency`` is not float or int (**C-050-020**)
 
         :example:
 
@@ -1584,22 +1608,22 @@ class Contract:
             Address        = None
                 ...
 
-        :notes:
-            - Typically, :meth:`get_trx_receipt_wait` is used following
-              :meth:`submit_trx` which sends the transaction to be mined
-              and returns the ``trx_hash``.
-            - If it times out, you can use :meth:`get_trx_receipt` or
-              :meth:`get_trx_receipt_wait` to continue to periodically
-              check for completion.
+        .. note::
+           - Typically, :meth:`get_trx_receipt_wait` is used following
+             :meth:`submit_trx` which sends the transaction to be mined
+             and returns the ``trx_hash``.
+           - If it times out, you can use :meth:`get_trx_receipt` or
+             :meth:`get_trx_receipt_wait` to continue to periodically
+             check for completion.
 
-        :see:
-            - :meth:`submit_trx` for submitting a transaction to be
-              carried out and mined and returning ``trx_hash``.
-            - :meth:`get_trx_receipt` which will make one check and
-              either return the results or an empty ``Results``.
-            - :meth:`run_trx` which combines the call to
-              :meth:`submit_trx` and :meth:`get_trx_receipt_wait`.
-            - :class:`Results` to examine the outcome.
+        .. seealso::
+           - :meth:`submit_trx` for submitting a transaction to be
+             carried out and mined and returning ``trx_hash``.
+           - :meth:`get_trx_receipt` which will make one check and
+             either return the results or an empty ``Results``.
+           - :meth:`run_trx` which combines the call to
+             :meth:`submit_trx` and :meth:`get_trx_receipt_wait`.
+           - :class:`Results` to examine the outcome.
 
         """
         if not isinstance(timeout, (int, float)):
@@ -1648,15 +1672,15 @@ class Contract:
         :rtype: int | string | float | list | None
         :return: value of the variable
         :raises SimplEthError:
-            -  if ``var_name`` is bad (`C-060-010`)
+            -  if ``var_name`` is bad (**C-060-010**)
             -  if :class:`contract` has done a selfdestruct() or not yet
-               deployed on a new chain (`C-060-020`)
+               deployed on a new chain (**C-060-020**)
             -  if ``var_name`` is an array but ``args`` did not specify an
-               index value (`C-060-030`)
+               index value (**C-060-030**)
             -  if ``var_name`` is not an array yet ``args`` specifies an
-               index value (`C-060-030`)
-            -  if ``args`` specifies an out of bound index value (`C-060-040`)
-            -  if a :meth:`connect` is needed (`C-060-050`)
+               index value (**C-060-030**)
+            -  if ``args`` specifies an out of bound index value (**C-060-040**)
+            -  if a :meth:`connect` is needed (**C-060-050**)
 
         :example:
             >>> from simpleth import Blockchain, Contract
@@ -1666,8 +1690,8 @@ class Contract:
             >>> c.get_var('initNum')
             42
 
-        :notes:
-            - Uses the built-in Solidity public getter.
+        .. note::
+           Uses the built-in Solidity public getter.
 
         """
         try:
@@ -1784,7 +1808,7 @@ class Contract:
         :return: `web3` transaction receipt
         :raises SimplEthError:
             -  if unable to submit the transaction; no hash was returned
-                (`C-070-010`)
+               (**C-070-010**)
             -  :meth:`submit_trx` and :meth:`get_receipt_wait` will raise
                exceptions due to errors in arguments or contract logic.
 
@@ -1800,8 +1824,9 @@ class Contract:
             Address        = None
                  ...
 
-        :see: Description section for :meth:`submit_trx` for an
-            explanation about fees.
+        .. seealso::
+           Description section for :meth:`submit_trx` for an
+           explanation about fees.
 
         """
         trx_hash: T_HASH = self.submit_trx(
@@ -1873,8 +1898,8 @@ class Contract:
                miner. If the `Base Fee` being charged by the network
                is higher than expected, your `Priority Fee` may be
                cut.
-            -  https://www.blocknative.com/blog/eip-1559-fees has a
-               more thorough explanation plus a recommended `Max Fee`
+            -  A `blog post on fees <https://www.blocknative.com/blog/eip-1559-fees>`_
+               has a more thorough explanation plus a recommended `Max Fee`
                to use:
                ::
 
@@ -1903,36 +1928,37 @@ class Contract:
         :type max_fee_gwei: int | float
         :param value_wei: amount of Ether, `in wei`, to be sent with the
             transaction
-            (**optional**, default: `0`)
+            (**optional**, default: **0**)
         :type value_wei: int
         :rtype: str
         :return: ``trx_hash`` the transaction hash that identifies
            this transaction on the blockchain
         :raises SimplEthError:
-            -  if ``trx_name`` is not in the contract (`C-080-010`)
+            -  if ``trx_name`` is not in the contract (**C-080-010**)
             -  if ``args`` are missing, wrong number of args, or wrong type
-               (`C-080-020`)
+               (**C-080-020**)
             -  if :class:`contract` has not yet been deployed on a new chain
-               (`C-080-030`)
-            -  if ``sender`` is a bad address (`C-080-040`)
+               (**C-080-030**)
+            -  if ``sender`` is a bad address (**C-080-040**)
             -  if ``max_priority_fee_gwei`` is greater than ``max_fee_gwei``
-               (`C-080-050`)
-            -  if :meth:`connect` is needed (`C-080-060`)
-            -  if ``sender`` or ``trx_name`` are missing (`C-080-070`)
-            -  if transaction was reverted when it ran in the VM (`C-080-080`) due to:
-                -  ``trx_name`` modifier() failed
-                -  ``trx_name`` require() failed
-                -  ``trx_name`` assert() failed
-                -  ``trx_name`` issued a revert()
-                -  ``args`` caused a divide-by-zero in the transaction
-                -  ``args`` caused an out-of-bounds array index
-                -  ``gas_limit`` was lower than the base fee
-                -  ``gas_limit`` was higher than the block gas limit
-                -  ``max_fee_gwei`` was a float
-                -  ``max_priority_fee_gwei`` was a float
-                -  ``trx_name`` called another trx, and that called trx failed
-                -  ``value_wei`` was specified but ``trx_name`` is not payable
-                -  ``sender`` is not valid for sending a trx
+               (**C-080-050**)
+            -  if :meth:`connect` is needed (**C-080-060**)
+            -  if ``sender`` or ``trx_name`` are missing (**C-080-070**)
+            -  if transaction was reverted when it ran in the VM (**C-080-080**) due to:
+
+               -  ``trx_name`` modifier() failed
+               -  ``trx_name`` require() failed
+               -  ``trx_name`` assert() failed
+               -  ``trx_name`` issued a revert()
+               -  ``args`` caused a divide-by-zero in the transaction
+               -  ``args`` caused an out-of-bounds array index
+               -  ``gas_limit`` was lower than the base fee
+               -  ``gas_limit`` was higher than the block gas limit
+               -  ``max_fee_gwei`` was a float
+               -  ``max_priority_fee_gwei`` was a float
+               -  ``trx_name`` called another trx, and that called trx failed
+               -  ``value_wei`` was specified but ``trx_name`` is not payable
+               -  ``sender`` is not valid for sending a trx
 
         :example:
             >>> from simpleth import Blockchain, Contract
@@ -1943,39 +1969,38 @@ class Contract:
             >>> c.submit_trx(user, 'storeNums', 4, 5, 6)    #doctest: +SKIP
             HexBytes('0x6fc9deaf6052504a8  ..snip.. 50af2cb320278b476')
 
-        :notes:
+        .. note::
+           -  These are Type 2 transactions which conform to EIP-1559 (aka
+              `London Fork`). They use the new max fee and max priority
+              fee fields instead of a gas price field.
+           -  ``trx_hash`` is the transaction hash that can be used
+              to check for the transaction outcome in :meth:`get_trx_receipt`
+              or :meth:`get_trx_receipt_wait`
+           -  ``trx_name`` must match the spelling and capitalization
+              of a function in the Solidity contract.
+           -  ``value`` is Ether that is sent to the transaction. It is
+              a payment from the sender to the contract. The transaction
+              should be defined as a `payable` function in the Solidity
+              contract or the contract will need a payable fallback
+              function.
 
-            -  These are Type 2 transactions which conform to EIP-1559 (aka
-               `London Fork`). They use the new max fee and max priority
-               fee fields instead of a gas price field.
-            -  ``trx_hash`` is the transaction hash that can be used
-               to check for the transaction outcome in :meth:`get_trx_receipt`
-               or :meth:`get_trx_receipt_wait`
-            -  ``trx_name`` must match the spelling and capitalization
-               of a function in the Solidity contract.
-            -  ``value`` is Ether that is sent to the transaction. It is
-               a payment from the sender to the contract. The transaction
-               should be defined as a `payable` function in the Solidity
-               contract or the contract will need a payable fallback
-               function.
-            -  See https://ethereum.org/en/developers/docs/gas/ for the
-               details on fees and gas.
+        .. warning::
+           I'm making the assumption that all `ValueError`
+           exceptions that contain `revert` in their message are due
+           to those `Guard` modifiers. I'm just going by all my
+           testing. So far, this seems to be the case. However,
+           there may be other type(s) of `ValueError(s)` that say
+           `revert` and are not due to a Guard modifier failing.
+           If you see one, add it to the lengthy code of all the
+           exceptions.
 
-        :warnings: I'm making the assumption that all `ValueError`
-            exceptions that contain `revert` in their message are due
-            to those `Guard` modifiers. I'm just going by all my
-            testing. So far, this seems to be the case. However,
-            there may be other type(s) of `ValueError(s)` that say
-            `revert` and are not due to a Guard modifier failing.
-            If you see one, add it to the lengthy code of all the
-            exceptions.
-
-        :see:
-
-            -  :meth:`get_trx_receipt` and :meth:`get_trx_receipt_wait`
+        .. seealso::
+           -   Ethereum page on `gas and fees <https://ethereum.org/en/developers/docs/gas/>`_
+               for details.
+           -   :meth:`get_trx_receipt` and :meth:`get_trx_receipt_wait`
                to retrieve the result of the transaction using the
-               ``trx_hash``.
-            -  :meth:`run_trx` which combiness the call to
+               ``trx_hash`` .
+           -   :meth:`run_trx` which combiness the call to
                :meth:`submit_trx` with a call to
                :meth:`get_trx_receipt_wait`.
 
@@ -2111,7 +2136,7 @@ class Contract:
         :return: contract `ABI`
 
         :raises SimplEthError:
-            -  if ABI artifact file not found (`C-100-010`)
+            -  if ABI artifact file not found (**C-100-010**)
 
         """
         try:
@@ -2144,8 +2169,8 @@ class Contract:
         :rtype: str
         :return: contract blockchain address
         :raises SimplEthError:
-            -  if artifact address file is not found (`C-110-010`)
-            -  if the address is not valid (`C-110-020`)
+            -  if artifact address file is not found (**C-110-010**)
+            -  if the address is not valid (**C-110-020**)
 
         """
         try:
@@ -2181,7 +2206,7 @@ class Contract:
         :rtype: str
         :return: contract bytecode
         :raises SimplEthError:
-            -  if unable to read bytecode file (`C-120-010`)
+            -  if unable to read bytecode file (**C-120-010**)
 
         """
         try:
@@ -2203,7 +2228,7 @@ class Contract:
         :rtype: list
         :return: events, if any, defined in the Solidity contract
         :raises SimplEthError:
-            -  if a :meth:`connect` is needed (`C-130-010`)
+            -  if a :meth:`connect` is needed (**C-130-010**)
 
         """
         try:
@@ -2229,7 +2254,7 @@ class Contract:
         :rtype: list
         :return: functions defined in the Solidity contract.
         :raises SimplEthError:
-            -  if a :meth:`connect` is needed (`C-140-010`)
+            -  if a :meth:`connect` is needed (**C-140-010**)
 
         """
         try:
@@ -2253,14 +2278,14 @@ class Contract:
 
         :rtype: str
         :return: deployed bytecode
-        :note:
 
-            -  `bytecode` returned by :meth:`bytecode` contains the
-               instructions for the contract plus the instructions
-               to do the deployment of the contract.
-               The `bytecode` returned by :meth:`deployed_code` and
-               by this method is the same `bytecode` without the
-               instructions for deployment.
+        .. note::
+           `bytecode` returned by :meth:`bytecode` contains the
+           instructions for the contract plus the instructions
+           to do the deployment of the contract.
+           The `bytecode` returned by :meth:`deployed_code` and
+           by this method is the same `bytecode` without the
+           instructions for deployment.
 
         """
         deployed_code: T_DEPLOYED_CODE = \
@@ -2284,9 +2309,9 @@ class Contract:
         :rtype: bool
         :return: ``True`` if successfully set the address
         :raises SimplEthError:
-            -  if ``contract_address`` is bad (`C-150-010`)
+            -  if ``contract_address`` is bad (**C-150-010**)
             -  if unable to write to the artifact `address` file
-               (`C-150-020`)
+               (**C-150-020**)
 
         """
         if not self._blockchain.is_valid_address(contract_address):
@@ -2323,10 +2348,6 @@ class Convert:
     -  :meth:`to_local_time_string` - convert time in epoch seconds to
        time string, in local time
 
-    :notes: The time conversion methods are standard one-line
-        Python methods. I put them here, so I wouldn't have to look
-        them up, and I'd always use the same method.
-
     """
     def convert_ether(
             self,
@@ -2345,8 +2366,8 @@ class Convert:
         :rtype: Decimal
         :return: converted ``amount``
         :raises SimplEthError:
-            -  if ``from_denomination`` is bad (`V-010-010`)
-            -  if ``to_denomination`` is bad (`V-010-020`)
+            -  if ``from_denomination`` is bad (**V-010-010**)
+            -  if ``to_denomination`` is bad (**V-010-020**)
         :example:
             >>> from simpleth import Convert
             >>> c = Convert()
@@ -2357,12 +2378,14 @@ class Convert:
             >>> int(c.convert_ether(25, 'ether', 'gwei'))
             25000000000
 
-        :note: `web3.py` has two conversion methods: `to_wei()` and
-            `from_wei()`. This function is more flexible and does
-            not require a `Blockchain` object to use.
+        .. note::
+           `web3.py` has two conversion methods: `to_wei()` and
+           `from_wei()`. This function is more flexible and does
+           not require a `Blockchain` object to use.
 
-        :see: :meth:`denominations_to_wei` for valid strings to use
-            for ``from_denomination`` and ``to_denomination``.
+        .. seealso::
+           :meth:`denominations_to_wei` for valid strings to use
+           for ``from_denomination`` and ``to_denomination``.
 
         """
         if from_denomination not in self.denominations_to_wei():
@@ -2438,9 +2461,13 @@ class Convert:
             gether     = 10**27 = 1,000,000,000,000,000,000,000,000,000     wei
             tether     = 10**30 = 1,000,000,000,000,000,000,000,000,000,000 wei
 
-        :notes: These are the denominations recognized by :meth:`convert_ether`.
-        :see: Source:
-              https://web3py.readthedocs.io/en/stable/examples.html?highlight=denominations#converting-currency-denominations
+        .. note::
+           These are the denominations recognized by :meth:`convert_ether`.
+
+        .. seealso::
+           web3.py page on
+           `Converting currency denominations \
+           <https://web3py.readthedocs.io/en/stable/examples.html?highlight=denominations#converting-currency-denominations>`_
 
         """
         return {
@@ -2493,7 +2520,7 @@ class Convert:
         :rtype: str
         :return: current time
         :raises SimplEthError:
-            -  if ``t_format`` is bad (`V-020-010`)
+            -  if ``t_format`` is bad (**V-020-010**)
 
         :example:
             >>> from simpleth import Convert
@@ -2503,7 +2530,10 @@ class Convert:
             >>> c.local_time_string('%A %I:%M:%S %p')    #doctest: +SKIP
             'Monday 03:36:48 PM'
 
-        :see: https://strftime.org/ for time format codes.
+        .. seealso::
+           Python page on
+           `time format codes \
+           <https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes>`__
 
         """
         try:
@@ -2515,7 +2545,8 @@ class Convert:
             message: str = (
                 f'ERROR in local_time_string({t_format}: '
                 f'TypeError says {exception}.\n'
-                f't_format must be a string with strftime format codes.\n'
+                f't_format must be a string with a valid '
+                f'strftime format code.\n'
                 f'HINT: Make sure t_format is a string.'
                 )
             raise SimplEthError(message, code='V-020-010') from None
@@ -2526,7 +2557,8 @@ class Convert:
             epoch_sec: Union[int, float],
             t_format: str = TIME_FORMAT
             ) -> str:
-        """Convert epoch seconds into local time string.
+        """
+        Convert epoch seconds into local time string.
 
         :param epoch_sec: epoch time, in seconds
         :type epoch_sec: int | float
@@ -2536,7 +2568,7 @@ class Convert:
         :rtype: str
         :return: local time equivalent to epoch seconds
         :raises SimplEthError:
-            -  if ``t_format`` is bad (`V-030-010`)
+            -  if ``t_format`` is bad (**V-030-010**)
 
         :example:
                 >>> from simpleth import Convert
@@ -2549,7 +2581,10 @@ class Convert:
                 >>> c.to_local_time_string(epoch, '%A %I:%M:%S %p')   #doctest: +SKIP
                 'Monday 03:14:08 PM'
 
-        :see: https://strftime.org/ for time format codes.
+        .. seealso::
+           Python page on
+           `time format codes \
+           <https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes>`__
 
         """
         try:
@@ -2561,7 +2596,8 @@ class Convert:
             message: str = (
                 f'ERROR in local_time_string({t_format}: '
                 f'TypeError says {exception}\n'
-                f't_format must be a string with strftime format codes.\n'
+                f't_format must be a string with a valid '
+                f'strftime format code.\n'
                 f'HINT: Make sure t_format is a string.'
                 )
             raise SimplEthError(message, code='V-030-010') from None
@@ -2584,12 +2620,10 @@ class EventSearch:
        previously mined blocks
     -  :meth:`get_new` - return event info from newly mined blocks
 
-    :notes:
-        -  The `web3.py` API documentation describes more powerful filters
-           that enable a wide variety of searches for events. See:
-           https://web3py.readthedocs.io/en/stable/web3.eth.html#filters.
-           :attr:`Blockchain.eth` can be used to access the methods
-           described.
+    .. seealso::
+       `web3.py API documentation <https://web3py.readthedocs.io/en/stable/web3.eth.html#filters>`_
+       for more powerful filters. :attr:`Blockchain.eth` can be used to access
+       the methods described.
 
     """
     def __init__(self,
@@ -2603,7 +2637,7 @@ class EventSearch:
         :param event_name: name of event defined in the contract
         :type event_name: str
         :raises SimplEthError:
-            - if ``event_name`` is not found in the ``contract`` (`E-010-010`)
+            - if ``event_name`` is not found in the ``contract`` (**E-010-010**)
         :example:
 
             >>> from simpleth import Contract, EventSearch
@@ -2695,13 +2729,14 @@ class EventSearch:
                   },
                'trx_hash': '0x45345fb27043b978875d13 ... 8c80708c0d813cd'}]
 
-        :notes: :meth:`get_past` looks backward and searches old
-            blocks. :meth:`get_new` looks forward at the
-            newly mined blocks.
+        .. note::
+           :meth:`get_old` looks backward and searches old
+           blocks. :meth:`get_new` looks forward at the
+           newly mined blocks.
 
-        :see:
-            -  :attr:`Contract.events` for the list of valid events
-               emitted by this contract.
+        .. seealso::
+            :attr:`Contract.events` for the list of valid events
+            emitted by this contract.
 
         """
         filter_list: T_FILTER_LIST = self._event_filter.get_new_entries()
@@ -2719,26 +2754,26 @@ class EventSearch:
         :type from_block: int
         :param to_block: ending block to search mined blocks
         :type to_block: int
+        :usage:
+            -  ``get_old()`` searches the most recently mined block.
+            -  ``get_old(-x)`` searches the most recently mined ``x``
+               blocks; where '-1' will search the most recently mined block,
+               '-2' will search the two` most recently mined blocks, etc.
+            -  ``get_old(x)`` searches block `x` to the end of the chain.
+            -  ``get_old(m,n)`` searches block 'm' to block 'n'.
+
         :raises SimplEthError:
-            -  if ``from_block`` is not integer (`E-030-010`)
-            -  if ``to_block`` is not integer (`E-030-020`)
-            -  if ``from_block`` is used and ``to_block`` is also specified (`E-030-030`)
-            -  if ``from_block`` exceeds the number of blocks in chain (`E-030-040`)
-            -  if ``from_block`` is greater than ``to_block`` (`E-030-050`)
-            -  if ``from_block`` is greater than ``Blockchain().block_number`` (`E-030-060`)
-            -  if ``to_block`` is greater than ``Blockchain().block_number`` (`E-030-070`)
+            -  if ``from_block`` is not integer (**E-030-010**)
+            -  if ``to_block`` is not integer (**E-030-020**)
+            -  if ``from_block`` is used and ``to_block`` is also specified (**E-030-030**)
+            -  if ``from_block`` exceeds the number of blocks in chain (**E-030-040**)
+            -  if ``from_block`` is greater than ``to_block`` (**E-030-050**)
+            -  if ``from_block`` is greater than ``Blockchain().block_number`` (**E-030-060**)
+            -  if ``to_block`` is greater than ``Blockchain().block_number`` (**E-030-070**)
 
         :rtype: list
         :return: one item for each event found; empty list if
             no events found
-        :usage:
-            -  `get_old()` searches the most recently mined block.
-            -  `get_old(-x)` searches the most recently mined `x` blocks; where '-1' is
-               the most recently mined block, '-2' is the two most recently mined blocks,
-               etc.
-            -  `get_old(x)` searches block `x` to the end of the chain.
-            -  `get_old(m,n)` searches block 'm' to block 'n'.
-
         :example:
 
             >>> from simpleth import Blockchain, Contract, EventSearch
@@ -2766,21 +2801,19 @@ class EventSearch:
             >>> len(e.get_old(2736, 2737))    #doctest: +SKIP
             2
 
-        :notes:
+        .. note::
+           :meth:`get_old` looks backward and searches old
+           blocks. :meth:`get_new` looks forward at the
+           newly mined blocks.
 
-            -  :meth:`get_old` looks backward and searches old
-               blocks. :meth:`get_new` looks forward at the
-               newly mined blocks.
-
-        :see:
-            -  :attr:`Contract.events` for the list of valid events
-               emitted by this contract.
+        .. seealso::
+           :attr:`Contract.events` for the list of valid events
+           emitted by this contract.
 
         """
         latest_block: int = self._contract.blockchain.block_number
-        message: str = ''
         if not isinstance(from_block, int):
-            message = (
+            message: str = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
                 f'The block numbers must be an integer.\n'
                 f'HINT: Provide integers for from_block.\n'
@@ -2889,8 +2922,8 @@ class Results:
     """Data class created after a transaction is mined making most of
     the transaction information easily accessible.
 
-    Users will not create `result` objects. Rather, the following
-    create and return `result` objects:
+    A :class:`Results` object is created with a :class:`Contract`
+    object and a transaction receipt returned from one of:
 
     -  :meth:`Contract.run_trx`
     -  :meth:`Contract.get_trx_receipt`
@@ -2931,7 +2964,7 @@ class Results:
     -  ``_contract`` - :meth:`Contract` object passed in as arg to `Results()`
     -  ``web3_contract_object`` - `web3` object passed in as arg to `Results()`
     -  ``web3_event_logs`` - `web3` format of the event log(s) generated by
-        the transaction
+       the transaction
     -  ``web3_function_object`` - `web3` object for the Solidity function that
        ran the transaction.
     -  ``web3_receipt`` - `web3` format of the transaction receipt data. Should
@@ -2969,11 +3002,11 @@ class Results:
         Trx sender = 0xa894b8d26Cd25eCD3E154a860A86f7c75B12D993
         Trx value_wei = 0
 
-    ** RAISES **
+    **RAISES**
 
-    -  SimplEthError if constructor params are bad (`R-010-010`)
-    -  SimplEthError if unable to gather data for events (internal error
-       that should not happen) (`R-010-020`, `R-010-030`, `R-010-040`)
+    -  :class:`SimplEthError` if constructor params are bad (**R-010-010**)
+    -  :class:`SimplEthError` if unable to gather data for events (internal error
+       that should not happen) (**R-010-020**, **R-010-030**, **R-010-040**)
 
     """
     def __init__(self,
@@ -2989,9 +3022,8 @@ class Results:
         :type receipt: T_RECEIPT
 
         """
-        message: str = ''
         if not isinstance(contract, Contract):
-            message = (
+            message: str = (
                 'ERROR in Result(): '
                 'contract is invalid.\n'
                 'HINT: Did you specify a valid and connected contract?\n'
@@ -3232,11 +3264,6 @@ class Results:
         :rtype: list[dict]
         :return: one dict for each event emitted; key is the arg name
              and the value is the value of the arg
-        :notes:
-
-        -  The event name that emitted these args is found in
-           :meth:`event_names`. Use the same index into list to get the
-           `event name`.
 
         :example:
             >>> from simpleth import Blockchain, Contract, Results
@@ -3248,6 +3275,11 @@ class Results:
             >>> trx_result = Results(c, receipt)
             >>> trx_result.event_args      #doctest: +SKIP
             [{'timestamp': 1652307149, 'num0': 10, 'num1': 10, 'num2': 10}]
+
+        .. note::
+           The event name that emitted these args is found in
+           :meth:`event_names`. Use the same index into list to get the
+           `event name`.
 
         """
         return self._event_args
@@ -3287,11 +3319,6 @@ class Results:
 
         :rtype: list[str]
         :return: list with names of each event emitted
-        :notes:
-
-        -  The event args that were emitted for this event are found in
-           :meth:`event_args`. Use the same index into list to get the
-           `event args`.
 
         :example:
             >>> from simpleth import Blockchain, Contract, Results
@@ -3303,6 +3330,11 @@ class Results:
             >>> trx_result = Results(c, receipt)
             >>> trx_result.event_names
             ['NumsStored']
+
+        .. note::
+           The event args that were emitted for this event are found in
+           :meth:`event_args`. Use the same index into list to get the
+           `event args`.
 
         """
         return self._event_names
@@ -3448,7 +3480,7 @@ class Results:
             >>> receipt = c.run_trx(user,'storeNums',10,10,10)
             >>> trx_result = Results(c, receipt)
             >>> trx_result.trx_receipt    #doctest: +SKIP
-            {'transactionHash': HexBytes('0x0e36d22f42dbf641cef1e9f26daeb00f28a4850fccde39f ... ')}
+            {'transactionHash': HexBytes('0x0e36d22f42dbf641cef1e9f26daeb00f2 ... ')}
 
         """
         return dict(self._trx_receipt)
@@ -3508,9 +3540,11 @@ class Results:
         :rtype: dict
         :returns: the same event data but using dict and string types
         throughout.
-        :notes: I'm sure there is a way to make a generalized recursive
-        method to replace `AttributeDict` and `HexBytes` but my first
-        attempt did not work. Try again sometime.
+
+        .. note::
+           I'm sure there is a way to make a generalized recursive
+           method to replace `AttributeDict` and `HexBytes` but my first
+           attempt did not work. Try again sometime.
 
         """
         return {
@@ -3538,9 +3572,11 @@ class Results:
         :rtype: dict
         :returns: the same receipt data but using dict and string types
         throughout.
-        :notes: I'm sure there is a way to make a generalized recursive
-        method to replace `AttributeDict` and `HexBytes` but my first
-        attempt did not work. Try again sometime.
+
+        .. note::
+           I'm sure there is a way to make a generalized recursive
+           method to replace `AttributeDict` and `HexBytes` but my first
+           attempt did not work. Try again sometime.
 
         """
         simpleth_logs = []
@@ -3587,9 +3623,11 @@ class Results:
         :rtype: dict
         :returns: the same transaction data but uses dict and string
         types throughout.
-        :notes: I'm sure there is a way to make a generalized recursive
-        method to replace `AttributeDict` and `HexBytes` but my first
-        attempt did not work. Try again sometime.
+
+        .. note::
+           I'm sure there is a way to make a generalized recursive
+           method to replace `AttributeDict` and `HexBytes` but my first
+           attempt did not work. Try again sometime.
 
         """
         return {
@@ -3679,8 +3717,8 @@ class Results:
 class SimplEthError(Exception):
     """Simple Ethereum Error exception class.
 
-    It is used by :class:`Contract()`, :class:`Blockchain()`
-    and :class:`EventSearch` to throw exceptions for
+    It is used by :class:`Contract`, :class:`Blockchain`,
+    :class:`Results`, and :class:`EventSearch` to throw exceptions for
     errors resulting from interacting with Solidity contracts and the
     Ethereum blockchain.
 
@@ -3742,25 +3780,28 @@ class SimplEthError(Exception):
             message = test
             exc_info = (None, None, None)
 
-        :notes:
+        .. note::
+           -  ``code`` can serve several purposes:
 
-        -  ``code`` can serve several purposes. It could be
-           easily tested in unit tests to make sure a test case is
-           causing a specific error.  It makes it easy to search
-           simpleth for the line of code that raised a specified
-           SimplEthException.
-        -  The format for ``code``:
+              -  It can be easily tested in unit tests to make sure a
+                 test case is causing a specific error.
+              -  It makes it easy to search simpleth doumentation for
+                 a comment about the cause of a specific SimplEthException.
+              -  It makes it easy to search simpleth code for the line of
+                 code that raised a specific SimplEthException.
+
+           -  The format for ``code``:
 
                ``<c>-<method>-<id>``
 
-           Where:
+              Where:
 
-           -  ``<c>`` is the first character of the class: **B** lockchain,
-              **C** ontract, or **F** ilter.
-           -  ``<method>`` is a 3-digit sequence number for the method
-              in the class.
-           -  ``<id>`` is a 3-digit sequence number for the exception
-              in the class.
+              -  ``<c>`` is the first character of the class: **B**\ lockchain,
+                 **C**\ ontract, **R**\ esults or **E**\ vent.
+              -  ``<method>`` is a 3-digit sequence number for the method
+                 in the class.
+              -  ``<id>`` is a 3-digit sequence number for the exception
+                 in the class.
 
         :TBD: make exc_info, message, and code private, so they do not
             appear in doc.

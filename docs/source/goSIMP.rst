@@ -3,7 +3,7 @@
 :Purpose: Run as first command in a new window before doing
           any simpleth work.
 
-:Usage: goSIMP
+:Usage: ``goSIMP``
 
 :Notes:
 

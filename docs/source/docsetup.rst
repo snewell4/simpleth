@@ -2,7 +2,7 @@
 
 :Purpose: Run to reset after major documentation changes.
 
-:Usage: docsetup
+:Usage: ``docsetup``
 
 :Notes:
 

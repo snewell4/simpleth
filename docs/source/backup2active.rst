@@ -2,6 +2,6 @@
 
 :Purpose:  Create backup file in "Active\simpleth-bakcups" directory
 
-:Usage: backup2active
+:Usage: ``backup2active``
 
 :Notes:  Uses tzip. Only zips up the source files.

@@ -9,6 +9,7 @@ See the following for all the details of RST and Sphinx.
 
    1. `Sphinx Tutorial Cheat Sheet <https://sphinx-tutorial.readthedocs.io/cheatsheet/>`_
    2. `RST / Sphinx / Sublime / Github Cheat Sheet <https://sublime-and-sphinx-guide.readthedocs.io/en/latest/index.html#work-with-rst-content>`_
+   3. `Documenting with Sphinx and ReadTheDocs <https://brendanhasz.github.io/2019/01/05/sphinx.html>`_
 
 
 .. image:: ../images/section_separator.png
