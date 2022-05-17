@@ -139,7 +139,7 @@ example is not shown. See above for using ``connect``.
 
 .. code-block:: python
   :linenos:
-  :caption: Connect to deployed contract and run function to return greeting
+  :caption: Deploy contract and run function to return greeting
 
   >>> user = Blockchain().address(4)
   >>> c = Contract('HelloWorld2')
@@ -153,3 +153,149 @@ example is not shown. See above for using ``connect``.
   of ten provided by Ganache to send the `deploy` transaction.
 - Line 4: Ask the contract to call the ``getGreeting()`` function.
 - Line 5: The value returned from the function is displayed.
+
+
+3) HelloWorld3 Contract
+***********************
+This contract has a transaction that lets us set the greeting
+and a function to return the greeting.
+
+.. code-block::
+  :linenos:
+  :caption: HelloWorld3.sol
+
+  pragma solidity ^0.8;
+  contract HelloWorld3 {
+      string public greeting;
+
+      function setGreeting(string memory _greeting) public {
+          greeting = _greeting;
+      }
+
+      function getGreeting() public view returns (string memory) {
+          return greeting;
+      }
+  }
+
+**Comments:**
+
+- Line 5: Defines the transaction `setGreeting` which allows
+  us pass in the greeting string.
+- Line 8: Same function we had in `HelloWorld2` to return
+  the greeting string.
+
+
+.. code-block:: python
+  :linenos:
+  :caption: Deploy contract, run transaction to set greeting, and run function to return greeting
+
+  >>> user = Blockchain().address(4)
+  >>> c = Contract('HelloWorld3')
+  >>> receipt = c.deploy(user)
+  >>> c.call_fcn('getGreeting')
+  ''
+  >>> receipt = c.run_trx(user, 'setGreeting', 'Good Morning World!')
+  >>> c.call_fcn('getGreeting')
+  'Good Morning World!'
+
+**Comments:**
+
+- Line 1 to 3: Similar to examples above.
+- Line 4: Get the greeting. The contract code does not set an initial value.
+- Line 5: `getGreeting` returns an empty string.
+- Line 6: Set the greeting by running the transaction `setGreeting` and pass
+  in one arg: the greeting string.
+- Line 7: Use `getGreeting` again. This time it returns the string we just
+  set.
+
+
+
+
+4) HelloWorld4 Contract
+***********************
+This is the last `Hello World` contract lets us
+set an initial greeting when we :meth:`deploy`
+this contract and still lets us change the
+greeting after deployment.
+
+This contract also makes use of ``events`` to record
+actions taken by transactions.
+
+.. code-block::
+  :linenos:
+  :caption: HelloWorld3.sol
+
+  contract HelloWorld4 {
+      string public greeting;
+
+      event HelloWorld4Constructed(
+          uint timestamp,
+          address sender,
+          string initGreeting,
+          address HelloWorld4
+      );
+
+      event GreetingSet(
+          uint timestamp,
+          address sender,
+          string greeting
+      );
+
+
+      constructor(string memory _initGreeting) {
+          greeting = _initGreeting;
+          emit HelloWorld4Constructed(
+              block.timestamp,
+              msg.sender,
+              greeting,
+              address(this)
+          );
+      }
+
+      function setGreeting(string memory _greeting) public {
+          greeting = _greeting;
+          emit GreetingSet(
+              block.timestamp,
+              msg.sender,
+              greeting
+          );
+      }
+
+      function getGreeting() public view returns (string memory) {
+          return greeting;
+      }
+  }
+
+
+**Comments:**
+
+- Line x:
+
+
+.. code-block:: python
+  :linenos:
+  :caption: Deploy contract, run transaction to set greeting, and run function to return greeting
+
+  >>> user = Blockchain().address(0)
+  >>> c = Contract('HelloWorld4')
+  >>> receipt = c.deploy(user, 'Hello World')
+  >>> c.call_fcn('getGreeting')
+  'Hello World'
+  >>> receipt = c.run_trx(user, 'setGreeting', 'Hello World!!!')
+  >>> c.call_fcn('getGreeting')
+  'Hello World!!!'
+  >>> from simpleth import EventSearch
+  >>> e = EventSearch(c, 'HelloWorld4Constructed')
+  >>> construct_events = e.get_old(-10)
+  >>> len(construct_events)
+  1
+  >>> construct_events
+  [{'block_number': 6646, 'args': {'timestamp': 1652813801, 'sender': '0xa894b8d26Cd25eCD3E154a860A86f7c75B12D993', 'initGreeting': 'Hello World', 'HelloWorld4': '0x2D14841dcE16c698Eb2B9304C74bA7b29A6137ae'}, 'trx_hash': '0x91a1898f42c8291c4d61f35e9d47e1478d909a69846468a4eafeb97f678a0b1d'}]
+  >>> e2 = EventSearch(c, 'GreetingSet')
+  >>> e2.get_old()
+  [{'block_number': 6647, 'args': {'timestamp': 1652813868, 'sender': '0xa894b8d26Cd25eCD3E154a860A86f7c75B12D993', 'greeting': 'Hello World!!!'}, 'trx_hash': '0xadb823085350ffdc2f411c57d8b0b074f4ca6391465061ce5cff68e85a874a6c'}]
+
+
+**Comments:**
+
+- Line 1 to 3: Similar to examples above.
