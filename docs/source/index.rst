@@ -6,8 +6,8 @@ Simple Ethereum
    :caption: Contents:
 
    intro.rst
+   installing.rst
    starting.rst
-   examples.rst
    simpleth.rst
    utils.rst
    tools.rst
