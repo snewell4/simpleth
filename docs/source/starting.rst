@@ -26,8 +26,8 @@ found in the `simpleth` :doc:`Smart Contracts <contracts>` document.
 For more info on the `NatSpec` format see the
 `Solidity Documentation <https://docs.soliditylang.org/en/v0.8.13/natspec-format.html>`_
 
-1) HelloWorld1 Contract
-***********************
+HelloWorld1 Contract
+********************
 The simplest way to display `Hello World!` is to set that string as
 the initial value of a public state variable in the contract
 and use `simpleth` to get that variable and display the string.
@@ -107,8 +107,8 @@ In all future sessions, you only need to
 
 
 
-2) HelloWorld2 Contract
-***********************
+HelloWorld2 Contract
+********************
 This contract uses a slightly more complicated way to return
 `Hello World!`. The contract has one function that
 returns the greeting string.
@@ -155,8 +155,8 @@ example is not shown. See above for using ``connect``.
 - Line 5: The value returned from the function is displayed.
 
 
-3) HelloWorld3 Contract
-***********************
+HelloWorld3 Contract
+********************
 This contract has a transaction that lets us set the greeting
 and a function to return the greeting.
 
@@ -209,21 +209,24 @@ and a function to return the greeting.
   set.
 
 
-
-
-4) HelloWorld4 Contract
-***********************
-This is the last `Hello World` contract lets us
-set an initial greeting when we :meth:`deploy`
-this contract and still lets us change the
-greeting after deployment.
-
-This contract also makes use of ``events`` to record
+HelloWorld4 Contract
+********************
+This is the last `Hello World` contract. It builds
+on `HelloWorld3` and adds two new capabilities. First,
+this contract's constructor has a parameter to set
+the greeting when we :meth:`deploy` the contract.
+Second, it makes use of ``events`` to record
 actions taken by transactions.
+
+You will find two Python sessions for this example.
+The first one shows setting and getting the greeting.
+The second shows how to search for a specific event,
+retrieve the that event, and, once more, display
+our `Hello World` greeting from the event information.
 
 .. code-block::
   :linenos:
-  :caption: HelloWorld3.sol
+  :caption: HelloWorld4.sol
 
   contract HelloWorld4 {
       string public greeting;
@@ -269,12 +272,28 @@ actions taken by transactions.
 
 **Comments:**
 
-- Line x:
+- Line 4: Defines an event to be emitted when the contract is
+  deployed. The definition continues to line 9. It shows the
+  names of the parameters that will be written as part of the
+  event.
+- Line 11: Defines a second event to be emitted each time the
+  greeting is set. The definition continues to line 15. It
+  shows the names of the parameters that will be written.
+- Line 18: Defines the `constructor`. This is run when a
+  `deploy` is done. Two actions will occur. A string for the
+  initial greeting will be passed in via the `deploy()` and
+  the `HelloWorld4Constructed`` event is emitted with the
+  appropriate values for the arguments.
+- Line 28: Defines the `setGreeting`. It is an expansion of
+  the function using in `HelloWorld3`. This function adds
+  emitting the `GreetingSet` event with the args shown.
+- Line 37: Finally, the usual `getGreeting` function will
+  return the greeting string.
 
 
 .. code-block:: python
   :linenos:
-  :caption: Deploy contract, run transaction to set greeting, and run function to return greeting
+  :caption: Session 1: Deploy contract with a greeting, get the greeting, update the greeting, get updated greeting
 
   >>> user = Blockchain().address(0)
   >>> c = Contract('HelloWorld4')
@@ -284,18 +303,67 @@ actions taken by transactions.
   >>> receipt = c.run_trx(user, 'setGreeting', 'Hello World!!!')
   >>> c.call_fcn('getGreeting')
   'Hello World!!!'
-  >>> from simpleth import EventSearch
-  >>> e = EventSearch(c, 'HelloWorld4Constructed')
-  >>> construct_events = e.get_old(-10)
-  >>> len(construct_events)
-  1
-  >>> construct_events
-  [{'block_number': 6646, 'args': {'timestamp': 1652813801, 'sender': '0xa894b8d26Cd25eCD3E154a860A86f7c75B12D993', 'initGreeting': 'Hello World', 'HelloWorld4': '0x2D14841dcE16c698Eb2B9304C74bA7b29A6137ae'}, 'trx_hash': '0x91a1898f42c8291c4d61f35e9d47e1478d909a69846468a4eafeb97f678a0b1d'}]
-  >>> e2 = EventSearch(c, 'GreetingSet')
-  >>> e2.get_old()
-  [{'block_number': 6647, 'args': {'timestamp': 1652813868, 'sender': '0xa894b8d26Cd25eCD3E154a860A86f7c75B12D993', 'greeting': 'Hello World!!!'}, 'trx_hash': '0xadb823085350ffdc2f411c57d8b0b074f4ca6391465061ce5cff68e85a874a6c'}]
-
 
 **Comments:**
 
-- Line 1 to 3: Similar to examples above.
+- Line 3: Note this ``deploy()`` passes in an arg to the
+  ``constructor()``. This string becomes the contract's
+  greeting. Line 4 gets that greeting.
+- Line 6: Updates the greeting.
+- Line 7: Gets that updated greeting with the value shown on line 8.
+
+
+.. code-block:: python
+  :linenos:
+  :caption: Session 2: Retrieve the initial greeting and the updated greeting from events
+
+  >>> from simpleth import EventSearch
+  >>> e1 = EventSearch(c, 'HelloWorld4Constructed')
+  >>> events1 = e.get_old(-10)
+  >>> len(events1)
+  1
+  >>> events1[0]['args']['initGreeting']
+  'Hello World'
+  >>> e2 = EventSearch(c, 'GreetingSet')
+  >>> events2 = e2.get_old()
+  >>> events2[0]['args']['greeting']
+  'Hello World!!!'
+  >>> events2
+  [{'block_number': 6647, 'args': {'timestamp': 1652813868, 'sender': '0xa894b8d26Cd25eCD3E154a860A86f7c75B12D993', 'greeting': 'Hello World!!!'}, 'trx_hash': '0xadb823085350ffdc2f411c57d8b0b074f4ca6391465061ce5cff68e85a874a6c'}]
+
+**Comments:**
+
+Here's yet another way to say `Hello World` - by getting the greetings
+from events emitted by the transactions.
+
+- Line 1: We need to use the :class:`simpleth.EventSearch` class.
+- Line 2: Create an `EventSearch` object for the event named,
+  `HelloWorld4Constructed` . You'll find that event defined on
+  line 4 of the ``HelloWorld4.sol`` contract shown above.
+- Line 3: Search for the constructor's event in the past
+  10 blocks on the chain and put any such events in a list
+  in ``events1``
+- Line 4: How many of these events did we find in the most
+  recent ten blocks?  Line 5 shows there was one.
+- Line 6: Retrieve the string passed to the constructor.
+  ``initGreeting`` was defined in line 7 of ``HelloWorld4.sol``
+  above. The value was passed as an arg in the contract's
+  line 23 when the event is emitted in line 20 to 25.
+- Line 7: Shows the value of that constructor arg.
+- Line 8: Similarly, let's look at the greeting we set in
+  line 3 of the first Python session shown above. Here,
+  we create a second :class:`EventSearch` object to look
+  for that event.
+- Line 9: Without an arg, ``simpleth.EventSearch.get_old``
+  just searches the last block on the chain.
+- Line 10: Get the value of the event ``greeting`` parameter.
+- Line 11: Shows the value of the arg we used in line 6 of
+  the first Python session above.
+- Line 12: If you are curious what is kept in one of the
+  event list elements, line 13 displays the full list element.
+  (Your values for `block_number`, `timestamp`, `sender`, and
+  `trx_hash` will differ.)
+
+
+Compiling a contract
+********************
