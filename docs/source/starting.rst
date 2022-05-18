@@ -218,11 +218,14 @@ the greeting when we :meth:`deploy` the contract.
 Second, it makes use of ``events`` to record
 actions taken by transactions.
 
-You will find two Python sessions for this example.
+You will find three Python sessions for this example.
 The first one shows setting and getting the greeting.
 The second shows how to search for a specific event,
-retrieve the that event, and, once more, display
-our `Hello World` greeting from the event information.
+retrieve the that event, and display the
+greeting from the event information. And, third,
+by creating a :class:`Results` object and display
+an attribute that holds the greeting.
+
 
 .. code-block::
   :linenos:
@@ -291,6 +294,10 @@ our `Hello World` greeting from the event information.
   return the greeting string.
 
 
+Using a constructor argument
+""""""""""""""""""""""""""""
+Set the greeting at deployment time and then get it.
+
 .. code-block:: python
   :linenos:
   :caption: Session 1: Deploy contract with a greeting, get the greeting, update the greeting, get updated greeting
@@ -313,6 +320,11 @@ our `Hello World` greeting from the event information.
 - Line 7: Gets that updated greeting with the value shown on line 8.
 
 
+Using events
+""""""""""""
+Here's yet another way to say `Hello World` - by getting the greetings
+from events emitted by the transactions.
+
 .. code-block:: python
   :linenos:
   :caption: Session 2: Retrieve the initial greeting and the updated greeting from events
@@ -332,9 +344,6 @@ our `Hello World` greeting from the event information.
   [{'block_number': 6647, 'args': {'timestamp': 1652813868, 'sender': '0xa894b8d26Cd25eCD3E154a860A86f7c75B12D993', 'greeting': 'Hello World!!!'}, 'trx_hash': '0xadb823085350ffdc2f411c57d8b0b074f4ca6391465061ce5cff68e85a874a6c'}]
 
 **Comments:**
-
-Here's yet another way to say `Hello World` - by getting the greetings
-from events emitted by the transactions.
 
 - Line 1: We need to use the :class:`simpleth.EventSearch` class.
 - Line 2: Create an `EventSearch` object for the event named,
@@ -365,5 +374,65 @@ from events emitted by the transactions.
   `trx_hash` will differ.)
 
 
+Using Results
+"""""""""""""
+One final way to say `Hello World` - by looking at the results
+of running a transaction.
+
+
+.. code-block:: python
+  :linenos:
+  :caption: Session 3: Set greeting and show results
+
+  >>> from simpleth import Results
+  >>> receipt = c.run_trx(user, 'setGreeting', '**Hello World**')
+  >>> r = Results(c, receipt)
+  >>> print(r)
+  Block number     = 6753
+  Block time epoch = 1652901844
+  Contract name    = HelloWorld4
+  Contract address = 0x2D14841dcE16c698Eb2B9304C74bA7b29A6137ae
+  Trx name         = setGreeting
+  Trx args         = {'_greeting': '**Hello World**'}
+  Trx sender       = 0xa894b8d26Cd25eCD3E154a860A86f7c75B12D993
+  Trx value wei    = 0
+  Trx hash         = 0x190cc46815dfb849e5b6334ce64f5877714dbff245c1cfdc5276bd6e8cb76d57
+  Gas price wei    = 20000000000
+  Gas used         = 32440
+  Event name[0]    = GreetingSet
+  Event args[0]    = {'timestamp': 1652901844, 'sender': '0xa894b8d26Cd25eCD3E154a860A86f7c75B12D993', 'greeting': '**Hello World**'}
+
+  >>> r.trx_name
+  'setGreeting'
+  >>> r.event_args[0]['greeting']
+  '**Hello World**'
+
+**Comments:**
+
+- Line 1: We need the :class:`Results` class.
+- Line 2: Run the transaction to set a new greeting. Same as we have done before.
+- Line 3: ``r`` is a ``Results`` object. It is created by using the ``receipt``
+  from the transaction and the ``contract`` object. ``r`` holds the information
+  about the transaction.
+- Line 4: Prints the details of the transaction.
+- Line 19: Shows how to access one attribute of the results.
+- Line 21: Get the `greeting` arg from ``setGreeting`` event. Line 22
+  displays out last *Hello World*.
+
+
 Compiling a contract
 ********************
+Now, we'll walk through making a change to the `HelloWorld1.sol`
+contract, compiling it, and deploying it.
+
+Here's our starting point.
+
+.. code-block::
+  :linenos:
+  :caption: HelloWorld1.sol
+
+  pragma solidity ^0.8;
+  contract HelloWorld1 {
+      string public greeting = "Hello World!";
+  }
+
