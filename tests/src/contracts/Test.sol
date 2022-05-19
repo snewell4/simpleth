@@ -686,6 +686,8 @@ contract Test {
 
     /**
      * @notice Function to return nums[0]
+     *
+     * @return num the first element of nums[]
      */
     function getNum0() public view returns(uint num) {
         return nums[0];
@@ -694,19 +696,61 @@ contract Test {
     /**
      * @notice Function to return nums[index]
      *
-     8 @param index specifies the nums[] entry to return
+     * @param index specifies the nums[] entry to return
+     *
+     * @return num value for nums[index]
      */
     function getNum(uint8 index) public view returns(uint num) {
         return nums[index];
     }
 
     /**
-     * @notice Function to return all values in nums[]
+     * @notice Function to return an array
      *
-     * @dev Returns the three values in a list
+     * @dev Shows how to return all values as a list
+     *
+     * @return nums all values in nums[]
      */
     function getNums() public view returns(uint[3] memory) {
         return nums;
+    }
+
+    /**
+     * @notice Function to return multiple values
+     *
+     * @dev Shows how to return multiple values and types
+     * set with storeTypes()
+     *
+     * @return testBool_ testBool value
+     * @return testEnum_ testEnum value
+     * @return testUint_ testUint value
+     * @return testInt_ testInt value
+     * @return testAddr_ testAddress value
+     * @return testStr_ testStr value
+     * @return testArray_ testArray value
+     */
+    function getTypes()
+        public
+        view
+        returns(
+            bool testBool_,
+            Size testEnum_,
+            uint testUint_,
+            int testInt_,
+            address testAddr_,
+            string memory testStr_,
+            uint[3] memory testArray_
+        )
+    {
+        return (
+            testBool,
+            testEnum,
+            testUint,
+            testInt,
+            testAddr,
+            testStr,
+            testArray
+        );
     }
 
     /**

@@ -2,16 +2,18 @@ pragma solidity ^0.8;
 // SPDX-FileCopyrightText: Copyright 2021 Stephen R. Newell
 // SPDX-License-Identifier: MIT
 
-/// @title HelloWorld4
-///
-/// @author Stephen Newell
-///
-/// @notice Adding more functionality to the contract saying hello.
-///
-/// @dev Uses a transaction to set the greeting and a function to return
-/// the greeting. This contract includes emitting an event to the log
-/// about setting the greeting.
-
+/**
+ * @title HelloWorld4
+ *
+ * @author Stephen Newell
+ *
+ * @notice Adding more functionality to the contract saying hello.
+ *
+ * @dev The constructor sets an initial greeting. Uses a
+ * transaction to set the greeting and a function to return
+ * the greeting. Emit an event when constructed and another
+ * when the greeting is set.
+ */
 contract HelloWorld4 {
     /// @dev the greeting to display
     string public greeting;

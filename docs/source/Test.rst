@@ -116,6 +116,11 @@ getNum(uint8)
 :index: specifies the nums[] entry to return
 
 
+**Returns:**
+
+:num: value for nums[index]
+
+
 
 ________________________________________
 
@@ -123,14 +128,44 @@ getNum0()
 ---------
 :Purpose:  Function to return nums[0]
 
+**Returns:**
+
+:num: the first element of nums[]
+
+
 
 ________________________________________
 
 getNums()
 ---------
-:Purpose:  Function to return all values in nums[]
+:Purpose:  Function to return an array
 
-:Notes:  Returns the three values in a list
+:Notes:  Shows how to return all values as a list
+
+**Returns:**
+
+:\_0: nums all values in nums[]
+
+
+
+________________________________________
+
+getTypes()
+----------
+:Purpose:  Function to return multiple values
+
+:Notes:  Shows how to return multiple values and types set with storeTypes()
+
+**Returns:**
+
+:testAddr\_: testAddress value
+:testArray\_: testArray value
+:testBool\_: testBool value
+:testEnum\_: testEnum value
+:testInt\_: testInt value
+:testStr\_: testStr value
+:testUint\_: testUint value
+
 
 
 ________________________________________

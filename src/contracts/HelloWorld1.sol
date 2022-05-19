@@ -10,5 +10,6 @@ pragma solidity ^0.8;
 ///
 /// @dev Uses a public state variable to hold the greeting
 contract HelloWorld1 {
+    /// @dev holds the Hello World greeting.
     string public greeting = "Hello World!";
 }

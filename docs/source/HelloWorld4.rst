@@ -7,7 +7,7 @@ HelloWorld4
 
 :Purpose:  Adding more functionality to the contract saying hello.
 
-:Notes:  Uses a transaction to set the greeting and a function to return the greeting. This contract includes emitting an event to the log about setting the greeting.
+:Notes:  The constructor sets an initial greeting. Uses a transaction to set the greeting and a function to return the greeting. Emit an event when constructed and another when the greeting is set.
 
 :Author:  Stephen Newell
 

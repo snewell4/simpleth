@@ -1,12 +1,12 @@
-simpleth
-========
-
+simpleth - Reference
+====================
 .. conf.py sets options for automodule
 .. automodule:: simpleth
 
 
 Constants
 *********
+.. Constants that users might care about
 .. autodata:: ARTIFACT_SUBDIR
 .. autodata:: GANACHE_URL
 .. autodata:: GAS_LIMIT

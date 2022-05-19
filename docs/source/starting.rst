@@ -17,9 +17,9 @@ The final example shows the end-to-end steps to compile a
 contract and deploy it.
 
 If you look at the Solidity source files for the contracts,
-you will see a number of lines starting with `//` or `///` .
-These are comments and are not included in the examples below.
-The lines with `///` are `NatSpec` (Ethereum Natural Language
+you will see comments starting with `//` or `///` or comment
+blocks starting with `/**` and ending with `*/`
+Comments starting with ``@`` are `NatSpec` (Ethereum Natural Language
 Specification Format) and can be used to automatically generate
 documentation. This documentation for the four contracts is
 found in the `simpleth` :doc:`Smart Contracts <contracts>` document.
@@ -429,10 +429,121 @@ Here's our starting point.
 
 .. code-block::
   :linenos:
-  :caption: HelloWorld1.sol
+  :caption: Original HelloWorld1.sol
 
   pragma solidity ^0.8;
   contract HelloWorld1 {
       string public greeting = "Hello World!";
   }
 
+Here's a Python session with a fresh `deploy`, check greeting
+string, and print the `results` of the `deploy`.
+
+
+
+.. code-block:: python
+  :linenos:
+  :caption: Use original contract: deploy, get greeting, show results
+
+  >>> from simpleth import Blockchain, Contract, Results
+  >>> u = Blockchain().address(2)
+  >>> c = Contract('HelloWorld1')
+  >>> receipt = c.deploy(u)
+  >>> c.get_var('greeting')
+  'Hello World!'
+  >>> print(Results(c, receipt))
+  Block number     = 6859
+  Block time epoch = 1652914772
+  Contract name    = HelloWorld1
+  Contract address = 0x851a93D84252c5A0fA1650d047a9cEEC1b46eFC1
+  Trx name         = deploy
+  Trx args         = {}
+  Trx sender       = 0x02F6903D426Be890BA4F882eD19cF6780ecdfA5b
+  Trx value wei    = 0
+  Trx hash         = 0x682c938ba1d2411355fa9ec555306f9614e82bdf4cd0d543ac474b53736f5c55
+  Gas price wei    = 20000000000
+  Gas used         = 168664
+
+
+Use an editor to change the greeting.
+
+.. code-block::
+  :linenos:
+  :emphasize-lines: 3
+  :caption: Modified HelloWorld1.sol
+
+  pragma solidity ^0.8;
+  contract HelloWorld1 {
+      string public greeting = "Howdy World!";
+  }
+
+**Comments:**
+
+- Line 3: ``greeting`` string has been changed.
+
+
+Use simpleth project's `compile.py <../html/utils.html#module-compile>`_
+to compile the contract.
+
+.. code-block:: shell-session
+  :linenos:
+  :emphasize-lines: 11
+  :caption: Compile modified contract
+
+  (env) C:\Users\snewe\OneDrive\Desktop\simpleth\src\contracts>dir HelloWorld1.sol
+   Volume in drive C is Windows
+   Volume Serial Number is 1AC4-4372
+
+   Directory of C:\Users\snewe\OneDrive\Desktop\simpleth\src\contracts
+
+  05/18/2022  06:02 PM               381 HelloWorld1.sol
+                 1 File(s)            381 bytes
+                 0 Dir(s)  384,503,242,752 bytes free
+
+  (env) C:\Users\snewe\OneDrive\Desktop\simpleth\src\contracts>compile.py HelloWorld1.sol
+  Compiler run successful. Artifact(s) can be found in directory "C:/Users/snewe/OneDrive/Desktop/simpleth/artifacts".
+
+  (env) C:\Users\snewe\OneDrive\Desktop\simpleth\src\contracts>
+
+**Comments:**
+
+- Line 1: For`compile.py` to use its default args, run it from the
+  directory with the contract source file. This ``dir`` command
+  just verifies this is the correct directory.
+- Line 11: Compile the modified contract.
+- Line 12: Compiler success message. Contract is now ready to `deploy`.
+
+
+Continuing with the Python session. Let's work with the modified
+contract.
+
+.. code-block:: python
+  :linenos:
+  :emphasize-lines: 4
+  :caption: Use modified contract: deploy, get greeting, show results
+
+  >>> c = Contract('HelloWorld1')
+  >>> receipt = c.deploy(u)
+  >>> c.get_var('greeting')
+  'Howdy World!'
+  >>> print(Results(c, receipt))
+  Block number     = 6861
+  Block time epoch = 1652916931
+  Contract name    = HelloWorld1
+  Contract address = 0xbe94faafc40B44c66F48f90dff98A47Df74cD09a
+  Trx name         = deploy
+  Trx args         = {}
+  Trx sender       = 0x02F6903D426Be890BA4F882eD19cF6780ecdfA5b
+  Trx value wei    = 0
+  Trx hash         = 0xc38c11c7f51b22cf793088ef890483a5be1ee7689d17b84ae4585fb96cca59fc
+  Gas price wei    = 200000000
+
+**Comments:**
+
+- Line 4: We have deployed the modified contract. Here's our modified greeting.
+- Line 6: Further confirmation that our contract has changed. We are now using
+  a `HelloWorld1` contract that resides at a different `block number` than the
+  original version.
+
+Ready for more?
+Dive into `Using simpleth <../html/using.html>`_

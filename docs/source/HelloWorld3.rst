@@ -15,13 +15,35 @@ HelloWorld3
 
 STATE VARIABLES
 ###############
-None
+
+:greeting: holds the Hello World greeting.
+
+
 
 .. image:: ../images/section_separator.png
 
 METHODS
 #######
-None
+getGreeting()
+-------------
+:Purpose:  Return the greeting.
+
+:Notes:  Function returns a string with the current contract greeting.
+
+
+________________________________________
+
+setGreeting(string)
+-------------------
+:Purpose:  Changes the greeting.
+
+:Notes:  Update the contract greeting to this new message.
+
+**Parameters:**
+
+:\_greeting: new greeting message
+
+
 
 .. image:: ../images/section_separator.png
 

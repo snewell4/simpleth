@@ -15,7 +15,10 @@ HelloWorld1
 
 STATE VARIABLES
 ###############
-None
+
+:greeting: holds the Hello World greeting.
+
+
 
 .. image:: ../images/section_separator.png
 

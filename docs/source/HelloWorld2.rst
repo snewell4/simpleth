@@ -21,7 +21,12 @@ None
 
 METHODS
 #######
-None
+getGreeting()
+-------------
+:Purpose:  Return the Hello World greeting.
+
+:Notes:  Function returns a string with the greeting defined in the function.
+
 
 .. image:: ../images/section_separator.png
 

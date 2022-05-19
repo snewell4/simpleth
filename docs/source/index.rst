@@ -8,6 +8,7 @@ Simple Ethereum
    intro.rst
    installing.rst
    starting.rst
+   using.rst
    simpleth.rst
    utils.rst
    tools.rst

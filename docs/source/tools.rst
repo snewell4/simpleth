@@ -1,5 +1,5 @@
-Tools
-=====
+Tools - for simpleth developers
+===============================
 
 These are Command Prompt window commands used as tools
 by developers. Users of simpleth do not need these.

@@ -763,8 +763,10 @@ class Blockchain:
             {'hash': HexBytes('0xe6bbbc34f53ef4137de80dc63f156b820d71 )...}'
 
         .. seealso::
-           :meth:`run_trx` and :meth:`send_trx` return a
-           ``trx_hash``
+
+           - :meth:`run_trx` and :meth:`send_trx` return a
+             ``trx_hash`` .
+           - :class:`Results` can be used to get more details.
 
         """
         try:
@@ -2114,6 +2116,7 @@ class Contract:
                 f'HINT12: Did this trx call another trx, which failed?\n'
                 f'HINT13: Did you attempt to send ether to a non-payable trx?\n'
                 f'HINT14: Was sender a valid account that can submit a trx?\n'
+                f'HINT15: Does sender have enough Ether to run trx?\n'
                 )
             raise SimplEthError(message, code='C-080-080') from None
         return trx_hash
