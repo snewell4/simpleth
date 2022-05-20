@@ -283,6 +283,14 @@ class TestCallFcnGood:
         c = deploy_test_contract
         assert c.call_fcn('getNum', 2) == constants.INIT_NUM2
 
+    def test_call_fcn_getTypes(self, deploy_test_contract):
+        """Test call_fcn to get multiple values returned"""
+        # Since storeTypes() has not been called. The values
+        # returned are all initialized to default values.
+        # Just check the number of values returned.
+        c = deploy_test_contract
+        assert len(c.call_fcn('getTypes')) == 7
+
 
 @pytest.mark.usefixtures(
     'construct_never_deployed_test_contract',
