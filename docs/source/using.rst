@@ -508,16 +508,180 @@ eight events emitted. Print them.
 
 Transaction results
 *******************
+:class:`simpleth.Results` can be used after a transaction completes
+to see the details about it.
 
+.. code-block:: python
+   :linenos:
+   :caption: Get the results of a transaction
 
+   >>> from simpleth import Results
+   >>> receipt = c.run_trx(user, 'storeNums', 42, 42, 42)
+   >>> r = Results(c, receipt)
+   >>> r.block_number
+   7238
+   >>> r.gas_used
+   38764
+   >>> r.gas_price_wei
+   20000000000
+   >>> pp.pprint(r.transaction)
+   { 'blockHash': '0x02d037b430ff01bec0395f63af90c9f497d31ff5f2270bd1410056f54d166db0',
+     'blockNumber': 7238,
+     'from': '0x20e0A619E7Efb741a34b8EDC6251E2702e69bBDd',
+     'gas': 6000000,
+     'gasPrice': 20000000000,
+     'hash': '0xf73105578c2df584331431703b07fb4741fd1292d890febfc77ded9f4dfd0e91',
+     'input': '0x3e50ca2c000000000000000000000000000000000000000000000000000000000000002a000000000000000000000000000000000000000000000000000000000000002a000000000000000000000000000000000000000000000000000000000000002a',
+     'nonce': 209,
+     'r': '0xdd4bd76385c7c3d5775db03951c03b3c529383288f036baca55a05f8c5088d54',
+     's': '0x21c27b449376503812586b3ddf9edeb40a6e920b5f1f019d8f9f54243d2e29ad',
+     'to': '0x82592d5ae9E9ECc14b1740F330D3fAA00403a1F3',
+     'transactionIndex': 0,
+     'v': 37,
+     'value': 0}
+   >>> print(r)
+    Block number     = 7238
+    Block time epoch = 1653156539
+    Contract name    = Test
+    Contract address = 0x82592d5ae9E9ECc14b1740F330D3fAA00403a1F3
+    Trx name         = storeNums
+    Trx args         = {'_num0': 42, '_num1': 42, '_num2': 42}
+    Trx sender       = 0x20e0A619E7Efb741a34b8EDC6251E2702e69bBDd
+    Trx value wei    = 0
+    Trx hash         = 0xf73105578c2df584331431703b07fb4741fd1292d890febfc77ded9f4dfd0e91
+    Gas price wei    = 20000000000
+    Gas used         = 38764
+    Event name[0]    = NumsStored
+    Event args[0]    = {'timestamp': 1653156539, 'num0': 42, 'num1': 42, 'num2': 42}
+
+.. note::
+
+   - Line 3: Create a ``Results`` data object, ``r`` , for the ``storeNums``
+     transaction.
+   - Line 4: Get blockchain block number holding this mined transaction.
+   - Line 6: Get the units of gas consumed to execute the transaction.
+   - Line 8: Get the cost, in `wei` , for each unit of gas. This is a
+     constant when using Ganache.
+   - Line 10: Pretty print the ``web3.eth`` transaction information.
+   - Line 25: A ``Results`` object can be printed. Here's the output.
+
+   See :class:`simpleth.Results` documentation for the full list of
+   properties, including more from ``web3.eth`` .
 
 
 Handling Ether
 **************
-Convert.convert ether
-Contract.balance
-Contract.send_ether
-Contract.run_trx - transactions with ether
+``simpleth`` has a handful of methods and properties for handling Ether:
+
+#. :meth:`simpleth.Convert.denominations_to_wei` returns Ether
+   denominations and values.
+#. :meth:`simpleth.Convert.convert_ether` to convert amount from one
+   denomination to another.
+#. :meth:`simpleth.Blockchain.balance` returns the Ether balance,
+   in `wei` , for a specified address.
+#. :meth:`simpleth.Blockchain.send_ether` transfers the specified amount
+   of Ether, in `wei` , from one address to another.
+#. :meth:`simpleth.Contract.run_trx` has an optional parameter,
+   ``value_wei`` which will send the specified amount of Ether,
+   in `wei` , to the transaction.
+
+
+.. code-block:: python
+   :linenos:
+   :caption: Methods and properties to handle ether
+
+    >>> from simpleth import Convert
+    >>> v = Convert()
+    >>> pp.pprint(v.denominations_to_wei())
+    { 'babbage': 1000,
+      'ether': 1000000000000000000,
+      'femtoether': 1000,
+      'finney': 1000000000000000,
+      'gether': 1000000000000000000000000000,
+      'grand': 1000000000000000000000,
+      'gwei': 1000000000,
+      'kether': 1000000000000000000000,
+      'kwei': 1000,
+      'lovelace': 1000000,
+      'mether': 1000000000000000000000000,
+      'micro': 1000000000000,
+      'microether': 1000000000000,
+      'milli': 1000000000000000,
+      'milliether': 1000000000000000,
+      'mwei': 1000000,
+      'nano': 1000000000,
+      'nanoether': 1000000000,
+      'picoether': 1000000,
+      'shannon': 1000000000,
+      'szabo': 1000000000000,
+      'tether': 1000000000000000000000000000000,
+      'wei': 1}
+    >>> v.denominations_to_wei()['szabo']
+    1000000000000
+    >>>
+    >>> int(v.convert_ether(20, 'ether', 'gwei'))
+    20000000000
+    >>> float(v.convert_ether(100, 'wei', 'ether'))
+    1e-16
+    >>>
+    >>> b.balance(owner)
+    57816514559996298520
+    >>> float(v.convert_ether(b.balance(user), 'wei', 'ether'))
+    99.52299804
+    >>> b.balance(c.address)
+    10
+    >>>
+    >>> b.balance(user)
+    99522998040000000000
+    >>> trx_hash = b.send_ether(owner, user, 10)
+    >>> b.balance(user)
+    99522998040000000010
+    >>>
+    >>> b.balance(c.address)
+    10
+    >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+    >>> Results(c, receipt).trx_value_wei
+    100
+    >>> b.balance(c.address)
+    110
+    >>> b.send_ether(user, c.address, 500)
+    '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+    >>> b.balance(c.address)
+    610
+
+.. note::
+
+   - Line 3: :meth:`denominations_to_wei` returns a dictionary of
+     the names of all Ether denominations and the number of `wei`
+     in each. The same list, with much better formatting, is shown
+     in the `Example` for :meth:`simpleth.Convert.denominations_to_wei`
+   - Line 27: You can specify a denomination to get the value in `wei`.
+   - Line 30: :meth:`convert_ether` is the usual way to compute
+     a conversion between denominations. This line shows the number
+     of `gwei` in 20 `ether`. For best precision, the method returns
+     a ``decimal`` type. This example casts to an integer.
+   - Line 37: Get `user` balance in `ether`.
+   - Line 39: ``Test`` contract has a balance of 10 `wei`.
+   - Line 44: Move 10 `wei` from ``owner`` to ``user``.
+   - Line 46: ``user`` balance increased by 10 `wei`. Line 43 is
+     the *before* balance.
+   - Line 50: Example of sending ether to a transaction. The ``Test``
+     contract has the function, :meth:`storeNumsAndPay` that is
+     identical to our trusty, :meth:`storeNums`, except it is
+     defined as ``payable`` in the contract. This allows us to
+     send Ether when we run the transaction. Here, we are sending
+     10 `wei` .
+   - Line 51: Get the :meth:`trx_value_wei` sent to the
+     transaction. As expected, line 52 shows it is 100 `wei`.
+   - Line 54: Confirms that 100 `wei` were sent. The balance is
+     now 100 `wei` more than the *before* balance on line 49
+   - Line 55: You can also send ether to a contract. Here, 500
+     `wei` is sent to the ``Test`` contract. This is confirmed
+     in line 58 where the balance increased by 500 from the
+     *before* balance on line 54. **Important**: the contract must have
+     a ``payable`` `fallback` function in order to receive ether.
+     The ``Test`` contract has such a function as the final
+     function in the contract.
 
 
 
