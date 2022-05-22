@@ -839,11 +839,81 @@ quickly identify the cause of the error.
    that suits your purpose better in handling ``simpleth`` errors.
 
 
-Checks
-******
-Guards
-Assert
-Revert
+Transaction exceptions
+**********************
+Exceptions can be thrown by the Solidity Virtual Machine (VM) that runs
+the transaction when it encounters errors such as:
+
+- divide by zero
+- out of bounds array index
+- out of gas
+- out of range enum value
+- ether sent to a non-payable transaction
+- transaction sender was not valid
+- insufficient ether in sender balance to run the transaction
+
+These **transaction error exceptions** will cause ``SimplEthError``
+exceptions for your code to handle.
+
+Other exceptions can be thrown by the VM which are coded into
+a transaction. A contract may be checking for conditions where
+the transaction should not be allowed to proceed and needs to
+be `reverted`. The transaction can:
+
+#. Use the Solidity operation, ``require`` , to validate a
+   condition is met. If the condition is not met, a ``revert``
+   is done and an optional message string will be available
+   in the ``SimplEthError``
+
+   ``require`` is commonly used in a contract ``modifier`` and
+   a frequent type of modifier is to limit access to a transaction
+   to one or more specified accounts.
+
+#. Use of the Solidity operation, ``assert`` , to confirm an
+   expected condition. There is no message for a failed assert.
+
+   ``assert`` is commonly used to double-check a value meets
+   your expectations and should never fail.
+
+#. Use of the Solidity operation, ``revert`` , will cause the
+   transaction to stop and exit. There is no message for a
+   revert.
+
+   ``revert`` is used if conditions warrant stopping and undoing
+   all actions by the transaction.
+
+These **transaction exceptions** will cause ``SimplEthError``
+exceptions for your code to handle.
+
+.. code-block:: python
+   :linenos:
+   :caption: Handling transaction error exceptions
+
+
+.. code-block:: python
+   :linenos:
+   :caption: Handling transaction thrown exceptions - require
+
+
+.. code-block:: python
+   :linenos:
+   :caption: Handling transaction thrown exceptions - modifier
+
+
+.. code-block:: python
+   :linenos:
+   :caption: Handling transaction thrown exceptions - assert
+
+
+.. code-block:: python
+   :linenos:
+   :caption: Handling transaction thrown exceptions - revert
+
+
+
+
+Self-destruct
+*************
 
 
 
