@@ -842,7 +842,7 @@ quickly identify the cause of the error.
 Transaction exceptions
 **********************
 Exceptions can be thrown by the Solidity Virtual Machine (VM) that runs
-the transaction when it encounters errors such as:
+the transaction when it encounters runtime errors such as:
 
 - divide by zero
 - out of bounds array index
@@ -885,31 +885,287 @@ be `reverted`. The transaction can:
 These **transaction exceptions** will cause ``SimplEthError``
 exceptions for your code to handle.
 
-.. code-block:: python
+We'll go through some examples. First up is what a transaction error
+exception thrown by an out of bounds index value looks like in the
+Python interpreter and how it might look in your code with a
+``try`` / ``except``:
+
+.. code-block:: shell-session
    :linenos:
    :caption: Handling transaction error exceptions
 
+    >>> c.run_trx(user, 'storeNum', 4, 42)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 1838, in run_trx
+        trx_hash: T_HASH = self.submit_trx(
+      File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 2121, in submit_trx
+        raise SimplEthError(message, code='C-080-080') from None
+    simpleth.SimplEthError: [C-080-080] ERROR in Test().submit_trx(storeNum).
+    ValueError says:
+    HINT1:  Did you fail to pass a transaction require()?
+    HINT2:  Did you fail to pass a transaction guard modifier()?
+    HINT3:  Did you fail an assert()?
+    HINT4:  Did the transaction do a revert()?
+    HINT5:  Did you divide by zero?
+    HINT6:  Did you pass in an out-of-bounds array index?
+    HINT7:  Did you pass in an out-of-range enum value?
+    HINT8:  Was the gas limit too low (less than the base fee)?
+    HINT9:  Was the gas limit too high (greater than the block gas limit)?
+    HINT10: Was max_fee_gwei a float? (It must be an int)
+    HINT11: Was max_priority_fee_gwei a float? (It must be an int)
+    HINT12: Did this trx call another trx, which failed?
+    HINT13: Did you attempt to send ether to a non-payable trx?
+    HINT14: Was sender a valid account that can submit a trx?
+    HINT15: Does sender have enough Ether to run trx?
 
-.. code-block:: python
+    >>> try:
+    ...     c.run_trx(user, 'storeNum', 4, 42)
+    ... except SimplEthError as e:
+    ...     print(e.code)
+    ...     print(e.message)
+    ...     pp.pprint(e.exc_info)
+    ...
+    C-080-080
+    ERROR in Test().submit_trx(storeNum).
+    ValueError says:
+    HINT1:  Did you fail to pass a transaction require()?
+    HINT2:  Did you fail to pass a transaction guard modifier()?
+    HINT3:  Did you fail an assert()?
+    HINT4:  Did the transaction do a revert()?
+    HINT5:  Did you divide by zero?
+    HINT6:  Did you pass in an out-of-bounds array index?
+    HINT7:  Did you pass in an out-of-range enum value?
+    HINT8:  Was the gas limit too low (less than the base fee)?
+    HINT9:  Was the gas limit too high (greater than the block gas limit)?
+    HINT10: Was max_fee_gwei a float? (It must be an int)
+    HINT11: Was max_priority_fee_gwei a float? (It must be an int)
+    HINT12: Did this trx call another trx, which failed?
+    HINT13: Did you attempt to send ether to a non-payable trx?
+    HINT14: Was sender a valid account that can submit a trx?
+    HINT15: Does sender have enough Ether to run trx?
+
+    ( <class 'ValueError'>,
+      ValueError({'message': 'VM Exception while processing transaction: revert', 'code': -32000, 'data': {'0x626adb5f7ee14899b24639b052d9989e456bc7be2db5eb55605c2344f906e34f': {'error': 'revert', 'program_counter': 5528, 'return': '0x4e487b710000000000000000000000000000000000000000000000000000000000000032'}, 'stack': 'RuntimeError: VM Exception while processing transaction: revert\n    at Function.RuntimeError.fromResults (C:\\Program Files\\WindowsApps\\GanacheUI_2.5.4.0_x64__5dg5pnz03psnj\\app\\resources\\static\\node\\node_modules\\ganache-core\\lib\\utils\\runtimeerror.js:94:13)\n    at BlockchainDouble.processBlock (C:\\Program Files\\WindowsApps\\GanacheUI_2.5.4.0_x64__5dg5pnz03psnj\\app\\resources\\static\\node\\node_modules\\ganache-core\\lib\\blockchain_double.js:627:24)\n    at runMicrotasks (<anonymous>)\n    at processTicksAndRejections (internal/process/task_queues.js:93:5)', 'name': 'RuntimeError'}}),
+      <traceback object at 0x000001DE340EC980>)
+
+.. note::
+
+   - Line 1: Let's cause the VM to throw an exception due to an out
+     of bounds array index.  Here we are asking ``storeNum`` to put
+     the value of `42` into ``nums[4]``. This is a bad index value.
+     ``nums[]`` only has 3 elements.
+   - Line 2: You see the Python interpreter output with the exception.
+     The error output ends on line 25.
+   - Line 26: In a Python program, you might put the statement
+     in a ``try`` / ``except`` . The example prints out the properties
+     you could access. Your code would probably take steps to notify
+     the user of the error or other code to handle the problem; not just
+     print error info.
+   - Line 33: This is the error code for transaction error
+     exceptions. (The `Hints` list what could cause this error.)
+   - Line 34: This is the start of the error message text created by
+     ``simpleth``. The message text ends on line 51.
+   - Line 52: This is the pretty print of the exception info property.
+
+Next up, let's start looking at exceptions that are coded into the ``Test``
+contract. The transaction, ``sumTwoNums`` , has a ``require()`` that checks
+for the ``owner`` of the contract to be the address that sent the transaction,
+i.e., the owner is the only one allowed to use this transaction. The
+``require()`` has a message that explains the problem.
+
+.. code-block:: shell-session
    :linenos:
    :caption: Handling transaction thrown exceptions - require
 
+    >>> c.run_trx(user, 'sumTwoNums')
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 1838, in run_trx
+        trx_hash: T_HASH = self.submit_trx(
+      File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 2121, in submit_trx
+        raise SimplEthError(message, code='C-080-080') from None
+    simpleth.SimplEthError: [C-080-080] ERROR in Test().submit_trx(sumTwoNums).
+    ValueError says: must be owner to sum two nums
+    HINT1:  Did you fail to pass a transaction require()?
+    HINT2:  Did you fail to pass a transaction guard modifier()?
+    HINT3:  Did you fail an assert()?
+    HINT4:  Did the transaction do a revert()?
+    HINT5:  Did you divide by zero?
+    HINT6:  Did you pass in an out-of-bounds array index?
+    HINT7:  Did you pass in an out-of-range enum value?
+    HINT8:  Was the gas limit too low (less than the base fee)?
+    HINT9:  Was the gas limit too high (greater than the block gas limit)?
+    HINT10: Was max_fee_gwei a float? (It must be an int)
+    HINT11: Was max_priority_fee_gwei a float? (It must be an int)
+    HINT12: Did this trx call another trx, which failed?
+    HINT13: Did you attempt to send ether to a non-payable trx?
+    HINT14: Was sender a valid account that can submit a trx?
+    HINT15: Does sender have enough Ether to run trx?
+
+
+    >>> try:
+    ...     c.run_trx(user, 'sumTwoNums')
+    ... except SimplEthError as e:
+    ...     pp.pprint(e.exc_info)
+    ...
+    ( <class 'ValueError'>,
+      ValueError({'message': 'VM Exception while processing transaction: revert must be owner to sum two nums', 'code': -32000, 'data': {'0xf25b22c09e1e612f068c1319321a6b4b10073b97ec95cbd68d8cbaf3a9edd327': {'error': 'revert', 'program_counter': 1605, 'return': '0x08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001d6d757374206265206f776e657220746f2073756d2074776f206e756d73000000', 'reason': 'must be owner to sum two nums'}, 'stack': 'RuntimeError: VM Exception while processing transaction: revert must be owner to sum two nums\n    at Function.RuntimeError.fromResults (C:\\Program Files\\WindowsApps\\GanacheUI_2.5.4.0_x64__5dg5pnz03psnj\\app\\resources\\static\\node\\node_modules\\ganache-core\\lib\\utils\\runtimeerror.js:94:13)\n    at BlockchainDouble.processBlock (C:\\Program Files\\WindowsApps\\GanacheUI_2.5.4.0_x64__5dg5pnz03psnj\\app\\resources\\static\\node\\node_modules\\ganache-core\\lib\\blockchain_double.js:627:24)\n    at processTicksAndRejections (internal/process/task_queues.js:93:5)', 'name': 'RuntimeError'}}),
+      <traceback object at 0x000001DE3411AA80>)
+
+    >>> try:
+    ...     c.run_trx(user, 'sumTwoNums')
+    ... except SimplEthError as e:
+    ...     msg = e.exc_info[1].args[0]['message']
+    ...
+    >>> msg
+    'VM Exception while processing transaction: revert must be owner to sum two nums'
+    >>> msg.split('revert')[1].strip()
+    'must be owner to sum two nums'
+
+.. note::
+
+   - Line 1: ``user`` is not allowed to use this transaction. The transaction's
+     ``require()`` reverts, throws an exception, and sends back a message.
+   - Line 9: Shows the message. It has been passed back as part of the
+     ``ValueError`` exception, which ``SimplEthError`` catches.
+   - Line 27: Uses a ``try`` / ``except`` to print the ``ValueError`
+     information. The ``revert()`` message is show as part of the
+     ``ValueError message``.
+   - Line 36: Is like the code on line27. Here, the string  that was
+     used in the ``revert()`` in the transaction is pulled out of
+     the exception info. You could use this approach to present your
+     program's user with the excact message coded in the contract.
+
+Let's look at a modifier that fails. ``Test`` has a transaction, ``setOwner``
+that is guarded by a modifier ``isOwner``. This is implemented with a
+``require()``. This example is included because modifiers are very common
+and you'll see they act just like the previous example of a failed
+``require()``
 
 .. code-block:: python
    :linenos:
    :caption: Handling transaction thrown exceptions - modifier
 
+    >>> try:
+    ...     c.run_trx(user, 'setOwner', user)
+    ... except SimplEthError as e:
+    ...     msg = e.exc_info[1].args[0]['message']
+    ...
+    >>> msg.split('revert')[1].strip()
+    'Must be owner'
 
-.. code-block:: python
+.. note::
+
+   - Line 2: This will fail the ``isOwner`` modifier since our ``user``
+     account does not own ``Test`` .
+   - Line 6: Shows how to obtain the message coded in the contract for the
+     ``require()`` used in the ``modifier`` . Your program would probably
+     want to pass this error message back to your user.
+
+This example shows a failed ``assert()``. There is no message associated
+with an assert. If the test fails, the transaction is reverted and a Python
+``ValueError`` is thrown.
+
+.. code-block:: shell-session
    :linenos:
    :caption: Handling transaction thrown exceptions - assert
 
+    >>> c.run_trx(user, 'assertGreaterThan10', 9)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 1838, in run_trx
+        trx_hash: T_HASH = self.submit_trx(
+      File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 2121, in submit_trx
+        raise SimplEthError(message, code='C-080-080') from None
+    simpleth.SimplEthError: [C-080-080] ERROR in Test().submit_trx(assertGreaterThan10).
+    ValueError says:
+    HINT1:  Did you fail to pass a transaction require()?
+    HINT2:  Did you fail to pass a transaction guard modifier()?
+    HINT3:  Did you fail an assert()?
+    HINT4:  Did the transaction do a revert()?
+    HINT5:  Did you divide by zero?
+    HINT6:  Did you pass in an out-of-bounds array index?
+    HINT7:  Did you pass in an out-of-range enum value?
+    HINT8:  Was the gas limit too low (less than the base fee)?
+    HINT9:  Was the gas limit too high (greater than the block gas limit)?
+    HINT10: Was max_fee_gwei a float? (It must be an int)
+    HINT11: Was max_priority_fee_gwei a float? (It must be an int)
+    HINT12: Did this trx call another trx, which failed?
+    HINT13: Did you attempt to send ether to a non-payable trx?
+    HINT14: Was sender a valid account that can submit a trx?
+    HINT15: Does sender have enough Ether to run trx?
 
-.. code-block:: python
+    >>> try:
+    ...     c.run_trx(user, 'assertGreaterThan10', 9)
+    ... except SimplEthError as e:
+    ...     pp.pprint(e.exc_info)
+    ...
+    ( <class 'ValueError'>,
+      ValueError({'message': 'VM Exception while processing transaction: revert', 'code': -32000, 'data': {'0x5d3bee4eee5c9b320eff083666910bf9ff0ab0bb9c9790f27226d4ec78685cb9': {'error': 'revert', 'program_counter': 5664, 'return': '0x4e487b710000000000000000000000000000000000000000000000000000000000000001'}, 'stack': 'RuntimeError: VM Exception while processing transaction: revert\n    at Function.RuntimeError.fromResults (C:\\Program Files\\WindowsApps\\GanacheUI_2.5.4.0_x64__5dg5pnz03psnj\\app\\resources\\static\\node\\node_modules\\ganache-core\\lib\\utils\\runtimeerror.js:94:13)\n    at BlockchainDouble.processBlock (C:\\Program Files\\WindowsApps\\GanacheUI_2.5.4.0_x64__5dg5pnz03psnj\\app\\resources\\static\\node\\node_modules\\ganache-core\\lib\\blockchain_double.js:627:24)\n    at runMicrotasks (<anonymous>)\n    at processTicksAndRejections (internal/process/task_queues.js:93:5)', 'name': 'RuntimeError'}}),
+      <traceback object at 0x000001DE3411BAC0>)
+
+.. note::
+
+   - Line 1: This transaction will fail its ``assert()``. We are passing
+     in an arg of `9`. The assert requires that arg to be greater than 10.
+   - Line 2: This is the output in the interpreter and continues to line25.
+     Note that there is nothing passed back in line 9. Unlike in some
+     earlier examples where a message from the contract was shown.
+   - Line 26: As before, use a ``try`` / ``except`` to pretty print
+     the ``ValueError`` exception info. There's nothing unique to
+     pass back to our user.
+
+Finally, let's look at what happens when a transaction codes a ``revert()``
+statement. ``Test`` has a transaction, ``revertTransaction`` with only
+one statement, a ``revert()``. A ``revert()`` can have a message. We'll
+look for it in the same manner we did for ``require()``:
+
+.. code-block:: shell-session
    :linenos:
    :caption: Handling transaction thrown exceptions - revert
 
+    >>> c.run_trx(user, 'revertTransaction')
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 1838, in run_trx
+        trx_hash: T_HASH = self.submit_trx(
+      File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 2121, in submit_trx
+        raise SimplEthError(message, code='C-080-080') from None
+    simpleth.SimplEthError: [C-080-080] ERROR in Test().submit_trx(revertTransaction).
+    ValueError says: Transaction always Reverts.
+    HINT1:  Did you fail to pass a transaction require()?
+    HINT2:  Did you fail to pass a transaction guard modifier()?
+    HINT3:  Did you fail an assert()?
+    HINT4:  Did the transaction do a revert()?
+    HINT5:  Did you divide by zero?
+    HINT6:  Did you pass in an out-of-bounds array index?
+    HINT7:  Did you pass in an out-of-range enum value?
+    HINT8:  Was the gas limit too low (less than the base fee)?
+    HINT9:  Was the gas limit too high (greater than the block gas limit)?
+    HINT10: Was max_fee_gwei a float? (It must be an int)
+    HINT11: Was max_priority_fee_gwei a float? (It must be an int)
+    HINT12: Did this trx call another trx, which failed?
+    HINT13: Did you attempt to send ether to a non-payable trx?
+    HINT14: Was sender a valid account that can submit a trx?
+    HINT15: Does sender have enough Ether to run trx?
 
+    >>>
+    >>> try:
+    ...     c.run_trx(user, 'revertTransaction')
+    ... except SimplEthError as e:
+    ...     msg = e.exc_info[1].args[0]['message']
+    ...
+    >>> msg.split('revert')[1].strip()
+    'Transaction always Reverts.'
+
+.. note::
+
+   - Line 1: Call the transaction that always reverts.
+   - Line 9: Here's the way the revert message will appear in the
+     interpreter.
+   - Line 33: Here's the revert message after it was extracted from the
+     ``ValueError`` info.
 
 
 Self-destruct
