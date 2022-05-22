@@ -618,25 +618,25 @@ Handling Ether
       'wei': 1}
     >>> v.denominations_to_wei()['szabo']
     1000000000000
-    >>>
+
     >>> int(v.convert_ether(20, 'ether', 'gwei'))
     20000000000
     >>> float(v.convert_ether(100, 'wei', 'ether'))
     1e-16
-    >>>
+
     >>> b.balance(owner)
     57816514559996298520
     >>> float(v.convert_ether(b.balance(user), 'wei', 'ether'))
     99.52299804
     >>> b.balance(c.address)
     10
-    >>>
+
     >>> b.balance(user)
     99522998040000000000
     >>> trx_hash = b.send_ether(owner, user, 10)
     >>> b.balance(user)
     99522998040000000010
-    >>>
+
     >>> b.balance(c.address)
     10
     >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
@@ -685,15 +685,158 @@ Handling Ether
 
 
 
-Handling epoch time
-*******************
-Convert.to_local_time_string
-Example of Results.block_time_epoch
-Mention Blockchain.block_time_epoch and block_time_string
+Handling time
+*************
+``simpleth`` provides support for handing time, especially
+epoch time:
+
+#. :meth:`simpleth.Convert.epoch_time` returns the current time in epoch seconds.
+#. :meth:`simpleth.Convert.local_time_string` returns the current time as a string.
+#. :meth:`simpleth.Convert.to_local_time_string` converts epoch seconds to a
+   time string.
+
+.. code-block:: python
+   :linenos:
+   :caption: Handling time
+
+    >>> v.local_time_string()
+    '2022-05-21 18:03:41'
+    >>> v.local_time_string('%A %I:%M:%S %p')
+    'Saturday 06:04:19 PM'
+
+    >>> now = v.epoch_time()
+    >>> now
+    1653175079.5026972
+    >>> v.to_local_time_string(now)
+    '2022-05-21 18:17:59'
+    >>> v.to_local_time_string(now, '%A %I:%M:%S %p')
+    'Saturday 06:17:59 PM'
+
+    >>> receipt = c.run_trx(user, 'storeNums', 3, 5, 7)
+    >>> r = Results(c, receipt)
+    >>> r.block_time_epoch
+    1653175121
+    >>> r.event_args[0]['timestamp']
+    1653175121
+    >>> v.to_local_time_string(r.block_time_epoch)
+    '2022-05-21 18:18:41'
+    >>> v.to_local_time_string(r.event_args[0]['timestamp'])
+    '2022-05-21 18:18:41'
+
+.. note::
+
+   - Line 1: Get the current time using the default time string format.
+   - Line 2: Get the current time and specify the time string format
+     codes.
+   - Line 6: Get the current time in epoch seconds. It is shown on line 8.
+   - Line 9: Convert that epoch time to the default time string.
+   - Line 10: Convert it to the specified format.
+   - Line 14: Run the usual transaction to show how time conversion might
+     help. So far, we've always seen timestamps in epoch seconds.
+     Converting to a time format string may make them more useful.
+   - Line 17: Shows the transaction's block time in epoch seconds.
+   - Line 21: Shows that block time in a time format string.
+   - Line 19: Same for the ``NumsStored`` arg for the contract's
+     ``block.timestamp``. Here's the epoch seconds used by Solidity
+     and line 23 converts it to a time string.
+
+   See the list of `Python Time String Format Codes \
+   <https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes>`_
+   for details on directives available for the strings.
+
 
 simpleth exceptions
 *******************
+:class:`simpleth.SimplEthError` throws exceptions for errors in all
+``simpleth`` classes. The intent is to let you code to catch this
+single exception to simplify error-handling and provide hints to
+quickly identify the cause of the error.
 
+.. code-block:: python
+   :linenos:
+   :caption: Getting a SimplEthError in the Python interpreter
+
+    >>> c = Contract('bogus')
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 943, in __init__
+        self._abi: List = self._get_artifact_abi()
+      File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 2151, in _get_artifact_abi
+        raise SimplEthError(message, code='C-100-010') from None
+    simpleth.SimplEthError: [C-100-010] ERROR in bogus()._get_artifact_abi(). Unable to read ABI file.
+    Full path: C:/Users/snewe/OneDrive/Desktop/simpleth/artifacts/bogus.abi
+    Contract name of "bogus" is bad.
+    HINT 1: Check the spelling of the contract name.
+    HINT 2: You may need to do a new compile.
+
+.. note::
+
+   - Line 1: Cause an exception with a bad `contract` name. This is the
+     typical type of message you will see when using the Python interpreter.
+   - Line 8: This is the start of the ``SimplEthError`` message and hints
+     on possible causes.
+
+.. code-block:: shell-session
+   :linenos:
+   :caption: Handling a SimplEthError
+
+    >>> try:
+    ...     c = Contract('bogus')
+    ... except SimplEthError as e:
+    ...     print(e)
+    ...
+    [C-100-010] ERROR in bogus()._get_artifact_abi(). Unable to read ABI file.
+    Full path: C:/Users/snewe/OneDrive/Desktop/simpleth/artifacts/bogus.abi
+    Contract name of "bogus" is bad.
+    HINT 1: Check the spelling of the contract name.
+    HINT 2: You may need to do a new compile.
+
+.. note::
+
+   - Line 1: Use a ``try``/``except`` around the line to create the
+     ``Contract`` object.
+   - Line 4: Our only action with the exception is to print it.
+     A program could take action to fix the problem at this point.
+
+
+.. code-block:: shell-session
+   :linenos:
+   :caption: Properties of a SimplEthError
+
+    >>> try:
+    ...     c = Contract('bogus')
+    ... except SimplEthError as e:
+    ...     print(f'code = \n{e.code}')
+    ...     print(f'message = \n{e.message}')
+    ...     print(f'exc_info =')
+    ...     pp.pprint({e.exc_info})
+    ...
+    code =
+    C-100-010
+    message =
+    ERROR in bogus()._get_artifact_abi(). Unable to read ABI file.
+    Full path: C:/Users/snewe/OneDrive/Desktop/simpleth/artifacts/bogus.abi
+    Contract name of "bogus" is bad.
+    HINT 1: Check the spelling of the contract name.
+    HINT 2: You may need to do a new compile.
+
+    exc_info =
+    { ( <class 'FileNotFoundError'>,
+        FileNotFoundError(2, 'No such file or directory'),
+        <traceback object at 0x000001DE340EE240>)}
+
+.. note::
+
+   - Line 4: There are three properties you can access. First is the
+     unique ``code`` string for the exception. It is accessed here and
+     its value is printed on line 10.
+   - Line 5: The text of the error message is accessed here and printed
+     on lines 12 through 16.
+   - Line 7: The exception information is accessed here and pretty
+     printed on lines 19 through 21.
+
+   You can access these properties instead of the entire message if
+   that suits your purpose better in handling ``simpleth`` errors.
 
 
 Checks
