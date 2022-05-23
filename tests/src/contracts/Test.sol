@@ -1,4 +1,4 @@
- pragma solidity ^0.8;
+pragma solidity ^0.8;
 
 // SPDX-FileCopyrightText: Copyright 2021 Stephen R. Newell
 // SPDX-License-Identifier: MIT

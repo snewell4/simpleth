@@ -502,7 +502,6 @@ eight events emitted. Print them.
 
    And so on.
 
-
 .. image:: ../images/section_separator.png
 
 
@@ -567,6 +566,8 @@ to see the details about it.
 
    See :class:`simpleth.Results` documentation for the full list of
    properties, including more from ``web3.eth`` .
+
+.. image:: ../images/section_separator.png
 
 
 Handling Ether
@@ -683,6 +684,7 @@ Handling Ether
      The ``Test`` contract has such a function as the final
      function in the contract.
 
+.. image:: ../images/section_separator.png
 
 
 Handling time
@@ -743,6 +745,8 @@ epoch time:
    See the list of `Python Time String Format Codes \
    <https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes>`_
    for details on directives available for the strings.
+
+.. image:: ../images/section_separator.png
 
 
 simpleth exceptions
@@ -837,6 +841,8 @@ quickly identify the cause of the error.
 
    You can access these properties instead of the entire message if
    that suits your purpose better in handling ``simpleth`` errors.
+
+.. image:: ../images/section_separator.png
 
 
 Transaction exceptions
@@ -1167,18 +1173,218 @@ look for it in the same manner we did for ``require()``:
    - Line 33: Here's the revert message after it was extracted from the
      ``ValueError`` info.
 
-
-Self-destruct
-*************
+.. image:: ../images/section_separator.png
 
 
+Selfdestruct
+************
+Solidity includes the ``selfdestruct()`` function.
+The ``Test`` contract includes a transaction, :meth:`destroy`
+which issues ``selfdestruct`` and makes the contract unusable. As far as
+``simpleth`` goes this is just another transaction, but it makes for
+an interesting example:
 
-Send transactions
-*****************
+.. code-block:: shell-session
+   :linenos:
+   :caption: Destroying Test with a selfdestruct
+
+    >>> b.balance(c.address)
+    610
+    >>> b.balance(b.accounts[3])
+    99889613060000000010
+    >>> receipt = c.run_trx(owner, 'destroy', b.accounts[3])
+
+    >>> b.balance(c.address)
+    0
+    >>> b.balance(b.accounts[3])
+    99889613060000000620
+    >>> c.get_var('owner')
+    Traceback (most recent call last):
+    ... snip ...
+    simpleth.SimplEthError: [C-060-020] ERROR in Test().getvar(): Unable to get variable owner.
+    BadFunctionCallOutput says Could not transact with/call contract function, is contract deployed correctly and chain synced?
+    HINT1: Has contract been destroyed with selfdestruct()?
+    HINT2: Has contract not yet been deployed on a new chain?
+
+    >>> c.call_fcn('getNums')
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 1253, in call_fcn
+        raise SimplEthError(message, code='C-010-030') from None
+    simpleth.SimplEthError: [C-010-030] ERROR in Test().call_fcn().
+    Unable to call function getNums.
+    BadFunctionCallOutput says Could not transact with/call contract function, is contract deployed correctly and chain synced?
+    HINT1: Has contract been destroyed with a selfdestruct()?
+    HINT2: Does contract need a new deploy?
+
+    >>> receipt = c.run_trx(user, 'storeNums', 2, 4, 6)
+    >>> print(Results(c, receipt))
+    Block number     = 7580
+    Block time epoch = 1653320103
+    Contract name    = Test
+    Contract address = 0x82592d5ae9E9ECc14b1740F330D3fAA00403a1F3
+    Trx name         = storeNums
+    Trx args         = {'_num0': 2, '_num1': 4, '_num2': 6}
+    Trx sender       = 0x20e0A619E7Efb741a34b8EDC6251E2702e69bBDd
+    Trx value wei    = 0
+    Trx hash         = 0xb54e479495ea815943fa08069566c5cf68aaf70c6d42a23f7590bf399e0d6be1
+    Gas price wei    = 20000000000
+    Gas used         = 21484
+
+    >>> e=EventSearch(c, 'NumsStored')
+    >>> e.get_old()
+    []
+
+.. note::
+
+   - Line 2: Ether balance of ``Test`` contract.
+   - Line 4: Ether balance of the fourth Ganache account.
+   - Line 5: Run :meth:`destroy`. It takes one argument, the address
+     of an account to receive all the Ether in the contract's balance.
+     Once you have destroyed a contract, you can no longer access its
+     Ether. Save it now or lose it.
+   - Line 8: Contract has no Ether.
+   - Line 10: Fourth account got it.
+   - Line 11: If you try to get a public state variable's value,
+     you will get an error.
+   - Line 19: If you try to call a function, you will get a
+     slightly different error.
+   - Line 30: Beware, if you try to run a transaction. It does not
+     generate any error. For a destroyed contract, transactions will
+     not be able to change any values on the blockchain. They look like
+     they run, but they have no effect.
+   - Line 31: The results do not show any event being emitted.
+     :meth:`storeNums` always emits :meth:`NumsStored`.
+   - Line 46: Confirms that the :meth:`NumsStored` event was not
+     emitted. Because the contract is destroyed, the transaction
+     did not alter the blockchain.
+
+.. image:: ../images/section_separator.png
 
 
+Send transactions / Get receipt
+*******************************
+The trio of ``simpleth`` methods described here are an alternative
+to using :meth:`run_trx` . If you are happy with using `run_trx`,
+you can skip this.
 
-Get transaction receipts
-************************
+If you are curious, read on...
 
+Ganache spoils us. It mines transactions immediately. You submit a
+transaction and can immediately get the results.
 
+In a production application, running on a testnet or the mainnet,
+this is not the case. There is a delay
+between the time you submit a transaction and the time in which it is
+added to a block and mined. This delay could be a few seconds or many
+hours (or never).
+
+You might chose to use
+:meth:`simpleth.Contract.send_trx` with
+:meth:`simpleth.Contract.get_trx_receipt` or
+:meth:`simpleth.Contract.get_trx_receipt_wait`
+to give you more flexibility in managing the mining delay.
+
+:meth:`send_trx` submits the transaction and
+immediately returns the `transaction hash`.
+The `hash` is a string that acts as the identifier of the
+transaction.
+
+Using that `hash` as a parameter, you can call :meth:`get_trx_receipt`
+to do a quick check to see if the transaction has finished. If not,
+you can wait for some period time and check again. You would repeat this
+until the transaction finishes or you give up. :meth:`get_trx_receipt`
+makes its check and returns immediately.
+
+Alternatively, you can use the `hash` as a parameter
+and call :meth:`get_trx_receipt_wait`. This does not return
+immediately. It will periodically check to see if the transaction
+has finished and returns when it has completed or
+it times out before finding the transaction completed.
+There are parameters for how frequently to poll and how long
+to keep trying before timing out. Note that this call will
+block until it returns.
+
+Both :meth:`get_trx_receipt` and :meth:`get_trx_receipt_wait`
+return either ``None`` if the transaction has not yet been
+mined or ``transaction receipt`` if the transaction completed.
+Just like with :meth:`run_trx`, you can use the `receipt` to
+get the :class:`Results`.
+
+**Relationship to run_trx()**
+
+Under the covers, :meth:`run_trx` simply makes a call to
+:meth:`send_trx` and then a call to :meth:`get_trx_receipt_wait`.
+You see that the parameters for :meth:`run_trx` are the union of
+the parameters of :meth:`send_trx` and :meth:`get_trx_receipt_wait`.
+
+:meth:`run_trx` blocks until the transaction completes or it times out.
+
+:meth:`run_trx` only throws one exception. When you use
+:meth:`run_trx` most the exceptions
+are thrown by :meth:`send_trx` or :meth:`get_trx_receipt_wait` .
+
+**Using Ganache with a mining delay**
+
+You can simulate a delay in completing a transaction. Ganache
+setting's allow you to change the from the default of `automine`
+(mine the transaction immediately) to setting a constant number
+of seconds before the transaction is put into a new block on the
+chain. This allows you to, say, set a delay of ten seconds in
+order to test use of the periodic checking in :meth:`get_trx_receipt_wait`
+or :meth:`run_trx`.
+
+.. code-block:: python
+   :linenos:
+   :caption: Send transaction and get the receipt
+   :emphasize-lines: 1,2,18,21
+
+    >>> trx_hash = c.submit_trx(user, 'storeNums', 1, 2, 3)
+    >>> receipt = c.get_trx_receipt(trx_hash)
+    >>> print(Results(c, receipt))
+    Block number     = 7583
+    Block time epoch = 1653324228
+    Contract name    = Test
+    Contract address = 0xe837B30EFA8Bd88De16276b6009a29ef70b1b693
+    Trx name         = storeNums
+    Trx args         = {'_num0': 1, '_num1': 2, '_num2': 3}
+    Trx sender       = 0x20e0A619E7Efb741a34b8EDC6251E2702e69bBDd
+    Trx value wei    = 0
+    Trx hash         = 0xae9ac7ab7679b9f808e766153c5dd979fb78ed69cbed54c1e19ed9d0d5c8a881
+    Gas price wei    = 20000000000
+    Gas used         = 26164
+    Event name[0]    = NumsStored
+    Event args[0]    = {'timestamp': 1653324228, 'num0': 1, 'num1': 2, 'num2': 3}
+
+    >>> trx_hash = c.submit_trx(user, 'storeNums', 1, 2, 3)
+    >>> trx_hash
+    '0x0fe19c89b66c424c4696b2323b68dd72ef2de731709520cc5c24a78b927027a8'
+    >>> receipt = c.get_trx_receipt_wait(trx_hash, timeout=3600, poll_latency=15)
+    >>> print(Results(c, receipt))
+    Block number     = 7584
+    Block time epoch = 1653324309
+    Contract name    = Test
+    Contract address = 0xe837B30EFA8Bd88De16276b6009a29ef70b1b693
+    Trx name         = storeNums
+    Trx args         = {'_num0': 1, '_num1': 2, '_num2': 3}
+    Trx sender       = 0x20e0A619E7Efb741a34b8EDC6251E2702e69bBDd
+    Trx value wei    = 0
+    Trx hash         = 0x0fe19c89b66c424c4696b2323b68dd72ef2de731709520cc5c24a78b927027a8
+    Gas price wei    = 20000000000
+    Gas used         = 26164
+    Event name[0]    = NumsStored
+    Event args[0]    = {'timestamp': 1653324309, 'num0': 1, 'num1': 2, 'num2': 3}
+
+.. note::
+
+   - Line 1: Instead of ``run_trx`` use ``submit_trx`` to run :meth:`storeNums`
+     transaction. The transaction's `hash` is returned.
+   - Line 2: Use that `hash` to get the transaction's `receipt`.
+   - Line 3: As before, we can get the results using that `receipt`.
+   - Line 18: Sumit again.
+   - Line 20: Here's our `hash`.
+   - Line 21: Use ``get_trx_receipt_wait`` this time and specify overrides
+     to the defaults for ``timeout`` and ``poll_latency``. Since my Ganache is not
+     doing any mining delay these parameters do not come into play and
+     this returns immediately with the `receipt`.
+   - Line 22: Get and print the results.
