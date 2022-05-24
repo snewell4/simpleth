@@ -23,8 +23,8 @@ For now, the suggested method is to download ``sipmleth.py`` , found in
 ``simpleth.py``, under your ``<project dir>`` in same directory as your
 Python source files.
 
-Solidity compiler
-*****************
+3) Download Solidity compiler
+*****************************
 Download from
 https://github.com/ethereum/solidity/releases
 and save it as ``<project dir>/solc/solc.exe``.
@@ -36,7 +36,7 @@ directory.
 
 
 
-3) Customizing
+4) Customizing
 **************
 
 simpleth.py
@@ -59,7 +59,7 @@ on a terminal command line.
 Python?)
 
 
-4) Usage
+5) Usage
 ********
 To use `simpleth` from your interpreter, script, or app, include the
 following line.

@@ -49,7 +49,7 @@ This package is intended to make it easier to get started
 with Ganache, Solidity, and Python to build simple- to medium-complexity
 blockchain apps for learning or prototyping.
 
-The first version of `simpleth` was created as part of an academic
+An earlier version of `simpleth` was created as part of an academic
 research project to design a supply chain for non-profit organizations
 A single-user `Flask` app was created for a medium-complexity proof
 of concept that used `simpleth`.
@@ -57,12 +57,21 @@ of concept that used `simpleth`.
 
 Limitations
 ***********
-:class:`simpleth` is restricted to the following environment:
+``simpleth`` is restricted to the following environment:
 
 -  Windows 10 or 11 (have not tried it on iOS or Linux)
 -  Python 3
 -  Ganache blockchain
 -  Solidity contracts
+-  Learning / Prototyping / Proof of Concept
+
+.. danger::
+   Do not use ``simpleth`` in a production environment, especially one with
+   cryptocurrency or other assets of value.
+
+   No security audits have been done on ``simpleth``.
+
+   No production dapps have used ``simpleth``.
 
 
 .. _sw_levels_label:
@@ -88,24 +97,40 @@ Framework/Tools used
 -  mypy - static type checking
 -  git - version control
 
+simpleth Documentation
+**********************
 
-Installation
-************
++--------------+-------------------------------------------+
+| Type         | Title (Hot-linked)                        |
++==============+===========================================+
+| Installation | :doc:`Installing <installing>`            |
++--------------+-------------------------------------------+
+| Tutorial     | :doc:`Hello World <starting>`             |
++--------------+-------------------------------------------+
+| User Guide   | :doc:`Using <using>`                      |
++--------------+-------------------------------------------+
+| Reference    | :doc:`Simpleth Reference <simpleth>`      |
++--------------+-------------------------------------------+
 
-See the :doc:`Installing <installing>` document.
+Other Documentation
+*******************
 
+.. glossary::
 
-Tutorial
-********
+   :doc:`Smart Contract Reference <contracts>`
+       Formatted ``Natspec`` comments in the contracts create a reference
+       document for all contracts used for examples and testing.
 
-See the :doc:`Getting Started - Hello World(s) <starting>` document
-for Python scripts for a few trivial smart contracts.
+   :doc:`Utilities for simpleth users <utils>`
+       Python programs that simpleth users may find
+       useful. Both are documented with formatted ``docstrings`` from
+       the code.
 
+   :doc:`Tools for simpleth developers <tools>`
+       Windows batch scripts and Python programs that can be used by
+       developers modifying the ``simpleth`` classes. The Python
+       program documentation is formatted ``docstrings``
 
-Reference
-*********
-
-See the :doc:`simpleth` documentation. It includes
-details of the classes, properties, and methods plus
-example Python code snippets for all methods.
-
+   :doc:`reST Style Guide <style>`
+       Examples of ``reStructuredText`` formatting to be used in all
+       ``simpleth`` documentation. Uses ``style.rst`` as input.

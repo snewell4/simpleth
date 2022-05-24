@@ -1,5 +1,5 @@
-simpleth - Reference
-====================
+Simpleth Reference
+==================
 .. conf.py sets options for automodule
 .. automodule:: simpleth
 

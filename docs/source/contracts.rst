@@ -1,5 +1,5 @@
-Smart Contracts
-===============
+Smart Contract Reference
+========================
 
 .. include:: HelloWorld1.rst
 .. include:: HelloWorld2.rst

@@ -1,22 +1,22 @@
 """
-Convert a smart contract's Natspec comments to Read the Docs input format.
+Convert a smart contract's Natspec comments to reStructuredText format.
 
 This is used for one step in building `simpleth` project `Read the Docs` pages
-for the simpleth project's smart contracts.
+for the simpleth project's smart contracts:
 
-``compile.py`` creates the input files and writes them to the `artifact`
-directory.
+#. ``compile.py`` creates the input files and writes them to the `artifact`
+   directory.
+#. ``nat2rst.py`` reads those input files and creates a `reST` document.
+#. The Sphinx command ``make html`` processes the `reST` files and builds
+   the `Read the Docs` HTML files.
 
-``make html`` processes the output files found in the `docs/source`
-directory.
-
-Inputs two JSON files,  ``<contract>.docdev`` and ``<contract>.docuser``,
+Inputs two JSON files, ``<contract>.docdev`` and ``<contract>.docuser``,
 that are created by the Solidity compiler that hold the Natspec comments
 from the smart contract source.
 
 The default for ``in_dir`` is the `artifact` directory.
 
-Outputs one `ReStructured Text` file, ``<contract>.rst``, with the markup
+Outputs one `reStructuredText` file, ``<contract>.rst``, with the markup
 suitable for processing by the `Sphinx` command, ``make html``, that is used
 to generate an HTML page that shows the smart contract's `Natspec` comments
 in a `Read the Docs` style.
@@ -24,20 +24,21 @@ in a `Read the Docs` style.
 The default for ``out_dir`` is the directory where `Sphinx` looks for the `rst`
 files used to build the documentation for `simpleth`.
 
+
 **USAGE**
 
 .. code-block:: none
 
-   nat2rtd.py [-h] [-i <IN_DIR>] [-s | -o <OUT_DIR>] <contract> [<contract> ...]
+   nat2rst.py [-h] [-i <IN_DIR>] [-s | -o <OUT_DIR>] <contract> [<contract> ...]
 
 
 **EXAMPLES**
 
 .. code-block::
 
-   nat2rtd.py HelloWorld1.sol
-   nat2rtd.py -f txt -s HelloWorld1.sol
-   nat2rtd.py -f rtd -i ../artifacts -o ../doc HelloWorld1.sol HelloWorld2.sol
+   nat2rst.py HelloWorld1.sol
+   nat2rst.py -f txt -s HelloWorld1.sol
+   nat2rst.py -f rtd -i ../artifacts -o ../doc HelloWorld1.sol HelloWorld2.sol
 
 
 **ASSUMES**
@@ -46,18 +47,18 @@ The file type, ``.py``, has been associated with `Python`. Otherwise, use:
 
 .. code-block:: none
 
-   python nat2rtd.py <args>
+   python nat2rst.py <args>
 
 
 **NOTES**
 
-   -  ``nat2rtd.py`` is one step in the workflow to create RTD HTML pages
+   -  ``nat2rst.py`` is one step in the workflow to create RTD HTML pages
       of documentation. The steps:
 
           1) ``compile.py <contract>`` will run the Solidity compiler to
              create artifacts, including JSON documentation files:
              ``<contract>.docdev`` and ``<contract>.docuser``.
-          2) ``nat2rtd.py <contract>`` reads those two JSON files and
+          2) ``nat2rst.py <contract>`` reads those two JSON files and
              creates the reST formatted documentation file: ``<contract>.rst``.
           3) ``docmake`` runs the Sphinx command, ``make html``. and
              will convert that reST file to HTML in ReadTheDocs format.
@@ -107,6 +108,14 @@ DOCDEV_FILE_SUFFIX = '.docdev'
 CONTRACT_SEPARATOR_IMAGE_FILE = '../images/contract_separator.png'
 SECTION_SEPARATOR_IMAGE_FILE = '../images/section_separator.png'
 UNDERSCORE_PATTERN = re.compile('_')  # regex for an underscore in a word
+
+# Heading underline characters
+H1_CHAR = '*'
+H2_CHAR = '"'
+H3_CHAR = '^'
+H4_CHAR = '-'
+H5_CHAR = '_'
+
 
 
 def get_docuser(file_name: str) -> dict:
@@ -338,14 +347,6 @@ def get_v_comments(docdev: dict) -> list:
             if 'details' in docdev['stateVariables'][v_name].keys():
                 v_comment = {v_name: docdev['stateVariables'][v_name]['details']}
         v_comments.append(v_comment)
-#        v_comment = {
-#            'stateVariable': v_name,
-#            'dev': ''
-#            }
-#        if v_name in docdev['stateVariables'].keys():
-#            if 'details' in docdev['stateVariables'][v_name].keys():
-#                v_comment['dev'] = docdev['stateVariables'][v_name]['details']
-#        v_comments.append(v_comment)
     return v_comments
 
 
@@ -527,7 +528,7 @@ def print_heading1(section_title: str) -> None:
     :rtype: None
     """
     print(f'{section_title}')
-    print('=' * len(section_title))
+    print(H1_CHAR * len(section_title))
 
 
 def print_heading2(subsection_title: str) -> None:
@@ -538,7 +539,7 @@ def print_heading2(subsection_title: str) -> None:
     :rtype: None
     """
     print(f'{subsection_title}')
-    print('*' * len(subsection_title))
+    print(H2_CHAR * len(subsection_title))
 
 
 def print_heading3(subsubsection_title: str) -> None:
@@ -549,7 +550,7 @@ def print_heading3(subsubsection_title: str) -> None:
     :rtype: None
     """
     print(f'{subsubsection_title}')
-    print('#' * len(subsubsection_title))
+    print(H3_CHAR * len(subsubsection_title))
 
 
 def print_heading4(subsubsection_title: str) -> None:
@@ -560,7 +561,7 @@ def print_heading4(subsubsection_title: str) -> None:
     :rtype: None
     """
     print(f'{subsubsection_title}')
-    print('-' * len(subsubsection_title))
+    print(H4_CHAR * len(subsubsection_title))
 
 
 def print_heading5(subsubsection_title: str) -> None:
@@ -571,7 +572,7 @@ def print_heading5(subsubsection_title: str) -> None:
     :rtype: None
     """
     print(f'{subsubsection_title}')
-    print('"' * len(subsubsection_title))
+    print(H5_CHAR * len(subsubsection_title))
 
 
 def print_dict_as_list(dct: dict,) -> None:
@@ -683,7 +684,7 @@ def main():
         action='store',
         default=f'{simpleth.PROJECT_HOME}/{simpleth.ARTIFACT_SUBDIR}',
         help=(
-            'input directory with artifact files\n'
+            'input directory with artifact files.\n'
             'default: %(default)s'
             )
         )
@@ -698,7 +699,7 @@ def main():
         action='store',
         default=f'{simpleth.PROJECT_HOME}/{simpleth.RST_DOC_SUBDIR}',
         help=(
-            'output directory for formatted documentation file\n'
+            'output directory for formatted documentation file.\n'
             'default: %(default)s'
             )
         )

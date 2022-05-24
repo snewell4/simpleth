@@ -10,9 +10,9 @@ Simple Ethereum
    starting.rst
    using.rst
    simpleth.rst
+   contracts.rst
    utils.rst
    tools.rst
-   contracts.rst
    style.rst
 
 Indices

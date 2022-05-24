@@ -2,7 +2,7 @@
 
 
 Test
-====
+****
 :Description: Test Contract 
 
 :Purpose:  This is used to for testing simpleth methods. It is designed  with very simple transactions, functions, and variables to support  a wide variety of test cases. 
@@ -14,7 +14,7 @@ Test
 .. image:: ../images/section_separator.png
 
 STATE VARIABLES
-###############
+^^^^^^^^^^^^^^^
 
 :initNum: set by constructor. Has no other purpose.
 
@@ -41,7 +41,7 @@ STATE VARIABLES
 .. image:: ../images/section_separator.png
 
 METHODS
-#######
+^^^^^^^
 constructor()
 -------------
 :Purpose:  Create a new Test contract on the blockchain.
@@ -344,7 +344,7 @@ sumTwoNums()
 .. image:: ../images/section_separator.png
 
 EVENTS
-######
+^^^^^^
 Destroyed(uint256,uint256)
 --------------------------
 :Purpose:  Emitted when contract is destroyed

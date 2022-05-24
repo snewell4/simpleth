@@ -1,6 +1,6 @@
-reST Style Guide for Simpleth
-=============================
-This document serves as an example of **r**\ e\ **ST**\ ructured Text
+reST Style Guide
+================
+This document serves as an example of **reS**\ tructured **T**\ ext
 formatting and style to be used.
 
 See the following for all the details of reST and Sphinx.
@@ -322,7 +322,7 @@ Other Content Blocks
 
 .. seealso:: See Also text.
 
-   `reST Style Guide for Simpleth`_ has an example.
+   `reST Style Guide`_ has an example.
 
 .. deprecated:: V2.3
    Deprecated text

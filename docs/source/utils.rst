@@ -1,5 +1,5 @@
-Utilities - for users
-=====================
+Utilities for simpleth users
+============================
 
 These are Command Prompt window utility commands
 for simpleth users.

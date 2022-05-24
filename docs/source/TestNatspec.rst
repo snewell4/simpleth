@@ -2,7 +2,7 @@
 
 
 TestNatspec
-===========
+***********
 :Description: CLS title1           - DOCDEVCLS title2           - DOCDEV
 
 :Purpose:  CLS notice1         - DOCUSERCLS notice2         - DOCUSER
@@ -17,7 +17,7 @@ TestNatspec
 .. image:: ../images/section_separator.png
 
 STATE VARIABLES
-###############
+^^^^^^^^^^^^^^^
 
 :nums: VAR dev1           - DOCDEVVAR dev2           - DOCDEV
 
@@ -28,7 +28,7 @@ STATE VARIABLES
 .. image:: ../images/section_separator.png
 
 METHODS
-#######
+^^^^^^^
 getNum(uint8)
 -------------
 :Purpose:  FCN notice     - DOCUSER
@@ -68,7 +68,7 @@ storeNums(uint256,uint256,uint256)
 .. image:: ../images/section_separator.png
 
 EVENTS
-######
+^^^^^^
 NumsStored(uint256,uint256,uint256)
 -----------------------------------
 :Purpose:  EVT notice     - DOCUSER

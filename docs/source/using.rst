@@ -1,11 +1,11 @@
-Using simpleth - Examples
-=========================
-`Getting Started - Hello World(s) <../html/starting.html>`_ is an
-introduction to using very simple contracts with `simpleth`
-as well as compiling a contract for `simpleth's` use.
+Using
+=====
+`Hello World(s) <../html/starting.html>`_ is an
+introduction to using very simple contracts with `simpleth`.
 
 This document goes further. It shows many of the basic
-interactions with a contract.
+interactions with a contract as well as compiling a
+contract.
 
 These examples will use the ``Test.sol`` contract.
 It was created for `simpleth` unit and integration testing.
@@ -1311,8 +1311,8 @@ mined or ``transaction receipt`` if the transaction completed.
 Just like with :meth:`run_trx`, you can use the `receipt` to
 get the :class:`Results`.
 
-**Relationship to run_trx()**
-
+Relationship to run_trx()
+"""""""""""""""""""""""""
 Under the covers, :meth:`run_trx` simply makes a call to
 :meth:`send_trx` and then a call to :meth:`get_trx_receipt_wait`.
 You see that the parameters for :meth:`run_trx` are the union of
@@ -1324,11 +1324,11 @@ the parameters of :meth:`send_trx` and :meth:`get_trx_receipt_wait`.
 :meth:`run_trx` most the exceptions
 are thrown by :meth:`send_trx` or :meth:`get_trx_receipt_wait` .
 
-**Using Ganache with a mining delay**
-
+Using Ganache with a mining delay
+"""""""""""""""""""""""""""""""""
 You can simulate a delay in completing a transaction. Ganache
-setting's allow you to change the from the default of `automine`
-(mine the transaction immediately) to setting a constant number
+setting's allow you to change from the default of ``automine`` ,
+where all transactions are mined immediately, to setting a constant number
 of seconds before the transaction is put into a new block on the
 chain. This allows you to, say, set a delay of ten seconds in
 order to test use of the periodic checking in :meth:`get_trx_receipt_wait`

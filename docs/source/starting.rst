@@ -1,5 +1,5 @@
-Getting Started - Hello World(s)
-================================
+Hello World
+===========
 Four simple `Solidity` **hello world** contracts are used as examples.
 They grow progressively more complicated with ``simpleth`` Python
 examples to interact with each.
@@ -10,21 +10,14 @@ a `Hello World` string.
 
 The Solidity source for the contracts is found in
 ``<project dir>/src/contracts/HelloWorld*.sol`` .
-A copy of the source shown below.
+A copy of the source shown below, without comments.
 
 The contracts have been compiled and are ready to deploy.
 The final example shows the end-to-end steps to compile a
 contract and deploy it.
 
-If you look at the Solidity source files for the contracts,
-you will see comments starting with `//` or `///` or comment
-blocks starting with `/**` and ending with `*/`
-Comments starting with ``@`` are `NatSpec` (Ethereum Natural Language
-Specification Format) and can be used to automatically generate
-documentation. This documentation for the four contracts is
-found in the `simpleth` :doc:`Smart Contracts <contracts>` document.
-For more info on the `NatSpec` format see the
-`Solidity Documentation <https://docs.soliditylang.org/en/v0.8.13/natspec-format.html>`_
+.. image:: ../images/section_separator.png
+
 
 HelloWorld1 Contract
 ********************
@@ -48,10 +41,11 @@ There are two Python sessions shown:
       string public greeting = "Hello World!";
   }
 
-**Comments:**
+.. note::
 
-- Line 3: The only action the contract takes is to
-  set the `greeting` to `Hello World!`
+  - Line 3: The only action the contract takes is to
+    set the `greeting` to `Hello World!`
+
 
 .. code-block:: python
   :linenos:
@@ -65,19 +59,19 @@ There are two Python sessions shown:
   'Hello World!'
 
 
-**Comments:**
+.. note::
 
-- Line 2: We need the address of the account that will deploy
-  the contract. `Ganache` provides ten addresses. Use the first
-  in the list of those addresses.
-- Line 3: Create a :class:`Contract` object for the
-  `HelloWorld1` contract. This allows us to interact with that
-  contract.
-- Line 4: `user` uses :meth:`simpleth.Contract.deploy` to send
-  the transaction to deploy   the `HelloWorld` contract onto the
-  blockchain. The `transaction receipt` is returned.
-- Line 5: Now that the contract is on the blockchain, we
-  can get the value of the `greeting` variable.
+  - Line 2: We need the address of the account that will deploy
+    the contract. `Ganache` provides ten addresses. Use the first
+    in the list of those addresses.
+  - Line 3: Create a :class:`Contract` object for the
+    `HelloWorld1` contract. This allows us to interact with that
+    contract.
+  - Line 4: `user` uses :meth:`simpleth.Contract.deploy` to send
+    the transaction to deploy   the `HelloWorld` contract onto the
+    blockchain. The `transaction receipt` is returned.
+  - Line 5: Now that the contract is on the blockchain, we
+    can get the value of the `greeting` variable.
 
 
 .. code-block:: python
@@ -92,19 +86,20 @@ There are two Python sessions shown:
   'Hello World!'
 
 
-**Comments:**
+.. note::
 
-Once a contract has been deployed it remains on the blockchain.
-In all future sessions, you only need to
-:meth:`simpleth.Contract.connect` to it to use it.
+  Once a contract has been deployed it remains on the blockchain.
+  In all future sessions, you only need to
+  :meth:`simpleth.Contract.connect` to it to use it.
 
-- Line 2: As before, we need a :class:`Contract` object before
-  doing anything with the contract.
-- Line 3: Connect the `contract object` to the deployed contract.
-- Line 4: :meth:`connect` returns the blockchain address of the
-  contract. Your address will differ.
-- Line 5: Same as before: get the `greeting` variable's value.
+  - Line 2: As before, we need a :class:`Contract` object before
+    doing anything with the contract.
+  - Line 3: Connect the `contract object` to the deployed contract.
+  - Line 4: :meth:`connect` returns the blockchain address of the
+    contract. Your address will differ.
+  - Line 5: Same as before: get the `greeting` variable's value.
 
+.. image:: ../images/section_separator.png
 
 
 HelloWorld2 Contract
@@ -131,10 +126,10 @@ example is not shown. See above for using ``connect``.
       }
   }
 
-**Comments:**
+.. note::
 
-- Line 3: Defines the function `getGreeting` that returns the
-  string of `Hello World!` .
+  - Line 3: Defines the function `getGreeting` that returns the
+    string of `Hello World!` .
 
 
 .. code-block:: python
@@ -153,6 +148,8 @@ example is not shown. See above for using ``connect``.
   of ten provided by Ganache to send the `deploy` transaction.
 - Line 4: Ask the contract to call the ``getGreeting()`` function.
 - Line 5: The value returned from the function is displayed.
+
+.. image:: ../images/section_separator.png
 
 
 HelloWorld3 Contract
@@ -177,12 +174,12 @@ and a function to return the greeting.
       }
   }
 
-**Comments:**
+.. note::
 
-- Line 5: Defines the transaction `setGreeting` which allows
-  us pass in the greeting string.
-- Line 8: Same function we had in `HelloWorld2` to return
-  the greeting string.
+  - Line 5: Defines the transaction `setGreeting` which allows
+    us pass in the greeting string.
+  - Line 8: Same function we had in `HelloWorld2` to return
+    the greeting string.
 
 
 .. code-block:: python
@@ -198,15 +195,17 @@ and a function to return the greeting.
   >>> c.call_fcn('getGreeting')
   'Good Morning World!'
 
-**Comments:**
+.. note::
 
-- Line 1 to 3: Similar to examples above.
-- Line 4: Get the greeting. The contract code does not set an initial value.
-- Line 5: `getGreeting` returns an empty string.
-- Line 6: Set the greeting by running the transaction `setGreeting` and pass
-  in one arg: the greeting string.
-- Line 7: Use `getGreeting` again. This time it returns the string we just
-  set.
+  - Line 1 to 3: Similar to examples above.
+  - Line 4: Get the greeting. The contract code does not set an initial value.
+  - Line 5: `getGreeting` returns an empty string.
+  - Line 6: Set the greeting by running the transaction `setGreeting` and pass
+    in one arg: the greeting string.
+  - Line 7: Use `getGreeting` again. This time it returns the string we just
+    set.
+
+.. image:: ../images/section_separator.png
 
 
 HelloWorld4 Contract
@@ -273,25 +272,25 @@ an attribute that holds the greeting.
   }
 
 
-**Comments:**
+.. note::
 
-- Line 4: Defines an event to be emitted when the contract is
-  deployed. The definition continues to line 9. It shows the
-  names of the parameters that will be written as part of the
-  event.
-- Line 11: Defines a second event to be emitted each time the
-  greeting is set. The definition continues to line 15. It
-  shows the names of the parameters that will be written.
-- Line 18: Defines the `constructor`. This is run when a
-  `deploy` is done. Two actions will occur. A string for the
-  initial greeting will be passed in via the `deploy()` and
-  the `HelloWorld4Constructed`` event is emitted with the
-  appropriate values for the arguments.
-- Line 28: Defines the `setGreeting`. It is an expansion of
-  the function using in `HelloWorld3`. This function adds
-  emitting the `GreetingSet` event with the args shown.
-- Line 37: Finally, the usual `getGreeting` function will
-  return the greeting string.
+  - Line 4: Defines an event to be emitted when the contract is
+    deployed. The definition continues to line 9. It shows the
+    names of the parameters that will be written as part of the
+    event.
+  - Line 11: Defines a second event to be emitted each time the
+    greeting is set. The definition continues to line 15. It
+    shows the names of the parameters that will be written.
+  - Line 18: Defines the `constructor`. This is run when a
+    `deploy` is done. Two actions will occur. A string for the
+    initial greeting will be passed in via the `deploy()` and
+    the `HelloWorld4Constructed`` event is emitted with the
+    appropriate values for the arguments.
+  - Line 28: Defines the `setGreeting`. It is an expansion of
+    the function using in `HelloWorld3`. This function adds
+    emitting the `GreetingSet` event with the args shown.
+  - Line 37: Finally, the usual `getGreeting` function will
+    return the greeting string.
 
 
 Using a constructor argument
@@ -311,13 +310,13 @@ Set the greeting at deployment time and then get it.
   >>> c.call_fcn('getGreeting')
   'Hello World!!!'
 
-**Comments:**
+.. note::
 
-- Line 3: Note this ``deploy()`` passes in an arg to the
-  ``constructor()``. This string becomes the contract's
-  greeting. Line 4 gets that greeting.
-- Line 6: Updates the greeting.
-- Line 7: Gets that updated greeting with the value shown on line 8.
+  - Line 3: Note this ``deploy()`` passes in an arg to the
+    ``constructor()``. This string becomes the contract's
+    greeting. Line 4 gets that greeting.
+  - Line 6: Updates the greeting.
+  - Line 7: Gets that updated greeting with the value shown on line 8.
 
 
 Using events
@@ -343,35 +342,35 @@ from events emitted by the transactions.
   >>> events2
   [{'block_number': 6647, 'args': {'timestamp': 1652813868, 'sender': '0xa894b8d26Cd25eCD3E154a860A86f7c75B12D993', 'greeting': 'Hello World!!!'}, 'trx_hash': '0xadb823085350ffdc2f411c57d8b0b074f4ca6391465061ce5cff68e85a874a6c'}]
 
-**Comments:**
+.. note::
 
-- Line 1: We need to use the :class:`simpleth.EventSearch` class.
-- Line 2: Create an `EventSearch` object for the event named,
-  `HelloWorld4Constructed` . You'll find that event defined on
-  line 4 of the ``HelloWorld4.sol`` contract shown above.
-- Line 3: Search for the constructor's event in the past
-  10 blocks on the chain and put any such events in a list
-  in ``events1``
-- Line 4: How many of these events did we find in the most
-  recent ten blocks?  Line 5 shows there was one.
-- Line 6: Retrieve the string passed to the constructor.
-  ``initGreeting`` was defined in line 7 of ``HelloWorld4.sol``
-  above. The value was passed as an arg in the contract's
-  line 23 when the event is emitted in line 20 to 25.
-- Line 7: Shows the value of that constructor arg.
-- Line 8: Similarly, let's look at the greeting we set in
-  line 3 of the first Python session shown above. Here,
-  we create a second :class:`EventSearch` object to look
-  for that event.
-- Line 9: Without an arg, ``simpleth.EventSearch.get_old``
-  just searches the last block on the chain.
-- Line 10: Get the value of the event ``greeting`` parameter.
-- Line 11: Shows the value of the arg we used in line 6 of
-  the first Python session above.
-- Line 12: If you are curious what is kept in one of the
-  event list elements, line 13 displays the full list element.
-  (Your values for `block_number`, `timestamp`, `sender`, and
-  `trx_hash` will differ.)
+  - Line 1: We need to use the :class:`simpleth.EventSearch` class.
+  - Line 2: Create an `EventSearch` object for the event named,
+    `HelloWorld4Constructed` . You'll find that event defined on
+    line 4 of the ``HelloWorld4.sol`` contract shown above.
+  - Line 3: Search for the constructor's event in the past
+    10 blocks on the chain and put any such events in a list
+    in ``events1``
+  - Line 4: How many of these events did we find in the most
+    recent ten blocks?  Line 5 shows there was one.
+  - Line 6: Retrieve the string passed to the constructor.
+    ``initGreeting`` was defined in line 7 of ``HelloWorld4.sol``
+    above. The value was passed as an arg in the contract's
+    line 23 when the event is emitted in line 20 to 25.
+  - Line 7: Shows the value of that constructor arg.
+  - Line 8: Similarly, let's look at the greeting we set in
+    line 3 of the first Python session shown above. Here,
+    we create a second :class:`EventSearch` object to look
+    for that event.
+  - Line 9: Without an arg, ``simpleth.EventSearch.get_old``
+    just searches the last block on the chain.
+  - Line 10: Get the value of the event ``greeting`` parameter.
+  - Line 11: Shows the value of the arg we used in line 6 of
+    the first Python session above.
+  - Line 12: If you are curious what is kept in one of the
+    event list elements, line 13 displays the full list element.
+    (Your values for `block_number`, `timestamp`, `sender`, and
+    `trx_hash` will differ.)
 
 
 Using Results
@@ -407,143 +406,14 @@ of running a transaction.
   >>> r.event_args[0]['greeting']
   '**Hello World**'
 
-**Comments:**
+.. note::
 
-- Line 1: We need the :class:`Results` class.
-- Line 2: Run the transaction to set a new greeting. Same as we have done before.
-- Line 3: ``r`` is a ``Results`` object. It is created by using the ``receipt``
-  from the transaction and the ``contract`` object. ``r`` holds the information
-  about the transaction.
-- Line 4: Prints the details of the transaction.
-- Line 19: Shows how to access one attribute of the results.
-- Line 21: Get the `greeting` arg from ``setGreeting`` event. Line 22
-  displays out last *Hello World*.
-
-
-Compiling a contract
-********************
-Now, we'll walk through making a change to the `HelloWorld1.sol`
-contract, compiling it, and deploying it.
-
-Here's our starting point.
-
-.. code-block::
-  :linenos:
-  :caption: Original HelloWorld1.sol
-
-  pragma solidity ^0.8;
-  contract HelloWorld1 {
-      string public greeting = "Hello World!";
-  }
-
-Here's a Python session with a fresh `deploy`, check greeting
-string, and print the `results` of the `deploy`.
-
-
-
-.. code-block:: python
-  :linenos:
-  :caption: Use original contract: deploy, get greeting, show results
-
-  >>> from simpleth import Blockchain, Contract, Results
-  >>> u = Blockchain().address(2)
-  >>> c = Contract('HelloWorld1')
-  >>> receipt = c.deploy(u)
-  >>> c.get_var('greeting')
-  'Hello World!'
-  >>> print(Results(c, receipt))
-  Block number     = 6859
-  Block time epoch = 1652914772
-  Contract name    = HelloWorld1
-  Contract address = 0x851a93D84252c5A0fA1650d047a9cEEC1b46eFC1
-  Trx name         = deploy
-  Trx args         = {}
-  Trx sender       = 0x02F6903D426Be890BA4F882eD19cF6780ecdfA5b
-  Trx value wei    = 0
-  Trx hash         = 0x682c938ba1d2411355fa9ec555306f9614e82bdf4cd0d543ac474b53736f5c55
-  Gas price wei    = 20000000000
-  Gas used         = 168664
-
-
-Use an editor to change the greeting.
-
-.. code-block::
-  :linenos:
-  :emphasize-lines: 3
-  :caption: Modified HelloWorld1.sol
-
-  pragma solidity ^0.8;
-  contract HelloWorld1 {
-      string public greeting = "Howdy World!";
-  }
-
-**Comments:**
-
-- Line 3: ``greeting`` string has been changed.
-
-
-Use simpleth project's `compile.py <../html/utils.html#module-compile>`_
-to compile the contract.
-
-.. code-block:: shell-session
-  :linenos:
-  :emphasize-lines: 11
-  :caption: Compile modified contract
-
-  (env) C:\Users\snewe\OneDrive\Desktop\simpleth\src\contracts>dir HelloWorld1.sol
-   Volume in drive C is Windows
-   Volume Serial Number is 1AC4-4372
-
-   Directory of C:\Users\snewe\OneDrive\Desktop\simpleth\src\contracts
-
-  05/18/2022  06:02 PM               381 HelloWorld1.sol
-                 1 File(s)            381 bytes
-                 0 Dir(s)  384,503,242,752 bytes free
-
-  (env) C:\Users\snewe\OneDrive\Desktop\simpleth\src\contracts>compile.py HelloWorld1.sol
-  Compiler run successful. Artifact(s) can be found in directory "C:/Users/snewe/OneDrive/Desktop/simpleth/artifacts".
-
-  (env) C:\Users\snewe\OneDrive\Desktop\simpleth\src\contracts>
-
-**Comments:**
-
-- Line 1: For`compile.py` to use its default args, run it from the
-  directory with the contract source file. This ``dir`` command
-  just verifies this is the correct directory.
-- Line 11: Compile the modified contract.
-- Line 12: Compiler success message. Contract is now ready to `deploy`.
-
-
-Continuing with the Python session. Let's work with the modified
-contract.
-
-.. code-block:: python
-  :linenos:
-  :emphasize-lines: 4
-  :caption: Use modified contract: deploy, get greeting, show results
-
-  >>> c = Contract('HelloWorld1')
-  >>> receipt = c.deploy(u)
-  >>> c.get_var('greeting')
-  'Howdy World!'
-  >>> print(Results(c, receipt))
-  Block number     = 6861
-  Block time epoch = 1652916931
-  Contract name    = HelloWorld1
-  Contract address = 0xbe94faafc40B44c66F48f90dff98A47Df74cD09a
-  Trx name         = deploy
-  Trx args         = {}
-  Trx sender       = 0x02F6903D426Be890BA4F882eD19cF6780ecdfA5b
-  Trx value wei    = 0
-  Trx hash         = 0xc38c11c7f51b22cf793088ef890483a5be1ee7689d17b84ae4585fb96cca59fc
-  Gas price wei    = 200000000
-
-**Comments:**
-
-- Line 4: We have deployed the modified contract. Here's our modified greeting.
-- Line 6: Further confirmation that our contract has changed. We are now using
-  a `HelloWorld1` contract that resides at a different `block number` than the
-  original version.
-
-Ready for more?
-Dive into `Using simpleth <../html/using.html>`_
+  - Line 1: We need the :class:`Results` class.
+  - Line 2: Run the transaction to set a new greeting. Same as we have done before.
+  - Line 3: ``r`` is a ``Results`` object. It is created by using the ``receipt``
+    from the transaction and the ``contract`` object. ``r`` holds the information
+    about the transaction.
+  - Line 4: Prints the details of the transaction.
+  - Line 19: Shows how to access one attribute of the results.
+  - Line 21: Get the `greeting` arg from ``setGreeting`` event. Line 22
+    displays out last *Hello World*.

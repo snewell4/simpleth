@@ -1,5 +1,5 @@
-Tools - for simpleth developers
-===============================
+Tools for simpleth developers
+=============================
 
 These are Command Prompt window commands used as tools
 by developers. Users of simpleth do not need these.
@@ -30,8 +30,8 @@ docsetup.bat
 
 .. image:: ../images/section_separator.png
 
-nat2rtd.py
+nat2rst.py
 **********
-.. automodule:: nat2rtd
+.. automodule:: nat2rst
 
 .. image:: ../images/contract_separator.png

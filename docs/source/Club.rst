@@ -2,7 +2,7 @@
 
 
 club
-====
+****
 :Description: Club Contract
 
 :Purpose:  This is a contrived example of a club and members used to exercise basic functionality of Solidity smart contracts. It is used for integration testing of Python code with simpleth classes.
@@ -16,7 +16,7 @@ club
 .. image:: ../images/section_separator.png
 
 STATE VARIABLES
-###############
+^^^^^^^^^^^^^^^
 
 :DUES\_WEI: membership dues, in wei
 
@@ -33,7 +33,7 @@ STATE VARIABLES
 .. image:: ../images/section_separator.png
 
 METHODS
-#######
+^^^^^^^
 getAllMemberInfo()
 ------------------
 :Purpose:  Get the MemberInfo for all members.
@@ -120,5 +120,5 @@ transferBalance(address,uint256)
 .. image:: ../images/section_separator.png
 
 EVENTS
-######
+^^^^^^
 None

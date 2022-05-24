@@ -2,7 +2,7 @@
 
 
 HelloWorld1
-===========
+***********
 :Description: HelloWorld1
 
 :Purpose:  The simplest contract to say hello to the world.
@@ -14,7 +14,7 @@ HelloWorld1
 .. image:: ../images/section_separator.png
 
 STATE VARIABLES
-###############
+^^^^^^^^^^^^^^^
 
 :greeting: holds the Hello World greeting.
 
@@ -23,11 +23,11 @@ STATE VARIABLES
 .. image:: ../images/section_separator.png
 
 METHODS
-#######
+^^^^^^^
 None
 
 .. image:: ../images/section_separator.png
 
 EVENTS
-######
+^^^^^^
 None

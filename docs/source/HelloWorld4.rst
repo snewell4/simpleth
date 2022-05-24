@@ -2,7 +2,7 @@
 
 
 HelloWorld4
-===========
+***********
 :Description: HelloWorld4
 
 :Purpose:  Adding more functionality to the contract saying hello.
@@ -14,7 +14,7 @@ HelloWorld4
 .. image:: ../images/section_separator.png
 
 STATE VARIABLES
-###############
+^^^^^^^^^^^^^^^
 
 :greeting: the greeting to display
 
@@ -23,7 +23,7 @@ STATE VARIABLES
 .. image:: ../images/section_separator.png
 
 METHODS
-#######
+^^^^^^^
 constructor()
 -------------
 :Purpose:  Create a new HelloWorld4 contract on the blockchain.
@@ -67,7 +67,7 @@ setGreeting(string)
 .. image:: ../images/section_separator.png
 
 EVENTS
-######
+^^^^^^
 GreetingSet(uint256,address,string)
 -----------------------------------
 :Purpose:  Emitted when greeting was changed

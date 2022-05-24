@@ -2,7 +2,7 @@
 
 
 HelloWorld3
-===========
+***********
 :Description: HelloWorld3
 
 :Purpose:  A more complex contract to say hello to the world.
@@ -14,7 +14,7 @@ HelloWorld3
 .. image:: ../images/section_separator.png
 
 STATE VARIABLES
-###############
+^^^^^^^^^^^^^^^
 
 :greeting: holds the Hello World greeting.
 
@@ -23,7 +23,7 @@ STATE VARIABLES
 .. image:: ../images/section_separator.png
 
 METHODS
-#######
+^^^^^^^
 getGreeting()
 -------------
 :Purpose:  Return the greeting.
@@ -48,5 +48,5 @@ setGreeting(string)
 .. image:: ../images/section_separator.png
 
 EVENTS
-######
+^^^^^^
 None
