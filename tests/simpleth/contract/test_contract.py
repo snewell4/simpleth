@@ -1042,6 +1042,38 @@ class TestContractRunTrxBad:
                 )
         assert excp.value.code == 'C-080-080'
 
+    def test_failed_require_sends_back_message(
+            self,
+            connect_to_test_contract
+            ):
+        """Test get the message for a require() that fails"""
+        c = connect_to_test_contract
+        try:
+            c.run_trx(
+                Blockchain().address(3),
+                'setOwner',
+                Blockchain().address(3)
+                )
+        except SimplEthError as excp:
+            revert_msg = excp.revert_msg
+        assert revert_msg == 'Must be owner'
+
+    def test_revert_sends_back_message(
+            self,
+            connect_to_test_contract
+            ):
+        """Test get the message for a revert()"""
+        c = connect_to_test_contract
+        revert_msg = ''
+        try:
+            c.run_trx(
+                constants.TRX_SENDER,
+                'revertTransaction'
+                )
+        except SimplEthError as excp:
+            revert_msg = excp.revert_msg
+        assert revert_msg == 'Revert this transaction.'
+
     @pytest.mark.skip(reason='do not know a test case for ContractLogicError')
     def test_run_trx_with_TBD_contract_logic_error_raises_C_080_090(
             self,

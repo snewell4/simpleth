@@ -404,7 +404,7 @@ contract Test {
         public
         pure
     {
-        revert("Transaction always Reverts.");
+        revert("Revert this transaction.");
     }
 
     /**

@@ -85,9 +85,9 @@ contract HelloWorld4 {
      *
      * @dev Function; not a transaction
      *
-     * @return greeting contract greeting value
+     * @return greeting_ contract greeting value
      */
-    function getGreeting() public view returns (string memory) {
+    function getGreeting() public view returns (string memory greeting_) {
         return greeting;
     }
 }

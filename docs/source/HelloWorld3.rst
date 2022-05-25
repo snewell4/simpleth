@@ -30,6 +30,11 @@ getGreeting()
 
 :Notes:  Function returns a string with the current contract greeting.
 
+**Returns:**
+
+:\_0: greeting contract greeting value
+
+
 
 ________________________________________
 

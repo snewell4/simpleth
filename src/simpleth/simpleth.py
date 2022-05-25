@@ -1989,6 +1989,9 @@ class Contract:
               should be defined as a `payable` function in the Solidity
               contract or the contract will need a payable fallback
               function in order to accept the payment.
+           -  Beware, when an assert() or require() sends back a message
+              if it contains the word, 'revert', that word will be stripped
+              from the message. (BUG - this should be fixed sometime.)
 
         .. seealso::
            -   Ethereum page on `gas and fees <https://ethereum.org/en/developers/docs/gas/>`_
@@ -2085,6 +2088,9 @@ class Contract:
             # exception and incorporate that new form into this stanza.
             # BEWARE - this is an area that seems in flux and will change
             # in newer web3.py releases.
+
+            # Holds message from trx require() or assert()
+            trx_revert_message: str = ''
             if isinstance(exception.args, str):
                 value_error_message = exception.args
             elif isinstance(exception.args[0], str):
@@ -2093,11 +2099,18 @@ class Contract:
                 value_error_message = exception.args[0]["message"]
             else:
                 value_error_message = str(exception)
+#           if 'revert' in value_error_message:
+#               # If message has "revert", there's boilerplate to the
+#               # left we do not need. Gist of reason is to the right
+#               # in the string.
+#               value_error_message = \
+#                   value_error_message.split('revert')[1].strip()
             if 'revert' in value_error_message:
-                # If message has "revert", there's boilerplate to the
-                # left we do not need. Gist of reason is to the right
-                # in the string.
-                value_error_message = \
+                # If transaction did an assert() or require() and
+                # specified a message, that message is to the right
+                # of `revert`. Get that message. Will be empty string
+                # if no message.
+                trx_revert_message = \
                     value_error_message.split('revert')[1].strip()
             message = (
                 f'ERROR in {self.name}().submit_trx({trx_name}).\n'
@@ -2118,7 +2131,11 @@ class Contract:
                 f'HINT14: Was sender a valid account that can submit a trx?\n'
                 f'HINT15: Does sender have enough Ether to run trx?\n'
                 )
-            raise SimplEthError(message, code='C-080-080') from None
+            raise SimplEthError(
+                message,
+                code='C-080-080',
+                revert_msg=trx_revert_message
+                ) from None
         return trx_hash
 
     def _get_artifact_abi(self) -> List[str]:
@@ -3745,13 +3762,21 @@ class SimplEthError(Exception):
     with it.
 
     """
-    def __init__(self, message: str, code: str = '') -> None:
+    def __init__(
+            self,
+            message: str,
+            code: str = '',
+            revert_msg: str = ''
+            ) -> None:
         """Create error exception.
 
         :param message: error message with a description of error
         :type message: str
         :param code: unique identifier of this error (optional,
             default: `''`)
+        :type code: str
+        :param revert_msg: message from a transaction assert() or
+            require() (optional, default: `''`)
         :type code: str
         :example:
             >>> from simpleth import SimplEthError
@@ -3821,6 +3846,9 @@ class SimplEthError(Exception):
         info: (`type`, `value`, `traceback`)"""
         self.message: str = message
         """Exception instance variable with ``message``"""
+        self.revert_msg: str = revert_msg
+        """Exception instance variable with ``assert()`` or
+        ``require()`` message from transaction"""
 
         if code:
             self.code = code

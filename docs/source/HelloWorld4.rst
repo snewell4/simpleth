@@ -46,7 +46,7 @@ getGreeting()
 
 **Returns:**
 
-:\_0: greeting contract greeting value
+:greeting\_: contract greeting value
 
 
 

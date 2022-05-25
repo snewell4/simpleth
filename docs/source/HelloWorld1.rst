@@ -16,7 +16,7 @@ HelloWorld1
 STATE VARIABLES
 ^^^^^^^^^^^^^^^
 
-:greeting: holds the Hello World greeting.
+:greeting: Hello World greeting.
 
 
 

@@ -15,7 +15,7 @@ REM
 cd C:\Users\snewe\OneDrive\Desktop\simpleth\src\utils
 pylint compile.py
 cd C:\Users\snewe\OneDrive\Desktop\simpleth\dev\src\tools
-pylint nat2rtd.py
+pylint nat2rst.py
 cd C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth
 pylint simpleth.py
 REM
@@ -24,6 +24,6 @@ REM
 cd C:\Users\snewe\OneDrive\Desktop\simpleth\src\utils
 mypy compile.py
 cd C:\Users\snewe\OneDrive\Desktop\simpleth\dev\src\tools
-mypy nat2rtd.py
+mypy nat2rst.py
 cd C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth
 mypy simpleth.py

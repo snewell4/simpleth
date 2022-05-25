@@ -29,6 +29,8 @@ contract HelloWorld3 {
      * @notice Return the greeting.
      *
      * @dev Function returns a string with the current contract greeting.
+     *
+     * @return greeting contract greeting value
      */
     function getGreeting() public view returns (string memory) {
         return greeting;
