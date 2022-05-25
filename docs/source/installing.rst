@@ -25,8 +25,8 @@ Python source files.
 
 3) Download Solidity compiler
 *****************************
-Download from
-https://github.com/ethereum/solidity/releases
+Download ``solc-windows.exe`` from
+`Github page for ethereum//solidity <https://github.com/ethereum/solidity/releases>`_
 and save it as ``<project dir>/solc/solc.exe``.
 It is safest to use the version found in
 :ref:`tested levels <sw_levels_label>` . If you
