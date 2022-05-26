@@ -1386,3 +1386,98 @@ or :meth:`run_trx`.
      doing any mining delay these parameters do not come into play and
      this returns immediately with the `receipt`.
    - Line 22: Get and print the results.
+
+
+.. image:: ../images/section_separator.png
+
+
+Understanding compile-to-deploy
+*******************************
+In order to deploy a contract to the blockchain you use the Solidity compiler,
+``solc.exe`` and then use :class:`simpleth.Contract.deploy` to place it on
+the chain.
+
+solc arguments
+""""""""""""""
+At a minimum, run:
+
+.. code-block:: python
+
+   solc --abi --bin --bin-runtime --overwrite -o <ARTIFACT_DIR> <CONTRACT>
+
+Where:
+
+- ``abi`` specifies to write the application binary interface file
+- ``bin`` specifies to write the binary file
+- ``bin-runtime`` specifies to write the binary runtime file
+-  ``overwrite`` specifies to replace existing copies of the files
+- ``o`` specifies the path to the output directory for the files;
+  the ``<ARTIFACT_SUBDIR>``. The ``simpleth`` default is:
+  ``<PROJECT_HOME>/artifacts``.
+- ``<CONTRACT>`` is the path to the Solidity smart contract source
+  file to compile; for example,
+  ``<PROJECT_HOME>/src/contracts/HelloWorld.sol``
+
+See `Solidity compiler documentation \
+<https://docs.soliditylang.org/en/v0.8.7/using-the-compiler.html#using-the-compiler>`_
+for details.
+
+compile.py
+""""""""""
+``<PROJECT HOME><src><utils><compile.py>`` will run solc with the usual
+``simpleth`` arguments. These include those above plus:
+
+- ``no-color`` to disable color output since it doesn't show up in
+  DOS command line windows.
+- ``userdoc`` processes Natspec comments for the user documentation
+  and generates the ``docuser`` file that is written to the output
+  directory.
+- ``devdoc`` processes Natspec comments for the developer documentation
+  and generates the ``docdev`` file that is written to the output
+  directory.
+- ``optimize`` enables the bytecode optimizer to create more efficient
+  contracts.
+
+To start, you will probably find it easiest to use ``compile.py``.
+See the document, :doc:`Utilities for simpleth users <utils>` for details.
+
+artifact directory
+""""""""""""""""""
+The ``<ARTIFACT_SUBDIR>`` is crucial to ``simpleth``. There is one set
+of files for each compiled contract.
+
+The name of the directory is a constant, ``ARTIFACT_SUBDIR`` in
+``simpleth.py`` with the default of, ``artifacts``. Feel free to
+change it and by updating the ``simpleth`` constant.
+
+The files for each contract:
+
+- ``<contract>.abi`` - contains the ABI, from ``solc.exe``
+- ``<contract>.addr`` - contains the deployed address of the contract. This
+  file is not initially present after the first-ever compile. It is added
+  after the first :meth:`deploy`. It is updated after every subsequent
+  :meth:`deploy`. When a :meth:`simpleth.Contract.connect` is done, the
+  address for the deployed contract is read from this file.
+- ``<contract>.bin`` - contains the contract binary, from ``solc.exe``
+- ``<contract>.bin-runtime`` - contains the contract binary runtime from
+  ``solc.exe``.
+- ``<contract>.docdev`` - contains the developer JSON documentation file
+  from ``solc.exe``.
+- ``<contract>.docuser`` - contains the user JSON documentation file
+  from ``solc.exe``.
+
+The first four files are required for use of a contract.
+
+The last two are required if you wish to process the Natspec comments.
+The developer command, ``nat2rst.py``, reads ``docdev`` and ``docuser``
+files to create a `reStructuredText` formatted file suitable as
+contract documentation. See :doc:`Tools for simpleth developers <tools>`
+for details.
+
+**Note**
+
+- There is no cleanup of the directory. If you stop using a contract,
+  its files will remain. You can delete ``<contract>.*`` to clean up.
+
+
+

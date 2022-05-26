@@ -208,6 +208,15 @@ T_WEB3_EXC = Any
 """``Web3 Exception`` type is `module web3.exceptions`.
 Use `Any` for now. Provided by `web3.py`"""
 
+#
+# Exception processing
+#
+VALUE_ERROR_REVERT_MESSAGE: str = \
+    'VM Exception while processing transaction: revert '
+"""Boilerplate from ValueError exception about a revert with a trx message."""
+# If the string ends in a blank, the transaction revert message follows.
+# We will want to strip off the boilerplate to get the trx revert message.
+
 
 class Blockchain:
     """Interact with an Ethereum blockchain.
@@ -2099,19 +2108,16 @@ class Contract:
                 value_error_message = exception.args[0]["message"]
             else:
                 value_error_message = str(exception)
-#           if 'revert' in value_error_message:
-#               # If message has "revert", there's boilerplate to the
-#               # left we do not need. Gist of reason is to the right
-#               # in the string.
-#               value_error_message = \
-#                   value_error_message.split('revert')[1].strip()
             if 'revert' in value_error_message:
-                # If transaction did an assert() or require() and
+                # If transaction did assert() or require() and
                 # specified a message, that message is to the right
-                # of `revert`. Get that message. Will be empty string
-                # if no message.
+                # of the standard boilerplate message from ValueError.
+                # Get that message. Will be empty string if no message.
                 trx_revert_message = \
-                    value_error_message.split('revert')[1].strip()
+                    value_error_message.replace(
+                        VALUE_ERROR_REVERT_MESSAGE,
+                        ''
+                        )
             message = (
                 f'ERROR in {self.name}().submit_trx({trx_name}).\n'
                 f'ValueError says: {value_error_message}\n'

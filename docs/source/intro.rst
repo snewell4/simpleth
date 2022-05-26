@@ -82,9 +82,10 @@ Earlier versions have been used successfully. Here are the current
 tested versions:
 
 - Windows 11
-- Python 3.10.0
+- Python 3.10.4
 - Ganache 2.5.4
-- Solidity compiler 0.8.10
+- Solidity compiler 0.8.14
+- web3 5.29.1
 
 
 Framework/Tools used
