@@ -23,7 +23,7 @@ import json.decoder
 import datetime
 import time
 import os
-from typing import List, Optional, Union, Dict, Any
+from typing import List, Optional, Union, Dict, Any, Final
 from decimal import Decimal, getcontext
 from web3 import Web3
 from web3 import exceptions as web3e
@@ -49,19 +49,19 @@ __status__ = 'Prototype'
 #
 # Directories and file suffixes
 #
-ARTIFACT_DIR_ENV_VAR: str = 'SIMPLETH_ARTIFACT_DIR'
+ARTIFACT_DIR_ENV_VAR: Final[str] = 'SIMPLETH_ARTIFACT_DIR'
 """Environment variable name for filepath to artifact directory"""
 
-ARTIFACT_DIR_DEFAULT: str = './artifacts'
+ARTIFACT_DIR_DEFAULT: Final[str] = './artifacts'
 """If environment variable not set, this is the artifact directory"""
 
-ABI_SUFFIX: str = '.abi'
+ABI_SUFFIX: Final[str] = '.abi'
 """Filename suffix for the ABI files."""
 
-BYTECODE_SUFFIX: str = '.bin'
+BYTECODE_SUFFIX: Final[str] = '.bin'
 """Filename suffix for the bytecode files."""
 
-ADDRESS_SUFFIX: str = '.addr'
+ADDRESS_SUFFIX: Final[str] = '.addr'
 """Filename suffix for the contract address files."""
 
 
@@ -72,44 +72,44 @@ ADDRESS_SUFFIX: str = '.addr'
 # This is the maximum amount of gas any single transaction can consume.
 # If the transaction requires more gas, it will revert. This value is
 # arbitrarily set slightly below the Ganache default value for Gas Limit.
-GAS_LIMIT: int = 6_000_000
+GAS_LIMIT: Final[int] = 6_000_000
 """Gas limit for a transaction, in units of gas."""
 
 # Currently, has no effect with Ganache. It is valid for mainnet.
-MAX_BASE_FEE_GWEI: Union[int, float] = 100
+MAX_BASE_FEE_GWEI: Final[Union[int, float]] = 100
 """Maximum tip to pay the miners, per unit of gas, in gwei."""
 
 # Currently, has no effect with Ganache. It is valid for main net.
-MAX_PRIORITY_FEE_GWEI: Union[int, float] = 2
+MAX_PRIORITY_FEE_GWEI: Final[Union[int, float]] = 2
 """Maximum tip to pay the miners, per unit of gas, in gwei."""
 
 # Currently, has no effect with Ganache. It is valid for main net.
-MAX_FEE_GWEI: Union[int, float] = \
+MAX_FEE_GWEI: Final[Union[int, float]] = \
     MAX_BASE_FEE_GWEI + MAX_PRIORITY_FEE_GWEI
 """Maximum total to pay the miners, per unit of gas, in gwei."""
 
-TIMEOUT: Union[int, float] = 120
+TIMEOUT: Final[Union[int, float]] = 120
 """Time to wait for transaction to be mined, in seconds."""
 
-POLL_LATENCY: Union[int, float] = 0.1
+POLL_LATENCY: Final[Union[int, float]] = 0.1
 """Time between checking if mining is finished, in seconds."""
 
 #
 # Ganache
 #
-GANACHE_URL: str = 'http://127.0.0.1:7545'
+GANACHE_URL: Final[str] = 'http://127.0.0.1:7545'
 """URL to connect to local Ganache Ethereum blockchain"""
 
 #
 # Formatting
 #
-TIME_FORMAT: str = '%Y-%m-%d %H:%M:%S'
+TIME_FORMAT: Final[str] = '%Y-%m-%d %H:%M:%S'
 """Default ``datetime`` format coding used to represent time values as a string"""
 
 #
 # Conversion
 #
-PRECISION = 40
+PRECISION: Final[int] = 40
 """Level of precision for `Decimal` values used in Ether denomination
 conversions. Arbitrary value. Consider a better value."""
 
@@ -201,7 +201,7 @@ Use `Any` for now. Provided by `web3.py`"""
 #
 # Exception processing
 #
-VALUE_ERROR_REVERT_MESSAGE: str = \
+VALUE_ERROR_REVERT_MESSAGE: Final[str] = \
     'VM Exception while processing transaction: revert'
 """ValueError exception message for a reverted transaction."""
 
