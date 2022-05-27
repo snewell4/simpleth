@@ -9,6 +9,11 @@ With the defaults, the result makes the contract ready to be used by
 the simpleth classes. The newly compiled contract can be loaded onto
 the Ganache blockchain by doing a Contract().deploy().
 
+The default location of ``solc.exe``, the Solidity compiler, is
+in a subdirectory to the current working directory named, ``solc``.
+A full path default to this directory can be set in the
+environment variable, ``SIMPLETH_SOLC_DIR``.
+
 
 **USAGE**
 
@@ -68,9 +73,27 @@ from argparse import ArgumentParser
 
 import simpleth
 
+SOLC_DIR_ENV_VAR: str = 'SIMPLETH_SOLC_DIR'
+"""Environment variable name for filepath to directory holding compiler"""
+SOLC_DIR_DEFAULT: str = '.'
+"""If environment variable not set, look for compiler in current working
+directory"""
+SOLC_FILENAME: str = 'solc.exe'
+"""Filename for Solidity compiler"""
+
 
 def main():
     """Compile Solidity contract source file(s) for use by simpleth"""
+
+    artifact_dir: str = os.environ.get(
+        simpleth.ARTIFACT_DIR_ENV_VAR,
+        simpleth.ARTIFACT_DIR_DEFAULT
+        )
+    solc_dir: str = os.environ.get(
+        SOLC_DIR_ENV_VAR,
+        SOLC_DIR_DEFAULT
+        )
+
     parser = ArgumentParser(
         description='Compile Solidity contract source file(s) for use by simpleth'
         )
@@ -78,11 +101,7 @@ def main():
     parser.add_argument(
         '-c', '--compiler',
         action='store',
-        default=(
-            f'{simpleth.PROJECT_HOME}/'
-            f'{simpleth.SOLC_SUBDIR}/'
-            f'{simpleth.SOLC_FILENAME}'
-            ),
+        default=f'{solc_dir}\\{SOLC_FILENAME}',
         help='solc compiler\ndefault: %(default)s'
         )
 
@@ -105,7 +124,7 @@ def main():
     parser.add_argument(
         '-o', '--out_dir',
         action='store',
-        default=f'{simpleth.PROJECT_HOME}/{simpleth.ARTIFACT_SUBDIR}',
+        default=artifact_dir,
         help='output directory for artifact files\ndefault: %(default)s'
         )
 
@@ -124,6 +143,7 @@ def main():
             f'{args.options} '
             f'{file}'
             )
+#        print(f' DEBUG\n compiler={args.compiler}\n out={args.out_dir}\n options={args.options}\n file={file}\n')
         os.system(command)
 
 

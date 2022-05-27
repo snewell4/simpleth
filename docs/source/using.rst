@@ -1479,5 +1479,30 @@ for details.
 - There is no cleanup of the directory. If you stop using a contract,
   its files will remain. You can delete ``<contract>.*`` to clean up.
 
+REDO ABOVE SECTION
+Below is script to use
+
+
+#. Using the DOS ``set`` command in a DOS window:
+   ``$ set SIMPLETH_ARTIFACT_DIR=C:<your path>``
+#. Editing your ``Environment Variables`` in your system's
+   ``System Variables`` and adding the ``Variable`` of
+   ``SIMPLETH_ARTIFACT_DIR`` with the value of
+   ``<your path>``.
+
+.. code-block:: shell-session
+   :linenos:
+
+    $set SIMPLETH_ARTIFACT_DIR=C:<your path>\artifacts
+
+    (env) C:\Users\snewe\OneDrive\Desktop\simpleth>echo %SIMPLETH_ARTIFACT_DIR%
+    C:\Users\snewe\OneDrive\Desktop\simpleth\artifacts
+
+    (env) C:\Users\snewe\OneDrive\Desktop\simpleth>python
+
+    >>> from simpleth import Contract
+    >>> c=Contract('test')
+    >>> c.artifact_dir
+    '<your path>\\artifacts'
 
 

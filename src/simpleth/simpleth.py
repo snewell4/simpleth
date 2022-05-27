@@ -22,6 +22,7 @@ import json
 import json.decoder
 import datetime
 import time
+import os
 from typing import List, Optional, Union, Dict, Any
 from decimal import Decimal, getcontext
 from web3 import Web3
@@ -46,19 +47,13 @@ __status__ = 'Prototype'
 
 
 #
-# Directories and filenames
+# Directories and file suffixes
 #
-PROJECT_HOME: str = 'C:/Users/snewe/OneDrive/Desktop/simpleth'
-"""``simpleth`` project home directory"""
+ARTIFACT_DIR_ENV_VAR: str = 'SIMPLETH_ARTIFACT_DIR'
+"""Environment variable name for filepath to artifact directory"""
 
-ARTIFACT_SUBDIR: str = 'artifacts'
-"""Directory, under :const:`PROJECT_HOME`, for the artifact files."""
-
-SOLC_SUBDIR: str = 'solc'
-"""Directory, under :const:`PROJECT_HOME`, for the Solidity compiler."""
-
-RST_DOC_SUBDIR: str = 'docs/source'
-"""Directory, under :const:`PROJECT_HOME`, for the reST files."""
+ARTIFACT_DIR_DEFAULT: str = './artifacts'
+"""If environment variable not set, this is the artifact directory"""
 
 ABI_SUFFIX: str = '.abi'
 """Filename suffix for the ABI files."""
@@ -69,11 +64,6 @@ BYTECODE_SUFFIX: str = '.bin'
 ADDRESS_SUFFIX: str = '.addr'
 """Filename suffix for the contract address files."""
 
-SOLIDITY_CONTRACT_SUFFIX: str = '.sol'
-"""Filename suffix for smart contract source file."""
-
-SOLC_FILENAME: str = 'solc.exe'
-"""Filename of the Solidity compiler executable."""
 
 #
 # Transaction processing defaults
@@ -279,9 +269,11 @@ class Blockchain:
             message: str = (
                 'ERROR in Blockchain().init(): '
                 'Unable to connect to Web3.\n'
-                'HINT 1: Is Ganache running?\n'
-                'HINT 2: If not using Ganache, is your blockchain client '
+                'HINT1: Is Ganache running?\n'
+                'HINT2: If not using Ganache, is your blockchain client '
                 'running?\n'
+                'HINT3: If you just made changes to simpleth.py, you may'
+                'to start a new DOS window.\n'
                 )
             raise SimplEthError(message, code='B-010-010') from None
 
@@ -870,6 +862,7 @@ class Contract:
 
     -  :meth:`abi` - contract ABI
     -  :meth:`address` - contract address on blockchain
+    -  :meth:`artifact_dir` - filepath to artifact directory
     -  :meth:`blockchain` - `web3` blockchain object
     -  :meth:`bytecode` - contract bytecode
     -  :meth:`deployed_code` - contract bytecode as deployed on chain
@@ -893,6 +886,24 @@ class Contract:
     -  :meth:`run_trx` - submit a transaction and wait for the results
     -  :meth:`submit_trx` - send a transaction to be mined (do not wait for
        results)
+
+    **ARTIFACT DIRECTORY**
+
+    :class:`Contract` expects to find the outputs from compiling a contract
+    in the :meth:`artifact_dir`. The required files:
+
+    - ``<contract>.abi`` - ABI for the compiled contract. Created by ``solc.exe``.
+    - ``<contract>.addr`` - blockchain address of deployed contract. Created by
+      :meth:`deploy` at first-ever deployment of contract and updated on
+      subsequent :meth:`deploy`.
+    - ``<contract>.bin`` - Binary for the compiled contract. Created by
+      ``solc.exe``.
+
+    The default location for the artifact directory is a subdirectory:
+    ``./artifacts``.
+
+    To change the default, set the environment variable,
+    ``SIMPLETH_ARTIFACT_DIR`` to your filepath to the directory.
 
     """
     def __init__(self, name: str) -> None:
@@ -918,9 +929,10 @@ class Contract:
         self._name: str = name
         """Private name of the contract this object represents"""
 
-        self._artifact_dir: str = \
-            PROJECT_HOME + '/' + \
-            ARTIFACT_SUBDIR
+        self._artifact_dir: str = os.environ.get(
+            ARTIFACT_DIR_ENV_VAR,
+            ARTIFACT_DIR_DEFAULT
+            )
         """Private filepath to the directory with artifact files"""
 
         self._artifact_abi_filepath: str = \
@@ -1003,6 +1015,22 @@ class Contract:
 
         """
         return self._address
+
+    @property
+    def artifact_dir(self) -> str:
+        """Return path to artifact directory for the contract.
+
+        :rtype: str
+        :return: path to artifact directory
+        :example:
+            >>> from simpleth import Contract
+            >>> c = Contract('Test')
+            >>> addr = c.connect()
+            >>> c.artifact_dir     #doctest: +SKIP
+            './artifacts'
+
+        """
+        return self._artifact_dir
 
     @property
     def blockchain(self) -> T_BLOCKCHAIN_OBJ:
@@ -2096,8 +2124,6 @@ class Contract:
             # BEWARE - this is an area that seems in flux and will change
             # in newer web3.py releases.
 
-            # Holds message from trx require() or assert()
-            trx_revert_message: str = ''
             if isinstance(exception.args, str):
                 value_error_message = exception.args
             elif isinstance(exception.args[0], str):
@@ -2106,20 +2132,22 @@ class Contract:
                 value_error_message = exception.args[0]["message"]
             else:
                 value_error_message = str(exception)
-            if 'revert' in value_error_message:
-                # If transaction did assert() or require() and
-                # specified a message, that message is to the right
-                # of the standard revert message plus a space
-                # from ValueError. The space is important: no space
-                # standard message and no trx revert message follows;
-                # space means a trx revert message follows.
-                # Get that message. Will be empty string if no
-                # trx revert message.
-                trx_revert_message = \
-                    value_error_message.replace(
-                        VALUE_ERROR_REVERT_MESSAGE + ' ',
-                        ''
-                        )
+
+            # If transaction did assert() or require() and
+            # specified a message, that message is to the right
+            # of the standard revert message plus a space
+            # from ValueError. The space is important: no space
+            # standard message and no trx revert message follows;
+            # space means a trx revert message follows. Strip
+            # out the standard message to get the trx revert message.
+            # Otherwise, trx revert message is the standard
+            # VALUE_ERROR_REVERT_MESSAGE.
+            trx_revert_message: str = \
+                value_error_message.replace(
+                    VALUE_ERROR_REVERT_MESSAGE + ' ',
+                    ''
+                    )
+
             message = (
                 f'ERROR in {self.name}().submit_trx({trx_name}).\n'
                 f'ValueError says: {value_error_message}\n'
@@ -2167,11 +2195,12 @@ class Contract:
         except FileNotFoundError:
             message: str = (
                 f'ERROR in {self.name}()._get_artifact_abi(). '
-                f'Unable to read ABI file.\n'
-                f'Full path: {self._artifact_abi_filepath}\n'
-                f'Contract name of "{self._name}" is bad.\n'
-                f'HINT 1: Check the spelling of the contract name.\n'
-                f'HINT 2: You may need to do a new compile.\n'
+                f'Unable to read ABI file from {self._artifact_abi_filepath}\n'
+                f'HINT1: Check the spelling of the contract name.\n'
+                f'HINT2: Confirm path to ABI file.\n'
+                f'HINT3: Check setting of environment '
+                f'variable {ARTIFACT_DIR_ENV_VAR}\n'
+                f'HINT4: You may need to do a new compile.\n'
                 )
             raise SimplEthError(message, code='C-100-010') from None
         return abi
@@ -2201,10 +2230,13 @@ class Contract:
         except FileNotFoundError:
             message: str = (
                 f'ERROR in {self.name}()._get_artifact_address(): '
-                f'Unable to read address file.\n'
-                f'Full path: {self._artifact_address_filepath}\n'
-                f'Either using bad contract name or file does not exist.\n'
-                f'HINT: Deploy() might fix missing file.\n'
+                f'Unable to read address file from '
+                f'{self._artifact_address_filepath}\n'
+                f'HINT1: Check the spelling of the contract name.\n'
+                f'HINT2: Confirm path to address file.\n'
+                f'HINT3: Check setting of environment '
+                f'variable {ARTIFACT_DIR_ENV_VAR}\n'
+                f'HINT4: You may need to do a new deploy.\n'
                 )
             raise SimplEthError(message, code='C-110-010') from None
 
@@ -2237,9 +2269,13 @@ class Contract:
         except FileNotFoundError:
             message: str = (
                 f'ERROR in {self.name}()._get_artifact_bytecode(): '
-                f'Unable to read bytecode file for {self.name}.\n'
-                f'Full path: {self._artifact_bytecode_filepath}\n'
-                f'HINT: You may need to do a new compile.\n'
+                f'Unable to read bytecode file from '
+                f'{self._artifact_bytecode_filepath}\n'
+                f'HINT1: Check the spelling of the contract name.\n'
+                f'HINT2: Confirm path to bytecode file.\n'
+                f'HINT3: Check setting of environment '
+                f'variable {ARTIFACT_DIR_ENV_VAR}\n'
+                f'HINT4: You may need to do a new compile.\n'
                 )
             raise SimplEthError(message, code='C-120-010') from None
         return bytecode
@@ -2345,13 +2381,22 @@ class Contract:
             raise SimplEthError(message, code='C-150-010') from None
 
         try:
-            with open(self._artifact_address_filepath, 'w', encoding='UTF-8') as address_file:
+            with open(
+                    self._artifact_address_filepath,
+                    'w',
+                    encoding='UTF-8'
+                    ) as address_file:
                 address_file.write(contract_address)
         except FileNotFoundError:
             message = (
                 f'ERROR in {self.name}()._set_artifact_address(): '
-                f'Unable to write address file for {self.name}.\n'
-                f'Full path: {self._artifact_address_filepath}'
+                f'Unable to write address file to '
+                f'{self._artifact_address_filepath}\n'
+                f'HINT1: Check the spelling of the contract name.\n'
+                f'HINT2: Confirm path to address file.\n'
+                f'HINT3: Check setting of environment '
+                f'variable {ARTIFACT_DIR_ENV_VAR}\n'
+                f'HINT4: You may need to do a new compile.\n'
                 )
             raise SimplEthError(message, code='C-150-020') from None
         return True

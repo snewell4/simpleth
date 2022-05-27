@@ -90,6 +90,7 @@ import json
 from argparse import ArgumentParser
 import sys
 import re
+import os
 
 import simpleth
 
@@ -102,12 +103,24 @@ import simpleth
 # in solc. A newer release may fix.
 #
 
+RST_DIR_ENV_VAR: str = 'SIMPLETH_RST_DIR'
+"""Environment variable name for filepath to directory holding rst files"""
+RST_DIR_DEFAULT: str = '.'
+"""If environment variable not set, put output in current working directory."""
 RST_FILE_SUFFIX = '.rst'
+"""reST formatted file suffix. This is the output file."""
 DOCUSER_FILE_SUFFIX = '.docuser'
+"""Solidity compiler created JSON file of user Natspec documentation."""
 DOCDEV_FILE_SUFFIX = '.docdev'
+"""Solidity compiler created JSON file of developer Natspec documentation."""
 CONTRACT_SEPARATOR_IMAGE_FILE = '../images/contract_separator.png'
+"""Horizontal line between contracts in the output documentation."""
 SECTION_SEPARATOR_IMAGE_FILE = '../images/section_separator.png'
+"""Thinner horizontal line between sections of one contract in the output
+documentation."""
 UNDERSCORE_PATTERN = re.compile('_')  # regex for an underscore in a word
+"""Used to replace `_` with `\\_` in variable names. Makes Sphinx happy."""
+
 
 # Heading underline characters
 H1_CHAR = '*'
@@ -115,7 +128,6 @@ H2_CHAR = '"'
 H3_CHAR = '^'
 H4_CHAR = '-'
 H5_CHAR = '_'
-
 
 
 def get_docuser(file_name: str) -> dict:
@@ -676,13 +688,23 @@ def put_constructor_first_with_parens(m_comments: list) -> list:
 
 def main():
     """Output Natspec comments in contract to Read the Doc format"""
+
+    artifact_dir: str = os.environ.get(
+        simpleth.ARTIFACT_DIR_ENV_VAR,
+        simpleth.ARTIFACT_DIR_DEFAULT
+        )
+    rst_dir: str = os.environ.get(
+        RST_DIR_ENV_VAR,
+        RST_DIR_DEFAULT
+        )
+
     parser = ArgumentParser(
         description='Output Natspec comments in contract to Read the Doc format.'
         )
     parser.add_argument(
         '-i', '--in_dir',
         action='store',
-        default=f'{simpleth.PROJECT_HOME}/{simpleth.ARTIFACT_SUBDIR}',
+        default=artifact_dir,
         help=(
             'input directory with artifact files.\n'
             'default: %(default)s'
@@ -697,7 +719,7 @@ def main():
     group.add_argument(
         '-o', '--out_dir',
         action='store',
-        default=f'{simpleth.PROJECT_HOME}/{simpleth.RST_DOC_SUBDIR}',
+        default=rst_dir,
         help=(
             'output directory for formatted documentation file.\n'
             'default: %(default)s'

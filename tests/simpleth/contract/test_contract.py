@@ -208,6 +208,12 @@ class TestContractPropertiesGood:
         c = connect_to_test_contract
         assert Blockchain().is_valid_address(c.address)
 
+    def test_artifact_dir(self, connect_to_test_contract):
+        """Test contract address is a valid address"""
+        c = connect_to_test_contract
+        assert isinstance(c.artifact_dir, str) and \
+            len(c.artifact_dir) > 0
+
     def test_blockchain(self, connect_to_test_contract):
         """Test blockchain is a Blockchain() object"""
         c = connect_to_test_contract
@@ -897,7 +903,8 @@ class TestContractRunTrxBad:
                 'setOwner',
                 non_owner
                 )
-        assert excp.value.code == 'C-080-080'
+        assert excp.value.code == 'C-080-080' and \
+            excp.value.revert_msg == 'Must be owner'
 
     def test_run_trx_with_require_fail_raises_C_080_080(
             self,
@@ -911,14 +918,30 @@ class TestContractRunTrxBad:
                 non_owner,
                 'sumTwoNums'
                 )
-        assert excp.value.code == 'C-080-080'
+        assert excp.value.code == 'C-080-080' and \
+            excp.value.revert_msg == 'must be owner to sum two nums'
+
+    def test_revert_sends_back_message(
+            self,
+            connect_to_test_contract
+            ):
+        """Test get the message for a revert()"""
+        c = connect_to_test_contract
+        revert_msg = ''
+        with pytest.raises(SimplEthError) as excp:
+            c.run_trx(
+                constants.TRX_SENDER,
+                'revertTransaction'
+                )
+        assert excp.value.code == 'C-080-080' and \
+               excp.value.revert_msg == 'Revert this transaction.'
 
     def test_run_trx_with_db0_arg_raises_C_080_080(
             self,
             connect_to_test_contract
             ):
         """Test run_trx() with an arg that causes a
-        divide-by-zero error"""
+        divide-by-zero error with no message from trx."""
         c = connect_to_test_contract
         with pytest.raises(SimplEthError) as excp:
             c.run_trx(
@@ -1041,38 +1064,6 @@ class TestContractRunTrxBad:
                 value_wei=100
                 )
         assert excp.value.code == 'C-080-080'
-
-    def test_failed_require_sends_back_message(
-            self,
-            connect_to_test_contract
-            ):
-        """Test get the message for a require() that fails"""
-        c = connect_to_test_contract
-        try:
-            c.run_trx(
-                Blockchain().address(3),
-                'setOwner',
-                Blockchain().address(3)
-                )
-        except SimplEthError as excp:
-            revert_msg = excp.revert_msg
-        assert revert_msg == 'Must be owner'
-
-    def test_revert_sends_back_message(
-            self,
-            connect_to_test_contract
-            ):
-        """Test get the message for a revert()"""
-        c = connect_to_test_contract
-        revert_msg = ''
-        try:
-            c.run_trx(
-                constants.TRX_SENDER,
-                'revertTransaction'
-                )
-        except SimplEthError as excp:
-            revert_msg = excp.revert_msg
-        assert revert_msg == 'Revert this transaction.'
 
     @pytest.mark.skip(reason='do not know a test case for ContractLogicError')
     def test_run_trx_with_TBD_contract_logic_error_raises_C_080_090(
