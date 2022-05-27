@@ -1,23 +1,24 @@
 Using
 =====
-`Hello World(s) <../html/starting.html>`_ is an
+`Hello World <../html/starting.html>`_ is an
 introduction to using very simple contracts with `simpleth`.
 
 This document goes further. It shows many of the basic
 interactions with a contract as well as compiling a
 contract.
 
-These examples will use the ``Test.sol`` contract.
+.. image:: ../images/section_separator.png
+
+
+Test Contract
+*************
+The examples will use the ``Test.sol`` contract.
 It was created for `simpleth` unit and integration testing.
 It has no purpose except to provide a variety of
 transactions and variables for testing.
 We'll use it to show `simpleth` usage.
 
-
-.. image:: ../images/section_separator.png
-
-Test Contract Details
-*********************
+Details:
 
 - `Natspec comments <../html/contracts.html#test>`_
 - `Source file <../../../tests/src/contracts/Test.sol>`_ (or
@@ -41,7 +42,11 @@ the Test contract.
   Compiler run successful. Artifact(s) can be found in directory "C:/Users/snewe/OneDrive/Desktop/simpleth/artifacts".
 
 .. note::
-   You can read about ``compile.py`` in the `Utilities document <../html/utils.html#module-compile>`_
+
+   - The section on `Understanding compile-to-deploy`_ explains more about
+     compiling.
+   - You can read about ``compile.py`` in the
+     `Utilities document <../html/utils.html#module-compile>`_
 
 .. image:: ../images/section_separator.png
 
@@ -1401,22 +1406,26 @@ solc arguments
 """"""""""""""
 At a minimum, run:
 
-.. code-block:: python
+.. code-block:: shell-session
 
-   solc --abi --bin --bin-runtime --overwrite -o <ARTIFACT_DIR> <CONTRACT>
+   solc --abi --bin --optimize --overwrite -o <ARTIFACT_DIR> <CONTRACT>
 
 Where:
 
 - ``abi`` specifies to write the application binary interface file
 - ``bin`` specifies to write the binary file
-- ``bin-runtime`` specifies to write the binary runtime file
--  ``overwrite`` specifies to replace existing copies of the files
-- ``o`` specifies the path to the output directory for the files;
-  the ``<ARTIFACT_SUBDIR>``. The ``simpleth`` default is:
-  ``<PROJECT_HOME>/artifacts``.
+- ``optimize`` enables the bytecode optimizer to create more efficient
+  contracts.
+- ``overwrite`` specifies to replace existing copies of the files
+- ``o`` specifies the path to the output directory for the files
 - ``<CONTRACT>`` is the path to the Solidity smart contract source
-  file to compile; for example,
-  ``<PROJECT_HOME>/src/contracts/HelloWorld.sol``
+  file to compile
+
+Here's an example that uses the Environment Variable for the artifact directory path
+
+.. code-block:: shell-session
+
+   $ solc --abi --bin --optimize --overwrite -o %SIMPLETH_ARTIFACT_DIR% Test.sol
 
 See `Solidity compiler documentation \
 <https://docs.soliditylang.org/en/v0.8.7/using-the-compiler.html#using-the-compiler>`_
@@ -1424,8 +1433,10 @@ for details.
 
 compile.py
 """"""""""
-``<PROJECT HOME><src><utils><compile.py>`` will run solc with the usual
-``simpleth`` arguments. These include those above plus:
+``compile.py`` is an alternative to using
+``solc.exe`` from the command line. It can make your life a bit
+easier. It runs `solc` with the usual ``simpleth`` arguments. These
+include those above plus:
 
 - ``no-color`` to disable color output since it doesn't show up in
   DOS command line windows.
@@ -1435,8 +1446,6 @@ compile.py
 - ``devdoc`` processes Natspec comments for the developer documentation
   and generates the ``docdev`` file that is written to the output
   directory.
-- ``optimize`` enables the bytecode optimizer to create more efficient
-  contracts.
 
 To start, you will probably find it easiest to use ``compile.py``.
 See the document, :doc:`Utilities for simpleth users <utils>` for details.
@@ -1459,14 +1468,12 @@ The files for each contract:
   :meth:`deploy`. When a :meth:`simpleth.Contract.connect` is done, the
   address for the deployed contract is read from this file.
 - ``<contract>.bin`` - contains the contract binary, from ``solc.exe``
-- ``<contract>.bin-runtime`` - contains the contract binary runtime from
-  ``solc.exe``.
 - ``<contract>.docdev`` - contains the developer JSON documentation file
   from ``solc.exe``.
 - ``<contract>.docuser`` - contains the user JSON documentation file
   from ``solc.exe``.
 
-The first four files are required for use of a contract.
+The first three files are required for use of a contract.
 
 The last two are required if you wish to process the Natspec comments.
 The developer command, ``nat2rst.py``, reads ``docdev`` and ``docuser``

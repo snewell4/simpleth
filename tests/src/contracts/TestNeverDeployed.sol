@@ -14,8 +14,16 @@ pragma solidity ^0.8;
  * have a address file (`.addr`) in the `artifacts` directory.
  */
 contract TestNeverDeployed {
+    /// @dev state variable to use with a Contract().get_var()
     string public text = "I should never get deployed";
 
+     /**
+     * @notice Update contract text variable
+     *
+     * @dev Should never be called since contract does not deploy.
+     *
+     * @param _text becomes the contract text value.
+     */
     function setText(string memory _text) public {
         text = _text;
     }

@@ -15,13 +15,26 @@ TestNeverDeployed
 
 STATE VARIABLES
 ^^^^^^^^^^^^^^^
-None
+
+:text: state variable to use with a Contract().get\_var()
+
+
 
 .. image:: ../images/section_separator.png
 
 METHODS
 ^^^^^^^
-None
+setText(string)
+---------------
+:Purpose:  Update contract text variable
+
+:Notes:  Should never be called since contract does not deploy.
+
+**Parameters:**
+
+:\_text: becomes the contract text value.
+
+
 
 .. image:: ../images/section_separator.png
 
