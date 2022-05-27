@@ -212,10 +212,8 @@ Use `Any` for now. Provided by `web3.py`"""
 # Exception processing
 #
 VALUE_ERROR_REVERT_MESSAGE: str = \
-    'VM Exception while processing transaction: revert '
-"""Boilerplate from ValueError exception about a revert with a trx message."""
-# If the string ends in a blank, the transaction revert message follows.
-# We will want to strip off the boilerplate to get the trx revert message.
+    'VM Exception while processing transaction: revert'
+"""ValueError exception message for a reverted transaction."""
 
 
 class Blockchain:
@@ -2111,11 +2109,15 @@ class Contract:
             if 'revert' in value_error_message:
                 # If transaction did assert() or require() and
                 # specified a message, that message is to the right
-                # of the standard boilerplate message from ValueError.
-                # Get that message. Will be empty string if no message.
+                # of the standard revert message plus a space
+                # from ValueError. The space is important: no space
+                # standard message and no trx revert message follows;
+                # space means a trx revert message follows.
+                # Get that message. Will be empty string if no
+                # trx revert message.
                 trx_revert_message = \
                     value_error_message.replace(
-                        VALUE_ERROR_REVERT_MESSAGE,
+                        VALUE_ERROR_REVERT_MESSAGE + ' ',
                         ''
                         )
             message = (
