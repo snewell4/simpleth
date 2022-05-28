@@ -1376,142 +1376,103 @@ or :meth:`run_trx`.
 .. image:: ../images/section_separator.png
 
 
-Understanding compile-to-deploy
-*******************************
-In order to deploy a contract to the blockchain you use the Solidity compiler,
-``solc.exe`` and then use :class:`simpleth.Contract.deploy` to place it on
-the chain.
+Compiling a contract
+********************
+After creating a contract or making any code changes to an existing contract
+you need to compile it before it can be deployed on the blockchain.
 
-solc arguments
-""""""""""""""
-At a minimum, run:
+You use the Solidity compiler, ``solc.exe``, to create two output files
+and store them in the directory stored in the environment variable,
+``SIMPLETH_ARTIFACT_DIR``.
+
+After a successful compile, the contract is ready to deploy.
+
+Using solc
+""""""""""
+Use ``solc.exe`` with the arguments shown below to make a contract
+ready to deploy by ``simpleth``.:
 
 .. code-block:: shell-session
+   :caption: Command to compile a smart contract for use by simpleth
 
    solc --abi --bin --optimize --overwrite -o <ARTIFACT_DIR> <CONTRACT>
 
 Where:
 
-- ``abi`` specifies to write the application binary interface file
-- ``bin`` specifies to write the binary file
+- ``abi`` writes the application binary interface file
+- ``bin`` writes the binary file
 - ``optimize`` enables the bytecode optimizer to create more efficient
   contracts.
-- ``overwrite`` specifies to replace existing copies of the files
+- ``overwrite`` replaces any existing copies of the files
 - ``o`` specifies the path to the output directory for the files
 - ``<CONTRACT>`` is the path to the Solidity smart contract source
   file to compile
 
-Here's an example that uses the Environment Variable for the artifact directory path
 
 .. code-block:: shell-session
-
-   $ solc --abi --bin --optimize --overwrite -o %SIMPLETH_ARTIFACT_DIR% Test.sol
-
-See `Solidity compiler documentation \
-<https://docs.soliditylang.org/en/v0.8.7/using-the-compiler.html#using-the-compiler>`_
-for details.
-
-compile.py
-""""""""""
-``compile.py`` is an alternative to using
-``solc.exe`` from the command line. It can make your life a bit
-easier. It runs `solc` with the usual ``simpleth`` arguments. These
-include those above plus:
-
-- ``no-color`` to disable color output since it doesn't show up in
-  DOS command line windows.
-- ``userdoc`` processes Natspec comments for the user documentation
-  and generates the ``docuser`` file that is written to the output
-  directory.
-- ``devdoc`` processes Natspec comments for the developer documentation
-  and generates the ``docdev`` file that is written to the output
-  directory.
-
-To start, you will probably find it easiest to use ``compile.py``.
-See the document, :doc:`Utilities for simpleth users <utils>` for details.
-
-artifact directory
-""""""""""""""""""
-The ``<ARTIFACT_SUBDIR>`` is crucial to ``simpleth``. There is one set
-of files for each compiled contract.
-
-The name of the directory is a constant, ``ARTIFACT_SUBDIR`` in
-``simpleth.py`` with the default of, ``artifacts``. Feel free to
-change it and by updating the ``simpleth`` constant.
-
-The files for each contract:
-
-- ``<contract>.abi`` - contains the ABI, from ``solc.exe``
-- ``<contract>.addr`` - contains the deployed address of the contract. This
-  file is not initially present after the first-ever compile. It is added
-  after the first :meth:`deploy`. It is updated after every subsequent
-  :meth:`deploy`. When a :meth:`simpleth.Contract.connect` is done, the
-  address for the deployed contract is read from this file.
-- ``<contract>.bin`` - contains the contract binary, from ``solc.exe``
-- ``<contract>.docdev`` - contains the developer JSON documentation file
-  from ``solc.exe``.
-- ``<contract>.docuser`` - contains the user JSON documentation file
-  from ``solc.exe``.
-
-The first three files are required for use of a contract.
-
-The last two are required if you wish to process the Natspec comments.
-The developer command, ``nat2rst.py``, reads ``docdev`` and ``docuser``
-files to create a `reStructuredText` formatted file suitable as
-contract documentation. See :doc:`Tools for simpleth developers <tools>`
-for details.
-
-**Note**
-
-- There is no cleanup of the directory. If you stop using a contract,
-  its files will remain. You can delete ``<contract>.*`` to clean up.
-
-REDO ABOVE SECTION
-Below is script to use
-
-
-#. Using the DOS ``set`` command in a DOS window:
-   ``$ set SIMPLETH_ARTIFACT_DIR=C:<your path>``
-#. Editing your ``Environment Variables`` in your system's
-   ``System Variables`` and adding the ``Variable`` of
-   ``SIMPLETH_ARTIFACT_DIR`` with the value of
-   ``<your path>``.
-
-.. code-block:: shell-session
+   :caption: Example of compiling the Test.sol contract
    :linenos:
 
-    $set SIMPLETH_ARTIFACT_DIR=C:<your path>\artifacts
-
-    (env) C:\Users\snewe\OneDrive\Desktop\simpleth>echo %SIMPLETH_ARTIFACT_DIR%
-    C:\Users\snewe\OneDrive\Desktop\simpleth\artifacts
-
-    (env) C:\Users\snewe\OneDrive\Desktop\simpleth>python
-
-    >>> from simpleth import Contract
-    >>> c=Contract('test')
-    >>> c.artifact_dir
-    '<your path>\\artifacts'
-
-
-
-Compile
-*******
-After any modification to a contract, including Natspec comments, you
-need to compile the contract before you can deploy it. Let's compile
-the Test contract.
-
-.. code-block:: shell-session
-  :linenos:
-  :caption: Compile the Test contract
-
-  (env) C:\Users\snewe\OneDrive\Desktop\simpleth\tests\src\contracts>compile.py Test.sol
-  Compiler run successful. Artifact(s) can be found in directory "C:/Users/snewe/OneDrive/Desktop/simpleth/artifacts".
+   $ cd <simpleth dir>
+   $ solc\solc --abi --bin --optimize --overwrite -o %SIMPLETH_ARTIFACT_DIR% contracts\Test.sol
+   Compiler run successful. Artifact(s) can be found in directory "<path to simpleth>\simpleth\artifacts".
 
 .. note::
 
-   - The section on `Understanding compile-to-deploy`_ explains more about
-     compiling.
-   - You can read about ``compile.py`` in the
-     `Utilities document <../html/utils.html#module-compile>`_
+   - Line 1 - the example runs from the ``simpleth`` directory.
+   - Line 2 - uses the environment variable for the path to the output directory
+   - Line 3 - success message from compiler
 
-.. image:: ../images/section_separator.png
+    See `Solidity compiler documentation \
+    <https://docs.soliditylang.org/en/v0.8.7/using-the-compiler.html#using-the-compiler>`_
+    for compiler details.
+
+
+Artifact directory
+******************
+The artifact directory is crucial to ``simpleth``. It holds the information
+about compiled contracts for the :class:`Contract` methods to use. The
+environment variable, ``SIMPLETH_ARTIFACT_DIR``, is used by both to know
+the shared location of the contract information.
+
+There are up to five files for each contract stored in the artifact directory.
+All files have ``<contract>`` as the filename. The suffixes are explained
+below:
+
++------------+-------------+-----------------------------------------------------------------------------------------------+
+| **Suffix** | **Creator** | **Purpose**                                                                                   |
++------------+-------------+-----------------------------------------------------------------------------------------------+
+| .abi       | solc.exe    | ABI file. Created with ``--abi`` arg. Must be present to :meth:`deploy` or :meth:`connect`.   |
++------------+-------------+-----------------------------------------------------------------------------------------------+
+| .addr      | Contract()  | Blockchain address. Written at deploy(). Required for :meth:`connect`.                        |
++------------+-------------+-----------------------------------------------------------------------------------------------+
+| .bin       | solc.exe    | BIN file. Created with ``--bin`` arg. Must be present to :meth:`deploy` or :meth:`connect`.   |
++------------+-------------+-----------------------------------------------------------------------------------------------+
+| .docdev    | solc.exe    | Developer Natspec comments JSON file. Created with ``--docdev`` arg. Used for documentation.  |
++------------+-------------+-----------------------------------------------------------------------------------------------+
+| .docuser   | solc.exe    | User Natspec comments JSON file. Created with ``--docuser`` arg. Used for documentation.      |
++------------+-------------+-----------------------------------------------------------------------------------------------+
+
+
+When :meth:`deploy` runs, it uses the environment variable to look in
+that directory for the ABI and BIN files needed to install the contract
+on the blockchain. :meth:`deploy` will write the address of the newly
+installed contract to the ``<contract>.addr`` file.
+If a contract has been compiled, but not yet deployed, there will be
+no `.addr` file in the directory. After the first-ever deployment the
+`.addr` file is written to  the directory. Any subsequent :meth:`deploy`
+will update the contract's address stored in the file.
+
+When :meth:`connect` runs, it uses that environment variable to
+load up information about the deployed contract, including the address
+of the deployed contract.
+
+If you destroy an `.addr` file, that contract is lost to ``simpleth``.
+You will not be able to access that installed instance of the contract.
+
+.. note::
+   If you do not set ``SIMPLETH_ARTIFACT_DIR``, it will default to, ``.``,
+   the current working directory.
+
+
+

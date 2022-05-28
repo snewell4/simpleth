@@ -38,8 +38,6 @@ Project directories::
             +----- contracts
             |
             +----- solc
-            |
-            +----- tools
 
 Where:
 
@@ -47,7 +45,6 @@ Where:
 - ``artifacts`` holds Solidity smart contract compiler output files
 - ``contracts`` holds Solidity smart contract source code files
 - ``solc`` holds the Solidity compiler, ``solc.exe`` .
-- ``tools`` holds a Python script to simplify running the Solidity compiler.
 
 These commands will create the directories:
 
@@ -97,39 +94,12 @@ There are two for each of the five contracts. One is suffixed with, `.abi`,
 and the other with, `.bin`.
 
 
-6) Download tools
-*****************
-There are two Python scripts to download and store in the ``tools`` directory:
-
-#. ``compile.py`` runs `solc.exe` with best options and places output in
-   the ``artifacts`` directory. Just makes it quicker and easier to compile.
-#. ``event_poll.py`` used in a code example in the :doc:`Using <using>`
-   document. Included in case you want to try running it.
+6) Set environment variable
+***************************
+Set ``SIMPLETH_ARTIFACT_DIR`` to ``<path to project>/simpleth/artifacts``
 
 
-7) Customizing environment
-**************************
-
-a) Environment variables
-""""""""""""""""""""""""
-There are two environment variables to set:
-
-#. Set ``SIMPLETH_ARTIFACT_DIR`` to ``<path to project>/simpleth/artifacts``
-#. Set ``SIMPLETH_SOLC_DIR`` to ``<path to project>/simpleth/solc``
-#. Set ``PYTHONPATH`` to ``<path to project>/tools``
-
-If ``PYTHONPATH`` is already set, add ``<path to project>/tools`` to the end.
-
-
-b) App association
-""""""""""""""""""
-Using Windows Settings -> Apps -> Default apps, associate ``.py`` to ``Python``.
-
-This will allow you to enter the name of a command, like ``compile.py``
-on a terminal command line.
-
-
-8) Confirm installation
+7) Confirm installation
 ***********************
 These commands should run as shown and without error messages.
 

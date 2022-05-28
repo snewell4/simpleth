@@ -899,11 +899,11 @@ class Contract:
     - ``<contract>.bin`` - Binary for the compiled contract. Created by
       ``solc.exe``.
 
-    The default location for the artifact directory is a subdirectory:
-    ``./artifacts``.
+    The environment variable, ``SIMPLETH_ARTIFACT_DIR``, should be set with
+    the filepath to the directory holding these files.
 
-    To change the default, set the environment variable,
-    ``SIMPLETH_ARTIFACT_DIR`` to your filepath to the directory.
+    If the environment variable is not found, the default directory is, ``.``,
+    the current working directory.
 
     """
     def __init__(self, name: str) -> None:
@@ -1027,7 +1027,7 @@ class Contract:
             >>> c = Contract('Test')
             >>> addr = c.connect()
             >>> c.artifact_dir     #doctest: +SKIP
-            './artifacts'
+            'C:\\path\\to\\your\\artifact\\directory'
 
         """
         return self._artifact_dir
@@ -2024,9 +2024,6 @@ class Contract:
               should be defined as a `payable` function in the Solidity
               contract or the contract will need a payable fallback
               function in order to accept the payment.
-           -  Beware, when an assert() or require() sends back a message
-              if it contains the word, 'revert', that word will be stripped
-              from the message. (BUG - this should be fixed sometime.)
 
         .. seealso::
            -   Ethereum page on `gas and fees <https://ethereum.org/en/developers/docs/gas/>`_

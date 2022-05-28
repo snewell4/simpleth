@@ -121,17 +121,3 @@ Other Documentation
    :doc:`Smart Contract Reference <contracts>`
        Formatted ``Natspec`` comments in the contracts create a reference
        document for all contracts used for examples and testing.
-
-   :doc:`Utilities for simpleth users <utils>`
-       Python programs that simpleth users may find
-       useful. Both are documented with formatted ``docstrings`` from
-       the code.
-
-   :doc:`Tools for simpleth developers <tools>`
-       Windows batch scripts and Python programs that can be used by
-       developers modifying the ``simpleth`` classes. The Python
-       program documentation is formatted ``docstrings``
-
-   :doc:`reST Style Guide <style>`
-       Examples of ``reStructuredText`` formatting to be used in all
-       ``simpleth`` documentation. Uses ``style.rst`` as input.
