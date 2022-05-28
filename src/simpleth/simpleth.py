@@ -52,8 +52,8 @@ __status__ = 'Prototype'
 ARTIFACT_DIR_ENV_VAR: Final[str] = 'SIMPLETH_ARTIFACT_DIR'
 """Environment variable name for filepath to artifact directory"""
 
-ARTIFACT_DIR_DEFAULT: Final[str] = './artifacts'
-"""If environment variable not set, this is the artifact directory"""
+ARTIFACT_DIR_DEFAULT: Final[str] = '.'
+"""If environment variable not set, use current working directory"""
 
 ABI_SUFFIX: Final[str] = '.abi'
 """Filename suffix for the ABI files."""

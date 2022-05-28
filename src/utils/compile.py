@@ -112,7 +112,6 @@ def main():
             '--no-color '  # disable color output
             '--abi '  # output contract ABI file
             '--bin '  # output contract binary file
-            '--bin-runtime '  # output contract runtime binary file
             '--userdoc '  # output Natspec user documentation
             '--devdoc  '  # output Natspec developer documentation
             '--overwrite '  # overwrite existing artifact files

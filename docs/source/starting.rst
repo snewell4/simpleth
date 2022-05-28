@@ -9,12 +9,10 @@ The four contracts take different approaches in returning
 a `Hello World` string.
 
 The Solidity source for the contracts is found in
-``<project dir>/src/contracts/HelloWorld*.sol`` .
+``<project dir>/contracts/HelloWorld*.sol`` .
 A copy of the source shown below, without comments.
 
 The contracts have been compiled and are ready to deploy.
-The final example shows the end-to-end steps to compile a
-contract and deploy it.
 
 .. image:: ../images/section_separator.png
 

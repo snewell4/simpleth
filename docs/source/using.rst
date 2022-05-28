@@ -22,31 +22,9 @@ Details:
 
 - `Natspec comments <../html/contracts.html#test>`_
 - `Source file <../../../tests/src/contracts/Test.sol>`_ (or
-  open the file, ``<project home>/tests/src/contracts/Test.sol`` , in
+  open the file, ``<project home>/contracts/Test.sol`` , in
   your favorite editor.)
 
-
-.. image:: ../images/section_separator.png
-
-Compile
-*******
-After any modification to a contract, including Natspec comments, you
-need to compile the contract before you can deploy it. Let's compile
-the Test contract.
-
-.. code-block:: shell-session
-  :linenos:
-  :caption: Compile the Test contract
-
-  (env) C:\Users\snewe\OneDrive\Desktop\simpleth\tests\src\contracts>compile.py Test.sol
-  Compiler run successful. Artifact(s) can be found in directory "C:/Users/snewe/OneDrive/Desktop/simpleth/artifacts".
-
-.. note::
-
-   - The section on `Understanding compile-to-deploy`_ explains more about
-     compiling.
-   - You can read about ``compile.py`` in the
-     `Utilities document <../html/utils.html#module-compile>`_
 
 .. image:: ../images/section_separator.png
 
@@ -129,8 +107,8 @@ statements.
    See the ``Deploy`` example above for comments relevant to lines
    2, 3, and 5.
 
-   - Line 4: Likewise, assign another account address to ``user``. This
-     will give us two accounts for our examples.
+   Line 4: Likewise, assign another account address to ``user``. This
+   will give us two accounts for our examples.
 
 
 .. image:: ../images/section_separator.png
@@ -165,7 +143,7 @@ specified ``public state`` variable.
      defines the initial value of ``nums`` as
      [0,1,2]. There are transactions to change and use
      those values. We'll get to those soon.)
-   - Line 6 - get the third element of ``nums`` .
+   - Line 7 - get the third element of ``nums`` .
 
 .. image:: ../images/section_separator.png
 
@@ -250,7 +228,7 @@ variable values:
    A transaction always has a `sender`. This is the address
    of the account running the transaction. For the transactions
    shown the sender does not matter. Two of them were sent by
-   `user`` and one ``owner``.  We'll be looking at checks in
+   ``user`` and one ``owner``.  We'll be looking at checks in
    a transaction that can restrict which account(s) are permitted
    to run the transaction.
 
@@ -318,10 +296,10 @@ the information from events emitted by transactions:
 
 :meth:`get_new` is used to check for an event in recently mined blocks.
 It will look in the blocks created since the previous call for any new events.
-The checking starts with creating the ``EventSearch`` . The first call to
-``get_new`` returns any events emitted since object creating. The next call
-returns any events emitted since the first call. Second call returns
-events since the first call and so on.
+The checking starts with creating an ``EventSearch`` object . The first call
+to ``get_new`` returns any events emitted since the object was created. The
+next call returns any events emitted since the first call. The second call
+returns events since the first call and so on.
 
 .. code-block:: python
    :linenos:
@@ -400,6 +378,8 @@ waits for a period of time, and repeats those two steps. Here's an example:
    - Line 17: If zero events, tell the user nothing new found.
      If non-zero, tell user how many we found in this polling cycle.
    - Line 23: Sleep until time for the next check.
+
+   The ``event_poll.py`` program is found in the ``tools`` directory.
 
 The next two sessions show a test of ``event_poll.py`` .
 There are two windows in use:
@@ -1513,3 +1493,25 @@ Below is script to use
     '<your path>\\artifacts'
 
 
+
+Compile
+*******
+After any modification to a contract, including Natspec comments, you
+need to compile the contract before you can deploy it. Let's compile
+the Test contract.
+
+.. code-block:: shell-session
+  :linenos:
+  :caption: Compile the Test contract
+
+  (env) C:\Users\snewe\OneDrive\Desktop\simpleth\tests\src\contracts>compile.py Test.sol
+  Compiler run successful. Artifact(s) can be found in directory "C:/Users/snewe/OneDrive/Desktop/simpleth/artifacts".
+
+.. note::
+
+   - The section on `Understanding compile-to-deploy`_ explains more about
+     compiling.
+   - You can read about ``compile.py`` in the
+     `Utilities document <../html/utils.html#module-compile>`_
+
+.. image:: ../images/section_separator.png
