@@ -97,8 +97,11 @@ POLL_LATENCY: Final[Union[int, float]] = 0.1
 #
 # Ganache
 #
-GANACHE_URL: Final[str] = 'http://127.0.0.1:7545'
-"""URL to connect to local Ganache Ethereum blockchain"""
+GANACHE_URL_ENV_VAR: Final[str] = 'SIMPLETH_GANACHE_URL'
+"""Environment variable name for URL to connect to local Ganache blockchain"""
+
+GANACHE_URL_DEFAULT: Final[str] = 'http://127.0.0.1:7545'
+"""If environment variable not set, use Ganache default URL"""
 
 #
 # Formatting
@@ -220,6 +223,7 @@ class Blockchain:
     -  :meth:`block_number` - sequence number of last block on chain
     -  :meth:`client_version` - `Ethereum` client version in use
     -  :meth:`eth` - `web3.eth` object
+    -  :meth:`url` - URL for the Ganache blockchain
     -  :meth:`web3` - `web3` object
 
     **METHODS**
@@ -240,6 +244,28 @@ class Blockchain:
        an address
     -  :meth:`trx_sender` - return address that sent a transaction
 
+    **GANACHE URL**
+
+    The constructor for :class:`Blockchain` connects to Ganache via a URL.
+    There are three ways to specify that URL, in order of precedence:
+
+    #. Use the optional parameter, ``url``, for the :class:`Blockchain`
+       constructor. This only remains in effect for this instance of your
+       `Blockchain` object.
+    #. Create an environment variable, ``SIMPLETH_GANACHE_URL``, and
+       specify the URL as the value. This remains in effect for
+       all subsequent `Blockchain` objects - as long as the variable
+       is set.
+    #. **Do nothing**. The default value for the URL is
+       :attr:`GANACHE_URL_DEFAULT`.
+       This is always in effect unless you do one of the above and
+       should work for most situations.
+
+    .. note:
+       You can see Ganache's URL by opening the `Workspace` tab in the Ganache
+       app. The second line shows it with the title, "RPC Server."
+       You can also see it, as well as change it, on the `Server` tab.
+
     .. warning::
        This has only been tested with `Ganache <https://trufflesuite.com/ganache/>`_
 
@@ -248,11 +274,11 @@ class Blockchain:
        <https://web3py.readthedocs.io/en/stable/web3.main.html>`_
 
     """
-    def __init__(self, url: str = GANACHE_URL) -> None:
+    def __init__(self, url: str = None) -> None:
         """Create blockchain instance.
 
-        :param url: Ethereum blockchain web address (optional,
-            default: :const:`GANACHE_URL`)
+        :param url: Ethereum blockchain web address (**optional**,
+            default: ``None``)
         :type url: str
         :rtype: None
         :raises SimplEthError:
@@ -263,17 +289,29 @@ class Blockchain:
             >>> b = Blockchain()
 
         """
-        self._web3 = Web3(Web3.HTTPProvider(url))
+        if url:
+            # Caller gave us the URL to use
+            self._url: str = url
+            """private Ganache URL"""
+        else:
+            # No GANACHE URL arg value, use environment variable value.
+            # If no environment variable, use the default URL.
+            self._url = os.environ.get(
+                GANACHE_URL_ENV_VAR,
+                GANACHE_URL_DEFAULT
+                )
+
+        self._web3 = Web3(Web3.HTTPProvider(self._url))
         """private `web3` object that represents the blockchain"""
         if not self._web3.isConnected():
             message: str = (
-                'ERROR in Blockchain().init(): '
-                'Unable to connect to Web3.\n'
-                'HINT1: Is Ganache running?\n'
-                'HINT2: If not using Ganache, is your blockchain client '
-                'running?\n'
-                'HINT3: If you just made changes to simpleth.py, you may'
-                'to start a new DOS window.\n'
+                f'ERROR in Blockchain().init(): '
+                f'Unable to connect to Web3.\n'
+                f'HINT1: Is Ganache running?\n'
+                f'HINT2: Your URL for Ganache is <{self._url}>. '
+                f'Does this match your Ganache app?\n'
+                f'HINT3: If you just made changes to simpleth.py, you may '
+                f'need to start a new DOS window.\n'
                 )
             raise SimplEthError(message, code='B-010-010') from None
 
@@ -377,6 +415,21 @@ class Blockchain:
         return self._eth
 
     @property
+    def url(self) -> str:
+        """Return the Ganache URL.
+
+        :rtype: str
+        :return: URL for Ganache
+        :example:
+            >>> from simpleth import Blockchain
+            >>> b = Blockchain()
+            >>> b.url
+            'http://127.0.0.1:7545'
+
+        """
+        return self._url
+
+    @property
     def web3(self) -> T_WEB3_OBJ:
         """Return the ``web3`` object.
 
@@ -412,7 +465,7 @@ class Blockchain:
         :return:
 
             - index of the account in the list Ganache-provided accounts
-            - `None` if ``account_address`` not one provided by Ganache
+            - ``None`` if ``account_address`` not one provided by Ganache
 
         :example:
             >>> from simpleth import Blockchain
@@ -964,7 +1017,7 @@ class Contract:
         self._bytecode: str = self._get_artifact_bytecode()
         """Private bytecode for contract"""
 
-        # The following attributes are initialized to `None` or empty.
+        # The following attributes are initialized to ``None``.
         # They are filled in with a `connect()`.
         # This happens when a user calls `connect()` or `deploy()`.
         # A `deploy()` does a `connect()`.
@@ -1623,10 +1676,10 @@ class Contract:
         :type trx_hash: str
         :param timeout: maximum number of seconds to wait for
             mining to finish
-            (optional, default: :const:`TIMEOUT`)
+            (**optional**, default: :const:`TIMEOUT`)
         :type timeout: int | float
         :param poll_latency: number of seconds between checking
-            for transaction completion (optional, default:
+            for transaction completion (**optional**, default:
             :const:`POLL_LATENCY`)
         :type poll_latency: int | float
         :rtype: T_RECEIPT | None
@@ -3822,11 +3875,11 @@ class SimplEthError(Exception):
 
         :param message: error message with a description of error
         :type message: str
-        :param code: unique identifier of this error (optional,
+        :param code: unique identifier of this error (**optional**,
             default: `''`)
         :type code: str
         :param revert_msg: message from a transaction assert() or
-            require() (optional, default: `''`)
+            require() (**optional**, default: `''`)
         :type code: str
         :example:
             >>> from simpleth import SimplEthError

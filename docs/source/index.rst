@@ -14,6 +14,7 @@ Simple Ethereum
    utils.rst
    tools.rst
    style.rst
+   TestContract.rst
 
 Indices
 ========

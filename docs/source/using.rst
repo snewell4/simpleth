@@ -18,12 +18,15 @@ It has no purpose except to provide a variety of
 transactions and variables for testing.
 We'll use it to show `simpleth` usage.
 
-Details:
+.. note::
+    If you'd like to look at the contract while going through the examples:
 
-- `Natspec comments <../html/contracts.html#test>`_
-- `Source file <../../../tests/src/contracts/Test.sol>`_ (or
-  open the file, ``<project home>/contracts/Test.sol`` , in
-  your favorite editor.)
+    - The Natspec comments provide reference documentation for the contract
+      in, :doc:`Smart Contract Reference <contracts>`.
+    - A copy of the source code is in the document,
+      :doc:`Test Contract <TestContract>`.
+    - The source file was downloaded and will be found in
+      ``simpleth/contracts/Test.sol``
 
 
 .. image:: ../images/section_separator.png
@@ -76,8 +79,8 @@ After a contract is deployed, it is ready for use.
 .. image:: ../images/section_separator.png
 
 
-Setup session
-*************
+Setup interpreter session
+*************************
 These Python statements are common to all the following
 examples. They are shown here and assumed to have been
 issued for the rest of the examples.
@@ -379,9 +382,7 @@ waits for a period of time, and repeats those two steps. Here's an example:
      If non-zero, tell user how many we found in this polling cycle.
    - Line 23: Sleep until time for the next check.
 
-   The ``event_poll.py`` program is found in the ``tools`` directory.
-
-The next two sessions show a test of ``event_poll.py`` .
+The next two sessions show a single test of ``event_poll.py`` .
 There are two windows in use:
 
 #. Python interpreter where transactions were run
@@ -1453,6 +1454,26 @@ below:
 | .docuser   | solc.exe    | User Natspec comments JSON file. Created with ``--docuser`` arg. Used for documentation.      |
 +------------+-------------+-----------------------------------------------------------------------------------------------+
 
+.. code-block:: shell-session
+   :caption: Example of Test contract files in the artifact directory
+   :linenos:
+
+    $ <your path to simpleth>\simpleth\artifacts>dir Test.*
+     Volume in drive C is Windows
+     Volume Serial Number is xxxx-xxxx
+
+     Directory of <your path to simpleth>\simpleth\artifacts
+
+    05/29/2022  09:06 AM            11,865 Test.abi
+    05/29/2022  08:02 AM                42 test.addr
+    05/29/2022  09:06 AM            12,100 Test.bin
+    05/29/2022  09:06 AM             8,206 Test.docdev
+    05/29/2022  09:06 AM             3,758 Test.docuser
+                   5 File(s)         35,971 bytes
+
+.. note::
+   - Line 8: Due to DOS file naming convention, upper and lower
+     case does not matter in the file names.
 
 When :meth:`deploy` runs, it uses the environment variable to look in
 that directory for the ABI and BIN files needed to install the contract
@@ -1470,9 +1491,6 @@ of the deployed contract.
 If you destroy an `.addr` file, that contract is lost to ``simpleth``.
 You will not be able to access that installed instance of the contract.
 
-.. note::
+.. warning::
    If you do not set ``SIMPLETH_ARTIFACT_DIR``, it will default to, ``.``,
    the current working directory.
-
-
-
