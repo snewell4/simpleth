@@ -13,19 +13,19 @@ contract.
 Test Contract
 *************
 The examples will use the ``Test.sol`` contract.
-It was created for `simpleth` unit and integration testing.
+It was created for ``simpleth`` unit and integration testing.
 It has no purpose except to provide a variety of
 transactions and variables for testing.
-We'll use it to show `simpleth` usage.
+We'll use it to show ``simpleth`` usage.
 
 .. note::
     If you'd like to look at the contract while going through the examples:
 
-    - The Natspec comments provide reference documentation for the contract
-      in, :doc:`Smart Contract Reference <contracts>`.
+    - The Natspec comments in the source file provide reference documentation
+      for the contract in, :doc:`Smart Contract Reference <contracts>`.
     - A copy of the source code is in the document,
       :doc:`Test Contract <TestContract>`.
-    - The source file was downloaded and will be found in
+    - The source file will be found in
       ``simpleth/contracts/Test.sol``
 
 
@@ -382,6 +382,8 @@ waits for a period of time, and repeats those two steps. Here's an example:
      If non-zero, tell user how many we found in this polling cycle.
    - Line 23: Sleep until time for the next check.
 
+   The program is found in ``simpleth/examples`` directory.
+
 The next two sessions show a single test of ``event_poll.py`` .
 There are two windows in use:
 
@@ -579,30 +581,6 @@ Handling Ether
 
     >>> from simpleth import Convert
     >>> v = Convert()
-    >>> pp.pprint(v.denominations_to_wei())
-    { 'babbage': 1000,
-      'ether': 1000000000000000000,
-      'femtoether': 1000,
-      'finney': 1000000000000000,
-      'gether': 1000000000000000000000000000,
-      'grand': 1000000000000000000000,
-      'gwei': 1000000000,
-      'kether': 1000000000000000000000,
-      'kwei': 1000,
-      'lovelace': 1000000,
-      'mether': 1000000000000000000000000,
-      'micro': 1000000000000,
-      'microether': 1000000000000,
-      'milli': 1000000000000000,
-      'milliether': 1000000000000000,
-      'mwei': 1000000,
-      'nano': 1000000000,
-      'nanoether': 1000000000,
-      'picoether': 1000000,
-      'shannon': 1000000000,
-      'szabo': 1000000000000,
-      'tether': 1000000000000000000000000000000,
-      'wei': 1}
     >>> v.denominations_to_wei()['szabo']
     1000000000000
 
@@ -638,31 +616,29 @@ Handling Ether
 
 .. note::
 
-   - Line 3: :meth:`denominations_to_wei` returns a dictionary of
-     the names of all Ether denominations and the number of `wei`
-     in each. The same list, with much better formatting, is shown
-     in the `Example` for :meth:`simpleth.Convert.denominations_to_wei`
-   - Line 27: You can specify a denomination to get the value in `wei`.
-   - Line 30: :meth:`convert_ether` is the usual way to compute
+   - Line 23: You can specify a denomination to get the value in `wei`.
+     See the the `Example` for :meth:`simpleth.Convert.denominations_to_wei`
+     for the list of valid denominations.
+   - Line 6: :meth:`convert_ether` is the usual way to compute
      a conversion between denominations. This line shows the number
      of `gwei` in 20 `ether`. For best precision, the method returns
      a ``decimal`` type. This example casts to an integer.
-   - Line 37: Get `user` balance in `ether`.
-   - Line 39: ``Test`` contract has a balance of 10 `wei`.
-   - Line 44: Move 10 `wei` from ``owner`` to ``user``.
-   - Line 46: ``user`` balance increased by 10 `wei`. Line 43 is
+   - Line 13: Get `user` balance in `ether`.
+   - Line 15: ``Test`` contract has a balance of 10 `wei`.
+   - Line 20: Move 10 `wei` from ``owner`` to ``user``.
+   - Line 24: ``user`` balance increased by 10 `wei`. Line 43 is
      the *before* balance.
-   - Line 50: Example of sending ether to a transaction. The ``Test``
+   - Line 26: Example of sending ether to a transaction. The ``Test``
      contract has the function, :meth:`storeNumsAndPay` that is
      identical to our trusty, :meth:`storeNums`, except it is
      defined as ``payable`` in the contract. This allows us to
      send Ether when we run the transaction. Here, we are sending
      10 `wei` .
-   - Line 51: Get the :meth:`trx_value_wei` sent to the
+   - Line 27: Get the :meth:`trx_value_wei` sent to the
      transaction. As expected, line 52 shows it is 100 `wei`.
-   - Line 54: Confirms that 100 `wei` were sent. The balance is
+   - Line 30: Confirms that 100 `wei` were sent. The balance is
      now 100 `wei` more than the *before* balance on line 49
-   - Line 55: You can also send ether to a contract. Here, 500
+   - Line 31: You can also send ether to a contract. Here, 500
      `wei` is sent to the ``Test`` contract. This is confirmed
      in line 58 where the balance increased by 500 from the
      *before* balance on line 54. **Important**: the contract must have

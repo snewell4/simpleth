@@ -7,12 +7,9 @@ pragma solidity ^0.8;
  *
  * @author Stephen Newell
  *
- * @notice Adding more functionality to the contract saying hello.
+ * @notice Adds an event to the constructor.
  *
- * @dev The constructor sets an initial greeting. Uses a
- * transaction to set the greeting and a function to return
- * the greeting. Emits an event when constructed and another
- * when the greeting is set.
+ * @dev Find the greeting in the emitted event.
  */
 contract HelloWorld4 {
     /// @dev the greeting to display
@@ -34,20 +31,6 @@ contract HelloWorld4 {
     );
 
     /**
-     * @notice Emitted when greeting was changed
-     *
-     * @param timestamp block time when change was changed
-     * @param sender address sending in the change
-     * @param greeting new greeting
-     */
-    event GreetingSet(
-        uint timestamp,
-        address sender,
-        string greeting
-    );
-
-
-    /**
      * @notice Create a new HelloWorld4 contract on the blockchain.
      *
      * @dev Emits HelloWord4().
@@ -62,32 +45,5 @@ contract HelloWorld4 {
             greeting,
             address(this)
         );
-    }
-
-    /**
-     * @notice Sets a new greeting
-     *
-     * @dev Emits GreetingSet()
-     *
-     * @param _greeting becomes the contract greeting value
-     */
-    function setGreeting(string memory _greeting) public {
-        greeting = _greeting;
-        emit GreetingSet(
-            block.timestamp,
-            msg.sender,
-            greeting
-        );
-    }
-
-    /**
-     * @notice Gets greeting
-     *
-     * @dev Function; not a transaction
-     *
-     * @return greeting_ contract greeting value
-     */
-    function getGreeting() public view returns (string memory greeting_) {
-        return greeting;
     }
 }

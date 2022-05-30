@@ -1434,7 +1434,6 @@ class Contract:
 
             >>> from simpleth import Contract, Blockchain
             >>> c = Contract('Test')
-            >>> addr = c.connect()
             >>> user = Blockchain().accounts[0]
             >>> r = c.deploy(user,42)
 
