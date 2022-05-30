@@ -5,9 +5,9 @@ HelloWorld4
 ***********
 :Description: HelloWorld4
 
-:Purpose:  Adding more functionality to the contract saying hello.
+:Purpose:  Adds an event to the constructor.
 
-:Notes:  The constructor sets an initial greeting. Uses a transaction to set the greeting and a function to return the greeting. Emits an event when constructed and another when the greeting is set.
+:Notes:  Find the greeting in the emitted event.
 
 :Author:  Stephen Newell
 
@@ -36,53 +36,10 @@ constructor()
 
 
 
-________________________________________
-
-getGreeting()
--------------
-:Purpose:  Gets greeting
-
-:Notes:  Function; not a transaction
-
-**Returns:**
-
-:greeting\_: contract greeting value
-
-
-
-________________________________________
-
-setGreeting(string)
--------------------
-:Purpose:  Sets a new greeting
-
-:Notes:  Emits GreetingSet()
-
-**Parameters:**
-
-:\_greeting: becomes the contract greeting value
-
-
-
 .. image:: ../images/section_separator.png
 
 EVENTS
 ^^^^^^
-GreetingSet(uint256,address,string)
------------------------------------
-:Purpose:  Emitted when greeting was changed
-
-
-**Parameters:**
-
-:greeting: new greeting
-:sender: address sending in the change
-:timestamp: block time when change was changed
-
-
-
-________________________________________
-
 HelloWorld4Constructed(uint256,address,string,address)
 ------------------------------------------------------
 :Purpose:  Emitted when contract is constructed
