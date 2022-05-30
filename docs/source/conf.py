@@ -15,7 +15,7 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../../src/simpleth'))
-sys.path.insert(0, os.path.abspath('../../dev/src/tools'))
+sys.path.insert(0, os.path.abspath('../../tools'))
 
 
 # -- Project information -----------------------------------------------------

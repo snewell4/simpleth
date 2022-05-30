@@ -105,7 +105,7 @@ import simpleth
 
 RST_DIR_ENV_VAR: str = 'SIMPLETH_RST_DIR'
 """Environment variable name for filepath to directory holding rst files"""
-RST_DIR_DEFAULT: str = '.'
+RST_DIR_DEFAULT: str = ''
 """If environment variable not set, put output in current working directory."""
 RST_FILE_SUFFIX = '.rst'
 """reST formatted file suffix. This is the output file."""

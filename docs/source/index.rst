@@ -11,9 +11,6 @@ Simple Ethereum
    using.rst
    simpleth.rst
    contracts.rst
-   utils.rst
-   tools.rst
-   style.rst
    TestContract.rst
 
 Indices

@@ -98,26 +98,26 @@ Framework/Tools used
 -  mypy - static type checking
 -  git - version control
 
-simpleth Documentation
+Simpleth Documentation
 **********************
 
-+--------------+-------------------------------------------+
-| Type         | Title (Hot-linked)                        |
-+==============+===========================================+
-| Installation | :doc:`Installing <installing>`            |
-+--------------+-------------------------------------------+
-| Tutorial     | :doc:`Hello World <starting>`             |
-+--------------+-------------------------------------------+
-| User Guide   | :doc:`Using <using>`                      |
-+--------------+-------------------------------------------+
-| Reference    | :doc:`Simpleth Reference <simpleth>`      |
-+--------------+-------------------------------------------+
++--------------+---------------------------------+
+| Type         | Title (Hot-linked)              |
++==============+=================================+
+| Installation | :doc:`Installing <installing>`  |
++--------------+---------------------------------+
+| Tutorial     | :doc:`Hello World <starting>`   |
++--------------+---------------------------------+
+| User Guide   | :doc:`Using <using>`            |
++--------------+---------------------------------+
+| Reference    | :doc:`Simpleth <simpleth>`      |
++--------------+---------------------------------+
 
-Other Documentation
-*******************
+Contract Documentation
+**********************
 
 .. glossary::
 
    :doc:`Smart Contract Reference <contracts>`
        Formatted ``Natspec`` comments in the contracts create a reference
-       document for all contracts used for examples and testing.
+       document for the contracts used by the examples.
