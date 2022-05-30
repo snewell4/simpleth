@@ -75,7 +75,7 @@ import simpleth
 
 SOLC_DIR_ENV_VAR: str = 'SIMPLETH_SOLC_DIR'
 """Environment variable name for filepath to directory holding compiler"""
-SOLC_DIR_DEFAULT: str = '../tests/simpleth'
+SOLC_DIR_DEFAULT: str = '.'
 """If environment variable not set, look for compiler in current working
 directory"""
 SOLC_FILENAME: str = 'solc.exe'
