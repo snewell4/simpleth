@@ -1,6 +1,6 @@
 Introduction
 ============
-``simpleth`` (**Simple Ethereum**) simplifies
+``simpleth`` (**Simplified Ethereum**) simplifies
 the use of Python to interact with an Ethereum blockchain and its Solidity
 smart contracts.
 

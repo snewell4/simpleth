@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: simpleth
+Version: 0.1.0
+Summary: Simplified Ethereum for Python
+Home-page: https://github.com/snewell4/simpleth
+Author: Stephen Newell
+Author-email: <snewell4@gmail.com>
+Keywords: blockchain,ganache,Solidity,ethereum,smart-contract
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Topic :: Other/Nonlisted Topic
+Requires-Python: >=3.8
+License-File: LICENSE.txt
+
+A set of five classes that simplify the use of Python to interact with Solidity smart contracts on a Ganache Ethereum blockchain. The classes allow developers to:  easily get details of the blockchain; deploy contracts onto the blockchain; run contract transactions; call contract functions; get values for contract public state variables; use filters to retrieve specific events; and get details on a transaction outcome.
