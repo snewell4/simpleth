@@ -36,4 +36,4 @@ The intended audience:
       medium-complexity dapps.
 
 **Full documentation** at
-.. _Read the Docs: https://https://simpleth.readthedocs.io/en/latest/
+.. _Read the Docs: https://simpleth.readthedocs.io/en/latest/
