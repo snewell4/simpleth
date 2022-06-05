@@ -35,5 +35,4 @@ The intended audience:
    -  more advanced functions in a smart contract, esp. for use in
       medium-complexity dapps.
 
-**Full documentation** at
-.. _Read the Docs: https://simpleth.readthedocs.io/en/latest/
+**Full documentation** at *Read the Docs*: https://simpleth.readthedocs.io/en/latest/
