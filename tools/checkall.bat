@@ -24,4 +24,7 @@ cd %SIMPLETH_PATH%/tools
 mypy compile.py
 mypy nat2rst.py
 cd %SIMPLETH_PATH%/src/simpleth
-mypy simpleth.py
+REM Check as a package. Also avoids mypy error:
+REM 'Source file found twice under different module names: "simpleth.simpleth" and "simpleth"'
+REM since MYPYPATH finds it along with being in current working directory.
+mypy -p simpleth
