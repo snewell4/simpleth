@@ -34,3 +34,6 @@ The intended audience:
    -  basic functions in a smart contract, esp. if just starting out
    -  more advanced functions in a smart contract, esp. for use in
       medium-complexity dapps.
+
+**Full documentation** at
+.. _Read the Docs: https://https://simpleth.readthedocs.io/en/latest/

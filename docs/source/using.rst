@@ -1280,8 +1280,8 @@ the parameters of :meth:`send_trx` and :meth:`get_trx_receipt_wait`.
 
 :meth:`run_trx` blocks until the transaction completes or it times out.
 
-:meth:`run_trx` only throws one exception. When you use
-:meth:`run_trx` most the exceptions
+:meth:`run_trx` only throws one exception of its own.
+When you use :meth:`run_trx` most the exceptions
 are thrown by :meth:`send_trx` or :meth:`get_trx_receipt_wait` .
 
 Using Ganache with a mining delay
@@ -1359,7 +1359,7 @@ After creating a contract or making any code changes to an existing contract
 you need to compile it before it can be deployed on the blockchain.
 
 You use the Solidity compiler, ``solc.exe``, to create two output files
-and store them in the directory stored in the environment variable,
+and store them in the directory named in the environment variable,
 ``SIMPLETH_ARTIFACT_DIR``.
 
 After a successful compile, the contract is ready to deploy.
@@ -1367,7 +1367,7 @@ After a successful compile, the contract is ready to deploy.
 Using solc
 """"""""""
 Use ``solc.exe`` with the arguments shown below to make a contract
-ready to deploy by ``simpleth``.:
+ready to deploy by ``simpleth``:
 
 .. code-block:: shell-session
    :caption: Command to compile a smart contract for use by simpleth
@@ -1390,8 +1390,7 @@ Where:
    :caption: Example of compiling the Test.sol contract
    :linenos:
 
-   $ cd <simpleth dir>
-   $ solc\solc --abi --bin --optimize --overwrite -o %SIMPLETH_ARTIFACT_DIR% contracts\Test.sol
+   $ solc --abi --bin --optimize --overwrite -o %SIMPLETH_ARTIFACT_DIR% contracts\Test.sol
    Compiler run successful. Artifact(s) can be found in directory "<path to simpleth>\simpleth\artifacts".
 
 .. note::
@@ -1409,8 +1408,8 @@ Artifact directory
 ******************
 The artifact directory is crucial to ``simpleth``. It holds the information
 about compiled contracts for the :class:`Contract` methods to use. The
-environment variable, ``SIMPLETH_ARTIFACT_DIR``, is used by both to know
-the shared location of the contract information.
+environment variable, ``SIMPLETH_ARTIFACT_DIR``, stores the path to the
+directory.
 
 There are up to five files for each contract stored in the artifact directory.
 All files have ``<contract>`` as the filename. The suffixes are explained
