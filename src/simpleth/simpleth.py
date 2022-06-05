@@ -1,5 +1,5 @@
 """
-Simpleth (**simpl**\ e **eth**\ ereum) is a facade of `web3.py` to
+Simpleth (**simpl**\ ified **eth**\ ereum) is a facade of `web3.py` to
 simplify use of an Ethereum blockchain and interaction with Solidity
 contracts.
 
