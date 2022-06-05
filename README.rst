@@ -1,11 +1,11 @@
-``simpleth`` (**Simplified Ethereum**) simplifies
+``Simpleth`` (**Simplified Ethereum**) simplifies
 the use of Python to interact with a Ganache Ethereum blockchain and its Solidity
 smart contracts.
 
-`simpleth` is a set of five Python facade classes that use the ``web3.py`` API
+`Simpleth` is a set of five Python facade classes that use the ``web3.py`` API
 to interact with the smart contracts through a Ganache Ethereum client.
 
-`simpleth` only supports a portion of the `web3.py` functionality - the
+`Simpleth` only supports a portion of the `web3.py` functionality - the
 portion that a Python developer uses to interact with contracts.
 
 The aim is to provide Python developers a quick and easy way to:

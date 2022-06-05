@@ -22,12 +22,8 @@ simpleth.egg-info/SOURCES.txt
 simpleth.egg-info/dependency_links.txt
 simpleth.egg-info/requires.txt
 simpleth.egg-info/top_level.txt
-tests/__init__.py
 tests/conftest.py
-tests/simpleth/__init__.py
 tests/simpleth/testconstants.py
-tests/simpleth/blockchain/__init__.py
 tests/simpleth/blockchain/test_blockchain_methods.py
 tests/simpleth/blockchain/test_blockchain_properties.py
-tests/simpleth/convert/__init__.py
 tests/simpleth/convert/test_convert.py
