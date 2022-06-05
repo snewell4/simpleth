@@ -1,17 +1,17 @@
 Installing
 ==========
 
-1) Install pre-requisites
-*************************
+1) Install Ganache
+******************
+Ganache is the Ethereum blockchain simulator that runs on your
+local system. It must be running whenever you use ``simpleth``.
 
-#.  Ganache must be installed and running. See: http://trufflesuite.com/ganache/
-#.  ``web3.py`` and ``hexbytes`` must be added to your Python environment.
-    You can install with:
+To install, go to https://trufflesuite.com/ganache/ and click on
+the ``Download (Windows)`` button.
 
-.. code-block:: shell-session
-
-   $ pip install web3
-   $ pip install hexbytes
+Follow the **Ganache Quickstart**
+(https://trufflesuite.com/docs/ganache/quickstart/)
+to install and create your blockchain.
 
 
 2) Install simpleth package
@@ -22,48 +22,25 @@ Installing
    $ pip install simpleth
 
 
-3) Create project directory structure
-*************************************
-This is not a required structure. You can use it to start and modify
-as needed. It is easy to change in the future.
-
-Project directories::
-
-    <path to project>
-    |
-    +-----simpleth
-            |
-            +----- artifacts
-            |
-            +----- contracts
-            |
-            +----- solc
-
-Where:
-
-- ``simpleth`` is the project home directory
-- ``artifacts`` holds Solidity smart contract compiler output files
-- ``contracts`` holds Solidity smart contract source code files
-- ``solc`` holds the Solidity compiler, ``solc.exe`` .
-
-These commands will create the directories:
-
-.. code-block:: shell-session
-   :caption: Creating simpleth directory structure
-
-   $ cd <path to project>
-   $ mkdir simpleth
-   $ cd simpleth
-   $ mkdir artifacts
-   $ mkdir contracts
-   $ mkdir solc
+3) Set environment variable
+***************************
+Set ``SIMPLETH_ARTIFACT_DIR`` to ``<path to project>/simpleth/artifacts``
 
 
-3) Download Solidity compiler
+4) Download Solidity compiler
 *****************************
+You can run the `Hello World` contracts and do all the examples in the
+`Using` document without installing the Solidity compiler.
+If that is the extent of your planned use of ``simpleth``, you can
+skip this step.
+
+Otherwise, you will need to have a copy of the Solidity compiler
+to compile your contracts before using ``simpleth`` to deploy and
+use them.
 Download ``solc-windows.exe`` from
-`Github page for ethereum//solidity <https://github.com/ethereum/solidity/releases>`_
-and save it as ``<path to project>/simpleth/solc/solc.exe``.
+`Github page for ethereum//solidity <https://github.com/ethereum/solidity/releases>`_.
+At the start, you might make a subdirectory, `solc`, and save it in that
+directory with the name, ``solc.exe``.
 
 It is safest to use the version found in
 :ref:`tested levels <sw_levels_label>` .
@@ -72,54 +49,42 @@ If you prefer to use a different version, download
 it and save it as ``solc.exe`` in the `solc` directory.
 
 
-4) Download contracts
-*********************
-Download the five smart contract Solidity source code files to the ``contracts``
-directory.
-
-The files are:
-
-- HelloWorld1.sol
-- HelloWorld2.sol
-- HelloWorld3.sol
-- HelloWorld4.sol
-- Test.sol
-
-
-5) Download artifacts
-*********************
-Download the ten compiler output files to the ``artifacts`` directory.
-
-There are two for each of the five contracts. One is suffixed with, `.abi`,
-and the other with, `.bin`.
-
-
-6) Set environment variable
-***************************
-Set ``SIMPLETH_ARTIFACT_DIR`` to ``<path to project>/simpleth/artifacts``
-
-
-7) Confirm installation
+5) Confirm installation
 ***********************
-These commands should run as shown and without error messages.
+Make sure `ganache` is running and try these commands.
+If your install is complete, they should run as shown and
+without error messages.
 
 .. code-block:: shell-session
    :caption: Confirming simpleth installation
 
+    $ dir contracts
+    ... see five smart contract files ...
 
     $ dir %SIMPLETH_ARTIFACT_DIR%
-    ... *see the 10 compiler output files* ...
-
-    $ dir %SIMPLETH_SOLC_DIR%\\solc.exe
-    ... *see solc.exe* ...
+    ... see ten compiler output files ...
 
     $ python
 
-    >>> import simpleth
+    >>> from simpleth import Blockchain
+    >>> Blockchain().block_number
+        ... see sequence number of block at end of chain ...
     >>> exit()
 
-    $ compile.py
-    usage: compile.py [-h] [-c COMPILER] [-O OPTIONS] [-o OUT_DIR] contract [contract ...]
-    compile.py: error: the following arguments are required: contract
+    $ solc\solc --version
+    ... see the compiler version number ...
+
+.. note::
+
+    The **contract files**:
+
+        - HelloWorld1.sol
+        - HelloWorld2.sol
+        - HelloWorld3.sol
+        - HelloWorld4.sol
+        - Test.sol
+
+    There are two **compiler output files** for each of the five contracts.
+    One is suffixed with, `.abi`, and the other with, `.bin`.
 
 **Congratulations!** ``simpleth`` is ready for use.
