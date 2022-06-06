@@ -6,7 +6,6 @@
 version: 2
 
 # Set the version of Python and other tools you might need
-# sn - set Python to match development environment.
-build:
-  tools:
-    python: "3.10"
+# sn - set Python to the latest level available.
+python:
+  version: "3.8"
