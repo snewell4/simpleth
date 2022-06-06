@@ -1,13 +1,20 @@
 echo off
 REM Make new ReadTheDoc documentation
 
+cd %SIMPLETH_PATH%/docs
+
 REM
 REM If TOC or indexing changed, clean out old HTML first
 REM Unable to run this command in the script. Script ends after
 REM that command. Leaving here for now.
 REM
-REM cd %SIMPLETH_PATH%/docs
 REM make clean
+
+REM
+REM Get current version of Test.sol in the docs\source dir in
+REM order for TestContract.rst to include. Forces overwrite.
+REM
+copy /Y ..\src\contracts\Test.sol source
 
 REM
 REM Create smart contract reference reST documents from docstrings.

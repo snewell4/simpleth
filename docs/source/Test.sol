@@ -1,96 +1,17 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Test Contract Source &mdash; simpleth 0.1.14 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-    <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Smart Contract Reference" href="contracts.html" /> 
-</head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> simpleth
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installing.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="starting.html">Hello World</a></li>
-<li class="toctree-l1"><a class="reference internal" href="using.html">Using</a></li>
-<li class="toctree-l1"><a class="reference internal" href="simpleth.html">Simpleth</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contracts.html">Smart Contract Reference</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Test Contract Source</a></li>
-</ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">simpleth</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Test Contract Source</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/TestContract.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="test-contract-source">
-<h1>Test Contract Source<a class="headerlink" href="#test-contract-source" title="Permalink to this headline"></a></h1>
-<p>A copy of the Solidity source code file is included here as a reference
-when going through the examples in the <a class="reference internal" href="using.html"><span class="doc">Using</span></a>
-document.</p>
-<p>The source file is found at: <code class="docutils literal notranslate"><span class="pre">simpleth/src/contracts/Test.sol</span></code></p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>pragma solidity ^0.8;
+pragma solidity ^0.8;
 
 // SPDX-FileCopyrightText: Copyright 2021 Stephen R. Newell
 // SPDX-License-Identifier: MIT
 
 /**
  *  @title Test Contract
- *
+ * 
  *  @author Stephen Newell
- *
+ * 
  *  @notice This is used to for testing simpleth methods. It is designed
  *  with very simple transactions, functions, and variables to support
  *  a wide variety of test cases.
- *
+ * 
  *  @dev All changes must be made with the Python unit tests in mind. Be
  *  cautious that you do not break anything. See the `tests` directory for
  *  PyTest tests that use this contract.
@@ -134,7 +55,7 @@ contract Test {
      * @notice Emitted when contract is destroyed
      *
      * @param timestamp block time when paid
-     * @param amountGwei contract&#39;s ether balance sent to owner
+     * @param amountGwei contract's ether balance sent to owner
      */
     event Destroyed(
         uint timestamp,
@@ -231,7 +152,7 @@ contract Test {
      * @param num1 stored in nums[1]
      * @param num2 stored in nums[2]
      * @param paid amount of wei sent
-     * @param balance amount of wei in contract&#39;s balance
+     * @param balance amount of wei in contract's balance
      */
     event NumsStoredAndPaid(
         uint timestamp,
@@ -371,7 +292,7 @@ contract Test {
      * @dev Used for owner-only transactions.
      */
     modifier isOwner() {
-        require(msg.sender == owner, &quot;Must be owner&quot;);
+        require(msg.sender == owner, "Must be owner");
         _;
     }
 
@@ -398,7 +319,7 @@ contract Test {
     /**
      * @notice Allows test of assert()
      *
-     * @dev If _value &lt;= 10, assert will fail and pass back a message.
+     * @dev If _value <= 10, assert will fail and pass back a message.
      *
      * @param _value only used in assert() test. Greater than 10 passes
      * assert(). 10, or less, fails assert().
@@ -407,7 +328,7 @@ contract Test {
         public
         pure
     {
-        assert(_value &gt; 10);
+        assert(_value > 10);
     }
 
     /**
@@ -415,11 +336,11 @@ contract Test {
      *
      * @dev This is irreversible. Once destroyed, a contract is still
      * on the blockchain and transactions can be sent to it, but they will
-     * not have any effect. Any ether in the contract&#39;s balance is sent
+     * not have any effect. Any ether in the contract's balance is sent
      * to _to. After a contract is destroyed, its either is
      * inaccessible. Emits Destroyed event. Must be owner to use.
      *
-     * @param _to address to receive contract&#39;s ether balance
+     * @param _to address to receive contract's ether balance
      */
     function destroy(address payable _to)
         public
@@ -483,7 +404,7 @@ contract Test {
         public
         pure
     {
-        revert(&quot;Revert this transaction.&quot;);
+        revert("Revert this transaction.");
     }
 
     /**
@@ -709,7 +630,7 @@ contract Test {
     function sumTwoNums()
         public
     {
-        require(msg.sender == owner, &quot;must be owner to sum two nums&quot;);
+        require(msg.sender == owner, "must be owner to sum two nums");
         numsTotal = nums[0] + nums[1];
         emit TwoNumsSummed(
             block.timestamp,
@@ -845,38 +766,3 @@ contract Test {
         );
     }
 }
-</pre></div>
-</div>
-</section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="contracts.html" class="btn btn-neutral float-left" title="Smart Contract Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022, Stephen Newell.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
-</html>

@@ -6,5 +6,5 @@ document.
 
 The source file is found at: ``simpleth/src/contracts/Test.sol``
 
-.. include:: src/contracts/Test.sol
+.. include:: Test.sol
    :code:

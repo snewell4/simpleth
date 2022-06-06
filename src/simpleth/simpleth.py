@@ -1668,7 +1668,7 @@ class Contract:
             trx_hash: T_HASH,
             timeout: Union[int, float] = TIMEOUT,
             poll_latency: Union[int, float] = POLL_LATENCY
-            ) -> Union[T_RECEIPT | None]:
+            ) -> T_RECEIPT:
         """
         Wait for transaction to be mined and then return the receipt
         for that transaction.
@@ -1696,7 +1696,7 @@ class Contract:
             for transaction completion (**optional**, default:
             :const:`POLL_LATENCY`)
         :type poll_latency: int | float
-        :rtype: T_RECEIPT | None
+        :rtype: T_RECEIPT
         :return: transaction receipt
         :raises SimplEthError:
             -  if ``timeout`` is not float or int (**C-050-010**)
@@ -1864,7 +1864,7 @@ class Contract:
                 value_wei: int = 0,
                 timeout: Union[int, float] = TIMEOUT,
                 poll_latency: Union[int, float] = POLL_LATENCY
-                ) -> Union[T_RECEIPT | None]:
+                ) -> T_RECEIPT:
         """Submit a transaction to be mined and return the receipt.
 
         This is the method typically used for running transactions.
@@ -1912,7 +1912,7 @@ class Contract:
             for transaction completion
             (**optional**, default: :const:`POLL_LATENCY`)
         :type poll_latency: int | float
-        :rtype: T_RECEIPT | None
+        :rtype: T_RECEIPT
         :return: `web3` transaction receipt
         :raises SimplEthError:
             -  if unable to submit the transaction; no hash was returned
