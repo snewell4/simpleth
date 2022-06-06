@@ -1394,7 +1394,7 @@ default: None)</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simpleth.Contract.get_trx_receipt">
-<span class="sig-name descname"><span class="pre">get_trx_receipt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trx_hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#simpleth.Contract.get_trx_receipt" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_trx_receipt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trx_hash</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#simpleth.Contract.get_trx_receipt" title="Permalink to this definition"></a></dt>
 <dd><p>Return the receipt after a transaction has been mined.</p>
 <p>This is used after <a class="reference internal" href="#simpleth.Contract.submit_trx" title="simpleth.Contract.submit_trx"><code class="xref py py-meth docutils literal notranslate"><span class="pre">submit_trx()</span></code></a> to get the mining receipt.
 Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if the transaction has not yet been mined.</p>
@@ -1405,7 +1405,7 @@ a bad <code class="docutils literal notranslate"><span class="pre">trx_hash</spa
 <dd class="field-odd"><p><strong>trx_hash</strong> (<em>str</em>) – transaction hash from <a class="reference internal" href="#simpleth.Contract.submit_trx" title="simpleth.Contract.submit_trx"><code class="xref py py-meth docutils literal notranslate"><span class="pre">submit_trx()</span></code></a></p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>T_RECEIPT | None</p>
+<dd class="field-even"><p>T_RECEIPT</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><cite>web3</cite> transaction receipt</p>

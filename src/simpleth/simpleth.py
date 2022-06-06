@@ -1620,7 +1620,7 @@ class Contract:
             raise SimplEthError(message, code='C-040-070') from None
         return gas_estimate
 
-    def get_trx_receipt(self, trx_hash: T_HASH) -> Union[T_RECEIPT | None]:
+    def get_trx_receipt(self, trx_hash: T_HASH) -> T_RECEIPT:
         """Return the receipt after a transaction has been mined.
 
         This is used after :meth:`submit_trx` to get the mining receipt.
@@ -1631,7 +1631,7 @@ class Contract:
 
         :param trx_hash: transaction hash from :meth:`submit_trx`
         :type trx_hash: str
-        :rtype: T_RECEIPT | None
+        :rtype: T_RECEIPT
         :return: `web3` transaction receipt
         :example:
 
