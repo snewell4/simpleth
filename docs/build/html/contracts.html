@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Contract Reference &mdash; simpleth 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Test Contract Source" href="TestContract.html" />
+    <link rel="prev" title="Simpleth" href="simpleth.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> simpleth
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starting.html">Hello World</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using.html">Using</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simpleth.html">Simpleth</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Smart Contract Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#helloworld1">HelloWorld1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#state-variables">STATE VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#methods">METHODS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#events">EVENTS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#helloworld2">HelloWorld2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">STATE VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">METHODS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#getgreeting">getGreeting()</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">EVENTS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#helloworld3">HelloWorld3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">STATE VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">METHODS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id6">getGreeting()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setgreeting-string">setGreeting(string)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">EVENTS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#helloworld4">HelloWorld4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">STATE VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">METHODS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#constructor">constructor()</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">EVENTS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#helloworld4constructed-uint256-address-string-address">HelloWorld4Constructed(uint256,address,string,address)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#test">Test</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id11">STATE VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">METHODS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id13">constructor()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assertgreaterthan10-int256">assertGreaterThan10(int256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#destroy-address">destroy(address)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#divideinitnum-int256">divideInitNum(int256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dividenums-uint256">divideNums(uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getnum-uint8">getNum(uint8)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getnum0">getNum0()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getnums">getNums()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gettypes">getTypes()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reverttransaction">revertTransaction()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setowner-address">setOwner(address)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#storenum-uint256-uint256">storeNum(uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#storenums-uint256-uint256-uint256">storeNums(uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#storenumsanddivide-uint256-uint256-uint256-uint256">storeNumsAndDivide(uint256,uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#storenumsandpay-uint256-uint256-uint256">storeNumsAndPay(uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#storenumsandsum-uint256-uint256-uint256">storeNumsAndSum(uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#storenumswithnoevent-uint256-uint256-uint256">storeNumsWithNoEvent(uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#storenumswiththreeevents-uint256-uint256-uint256">storeNumsWithThreeEvents(uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#storetypes-bool-uint8-uint256-int256-address-string-uint256-3">storeTypes(bool,uint8,uint256,int256,address,string,uint256[3])</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sumnums">sumNums()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sumtwonums">sumTwoNums()</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">EVENTS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#destroyed-uint256-uint256">Destroyed(uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#initnumdivided-uint256-int256-int256">InitNumDivided(uint256,int256,int256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#num0stored-uint256-uint256">Num0Stored(uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#num1stored-uint256-uint256">Num1Stored(uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#num2stored-uint256-uint256">Num2Stored(uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#numstored-uint256-uint256-uint256">NumStored(uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#numsdivided-uint256-uint256-uint256-uint256-uint256">NumsDivided(uint256,uint256,uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#numsstored-uint256-uint256-uint256-uint256">NumsStored(uint256,uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#numsstoredanddivided-uint256">NumsStoredAndDivided(uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#numsstoredandpaid-uint256-uint256-uint256-uint256-uint256-uint256">NumsStoredAndPaid(uint256,uint256,uint256,uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#numsstoredandsummed-uint256">NumsStoredAndSummed(uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#numssummed-uint256-uint256-uint256-uint256-uint256">NumsSummed(uint256,uint256,uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ownerset-uint256-address">OwnerSet(uint256,address)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#received-uint256-address-uint256">Received(uint256,address,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testconstructed-uint256-address-int256-address">TestConstructed(uint256,address,int256,address)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#twonumssummed-uint256-uint256-uint256-uint256">TwoNumsSummed(uint256,uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typesstored-uint256-bool-uint8-uint256-int256-address-string-uint256-3">TypesStored(uint256,bool,uint8,uint256,int256,address,string,uint256[3])</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="TestContract.html">Test Contract Source</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">simpleth</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Smart Contract Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/contracts.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="smart-contract-reference">
+<h1>Smart Contract Reference<a class="headerlink" href="#smart-contract-reference" title="Permalink to this headline"></a></h1>
+<p>This reference documentation covers the five smart contracts
+used in the examples and was created from the Natspec comments
+in the Solidity source files.</p>
+<img alt="_images/contract_separator.png" src="_images/contract_separator.png" />
+<section id="helloworld1">
+<h2>HelloWorld1<a class="headerlink" href="#helloworld1" title="Permalink to this headline"></a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>HelloWorld1</p>
+</dd>
+<dt class="field-even">Purpose</dt>
+<dd class="field-even"><p>The simplest contract to say hello to the world.</p>
+</dd>
+<dt class="field-odd">Notes</dt>
+<dd class="field-odd"><p>Uses a public state variable to hold the greeting</p>
+</dd>
+<dt class="field-even">Author</dt>
+<dd class="field-even"><p>Stephen Newell</p>
+</dd>
+</dl>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+<section id="state-variables">
+<h3>STATE VARIABLES<a class="headerlink" href="#state-variables" title="Permalink to this headline"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">greeting</dt>
+<dd class="field-odd"><p>Hello World greeting.</p>
+</dd>
+</dl>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="methods">
+<h3>METHODS<a class="headerlink" href="#methods" title="Permalink to this headline"></a></h3>
+<p>None</p>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="events">
+<h3>EVENTS<a class="headerlink" href="#events" title="Permalink to this headline"></a></h3>
+<p>None</p>
+<img alt="_images/contract_separator.png" src="_images/contract_separator.png" />
+</section>
+</section>
+<section id="helloworld2">
+<h2>HelloWorld2<a class="headerlink" href="#helloworld2" title="Permalink to this headline"></a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>HelloWorld2</p>
+</dd>
+<dt class="field-even">Purpose</dt>
+<dd class="field-even"><p>A slightly more involved contract to say hello to the world.</p>
+</dd>
+<dt class="field-odd">Notes</dt>
+<dd class="field-odd"><p>Uses a function to return the greeting.</p>
+</dd>
+<dt class="field-even">Author</dt>
+<dd class="field-even"><p>Stephen Newell</p>
+</dd>
+</dl>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+<section id="id1">
+<h3>STATE VARIABLES<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<p>None</p>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="id2">
+<h3>METHODS<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
+<section id="getgreeting">
+<h4>getGreeting()<a class="headerlink" href="#getgreeting" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Return the Hello World greeting.</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Function returns a string with the greeting defined in the function.</p>
+</dd>
+</dl>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+</section>
+<section id="id3">
+<h3>EVENTS<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h3>
+<p>None</p>
+<img alt="_images/contract_separator.png" src="_images/contract_separator.png" />
+</section>
+</section>
+<section id="helloworld3">
+<h2>HelloWorld3<a class="headerlink" href="#helloworld3" title="Permalink to this headline"></a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>HelloWorld3</p>
+</dd>
+<dt class="field-even">Purpose</dt>
+<dd class="field-even"><p>A more complex contract to say hello to the world.</p>
+</dd>
+<dt class="field-odd">Notes</dt>
+<dd class="field-odd"><p>Uses a transaction to set the greeting and a function to return the greeting.</p>
+</dd>
+<dt class="field-even">Author</dt>
+<dd class="field-even"><p>Stephen Newell</p>
+</dd>
+</dl>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+<section id="id4">
+<h3>STATE VARIABLES<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">greeting</dt>
+<dd class="field-odd"><p>holds the Hello World greeting.</p>
+</dd>
+</dl>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="id5">
+<h3>METHODS<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h3>
+<section id="id6">
+<h4>getGreeting()<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Return the greeting.</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Function returns a string with the current contract greeting.</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_0</dt>
+<dd class="field-odd"><p>greeting contract greeting value</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="setgreeting-string">
+<h4>setGreeting(string)<a class="headerlink" href="#setgreeting-string" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Changes the greeting.</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Update the contract greeting to this new message.</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_greeting</dt>
+<dd class="field-odd"><p>new greeting message</p>
+</dd>
+</dl>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+</section>
+<section id="id7">
+<h3>EVENTS<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h3>
+<p>None</p>
+<img alt="_images/contract_separator.png" src="_images/contract_separator.png" />
+</section>
+</section>
+<section id="helloworld4">
+<h2>HelloWorld4<a class="headerlink" href="#helloworld4" title="Permalink to this headline"></a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>HelloWorld4</p>
+</dd>
+<dt class="field-even">Purpose</dt>
+<dd class="field-even"><p>Adds an event to the constructor.</p>
+</dd>
+<dt class="field-odd">Notes</dt>
+<dd class="field-odd"><p>Find the greeting in the emitted event.</p>
+</dd>
+<dt class="field-even">Author</dt>
+<dd class="field-even"><p>Stephen Newell</p>
+</dd>
+</dl>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+<section id="id8">
+<h3>STATE VARIABLES<a class="headerlink" href="#id8" title="Permalink to this headline"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">greeting</dt>
+<dd class="field-odd"><p>the greeting to display</p>
+</dd>
+</dl>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="id9">
+<h3>METHODS<a class="headerlink" href="#id9" title="Permalink to this headline"></a></h3>
+<section id="constructor">
+<h4>constructor()<a class="headerlink" href="#constructor" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Create a new HelloWorld4 contract on the blockchain.</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Emits HelloWord4().</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_initGreeting</dt>
+<dd class="field-odd"><p>set as the greeting string</p>
+</dd>
+</dl>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+</section>
+<section id="id10">
+<h3>EVENTS<a class="headerlink" href="#id10" title="Permalink to this headline"></a></h3>
+<section id="helloworld4constructed-uint256-address-string-address">
+<h4>HelloWorld4Constructed(uint256,address,string,address)<a class="headerlink" href="#helloworld4constructed-uint256-address-string-address" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when contract is constructed</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">HelloWorld4</dt>
+<dd class="field-odd"><p>address of the newly deployed contract</p>
+</dd>
+<dt class="field-even">initGreeting</dt>
+<dd class="field-even"><p>constructor arg with a greeting</p>
+</dd>
+<dt class="field-odd">sender</dt>
+<dd class="field-odd"><p>address sending the constructor</p>
+</dd>
+<dt class="field-even">timestamp</dt>
+<dd class="field-even"><p>block time when constructed</p>
+</dd>
+</dl>
+<img alt="_images/contract_separator.png" src="_images/contract_separator.png" />
+</section>
+</section>
+</section>
+<section id="test">
+<h2>Test<a class="headerlink" href="#test" title="Permalink to this headline"></a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>Test Contract</p>
+</dd>
+<dt class="field-even">Purpose</dt>
+<dd class="field-even"><p>This is used to for testing simpleth methods. It is designed  with very simple transactions, functions, and variables to support  a wide variety of test cases.</p>
+</dd>
+<dt class="field-odd">Notes</dt>
+<dd class="field-odd"><p>All changes must be made with the Python unit tests in mind. Be  cautious that you do not break anything. See the <cite>tests</cite> directory for  PyTest tests that use this contract.</p>
+</dd>
+<dt class="field-even">Author</dt>
+<dd class="field-even"><p>Stephen Newell</p>
+</dd>
+</dl>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+<section id="id11">
+<h3>STATE VARIABLES<a class="headerlink" href="#id11" title="Permalink to this headline"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">initNum</dt>
+<dd class="field-odd"><p>set by constructor. Has no other purpose.</p>
+</dd>
+<dt class="field-even">nums</dt>
+<dd class="field-even"><p>used by the storeNums…() transactions</p>
+</dd>
+<dt class="field-odd">numsTotal</dt>
+<dd class="field-odd"><p>used by sumNums() to hold the sum of nums[].</p>
+</dd>
+<dt class="field-even">owner</dt>
+<dd class="field-even"><p>address that constructed and deployed the contract.</p>
+</dd>
+<dt class="field-odd">testAddr</dt>
+<dd class="field-odd"><p>used to store an address</p>
+</dd>
+<dt class="field-even">testArray</dt>
+<dd class="field-even"><p>used to store an array</p>
+</dd>
+<dt class="field-odd">testBool</dt>
+<dd class="field-odd"><p>used to store a boolean</p>
+</dd>
+<dt class="field-even">testInt</dt>
+<dd class="field-even"><p>used to store a signed integer</p>
+</dd>
+<dt class="field-odd">testStr</dt>
+<dd class="field-odd"><p>used to store a string</p>
+</dd>
+<dt class="field-even">testUint</dt>
+<dd class="field-even"><p>used to store an unsigned integer</p>
+</dd>
+</dl>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="id12">
+<h3>METHODS<a class="headerlink" href="#id12" title="Permalink to this headline"></a></h3>
+<section id="id13">
+<h4>constructor()<a class="headerlink" href="#id13" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Create a new Test contract on the blockchain.</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>msg.sender becomes contract owner. Emits TestConstructed().</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_initNum</dt>
+<dd class="field-odd"><p>value is stored in initNum variable</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="assertgreaterthan10-int256">
+<h4>assertGreaterThan10(int256)<a class="headerlink" href="#assertgreaterthan10-int256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Allows test of assert()</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>If _value &lt;= 10, assert will fail and pass back a message.</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_value</dt>
+<dd class="field-odd"><p>only used in assert() test. Greater than 10 passes assert(). 10, or less, fails assert().</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="destroy-address">
+<h4>destroy(address)<a class="headerlink" href="#destroy-address" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Destroy the deployed test contract. Make it unusable.</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>This is irreversible. Once destroyed, a contract is still on the blockchain and transactions can be sent to it, but they will not have any effect. Any ether in the contract’s balance is sent to _to. After a contract is destroyed, its either is inaccessible. Emits Destroyed event. Must be owner to use.</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_to</dt>
+<dd class="field-odd"><p>address to receive contract’s ether balance</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="divideinitnum-int256">
+<h4>divideInitNum(int256)<a class="headerlink" href="#divideinitnum-int256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Divides initNum by a divisor</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Emits InitNumDivided(). Used to test for divide-by-zero errors by using 0 for divisor and for non-integer results by using 3, or other, for divisor</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_divisor</dt>
+<dd class="field-odd"><p>divide initNum by this value</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="dividenums-uint256">
+<h4>divideNums(uint256)<a class="headerlink" href="#dividenums-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Divides values in nums[]. There is no test for _divisor being zero. This is used to test a transaction that fails.</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Emits NumsDivided()</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="getnum-uint8">
+<h4>getNum(uint8)<a class="headerlink" href="#getnum-uint8" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Function to return nums[index]</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">index</dt>
+<dd class="field-odd"><p>specifies the nums[] entry to return</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">num</dt>
+<dd class="field-odd"><p>value for nums[index]</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="getnum0">
+<h4>getNum0()<a class="headerlink" href="#getnum0" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Function to return nums[0]</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">num</dt>
+<dd class="field-odd"><p>the first element of nums[]</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="getnums">
+<h4>getNums()<a class="headerlink" href="#getnums" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Function to return an array</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Shows how to return all values as a list</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_0</dt>
+<dd class="field-odd"><p>nums all values in nums[]</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="gettypes">
+<h4>getTypes()<a class="headerlink" href="#gettypes" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Function to return multiple values</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Shows how to return multiple values and types set with storeTypes()</p>
+</dd>
+</dl>
+<p><strong>Returns:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">testAddr_</dt>
+<dd class="field-odd"><p>testAddress value</p>
+</dd>
+<dt class="field-even">testArray_</dt>
+<dd class="field-even"><p>testArray value</p>
+</dd>
+<dt class="field-odd">testBool_</dt>
+<dd class="field-odd"><p>testBool value</p>
+</dd>
+<dt class="field-even">testEnum_</dt>
+<dd class="field-even"><p>testEnum value</p>
+</dd>
+<dt class="field-odd">testInt_</dt>
+<dd class="field-odd"><p>testInt value</p>
+</dd>
+<dt class="field-even">testStr_</dt>
+<dd class="field-even"><p>testStr value</p>
+</dd>
+<dt class="field-odd">testUint_</dt>
+<dd class="field-odd"><p>testUint value</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="reverttransaction">
+<h4>revertTransaction()<a class="headerlink" href="#reverttransaction" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Allows test of revert()</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Always reverts. No event emitted. Passes back a message.</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="setowner-address">
+<h4>setOwner(address)<a class="headerlink" href="#setowner-address" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Allows current owner to assign a new owner</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Emits OwnerSet().</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_newOwner</dt>
+<dd class="field-odd"><p>address of the account to be the new owner</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="storenum-uint256-uint256">
+<h4>storeNum(uint256,uint256)<a class="headerlink" href="#storenum-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Stores one of the nums[]</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Emits NumStored(). Used to test for out of bounds errors by giving bad value to <cite>_index</cite>.</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_index</dt>
+<dd class="field-odd"><p>selects which nums[]</p>
+</dd>
+<dt class="field-even">_num</dt>
+<dd class="field-even"><p>value to store in nums[<cite>index</cite>]</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="storenums-uint256-uint256-uint256">
+<h4>storeNums(uint256,uint256,uint256)<a class="headerlink" href="#storenums-uint256-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Stores the three args in nums[]</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Emits NumsStored()</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_num0</dt>
+<dd class="field-odd"><p>value to store in nums[0]</p>
+</dd>
+<dt class="field-even">_num1</dt>
+<dd class="field-even"><p>value to store in nums[1]</p>
+</dd>
+<dt class="field-odd">_num2</dt>
+<dd class="field-odd"><p>value to store in nums[2]</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="storenumsanddivide-uint256-uint256-uint256-uint256">
+<h4>storeNumsAndDivide(uint256,uint256,uint256,uint256)<a class="headerlink" href="#storenumsanddivide-uint256-uint256-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Stores the three args in nums[] and call sumNums() to divide nums</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Used to test calling a function that fails</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_divisor</dt>
+<dd class="field-odd"><p>pass to divideNums() to divide the three nums</p>
+</dd>
+<dt class="field-even">_num0</dt>
+<dd class="field-even"><p>value to store in nums[0]</p>
+</dd>
+<dt class="field-odd">_num1</dt>
+<dd class="field-odd"><p>value to store in nums[1]</p>
+</dd>
+<dt class="field-even">_num2</dt>
+<dd class="field-even"><p>value to store in nums[2]</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="storenumsandpay-uint256-uint256-uint256">
+<h4>storeNumsAndPay(uint256,uint256,uint256)<a class="headerlink" href="#storenumsandpay-uint256-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Stores the three args in nums[] and accepts a payment.</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Emits NumsStored()</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_num0</dt>
+<dd class="field-odd"><p>value to store in nums[0]</p>
+</dd>
+<dt class="field-even">_num1</dt>
+<dd class="field-even"><p>value to store in nums[1]</p>
+</dd>
+<dt class="field-odd">_num2</dt>
+<dd class="field-odd"><p>value to store in nums[2]</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="storenumsandsum-uint256-uint256-uint256">
+<h4>storeNumsAndSum(uint256,uint256,uint256)<a class="headerlink" href="#storenumsandsum-uint256-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Stores the three args in nums[] and call sumNums() to sum the nums</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Emits NumsStored() and NumsStoredAndSummed()</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_num0</dt>
+<dd class="field-odd"><p>value to store in nums[0]</p>
+</dd>
+<dt class="field-even">_num1</dt>
+<dd class="field-even"><p>value to store in nums[1]</p>
+</dd>
+<dt class="field-odd">_num2</dt>
+<dd class="field-odd"><p>value to store in nums[2]</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="storenumswithnoevent-uint256-uint256-uint256">
+<h4>storeNumsWithNoEvent(uint256,uint256,uint256)<a class="headerlink" href="#storenumswithnoevent-uint256-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Stores the three args in nums[] but does not emit an event.</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Same as NumsStored() but this transaction does not emit NumsStored()</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_num0</dt>
+<dd class="field-odd"><p>value to store in nums[0]</p>
+</dd>
+<dt class="field-even">_num1</dt>
+<dd class="field-even"><p>value to store in nums[1]</p>
+</dd>
+<dt class="field-odd">_num2</dt>
+<dd class="field-odd"><p>value to store in nums[2]</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="storenumswiththreeevents-uint256-uint256-uint256">
+<h4>storeNumsWithThreeEvents(uint256,uint256,uint256)<a class="headerlink" href="#storenumswiththreeevents-uint256-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Stores the three args in nums[] and emits three different events.</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Same as NumsStored() but this transaction emits Num0Stored(), Num1Stored(), Num2Stored() instead of NumsStored().</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_num0</dt>
+<dd class="field-odd"><p>value to store in nums[0]</p>
+</dd>
+<dt class="field-even">_num1</dt>
+<dd class="field-even"><p>value to store in nums[1]</p>
+</dd>
+<dt class="field-odd">_num2</dt>
+<dd class="field-odd"><p>value to store in nums[2]</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="storetypes-bool-uint8-uint256-int256-address-string-uint256-3">
+<h4>storeTypes(bool,uint8,uint256,int256,address,string,uint256[3])<a class="headerlink" href="#storetypes-bool-uint8-uint256-int256-address-string-uint256-3" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Stores a variety of data types into public state variables</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Emits TypesStored()</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_addr</dt>
+<dd class="field-odd"><p>address to store into testAddr</p>
+</dd>
+<dt class="field-even">_array</dt>
+<dd class="field-even"><p>array of three unsigned integers to store in testArray</p>
+</dd>
+<dt class="field-odd">_bool</dt>
+<dd class="field-odd"><p>boolean to store in testBool</p>
+</dd>
+<dt class="field-even">_enum</dt>
+<dd class="field-even"><p>enumerated Size to store in testEnum</p>
+</dd>
+<dt class="field-odd">_int</dt>
+<dd class="field-odd"><p>signed integer to store into testUnt</p>
+</dd>
+<dt class="field-even">_str</dt>
+<dd class="field-even"><p>string to store into testStr</p>
+</dd>
+<dt class="field-odd">_uint</dt>
+<dd class="field-odd"><p>unsigned integer to store in testUint</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="sumnums">
+<h4>sumNums()<a class="headerlink" href="#sumnums" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Sums values in nums[] and stores in numsTotal</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Emits NumsSummed()</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="sumtwonums">
+<h4>sumTwoNums()<a class="headerlink" href="#sumtwonums" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Sums values in nums[0] and nums[1] and stores in numsTotal. Required to be owner to call</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Emits TwoNumsSummed()</p>
+</dd>
+</dl>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+</section>
+<section id="id14">
+<h3>EVENTS<a class="headerlink" href="#id14" title="Permalink to this headline"></a></h3>
+<section id="destroyed-uint256-uint256">
+<h4>Destroyed(uint256,uint256)<a class="headerlink" href="#destroyed-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when contract is destroyed</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">amountGwei</dt>
+<dd class="field-odd"><p>contract’s ether balance sent to owner</p>
+</dd>
+<dt class="field-even">timestamp</dt>
+<dd class="field-even"><p>block time when paid</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="initnumdivided-uint256-int256-int256">
+<h4>InitNumDivided(uint256,int256,int256)<a class="headerlink" href="#initnumdivided-uint256-int256-int256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when new num1 is stored</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">divisor</dt>
+<dd class="field-odd"><p>used to divide initNum</p>
+</dd>
+<dt class="field-even">result</dt>
+<dd class="field-even"><p>resulting initNum</p>
+</dd>
+<dt class="field-odd">timestamp</dt>
+<dd class="field-odd"><p>block time when initNum was updated</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="num0stored-uint256-uint256">
+<h4>Num0Stored(uint256,uint256)<a class="headerlink" href="#num0stored-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when num0 is stored</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">num0</dt>
+<dd class="field-odd"><p>stored in nums[0]</p>
+</dd>
+<dt class="field-even">timestamp</dt>
+<dd class="field-even"><p>block time when nums were updated</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="num1stored-uint256-uint256">
+<h4>Num1Stored(uint256,uint256)<a class="headerlink" href="#num1stored-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when new num1 is stored</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">num1</dt>
+<dd class="field-odd"><p>stored in nums[1]</p>
+</dd>
+<dt class="field-even">timestamp</dt>
+<dd class="field-even"><p>block time when nums were updated</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="num2stored-uint256-uint256">
+<h4>Num2Stored(uint256,uint256)<a class="headerlink" href="#num2stored-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when new num2 is stored</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">num2</dt>
+<dd class="field-odd"><p>stored in nums[2]</p>
+</dd>
+<dt class="field-even">timestamp</dt>
+<dd class="field-even"><p>block time when nums were updated</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="numstored-uint256-uint256-uint256">
+<h4>NumStored(uint256,uint256,uint256)<a class="headerlink" href="#numstored-uint256-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when a selected nums[] is stored</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">index</dt>
+<dd class="field-odd"><p>into nums[]</p>
+</dd>
+<dt class="field-even">num</dt>
+<dd class="field-even"><p>stored in nums[<cite>index</cite>]</p>
+</dd>
+<dt class="field-odd">timestamp</dt>
+<dd class="field-odd"><p>block time when nums was updated</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="numsdivided-uint256-uint256-uint256-uint256-uint256">
+<h4>NumsDivided(uint256,uint256,uint256,uint256,uint256)<a class="headerlink" href="#numsdivided-uint256-uint256-uint256-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when nums[] are divided</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">divisor</dt>
+<dd class="field-odd"><p>value used to divide nums[]</p>
+</dd>
+<dt class="field-even">num0</dt>
+<dd class="field-even"><p>value in nums[0] after dividing</p>
+</dd>
+<dt class="field-odd">num1</dt>
+<dd class="field-odd"><p>value in nums[1] after dividing</p>
+</dd>
+<dt class="field-even">num2</dt>
+<dd class="field-even"><p>value in nums[2] after dividing</p>
+</dd>
+<dt class="field-odd">timestamp</dt>
+<dd class="field-odd"><p>block time when nums divided</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="numsstored-uint256-uint256-uint256-uint256">
+<h4>NumsStored(uint256,uint256,uint256,uint256)<a class="headerlink" href="#numsstored-uint256-uint256-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when new nums are stored</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">num0</dt>
+<dd class="field-odd"><p>stored in nums[0]</p>
+</dd>
+<dt class="field-even">num1</dt>
+<dd class="field-even"><p>stored in nums[1]</p>
+</dd>
+<dt class="field-odd">num2</dt>
+<dd class="field-odd"><p>stored in nums[2]</p>
+</dd>
+<dt class="field-even">timestamp</dt>
+<dd class="field-even"><p>block time when nums were updated</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="numsstoredanddivided-uint256">
+<h4>NumsStoredAndDivided(uint256)<a class="headerlink" href="#numsstoredanddivided-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when nums were stored and then divided</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">timestamp</dt>
+<dd class="field-odd"><p>block time after nums[] divided</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="numsstoredandpaid-uint256-uint256-uint256-uint256-uint256-uint256">
+<h4>NumsStoredAndPaid(uint256,uint256,uint256,uint256,uint256,uint256)<a class="headerlink" href="#numsstoredandpaid-uint256-uint256-uint256-uint256-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when new nums are stored along with a value (in wei) sent as a payment.</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">balance</dt>
+<dd class="field-odd"><p>amount of wei in contract’s balance</p>
+</dd>
+<dt class="field-even">num0</dt>
+<dd class="field-even"><p>stored in nums[0]</p>
+</dd>
+<dt class="field-odd">num1</dt>
+<dd class="field-odd"><p>stored in nums[1]</p>
+</dd>
+<dt class="field-even">num2</dt>
+<dd class="field-even"><p>stored in nums[2]</p>
+</dd>
+<dt class="field-odd">paid</dt>
+<dd class="field-odd"><p>amount of wei sent</p>
+</dd>
+<dt class="field-even">timestamp</dt>
+<dd class="field-even"><p>block time when nums were updated</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="numsstoredandsummed-uint256">
+<h4>NumsStoredAndSummed(uint256)<a class="headerlink" href="#numsstoredandsummed-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when nums were stored and then summed</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">timestamp</dt>
+<dd class="field-odd"><p>block time after total was stored</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="numssummed-uint256-uint256-uint256-uint256-uint256">
+<h4>NumsSummed(uint256,uint256,uint256,uint256,uint256)<a class="headerlink" href="#numssummed-uint256-uint256-uint256-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when nums[] total is stored</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">num0</dt>
+<dd class="field-odd"><p>value in nums[0]</p>
+</dd>
+<dt class="field-even">num1</dt>
+<dd class="field-even"><p>value in nums[1]</p>
+</dd>
+<dt class="field-odd">num2</dt>
+<dd class="field-odd"><p>value in nums[2]</p>
+</dd>
+<dt class="field-even">timestamp</dt>
+<dd class="field-even"><p>block time when total is stored</p>
+</dd>
+<dt class="field-odd">total</dt>
+<dd class="field-odd"><p>sum of the three nums assigned to numsTotal</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="ownerset-uint256-address">
+<h4>OwnerSet(uint256,address)<a class="headerlink" href="#ownerset-uint256-address" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when owner is changed</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">newOwner</dt>
+<dd class="field-odd"><p>address of the new owner</p>
+</dd>
+<dt class="field-even">timestamp</dt>
+<dd class="field-even"><p>block time when owner was set</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="received-uint256-address-uint256">
+<h4>Received(uint256,address,uint256)<a class="headerlink" href="#received-uint256-address-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when contract address is sent ether</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">amountGwei</dt>
+<dd class="field-odd"><p>of ether received (in gwei)</p>
+</dd>
+<dt class="field-even">sender</dt>
+<dd class="field-even"><p>address sending the ether</p>
+</dd>
+<dt class="field-odd">timestamp</dt>
+<dd class="field-odd"><p>block time when paid</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="testconstructed-uint256-address-int256-address">
+<h4>TestConstructed(uint256,address,int256,address)<a class="headerlink" href="#testconstructed-uint256-address-int256-address" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when the contract is deployed.</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Parameters are arbitrary.</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">Test</dt>
+<dd class="field-odd"><p>address of this contract</p>
+</dd>
+<dt class="field-even">initNum</dt>
+<dd class="field-even"><p>value assigned with constructor()</p>
+</dd>
+<dt class="field-odd">sender</dt>
+<dd class="field-odd"><p>becomes the address of owner</p>
+</dd>
+<dt class="field-even">timestamp</dt>
+<dd class="field-even"><p>block time, in epoch seconds, when deployed</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="twonumssummed-uint256-uint256-uint256-uint256">
+<h4>TwoNumsSummed(uint256,uint256,uint256,uint256)<a class="headerlink" href="#twonumssummed-uint256-uint256-uint256-uint256" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when nums[0] and nums[1] total is stored</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">num0</dt>
+<dd class="field-odd"><p>value in nums[0]</p>
+</dd>
+<dt class="field-even">num1</dt>
+<dd class="field-even"><p>value in nums[1]</p>
+</dd>
+<dt class="field-odd">timestamp</dt>
+<dd class="field-odd"><p>block time when total is stored</p>
+</dd>
+<dt class="field-even">total</dt>
+<dd class="field-even"><p>sum of the first two nums assigned to numsTotal</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="typesstored-uint256-bool-uint8-uint256-int256-address-string-uint256-3">
+<h4>TypesStored(uint256,bool,uint8,uint256,int256,address,string,uint256[3])<a class="headerlink" href="#typesstored-uint256-bool-uint8-uint256-int256-address-string-uint256-3" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Emitted when the four different types of variables are stored</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">testAddr</dt>
+<dd class="field-odd"><p>value given to the address variable</p>
+</dd>
+<dt class="field-even">testArray</dt>
+<dd class="field-even"><p>values given to the array</p>
+</dd>
+<dt class="field-odd">testBool</dt>
+<dd class="field-odd"><p>value given to the boolean variable</p>
+</dd>
+<dt class="field-even">testEnum</dt>
+<dd class="field-even"><p>value given to the enumerated variable</p>
+</dd>
+<dt class="field-odd">testInt</dt>
+<dd class="field-odd"><p>value given to the signed integer variable</p>
+</dd>
+<dt class="field-even">testStr</dt>
+<dd class="field-even"><p>value given to the string variable</p>
+</dd>
+<dt class="field-odd">testUint</dt>
+<dd class="field-odd"><p>value given to the unsigned integer variable</p>
+</dd>
+<dt class="field-even">timestamp</dt>
+<dd class="field-even"><p>block time when variables were updated</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="simpleth.html" class="btn btn-neutral float-left" title="Simpleth" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="TestContract.html" class="btn btn-neutral float-right" title="Test Contract Source" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, Stephen Newell.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

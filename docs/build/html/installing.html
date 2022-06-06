@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installing &mdash; simpleth 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Hello World" href="starting.html" />
+    <link rel="prev" title="Introduction" href="intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> simpleth
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#install-ganache">1) Install Ganache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-simpleth-package">2) Install simpleth package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#set-environment-variable">3) Set environment variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#download-solidity-compiler">4) Download Solidity compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#confirm-installation">5) Confirm installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="starting.html">Hello World</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using.html">Using</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simpleth.html">Simpleth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Smart Contract Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TestContract.html">Test Contract Source</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">simpleth</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Installing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/installing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installing">
+<h1>Installing<a class="headerlink" href="#installing" title="Permalink to this headline"></a></h1>
+<section id="install-ganache">
+<h2>1) Install Ganache<a class="headerlink" href="#install-ganache" title="Permalink to this headline"></a></h2>
+<p>Ganache is the Ethereum blockchain simulator that runs on your
+local system. It must be running whenever you use <code class="docutils literal notranslate"><span class="pre">simpleth</span></code>.</p>
+<p>To install:</p>
+<ul class="simple">
+<li><p>Go to <a class="reference external" href="https://trufflesuite.com/ganache/">https://trufflesuite.com/ganache/</a> and click on
+the <code class="docutils literal notranslate"><span class="pre">Download</span> <span class="pre">(Windows)</span></code> button.</p></li>
+<li><p>Follow the <strong>Ganache Quickstart</strong>
+(<a class="reference external" href="https://trufflesuite.com/docs/ganache/quickstart/">https://trufflesuite.com/docs/ganache/quickstart/</a>).</p></li>
+</ul>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="install-simpleth-package">
+<h2>2) Install simpleth package<a class="headerlink" href="#install-simpleth-package" title="Permalink to this headline"></a></h2>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install simpleth
+</pre></div>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="set-environment-variable">
+<h2>3) Set environment variable<a class="headerlink" href="#set-environment-variable" title="Permalink to this headline"></a></h2>
+<p>Set <code class="docutils literal notranslate"><span class="pre">SIMPLETH_ARTIFACT_DIR</span></code> to <code class="docutils literal notranslate"><span class="pre">&lt;path</span> <span class="pre">to</span> <span class="pre">project&gt;/simpleth/artifacts</span></code></p>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="download-solidity-compiler">
+<h2>4) Download Solidity compiler<a class="headerlink" href="#download-solidity-compiler" title="Permalink to this headline"></a></h2>
+<p>You can run the <cite>Hello World</cite> contracts and do all the examples in the
+<cite>Using</cite> document without installing the Solidity compiler.
+If that is the extent of your planned use of <code class="docutils literal notranslate"><span class="pre">simpleth</span></code>, you can
+skip this step.</p>
+<p>Otherwise, you will need to have a copy of the Solidity compiler
+to compile your contracts before using <code class="docutils literal notranslate"><span class="pre">simpleth</span></code> to deploy and
+use them.
+Download <code class="docutils literal notranslate"><span class="pre">solc-windows.exe</span></code> from
+<a class="reference external" href="https://github.com/ethereum/solidity/releases">Github page for ethereum//solidity</a>.
+At the start, you might make a subdirectory, <cite>solc</cite>, and save it in that
+directory with the name, <code class="docutils literal notranslate"><span class="pre">solc.exe</span></code>.</p>
+<p>It is safest to use the version found in
+<a class="reference internal" href="intro.html#sw-levels-label"><span class="std std-ref">tested levels</span></a> .</p>
+<p>If you prefer to use a different version, download
+it and save it as <code class="docutils literal notranslate"><span class="pre">solc.exe</span></code> in the <cite>solc</cite> directory.</p>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="confirm-installation">
+<h2>5) Confirm installation<a class="headerlink" href="#confirm-installation" title="Permalink to this headline"></a></h2>
+<p>Make sure <cite>G anache</cite> is running and try these commands.
+If your install is complete, they should run as shown and
+without error messages.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Confirming simpleth installation</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp"> $ </span>dir contracts
+<span class="go"> ... see five smart contract files ...</span>
+
+<span class="gp"> $ </span>dir %SIMPLETH_ARTIFACT_DIR%
+<span class="go"> ... see ten compiler output files ...</span>
+
+<span class="gp"> $ </span>python
+
+<span class="go"> &gt;&gt;&gt; from simpleth import Blockchain</span>
+<span class="go"> &gt;&gt;&gt; Blockchain().block_number</span>
+<span class="go">     ... see sequence number of block at end of chain ...</span>
+<span class="go"> &gt;&gt;&gt; exit()</span>
+
+<span class="gp"> $ </span>solc<span class="se">\s</span>olc --version
+<span class="go"> ... see the compiler version number ...</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <strong>contract files</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>HelloWorld1.sol</p></li>
+<li><p>HelloWorld2.sol</p></li>
+<li><p>HelloWorld3.sol</p></li>
+<li><p>HelloWorld4.sol</p></li>
+<li><p>Test.sol</p></li>
+</ul>
+</div></blockquote>
+<p>There are two <strong>compiler output files</strong> for each of the five contracts.
+One is suffixed with, <cite>.abi</cite>, and the other with, <cite>.bin</cite>.</p>
+</div>
+<p><strong>Congratulations!</strong> <code class="docutils literal notranslate"><span class="pre">simpleth</span></code> is ready for use.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="starting.html" class="btn btn-neutral float-right" title="Hello World" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, Stephen Newell.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,7 +1,5 @@
 ~*
-*.abi
 *.addr
-*.bin
 *.bin-runtime
 *.docdev
 *.docuser
@@ -14,14 +12,9 @@
 *.zip
 .git/
 .idea/
-artifacts/
-build/
-backup/
 docs/source/_static
 docs/source/_templates
-docs/build
 env/
 solc/
-/tools/get_json.py
 /tools/.mypy_cache/.gitignore
 /tools/.mypy_cache/CACHEDIR.TAG

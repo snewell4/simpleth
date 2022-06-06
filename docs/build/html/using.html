@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Using &mdash; simpleth 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Simpleth" href="simpleth.html" />
+    <link rel="prev" title="Hello World" href="starting.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> simpleth
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starting.html">Hello World</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#test-contract">Test Contract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deploy">Deploy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup-interpreter-session">Setup interpreter session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-variables">Get variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#call-functions">Call functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-transactions">Run transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#search-for-events">Search for events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#transaction-results">Transaction results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handling-ether">Handling Ether</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handling-time">Handling time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#simpleth-exceptions">simpleth exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#transaction-exceptions">Transaction exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#selfdestruct">Selfdestruct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#send-transactions-get-receipt">Send transactions / Get receipt</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#relationship-to-run-trx">Relationship to run_trx()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-ganache-with-a-mining-delay">Using Ganache with a mining delay</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#compiling-a-contract">Compiling a contract</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-solc">Using solc</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#artifact-directory">Artifact directory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simpleth.html">Simpleth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Smart Contract Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TestContract.html">Test Contract Source</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">simpleth</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Using</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/using.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="using">
+<h1>Using<a class="headerlink" href="#using" title="Permalink to this headline"></a></h1>
+<p><a class="reference external" href="../html/starting.html">Hello World</a> is an
+introduction to using very simple contracts with <cite>simpleth</cite>.</p>
+<p>This document goes further. It shows many of the basic
+interactions with a contract as well as compiling a
+contract.</p>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+<section id="test-contract">
+<h2>Test Contract<a class="headerlink" href="#test-contract" title="Permalink to this headline"></a></h2>
+<p>The examples will use the <code class="docutils literal notranslate"><span class="pre">Test.sol</span></code> contract.
+It was created for <code class="docutils literal notranslate"><span class="pre">simpleth</span></code> unit and integration testing.
+It has no purpose except to provide a variety of
+transactions and variables for testing.
+We’ll use it to show <code class="docutils literal notranslate"><span class="pre">simpleth</span></code> usage.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you’d like to look at the contract while going through the examples:</p>
+<ul class="simple">
+<li><p>The Natspec comments in the source file provide reference documentation
+for the contract in, <a class="reference internal" href="contracts.html"><span class="doc">Smart Contract Reference</span></a>.</p></li>
+<li><p>A copy of the source code is in the document,
+<a class="reference internal" href="TestContract.html"><span class="doc">Test Contract</span></a>.</p></li>
+<li><p>The source file will be found in
+<code class="docutils literal notranslate"><span class="pre">simpleth/contracts/Test.sol</span></code></p></li>
+</ul>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="deploy">
+<h2>Deploy<a class="headerlink" href="#deploy" title="Permalink to this headline"></a></h2>
+<p><a class="reference internal" href="simpleth.html#simpleth.Contract.deploy" title="simpleth.Contract.deploy"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.deploy()</span></code></a> will add a contract to the blockchain.
+After a contract is deployed, it is ready for use.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Deploy the Test contract</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Blockchain</span><span class="p">,</span> <span class="n">Contract</span>
+<span class="linenos">2</span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Blockchain</span><span class="p">()</span>
+<span class="linenos">3</span><span class="gp">&gt;&gt;&gt; </span><span class="n">owner</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">address</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">4</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+<span class="linenos">5</span><span class="gp">&gt;&gt;&gt; </span><span class="n">special_num</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="linenos">6</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">deploy</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">special_num</span><span class="p">)</span>
+<span class="linenos">7</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">address</span>
+<span class="linenos">8</span><span class="go">&#39;0x6074DEA05C4B02A8afc21c1E06b22a7212217CFd&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul>
+<li><p>Line 2: <code class="docutils literal notranslate"><span class="pre">b</span></code> is our <a class="reference internal" href="simpleth.html#simpleth.Blockchain" title="simpleth.Blockchain"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.Blockchain</span></code></a> object for the examples.</p></li>
+<li><p>Line 3: Assign the blockchain account
+<a class="reference internal" href="simpleth.html#simpleth.Blockchain.address" title="simpleth.Blockchain.address"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Blockchain.address()</span></code></a> for the first <cite>Ganache</cite> account
+to <code class="docutils literal notranslate"><span class="pre">owner</span></code> .</p></li>
+<li><p>Line 4: <code class="docutils literal notranslate"><span class="pre">c</span></code> is our <a class="reference internal" href="simpleth.html#simpleth.Contract" title="simpleth.Contract"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.Contract</span></code></a> object for the <code class="docutils literal notranslate"><span class="pre">Test</span></code> contract
+to be used in all examples.</p></li>
+<li><p>Line 6: <code class="docutils literal notranslate"><span class="pre">deploy</span></code> adds the <code class="docutils literal notranslate"><span class="pre">Test</span></code> contract to the blockchain.
+<code class="docutils literal notranslate"><span class="pre">Test</span></code> has a constructor parameter that we need
+provide with the arg, <code class="docutils literal notranslate"><span class="pre">special_num</span></code>. This becomes the contract’s value
+for the state variable, <code class="docutils literal notranslate"><span class="pre">initNum</span></code>.</p>
+<p>The contract’s constructor function sets the account address that
+sent the transaction as the <code class="docutils literal notranslate"><span class="pre">owner</span></code> of the contract. Since the
+Python <code class="docutils literal notranslate"><span class="pre">owner</span></code> was used to <code class="docutils literal notranslate"><span class="pre">deploy</span></code>, it becomes the Solidity
+<code class="docutils literal notranslate"><span class="pre">owner</span></code>. This becomes important later. There are examples where
+only the Solidity contract <code class="docutils literal notranslate"><span class="pre">owner</span></code> can run a transaction.</p>
+<p><code class="docutils literal notranslate"><span class="pre">deploy</span></code> returns the   <cite>transaction receipt</cite>. To avoid having
+this print out, I stored it in <code class="docutils literal notranslate"><span class="pre">receipt</span></code>. We don’t need to do
+anything with it for now.</p>
+</li>
+<li><p>Line 7: Gets the blockchain address where this contract now resides.
+It is the value of the <a class="reference internal" href="simpleth.html#simpleth.Contract.address" title="simpleth.Contract.address"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.address()</span></code></a> property.
+The address is shown on line 8.</p></li>
+</ul>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="setup-interpreter-session">
+<h2>Setup interpreter session<a class="headerlink" href="#setup-interpreter-session" title="Permalink to this headline"></a></h2>
+<p>These Python statements are common to all the following
+examples. They are shown here and assumed to have been
+issued for the rest of the examples.</p>
+<p>There is duplication of these statements and the <cite>Deploy</cite>
+example. In most cases, a contract is already deployed
+and you would start your Python session with the following
+statements.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Blockchain</span><span class="p">,</span> <span class="n">Contract</span><span class="p">,</span> <span class="n">Results</span><span class="p">,</span> <span class="n">EventSearch</span><span class="p">,</span> <span class="n">Convert</span>
+<span class="linenos">2</span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Blockchain</span><span class="p">()</span>
+<span class="linenos">3</span><span class="gp">&gt;&gt;&gt; </span><span class="n">owner</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">address</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">4</span><span class="gp">&gt;&gt;&gt; </span><span class="n">user</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">address</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos">5</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+<span class="linenos">6</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Line 6: You must do a <a class="reference internal" href="simpleth.html#simpleth.Contract.connect" title="simpleth.Contract.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.connect()</span></code></a>
+before doing anything with a contract. A <code class="docutils literal notranslate"><span class="pre">deploy</span></code> includes a
+<code class="docutils literal notranslate"><span class="pre">connect</span></code>; no need to do a connect after a deploy.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See the <code class="docutils literal notranslate"><span class="pre">Deploy</span></code> example above for comments relevant to lines
+2, 3, and 5.</p>
+<p>Line 4: Likewise, assign another account address to <code class="docutils literal notranslate"><span class="pre">user</span></code>. This
+will give us two accounts for our examples.</p>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="get-variables">
+<h2>Get variables<a class="headerlink" href="#get-variables" title="Permalink to this headline"></a></h2>
+<p><a class="reference internal" href="simpleth.html#simpleth.Contract.get_var" title="simpleth.Contract.get_var"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.get_var()</span></code></a> will retrieve the
+specified <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">state</span></code> variable.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">get_var</span><span class="p">(</span><span class="s1">&#39;initNum&#39;</span><span class="p">)</span>
+<span class="linenos">2</span><span class="go">42</span>
+<span class="linenos">3</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">get_var</span><span class="p">(</span><span class="s1">&#39;owner&#39;</span><span class="p">)</span>
+<span class="linenos">4</span><span class="go">&#39;0xa894b8d26Cd25eCD3E154a860A86f7c75B12D993&#39;</span>
+<span class="linenos">5</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">get_var</span><span class="p">(</span><span class="s1">&#39;nums&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">6</span><span class="go">1</span>
+<span class="linenos">7</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">get_var</span><span class="p">(</span><span class="s1">&#39;nums&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="linenos">8</span><span class="go">2</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 1 - Get the variable that was set by the <code class="docutils literal notranslate"><span class="pre">deploy</span></code>
+constructor arg.</p></li>
+<li><p>Line 3 - The address of the <code class="docutils literal notranslate"><span class="pre">owner</span></code> account.</p></li>
+<li><p>Line 5 - <code class="docutils literal notranslate"><span class="pre">nums</span></code> is an array of three unsigned ints.
+<code class="docutils literal notranslate"><span class="pre">get_var</span></code> can not return a list, only a single value.
+Ask for the value of the second element by providing
+an arg with the index of 1. (Note: the contract
+defines the initial value of <code class="docutils literal notranslate"><span class="pre">nums</span></code> as
+[0,1,2]. There are transactions to change and use
+those values. We’ll get to those soon.)</p></li>
+<li><p>Line 7 - get the third element of <code class="docutils literal notranslate"><span class="pre">nums</span></code> .</p></li>
+</ul>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="call-functions">
+<h2>Call functions<a class="headerlink" href="#call-functions" title="Permalink to this headline"></a></h2>
+<p><a class="reference internal" href="simpleth.html#simpleth.Contract.call_fcn" title="simpleth.Contract.call_fcn"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.call_fcn()</span></code></a> will execute a contract’s
+<code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">pure</span></code> or <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">view</span></code> functions and pass
+back the returned value(s).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">call_fcn</span><span class="p">(</span><span class="s1">&#39;getNum0&#39;</span><span class="p">)</span>
+<span class="linenos">2</span><span class="go">0</span>
+<span class="linenos">3</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">call_fcn</span><span class="p">(</span><span class="s1">&#39;getNum&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="linenos">4</span><span class="go">2</span>
+<span class="linenos">5</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">call_fcn</span><span class="p">(</span><span class="s1">&#39;getNums&#39;</span><span class="p">)</span>
+<span class="linenos">6</span><span class="go">[0, 1, 2]</span>
+<span class="linenos">7</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">call_fcn</span><span class="p">(</span><span class="s1">&#39;getTypes&#39;</span><span class="p">)</span>
+<span class="linenos">8</span><span class="go">[True, 1, 10, -100, &#39;0x20e0A619E7Efb741a34b8EDC6251E2702e69bBDd&#39;, &#39;test string&#39;, [10, 20, 30]]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 1: <code class="docutils literal notranslate"><span class="pre">getNum0</span></code> returns one value: the int stored in nums[0].</p></li>
+<li><p>Line 3: <code class="docutils literal notranslate"><span class="pre">getNum</span></code> returns one value: the int stored in
+nums[&lt;index&gt;].
+In this instance, we will get nums[2].</p></li>
+<li><p>Line 5: <code class="docutils literal notranslate"><span class="pre">getNums</span></code> returns the full nums array as a Python list.</p></li>
+<li><p>Line 7: <code class="docutils literal notranslate"><span class="pre">getTypes</span></code> returns seven values. (Note: I did a
+transaction to set these values that is not shown. We’ll see it soon.)</p></li>
+</ul>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="run-transactions">
+<h2>Run transactions<a class="headerlink" href="#run-transactions" title="Permalink to this headline"></a></h2>
+<p><a class="reference internal" href="simpleth.html#simpleth.Contract.run_trx" title="simpleth.Contract.run_trx"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.run_trx()</span></code></a> will execute a contract’s
+<code class="docutils literal notranslate"><span class="pre">public</span></code> functions. <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_trx()</span></code> is the typical and easiest
+way to use transactions with <cite>Ganache</cite>.</p>
+<p>You can compare this approach to the upcoming examples on
+<code class="docutils literal notranslate"><span class="pre">Submit</span> <span class="pre">transactions</span></code> and <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">transaction</span> <span class="pre">receipts</span></code>.</p>
+<p>Unlike a function, a transaction does not return any value.
+If you want to confirm a transaction, you might check for
+expected change(s) in contract state variable(s) or for
+the emission of expected event(s).</p>
+<p>Let’s run a few transactions and check the updated
+variable values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNum&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="linenos">2</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">get_var</span><span class="p">(</span><span class="s1">&#39;nums&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="linenos">3</span><span class="go">1000</span>
+<span class="linenos">4</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">56</span><span class="p">)</span>
+<span class="linenos">5</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">get_var</span><span class="p">(</span><span class="s1">&#39;nums&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="linenos">6</span><span class="go">12</span>
+<span class="linenos">7</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="s1">&#39;storeTypes&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="o">-</span><span class="mi">500</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="s1">&#39;new test string&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="linenos">8</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">get_var</span><span class="p">(</span><span class="s1">&#39;testStr&#39;</span><span class="p">)</span>
+<span class="linenos">9</span><span class="go">&#39;new test string&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 1: The contract  transaction, <code class="docutils literal notranslate"><span class="pre">storeNum</span></code> , sets
+nums[0] to 1000. After the transaction completes, line 2
+gets the new value for nums[0], which is shown on line 3.</p></li>
+<li><p>Line 4: Set the three values in nums[] to 12, 34, 56.</p></li>
+<li><p>Line 7: Runs a transaction, <code class="docutils literal notranslate"><span class="pre">storeTypes</span></code> , that shows
+how to pass in seven different data types as args. Line
+9 confirms that the string arg was set properly.</p></li>
+</ul>
+<p>The Solidity transaction does not return any value, but
+<code class="docutils literal notranslate"><span class="pre">call_fcn</span></code> will return the <cite>transaction receipt</cite> which
+is created when the transaction is mined. You will be able
+to use this in the upcoming section about Results to see
+transaction information.</p>
+<p>A transaction always has a <cite>sender</cite>. This is the address
+of the account running the transaction. For the transactions
+shown the sender does not matter. Two of them were sent by
+<code class="docutils literal notranslate"><span class="pre">user</span></code> and one <code class="docutils literal notranslate"><span class="pre">owner</span></code>.  We’ll be looking at checks in
+a transaction that can restrict which account(s) are permitted
+to run the transaction.</p>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="search-for-events">
+<h2>Search for events<a class="headerlink" href="#search-for-events" title="Permalink to this headline"></a></h2>
+<p><a class="reference internal" href="simpleth.html#simpleth.EventSearch" title="simpleth.EventSearch"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.EventSearch</span></code></a> has two methods to find and retrieve
+the information from events emitted by transactions:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="simpleth.html#simpleth.EventSearch.get_old" title="simpleth.EventSearch.get_old"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.EventSearch.get_old()</span></code></a> returns event info
+from a specified range of previously mined blocks</p></li>
+<li><p><a class="reference internal" href="simpleth.html#simpleth.EventSearch.get_new" title="simpleth.EventSearch.get_new"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.EventSearch.get_new()</span></code></a> returns event info
+from newly mined blocks.</p></li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Get old events</span><a class="headerlink" href="#id2" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">EventSearch</span>
+<span class="linenos"> 2</span><span class="gp">&gt;&gt;&gt; </span><span class="n">nums_stored_search</span> <span class="o">=</span> <span class="n">EventSearch</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;NumsStored&#39;</span><span class="p">)</span>
+<span class="linenos"> 3</span><span class="gp">&gt;&gt;&gt; </span><span class="n">events</span> <span class="o">=</span> <span class="n">nums_stored_search</span><span class="o">.</span><span class="n">get_old</span><span class="p">()</span>
+<span class="linenos"> 4</span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+<span class="linenos"> 5</span><span class="go">1</span>
+<span class="linenos"> 6</span><span class="gp">&gt;&gt;&gt; </span><span class="n">events</span> <span class="o">=</span> <span class="n">nums_stored_search</span><span class="o">.</span><span class="n">get_old</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span>
+<span class="linenos"> 7</span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="go">4</span>
+<span class="linenos"> 9</span><span class="gp">&gt;&gt;&gt; </span><span class="n">last_block</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">block_number</span>
+<span class="linenos">10</span><span class="gp">&gt;&gt;&gt; </span><span class="n">events</span> <span class="o">=</span> <span class="n">nums_stored_search</span><span class="o">.</span><span class="n">get_old</span><span class="p">(</span><span class="n">last_block</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">last_block</span><span class="p">)</span>
+<span class="linenos">11</span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+<span class="linenos">12</span><span class="go">4</span>
+<span class="linenos">13</span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pprint</span>
+<span class="linenos">14</span><span class="gp">&gt;&gt;&gt; </span><span class="n">pp</span> <span class="o">=</span> <span class="n">pprint</span><span class="o">.</span><span class="n">PrettyPrinter</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="linenos">15</span><span class="gp">&gt;&gt;&gt; </span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+<span class="linenos">16</span><span class="go">[   {   &#39;args&#39;: {&#39;num0&#39;: 10, &#39;num1&#39;: 10, &#39;num2&#39;: 10, &#39;timestamp&#39;: 1653095947},</span>
+<span class="linenos">17</span><span class="go">        &#39;block_number&#39;: 7084,</span>
+<span class="linenos">18</span><span class="go">        &#39;trx_hash&#39;: &#39;0x38c917a6a5f27d88e4af57205f5a0ad231adcc5d519a2902feb7ab57885fe76a&#39;},</span>
+<span class="linenos">19</span><span class="go">    {   &#39;args&#39;: {&#39;num0&#39;: 20, &#39;num1&#39;: 20, &#39;num2&#39;: 20, &#39;timestamp&#39;: 1653095957},</span>
+<span class="linenos">20</span><span class="go">        &#39;block_number&#39;: 7085,</span>
+<span class="linenos">21</span><span class="go">        &#39;trx_hash&#39;: &#39;0xc9846c27b90f5c0744e4049e8e3ea54477157d0741692db84ded3d1fae7b638a&#39;},</span>
+<span class="linenos">22</span><span class="go">    {   &#39;args&#39;: {&#39;num0&#39;: 30, &#39;num1&#39;: 30, &#39;num2&#39;: 30, &#39;timestamp&#39;: 1653095968},</span>
+<span class="linenos">23</span><span class="go">        &#39;block_number&#39;: 7086,</span>
+<span class="linenos">24</span><span class="go">        &#39;trx_hash&#39;: &#39;0xed3ce6a50b8fb919c68c2555a8a525d3cf3b6e51ced660d28a7837961abfc385&#39;},</span>
+<span class="linenos">25</span><span class="go">    {   &#39;args&#39;: {&#39;num0&#39;: 40, &#39;num1&#39;: 40, &#39;num2&#39;: 40, &#39;timestamp&#39;: 1653095980},</span>
+<span class="linenos">26</span><span class="go">        &#39;block_number&#39;: 7087,</span>
+<span class="linenos">27</span><span class="go">        &#39;trx_hash&#39;: &#39;0x9a02a390381f1053cc73b8f9589624b3b38a63c49722a15acc8fed5296e0011c&#39;}]</span>
+<span class="linenos">28</span><span class="gp">&gt;&gt;&gt; </span><span class="n">events</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">]</span>
+<span class="linenos">29</span><span class="go">{&#39;timestamp&#39;: 1653095957, &#39;num0&#39;: 20, &#39;num1&#39;: 20, &#39;num2&#39;: 20}</span>
+<span class="linenos">30</span><span class="gp">&gt;&gt;&gt; </span><span class="n">events</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="s1">&#39;num0&#39;</span><span class="p">]</span>
+<span class="linenos">31</span><span class="go">20</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 2: Create the event search object we’ll use to search for the event,
+<code class="docutils literal notranslate"><span class="pre">NumsStored</span></code> , which is emitted by the transaction, <code class="xref py py-meth docutils literal notranslate"><span class="pre">storeNums()</span></code> .</p></li>
+<li><p>Line 3: Without an arg <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_old()</span></code> looks in the last block on the
+chain for the event. Line 5 shows the block contains one such event.</p></li>
+<li><p>Line 6: <code class="docutils literal notranslate"><span class="pre">-4</span></code> asks <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_old()</span></code> to look in the last four blocks
+on the chain. Line 8 shows that four events were found.</p></li>
+<li><p>Line 15: Print out the four events using Python’s pretty print. You
+can see the information stored when the <code class="docutils literal notranslate"><span class="pre">NumsStored</span></code> event is emitted.</p></li>
+<li><p>Line 28: Gets just the <code class="docutils literal notranslate"><span class="pre">args</span></code> values for the second event in the list.</p></li>
+<li><p>Line 30: Narrows it down getting the value for the <code class="docutils literal notranslate"><span class="pre">num0</span></code> parameter.</p></li>
+</ul>
+</div>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_new()</span></code> is used to check for an event in recently mined blocks.
+It will look in the blocks created since the previous call for any new events.
+The checking starts with creating an <code class="docutils literal notranslate"><span class="pre">EventSearch</span></code> object . The first call
+to <code class="docutils literal notranslate"><span class="pre">get_new</span></code> returns any events emitted since the object was created. The
+next call returns any events emitted since the first call. The second call
+returns events since the first call and so on.</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Get new events</span><a class="headerlink" href="#id3" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="gp">&gt;&gt;&gt; </span><span class="n">nums_stored_search</span> <span class="o">=</span> <span class="n">EventSearch</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;NumsStored&#39;</span><span class="p">)</span>
+<span class="linenos"> 2</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="linenos"> 3</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<span class="linenos"> 4</span><span class="gp">&gt;&gt;&gt; </span><span class="n">events</span> <span class="o">=</span> <span class="n">nums_stored_search</span><span class="o">.</span><span class="n">get_new</span><span class="p">()</span>
+<span class="linenos"> 5</span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="go">2</span>
+<span class="linenos"> 7</span><span class="gp">&gt;&gt;&gt; </span><span class="n">events</span> <span class="o">=</span> <span class="n">nums_stored_search</span><span class="o">.</span><span class="n">get_new</span><span class="p">()</span>
+<span class="linenos"> 8</span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+<span class="linenos"> 9</span><span class="go">0</span>
+<span class="linenos">10</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
+<span class="linenos">11</span><span class="gp">&gt;&gt;&gt; </span><span class="n">events</span> <span class="o">=</span> <span class="n">nums_stored_search</span><span class="o">.</span><span class="n">get_new</span><span class="p">()</span>
+<span class="linenos">12</span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+<span class="linenos">13</span><span class="go">1</span>
+<span class="linenos">14</span><span class="gp">&gt;&gt;&gt; </span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+<span class="linenos">15</span><span class="go">[   {   &#39;args&#39;: {&#39;num0&#39;: 70, &#39;num1&#39;: 70, &#39;num2&#39;: 70, &#39;timestamp&#39;: 1653097033},</span>
+<span class="linenos">16</span><span class="go">        &#39;block_number&#39;: 7090,</span>
+<span class="linenos">17</span><span class="go">        &#39;trx_hash&#39;: &#39;0x5b60aafd384ec3cbfb86f28cc79911a8265899d0b38335cceb482f9cf9be9830&#39;}]</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 1: Create the <code class="docutils literal notranslate"><span class="pre">EventSearch</span></code> object. This marks that stating point
+of checking for new <code class="docutils literal notranslate"><span class="pre">NumsStored</span></code> events.</p></li>
+<li><p>Line 2: Run two transactions to emit two events.</p></li>
+<li><p>Line 4: Check for new events. Two are found, as expected.</p></li>
+<li><p>Line 7: Check for new events since that last check (on line 4). None
+found, as expected.</p></li>
+<li><p>Line 10: Run one transaction, get it on line 11, and print it on line 14.</p></li>
+</ul>
+</div>
+<p>There is no way to be alerted to a new event without checking periodically.
+There is no callback nor pub/sub available.
+A simple approach is to have a program that does one check for the event,
+waits for a period of time, and repeats those two steps. Here’s an example:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Python program (event_poll.py) to watch for events</span><a class="headerlink" href="#id4" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="sd">&quot;&quot;&quot;Simple program to periodically check for an event&quot;&quot;&quot;</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="kn">import</span> <span class="nn">time</span>
+<span class="linenos"> 4</span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Contract</span><span class="p">,</span> <span class="n">EventSearch</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="n">poll_freq</span> <span class="o">=</span> <span class="mi">3</span>    <span class="c1"># number of seconds between checks</span>
+<span class="linenos"> 7</span><span class="n">num_polls</span> <span class="o">=</span> <span class="mi">10</span>   <span class="c1"># number of checks</span>
+<span class="linenos"> 8</span><span class="n">contract_name</span> <span class="o">=</span> <span class="s1">&#39;TEST&#39;</span>    <span class="c1"># contract emitting event</span>
+<span class="linenos"> 9</span><span class="n">event_name</span> <span class="o">=</span> <span class="s1">&#39;NumsStore&#39;</span>  <span class="c1"># check for this event</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="n">c</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+<span class="linenos">12</span><span class="n">c</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="linenos">13</span><span class="n">e</span> <span class="o">=</span> <span class="n">EventSearch</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;NumsStored&#39;</span><span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="k">while</span> <span class="n">num_polls</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="hll"><span class="linenos">16</span>    <span class="n">events</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_new</span><span class="p">()</span>
+</span><span class="linenos">17</span>    <span class="n">num_events</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+<span class="linenos">18</span>    <span class="k">if</span> <span class="n">num_events</span><span class="p">:</span>
+<span class="linenos">19</span>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Found </span><span class="si">{</span><span class="n">num_events</span><span class="si">}</span><span class="s1"> new events&#39;</span><span class="p">)</span>
+<span class="linenos">20</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">21</span>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No new events&#39;</span><span class="p">)</span>
+<span class="linenos">22</span>    <span class="n">num_polls</span> <span class="o">=</span> <span class="n">num_polls</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="linenos">23</span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">poll_freq</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 6: This program will check every three seconds</p></li>
+<li><p>Line 7: Ten of these checks will be done before the program ends.</p></li>
+<li><p>Line 16: <strong>Highlighted</strong>. Here is the periodic poll to check for
+any recent events.</p></li>
+<li><p>Line 17: If zero events, tell the user nothing new found.
+If non-zero, tell user how many we found in this polling cycle.</p></li>
+<li><p>Line 23: Sleep until time for the next check.</p></li>
+</ul>
+<p>The program is found in <code class="docutils literal notranslate"><span class="pre">simpleth/examples</span></code> directory.</p>
+</div>
+<p>The next two sessions show a single test of <code class="docutils literal notranslate"><span class="pre">event_poll.py</span></code> .
+There are two windows in use:</p>
+<ol class="arabic simple">
+<li><p>Python interpreter where transactions were run</p></li>
+<li><p>Command line window where <code class="docutils literal notranslate"><span class="pre">event_poll.py</span></code> runs.</p></li>
+</ol>
+<p>I started <code class="docutils literal notranslate"><span class="pre">event_poll.py</span></code> and then switched to the Python interpreter
+to run eight identical <code class="xref py py-meth docutils literal notranslate"><span class="pre">storeNums()</span></code> transactions at random
+intervals.</p>
+<p>The transactions:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Interpreter session while event_poll.py runs</span><a class="headerlink" href="#id5" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="linenos">2</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="linenos">3</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="linenos">4</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="linenos">5</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="linenos">6</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="linenos">7</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="linenos">8</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The program:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Running event_poll.py</span><a class="headerlink" href="#id6" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="gp">$ </span>event_poll.py
+<span class="linenos"> 2</span><span class="go">No new events</span>
+<span class="linenos"> 3</span><span class="go">No new events</span>
+<span class="linenos"> 4</span><span class="go">Found 2 new events</span>
+<span class="linenos"> 5</span><span class="go">No new events</span>
+<span class="linenos"> 6</span><span class="go">Found 3 new events</span>
+<span class="linenos"> 7</span><span class="go">Found 1 new events</span>
+<span class="linenos"> 8</span><span class="go">No new events</span>
+<span class="linenos"> 9</span><span class="go">No new events</span>
+<span class="linenos">10</span><span class="go">Found 2 new events</span>
+<span class="linenos">11</span><span class="go">No new events</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 2: No events emitted in the first 3 seconds.</p></li>
+<li><p>Line 3: No events emitted in the next 3 seconds.</p></li>
+<li><p>Line 4: Two events, from the transactions run in the Python interpreter,
+were emitted in the third 3 seconds.</p></li>
+</ul>
+<p>And so on.</p>
+</div>
+<p>After <code class="docutils literal notranslate"><span class="pre">event_poll.py</span></code> finished, use <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_old()</span></code> to get the
+eight events emitted. Print them.</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Getting the events emitted while event_poll.py ran</span><a class="headerlink" href="#id7" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="gp">&gt;&gt;&gt; </span><span class="n">events</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_old</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">)</span>
+<span class="linenos"> 2</span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+<span class="linenos"> 3</span><span class="go">8</span>
+<span class="linenos"> 4</span><span class="gp">&gt;&gt;&gt; </span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+<span class="linenos"> 5</span><span class="go">[ { &#39;args&#39;: {&#39;num0&#39;: 500, &#39;num1&#39;: 500, &#39;num2&#39;: 500, &#39;timestamp&#39;: 1653135341},</span>
+<span class="linenos"> 6</span><span class="go">    &#39;block_number&#39;: 7125,</span>
+<span class="linenos"> 7</span><span class="go">    &#39;trx_hash&#39;: &#39;0xc258c1f566fbf9b76253afc2d89049fb7f7d7fe54f5c6b5a98a521f5bb0e9bc0&#39;},</span>
+<span class="linenos"> 8</span><span class="go">  { &#39;args&#39;: {&#39;num0&#39;: 500, &#39;num1&#39;: 500, &#39;num2&#39;: 500, &#39;timestamp&#39;: 1653135341},</span>
+<span class="linenos"> 9</span><span class="go">     &#39;block_number&#39;: 7126,</span>
+<span class="linenos">10</span><span class="go">    &#39;trx_hash&#39;: &#39;0x7f06283aa8c2326f558da4ea36d1d840fd198a92874ae587164b8950d9dd7259&#39;},</span>
+<span class="linenos">11</span><span class="go">  { &#39;args&#39;: {&#39;num0&#39;: 500, &#39;num1&#39;: 500, &#39;num2&#39;: 500, &#39;timestamp&#39;: 1653135347},</span>
+<span class="linenos">12</span><span class="go">    &#39;block_number&#39;: 7127,</span>
+<span class="linenos">13</span><span class="go">    &#39;trx_hash&#39;: &#39;0xcdf32bafe94c90f10ef93a4ed989a4f41f022ef62299076be549a713517a9667&#39;},</span>
+<span class="linenos">14</span><span class="go">  { &#39;args&#39;: {&#39;num0&#39;: 500, &#39;num1&#39;: 500, &#39;num2&#39;: 500, &#39;timestamp&#39;: 1653135347},</span>
+<span class="linenos">15</span><span class="go">    &#39;block_number&#39;: 7128,</span>
+<span class="linenos">16</span><span class="go">    &#39;trx_hash&#39;: &#39;0xa4c1fdaa89120cdf69ecc42300d6594098e90a443b5fdbda8bed91b355dcde8f&#39;},</span>
+<span class="linenos">17</span><span class="go">  { &#39;args&#39;: {&#39;num0&#39;: 500, &#39;num1&#39;: 500, &#39;num2&#39;: 500, &#39;timestamp&#39;: 1653135348},</span>
+<span class="linenos">18</span><span class="go">    &#39;block_number&#39;: 7129,</span>
+<span class="linenos">19</span><span class="go">    &#39;trx_hash&#39;: &#39;0x3763fbaf62eb8e422f33f41fc42607559a478152cbf10c437c5178381e8905ff&#39;},</span>
+<span class="linenos">20</span><span class="go">  { &#39;args&#39;: {&#39;num0&#39;: 500, &#39;num1&#39;: 500, &#39;num2&#39;: 500, &#39;timestamp&#39;: 1653135349},</span>
+<span class="linenos">21</span><span class="go">    &#39;block_number&#39;: 7130,</span>
+<span class="linenos">22</span><span class="go">    &#39;trx_hash&#39;: &#39;0xbfb52e30129dcf927a2ff07d426210302bea48e9f54c8c88a5a29b6b474bbfe0&#39;},</span>
+<span class="linenos">23</span><span class="go">  { &#39;args&#39;: {&#39;num0&#39;: 500, &#39;num1&#39;: 500, &#39;num2&#39;: 500, &#39;timestamp&#39;: 1653135360},</span>
+<span class="linenos">24</span><span class="go">    &#39;block_number&#39;: 7131,</span>
+<span class="linenos">25</span><span class="go">    &#39;trx_hash&#39;: &#39;0x18155d00b5305d15959536f107af1b533a877ee324989da475fb8e4744c888b3&#39;},</span>
+<span class="linenos">26</span><span class="go">  { &#39;args&#39;: {&#39;num0&#39;: 500, &#39;num1&#39;: 500, &#39;num2&#39;: 500, &#39;timestamp&#39;: 1653135360},</span>
+<span class="linenos">27</span><span class="go">    &#39;block_number&#39;: 7132,</span>
+<span class="linenos">28</span><span class="go">    &#39;trx_hash&#39;: &#39;0x14e74f83b9c544675cee2718212b31563914f81c5124d5df024b6b4bef8e7b7f&#39;}]</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 1: Eight transactions were run in the Python interpreter.
+Get events in the most recent eight blocks. We do not need to
+create another <code class="docutils literal notranslate"><span class="pre">EventSearch</span></code> object. We use the same one used
+for <code class="docutils literal notranslate"><span class="pre">get_new</span></code>.</p></li>
+<li><p>Line 3: shows eight events emitted. This matches  the number
+that <code class="docutils literal notranslate"><span class="pre">event_poll.py</span></code> found.</p></li>
+<li><p>Line 5: The events list has the eight events. You can see the
+(epoch) times, in seconds, when the transactions were mined in
+the <code class="docutils literal notranslate"><span class="pre">timestamp</span></code> args. The first two events have the same
+timestamp. This corresponds to <code class="docutils literal notranslate"><span class="pre">event_poll.py</span></code> finding two
+events in the third three-second check. The next three events
+were timestamped in a two-second period. They were found by
+<code class="docutils literal notranslate"><span class="pre">event_poll.py</span></code> in the fifth three-second check.</p></li>
+</ul>
+<p>And so on.</p>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="transaction-results">
+<h2>Transaction results<a class="headerlink" href="#transaction-results" title="Permalink to this headline"></a></h2>
+<p><a class="reference internal" href="simpleth.html#simpleth.Results" title="simpleth.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.Results</span></code></a> can be used after a transaction completes
+to see the details about it.</p>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Get the results of a transaction</span><a class="headerlink" href="#id8" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Results</span>
+<span class="linenos"> 2</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span>
+<span class="linenos"> 3</span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">Results</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">receipt</span><span class="p">)</span>
+<span class="linenos"> 4</span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">block_number</span>
+<span class="linenos"> 5</span><span class="go">7238</span>
+<span class="linenos"> 6</span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">gas_used</span>
+<span class="linenos"> 7</span><span class="go">38764</span>
+<span class="linenos"> 8</span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">gas_price_wei</span>
+<span class="linenos"> 9</span><span class="go">20000000000</span>
+<span class="linenos">10</span><span class="gp">&gt;&gt;&gt; </span><span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">transaction</span><span class="p">)</span>
+<span class="linenos">11</span><span class="go">{ &#39;blockHash&#39;: &#39;0x02d037b430ff01bec0395f63af90c9f497d31ff5f2270bd1410056f54d166db0&#39;,</span>
+<span class="linenos">12</span><span class="go">  &#39;blockNumber&#39;: 7238,</span>
+<span class="linenos">13</span><span class="go">  &#39;from&#39;: &#39;0x20e0A619E7Efb741a34b8EDC6251E2702e69bBDd&#39;,</span>
+<span class="linenos">14</span><span class="go">  &#39;gas&#39;: 6000000,</span>
+<span class="linenos">15</span><span class="go">  &#39;gasPrice&#39;: 20000000000,</span>
+<span class="linenos">16</span><span class="go">  &#39;hash&#39;: &#39;0xf73105578c2df584331431703b07fb4741fd1292d890febfc77ded9f4dfd0e91&#39;,</span>
+<span class="linenos">17</span><span class="go">  &#39;input&#39;: &#39;0x3e50ca2c000000000000000000000000000000000000000000000000000000000000002a000000000000000000000000000000000000000000000000000000000000002a000000000000000000000000000000000000000000000000000000000000002a&#39;,</span>
+<span class="linenos">18</span><span class="go">  &#39;nonce&#39;: 209,</span>
+<span class="linenos">19</span><span class="go">  &#39;r&#39;: &#39;0xdd4bd76385c7c3d5775db03951c03b3c529383288f036baca55a05f8c5088d54&#39;,</span>
+<span class="linenos">20</span><span class="go">  &#39;s&#39;: &#39;0x21c27b449376503812586b3ddf9edeb40a6e920b5f1f019d8f9f54243d2e29ad&#39;,</span>
+<span class="linenos">21</span><span class="go">  &#39;to&#39;: &#39;0x82592d5ae9E9ECc14b1740F330D3fAA00403a1F3&#39;,</span>
+<span class="linenos">22</span><span class="go">  &#39;transactionIndex&#39;: 0,</span>
+<span class="linenos">23</span><span class="go">  &#39;v&#39;: 37,</span>
+<span class="linenos">24</span><span class="go">  &#39;value&#39;: 0}</span>
+<span class="linenos">25</span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="linenos">26</span><span class="go"> Block number     = 7238</span>
+<span class="linenos">27</span><span class="go"> Block time epoch = 1653156539</span>
+<span class="linenos">28</span><span class="go"> Contract name    = Test</span>
+<span class="linenos">29</span><span class="go"> Contract address = 0x82592d5ae9E9ECc14b1740F330D3fAA00403a1F3</span>
+<span class="linenos">30</span><span class="go"> Trx name         = storeNums</span>
+<span class="linenos">31</span><span class="go"> Trx args         = {&#39;_num0&#39;: 42, &#39;_num1&#39;: 42, &#39;_num2&#39;: 42}</span>
+<span class="linenos">32</span><span class="go"> Trx sender       = 0x20e0A619E7Efb741a34b8EDC6251E2702e69bBDd</span>
+<span class="linenos">33</span><span class="go"> Trx value wei    = 0</span>
+<span class="linenos">34</span><span class="go"> Trx hash         = 0xf73105578c2df584331431703b07fb4741fd1292d890febfc77ded9f4dfd0e91</span>
+<span class="linenos">35</span><span class="go"> Gas price wei    = 20000000000</span>
+<span class="linenos">36</span><span class="go"> Gas used         = 38764</span>
+<span class="linenos">37</span><span class="go"> Event name[0]    = NumsStored</span>
+<span class="linenos">38</span><span class="go"> Event args[0]    = {&#39;timestamp&#39;: 1653156539, &#39;num0&#39;: 42, &#39;num1&#39;: 42, &#39;num2&#39;: 42}</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 3: Create a <code class="docutils literal notranslate"><span class="pre">Results</span></code> data object, <code class="docutils literal notranslate"><span class="pre">r</span></code> , for the <code class="docutils literal notranslate"><span class="pre">storeNums</span></code>
+transaction.</p></li>
+<li><p>Line 4: Get blockchain block number holding this mined transaction.</p></li>
+<li><p>Line 6: Get the units of gas consumed to execute the transaction.</p></li>
+<li><p>Line 8: Get the cost, in <cite>wei</cite> , for each unit of gas. This is a
+constant when using Ganache.</p></li>
+<li><p>Line 10: Pretty print the <code class="docutils literal notranslate"><span class="pre">web3.eth</span></code> transaction information.</p></li>
+<li><p>Line 25: A <code class="docutils literal notranslate"><span class="pre">Results</span></code> object can be printed. Here’s the output.</p></li>
+</ul>
+<p>See <a class="reference internal" href="simpleth.html#simpleth.Results" title="simpleth.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.Results</span></code></a> documentation for the full list of
+properties, including more from <code class="docutils literal notranslate"><span class="pre">web3.eth</span></code> .</p>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="handling-ether">
+<h2>Handling Ether<a class="headerlink" href="#handling-ether" title="Permalink to this headline"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">simpleth</span></code> has a handful of methods and properties for handling Ether:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="simpleth.html#simpleth.Convert.denominations_to_wei" title="simpleth.Convert.denominations_to_wei"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.denominations_to_wei()</span></code></a> returns Ether
+denominations and values.</p></li>
+<li><p><a class="reference internal" href="simpleth.html#simpleth.Convert.convert_ether" title="simpleth.Convert.convert_ether"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.convert_ether()</span></code></a> to convert amount from one
+denomination to another.</p></li>
+<li><p><a class="reference internal" href="simpleth.html#simpleth.Blockchain.balance" title="simpleth.Blockchain.balance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Blockchain.balance()</span></code></a> returns the Ether balance,
+in <cite>wei</cite> , for a specified address.</p></li>
+<li><p><a class="reference internal" href="simpleth.html#simpleth.Blockchain.send_ether" title="simpleth.Blockchain.send_ether"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Blockchain.send_ether()</span></code></a> transfers the specified amount
+of Ether, in <cite>wei</cite> , from one address to another.</p></li>
+<li><p><a class="reference internal" href="simpleth.html#simpleth.Contract.run_trx" title="simpleth.Contract.run_trx"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.run_trx()</span></code></a> has an optional parameter,
+<code class="docutils literal notranslate"><span class="pre">value_wei</span></code> which will send the specified amount of Ether,
+in <cite>wei</cite> , to the transaction.</p></li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Methods and properties to handle ether</span><a class="headerlink" href="#id9" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Convert</span>
+<span class="linenos"> 2</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="n">Convert</span><span class="p">()</span>
+<span class="linenos"> 3</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="o">.</span><span class="n">denominations_to_wei</span><span class="p">()[</span><span class="s1">&#39;szabo&#39;</span><span class="p">]</span>
+<span class="linenos"> 4</span> <span class="mi">1000000000000</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span> <span class="o">&gt;&gt;&gt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">convert_ether</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s1">&#39;ether&#39;</span><span class="p">,</span> <span class="s1">&#39;gwei&#39;</span><span class="p">))</span>
+<span class="linenos"> 7</span> <span class="mi">20000000000</span>
+<span class="linenos"> 8</span> <span class="o">&gt;&gt;&gt;</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">convert_ether</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;wei&#39;</span><span class="p">,</span> <span class="s1">&#39;ether&#39;</span><span class="p">))</span>
+<span class="linenos"> 9</span> <span class="mf">1e-16</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">balance</span><span class="p">(</span><span class="n">owner</span><span class="p">)</span>
+<span class="linenos">12</span> <span class="mi">57816514559996298520</span>
+<span class="linenos">13</span> <span class="o">&gt;&gt;&gt;</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">convert_ether</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">balance</span><span class="p">(</span><span class="n">user</span><span class="p">),</span> <span class="s1">&#39;wei&#39;</span><span class="p">,</span> <span class="s1">&#39;ether&#39;</span><span class="p">))</span>
+<span class="linenos">14</span> <span class="mf">99.52299804</span>
+<span class="linenos">15</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">balance</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+<span class="linenos">16</span> <span class="mi">10</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">balance</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+<span class="linenos">19</span> <span class="mi">99522998040000000000</span>
+<span class="linenos">20</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">trx_hash</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">send_ether</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="linenos">21</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">balance</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+<span class="linenos">22</span> <span class="mi">99522998040000000010</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">balance</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+<span class="linenos">25</span> <span class="mi">10</span>
+<span class="linenos">26</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNumsAndPay&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">value_wei</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="linenos">27</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">Results</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">receipt</span><span class="p">)</span><span class="o">.</span><span class="n">trx_value_wei</span>
+<span class="linenos">28</span> <span class="mi">100</span>
+<span class="linenos">29</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">balance</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+<span class="linenos">30</span> <span class="mi">110</span>
+<span class="linenos">31</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">send_ether</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="linenos">32</span> <span class="s1">&#39;0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652&#39;</span>
+<span class="linenos">33</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="o">.</span><span class="n">balance</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+<span class="linenos">34</span> <span class="mi">610</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 23: You can specify a denomination to get the value in <cite>wei</cite>.
+See the the <cite>Example</cite> for <a class="reference internal" href="simpleth.html#simpleth.Convert.denominations_to_wei" title="simpleth.Convert.denominations_to_wei"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.denominations_to_wei()</span></code></a>
+for the list of valid denominations.</p></li>
+<li><p>Line 6: <code class="xref py py-meth docutils literal notranslate"><span class="pre">convert_ether()</span></code> is the usual way to compute
+a conversion between denominations. This line shows the number
+of <cite>gwei</cite> in 20 <cite>ether</cite>. For best precision, the method returns
+a <code class="docutils literal notranslate"><span class="pre">decimal</span></code> type. This example casts to an integer.</p></li>
+<li><p>Line 13: Get <cite>user</cite> balance in <cite>ether</cite>.</p></li>
+<li><p>Line 15: <code class="docutils literal notranslate"><span class="pre">Test</span></code> contract has a balance of 10 <cite>wei</cite>.</p></li>
+<li><p>Line 20: Move 10 <cite>wei</cite> from <code class="docutils literal notranslate"><span class="pre">owner</span></code> to <code class="docutils literal notranslate"><span class="pre">user</span></code>.</p></li>
+<li><p>Line 24: <code class="docutils literal notranslate"><span class="pre">user</span></code> balance increased by 10 <cite>wei</cite>. Line 43 is
+the <em>before</em> balance.</p></li>
+<li><p>Line 26: Example of sending ether to a transaction. The <code class="docutils literal notranslate"><span class="pre">Test</span></code>
+contract has the function, <code class="xref py py-meth docutils literal notranslate"><span class="pre">storeNumsAndPay()</span></code> that is
+identical to our trusty, <code class="xref py py-meth docutils literal notranslate"><span class="pre">storeNums()</span></code>, except it is
+defined as <code class="docutils literal notranslate"><span class="pre">payable</span></code> in the contract. This allows us to
+send Ether when we run the transaction. Here, we are sending
+10 <cite>wei</cite> .</p></li>
+<li><p>Line 27: Get the <code class="xref py py-meth docutils literal notranslate"><span class="pre">trx_value_wei()</span></code> sent to the
+transaction. As expected, line 52 shows it is 100 <cite>wei</cite>.</p></li>
+<li><p>Line 30: Confirms that 100 <cite>wei</cite> were sent. The balance is
+now 100 <cite>wei</cite> more than the <em>before</em> balance on line 49</p></li>
+<li><p>Line 31: You can also send ether to a contract. Here, 500
+<cite>wei</cite> is sent to the <code class="docutils literal notranslate"><span class="pre">Test</span></code> contract. This is confirmed
+in line 58 where the balance increased by 500 from the
+<em>before</em> balance on line 54. <strong>Important</strong>: the contract must have
+a <code class="docutils literal notranslate"><span class="pre">payable</span></code> <cite>fallback</cite> function in order to receive ether.
+The <code class="docutils literal notranslate"><span class="pre">Test</span></code> contract has such a function as the final
+function in the contract.</p></li>
+</ul>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="handling-time">
+<h2>Handling time<a class="headerlink" href="#handling-time" title="Permalink to this headline"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">simpleth</span></code> provides support for handing time, especially
+epoch time:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="simpleth.html#simpleth.Convert.epoch_time" title="simpleth.Convert.epoch_time"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.epoch_time()</span></code></a> returns the current time in epoch seconds.</p></li>
+<li><p><a class="reference internal" href="simpleth.html#simpleth.Convert.local_time_string" title="simpleth.Convert.local_time_string"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.local_time_string()</span></code></a> returns the current time as a string.</p></li>
+<li><p><a class="reference internal" href="simpleth.html#simpleth.Convert.to_local_time_string" title="simpleth.Convert.to_local_time_string"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.to_local_time_string()</span></code></a> converts epoch seconds to a
+time string.</p></li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Handling time</span><a class="headerlink" href="#id10" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="o">.</span><span class="n">local_time_string</span><span class="p">()</span>
+<span class="linenos"> 2</span> <span class="s1">&#39;2022-05-21 18:03:41&#39;</span>
+<span class="linenos"> 3</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="o">.</span><span class="n">local_time_string</span><span class="p">(</span><span class="s1">&#39;%A %I:%M:%S %p&#39;</span><span class="p">)</span>
+<span class="linenos"> 4</span> <span class="s1">&#39;Saturday 06:04:19 PM&#39;</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">now</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">epoch_time</span><span class="p">()</span>
+<span class="linenos"> 7</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">now</span>
+<span class="linenos"> 8</span> <span class="mf">1653175079.5026972</span>
+<span class="linenos"> 9</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="o">.</span><span class="n">to_local_time_string</span><span class="p">(</span><span class="n">now</span><span class="p">)</span>
+<span class="linenos">10</span> <span class="s1">&#39;2022-05-21 18:17:59&#39;</span>
+<span class="linenos">11</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="o">.</span><span class="n">to_local_time_string</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="s1">&#39;%A %I:%M:%S %p&#39;</span><span class="p">)</span>
+<span class="linenos">12</span> <span class="s1">&#39;Saturday 06:17:59 PM&#39;</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="linenos">15</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">Results</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">receipt</span><span class="p">)</span>
+<span class="linenos">16</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">r</span><span class="o">.</span><span class="n">block_time_epoch</span>
+<span class="linenos">17</span> <span class="mi">1653175121</span>
+<span class="linenos">18</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">r</span><span class="o">.</span><span class="n">event_args</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span>
+<span class="linenos">19</span> <span class="mi">1653175121</span>
+<span class="linenos">20</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="o">.</span><span class="n">to_local_time_string</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">block_time_epoch</span><span class="p">)</span>
+<span class="linenos">21</span> <span class="s1">&#39;2022-05-21 18:18:41&#39;</span>
+<span class="linenos">22</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="o">.</span><span class="n">to_local_time_string</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">event_args</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;timestamp&#39;</span><span class="p">])</span>
+<span class="linenos">23</span> <span class="s1">&#39;2022-05-21 18:18:41&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 1: Get the current time using the default time string format.</p></li>
+<li><p>Line 2: Get the current time and specify the time string format
+codes.</p></li>
+<li><p>Line 6: Get the current time in epoch seconds. It is shown on line 8.</p></li>
+<li><p>Line 9: Convert that epoch time to the default time string.</p></li>
+<li><p>Line 10: Convert it to the specified format.</p></li>
+<li><p>Line 14: Run the usual transaction to show how time conversion might
+help. So far, we’ve always seen timestamps in epoch seconds.
+Converting to a time format string may make them more useful.</p></li>
+<li><p>Line 17: Shows the transaction’s block time in epoch seconds.</p></li>
+<li><p>Line 21: Shows that block time in a time format string.</p></li>
+<li><p>Line 19: Same for the <code class="docutils literal notranslate"><span class="pre">NumsStored</span></code> arg for the contract’s
+<code class="docutils literal notranslate"><span class="pre">block.timestamp</span></code>. Here’s the epoch seconds used by Solidity
+and line 23 converts it to a time string.</p></li>
+</ul>
+<p>See the list of <a class="reference external" href="https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes">Python Time String Format Codes </a>
+for details on directives available for the strings.</p>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="simpleth-exceptions">
+<h2>simpleth exceptions<a class="headerlink" href="#simpleth-exceptions" title="Permalink to this headline"></a></h2>
+<p><a class="reference internal" href="simpleth.html#simpleth.SimplEthError" title="simpleth.SimplEthError"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.SimplEthError</span></code></a> throws exceptions for errors in all
+<code class="docutils literal notranslate"><span class="pre">simpleth</span></code> classes. The intent is to let you code to catch this
+single exception to simplify error-handling and provide hints to
+quickly identify the cause of the error.</p>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">Getting a SimplEthError in the Python interpreter</span><a class="headerlink" href="#id11" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span><span class="s1">&#39;bogus&#39;</span><span class="p">)</span>
+<span class="linenos"> 2</span> <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="linenos"> 3</span>   <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="linenos"> 4</span>   <span class="n">File</span> <span class="s2">&quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">943</span><span class="p">,</span> <span class="ow">in</span> <span class="fm">__init__</span>
+<span class="linenos"> 5</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_abi</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_artifact_abi</span><span class="p">()</span>
+<span class="linenos"> 6</span>   <span class="n">File</span> <span class="s2">&quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2151</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_get_artifact_abi</span>
+<span class="linenos"> 7</span>     <span class="k">raise</span> <span class="n">SimplEthError</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="s1">&#39;C-100-010&#39;</span><span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
+<span class="linenos"> 8</span> <span class="n">simpleth</span><span class="o">.</span><span class="n">SimplEthError</span><span class="p">:</span> <span class="p">[</span><span class="n">C</span><span class="o">-</span><span class="mi">100</span><span class="o">-</span><span class="mi">010</span><span class="p">]</span> <span class="n">ERROR</span> <span class="ow">in</span> <span class="n">bogus</span><span class="p">()</span><span class="o">.</span><span class="n">_get_artifact_abi</span><span class="p">()</span><span class="o">.</span> <span class="n">Unable</span> <span class="n">to</span> <span class="n">read</span> <span class="n">ABI</span> <span class="n">file</span><span class="o">.</span>
+<span class="linenos"> 9</span> <span class="n">Full</span> <span class="n">path</span><span class="p">:</span> <span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">snewe</span><span class="o">/</span><span class="n">OneDrive</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">simpleth</span><span class="o">/</span><span class="n">artifacts</span><span class="o">/</span><span class="n">bogus</span><span class="o">.</span><span class="n">abi</span>
+<span class="linenos">10</span> <span class="n">Contract</span> <span class="n">name</span> <span class="n">of</span> <span class="s2">&quot;bogus&quot;</span> <span class="ow">is</span> <span class="n">bad</span><span class="o">.</span>
+<span class="linenos">11</span> <span class="n">HINT</span> <span class="mi">1</span><span class="p">:</span> <span class="n">Check</span> <span class="n">the</span> <span class="n">spelling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">contract</span> <span class="n">name</span><span class="o">.</span>
+<span class="linenos">12</span> <span class="n">HINT</span> <span class="mi">2</span><span class="p">:</span> <span class="n">You</span> <span class="n">may</span> <span class="n">need</span> <span class="n">to</span> <span class="n">do</span> <span class="n">a</span> <span class="n">new</span> <span class="nb">compile</span><span class="o">.</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 1: Cause an exception with a bad <cite>contract</cite> name. This is the
+typical type of message you will see when using the Python interpreter.</p></li>
+<li><p>Line 8: This is the start of the <code class="docutils literal notranslate"><span class="pre">SimplEthError</span></code> message and hints
+on possible causes.</p></li>
+</ul>
+</div>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">Handling a SimplEthError</span><a class="headerlink" href="#id12" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="go"> &gt;&gt;&gt; try:</span>
+<span class="linenos"> 2</span><span class="go"> ...     c = Contract(&#39;bogus&#39;)</span>
+<span class="linenos"> 3</span><span class="go"> ... except SimplEthError as e:</span>
+<span class="linenos"> 4</span><span class="go"> ...     print(e)</span>
+<span class="linenos"> 5</span><span class="go"> ...</span>
+<span class="linenos"> 6</span><span class="go"> [C-100-010] ERROR in bogus()._get_artifact_abi(). Unable to read ABI file.</span>
+<span class="linenos"> 7</span><span class="go"> Full path: C:/Users/snewe/OneDrive/Desktop/simpleth/artifacts/bogus.abi</span>
+<span class="linenos"> 8</span><span class="go"> Contract name of &quot;bogus&quot; is bad.</span>
+<span class="linenos"> 9</span><span class="go"> HINT 1: Check the spelling of the contract name.</span>
+<span class="linenos">10</span><span class="go"> HINT 2: You may need to do a new compile.</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 1: Use a <code class="docutils literal notranslate"><span class="pre">try</span></code>/<code class="docutils literal notranslate"><span class="pre">except</span></code> around the line to create the
+<code class="docutils literal notranslate"><span class="pre">Contract</span></code> object.</p></li>
+<li><p>Line 4: Our only action with the exception is to print it.
+A program could take action to fix the problem at this point.</p></li>
+</ul>
+</div>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text">Properties of a SimplEthError</span><a class="headerlink" href="#id13" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="go"> &gt;&gt;&gt; import pprint</span>
+<span class="linenos"> 2</span><span class="go"> &gt;&gt;&gt; pp = pprint.PrettyPrinter(indent = 2)</span>
+<span class="linenos"> 3</span><span class="go"> &gt;&gt;&gt; try:</span>
+<span class="linenos"> 4</span><span class="go"> ...     c = Contract(&#39;bogus&#39;)</span>
+<span class="linenos"> 5</span><span class="go"> ... except SimplEthError as e:</span>
+<span class="linenos"> 6</span><span class="go"> ...     print(f&#39;code = \n{e.code}&#39;)</span>
+<span class="linenos"> 7</span><span class="go"> ...     print(f&#39;message = \n{e.message}&#39;)</span>
+<span class="linenos"> 8</span><span class="go"> ...     print(f&#39;revert_msg = \n{e.revert_msg}&#39;)</span>
+<span class="linenos"> 9</span><span class="go"> ...     print(f&#39;exc_info =&#39;)</span>
+<span class="linenos">10</span><span class="go"> ...     pp.pprint({e.exc_info})</span>
+<span class="linenos">11</span><span class="go"> ...</span>
+<span class="linenos">12</span><span class="go"> code =</span>
+<span class="linenos">13</span><span class="go"> C-100-010</span>
+<span class="linenos">14</span><span class="go"> message =</span>
+<span class="linenos">15</span><span class="go"> ERROR in bogus()._get_artifact_abi(). Unable to read ABI file.</span>
+<span class="linenos">16</span><span class="go"> Full path: C:/Users/snewe/OneDrive/Desktop/simpleth/artifacts/bogus.abi</span>
+<span class="linenos">17</span><span class="go"> Contract name of &quot;bogus&quot; is bad.</span>
+<span class="linenos">18</span><span class="go"> HINT 1: Check the spelling of the contract name.</span>
+<span class="linenos">19</span><span class="go"> HINT 2: You may need to do a new compile.</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="go"> revert_msg =</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span><span class="go"> exc_info =</span>
+<span class="linenos">24</span><span class="go"> { ( &lt;class &#39;FileNotFoundError&#39;&gt;,</span>
+<span class="linenos">25</span><span class="go">     FileNotFoundError(2, &#39;No such file or directory&#39;),</span>
+<span class="linenos">26</span><span class="go">     &lt;traceback object at 0x00000231A2CDE6C0&gt;)}</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 6: There are three properties you can access. First is the
+unique <code class="docutils literal notranslate"><span class="pre">code</span></code> string for the exception. It is accessed here and
+its value is printed on line 13.</p></li>
+<li><p>Line 5: The text of the error message is accessed here and printed
+on lines 15 through 20.</p></li>
+<li><p>Line 8: The <code class="docutils literal notranslate"><span class="pre">revert_msg</span></code> is sent back from a transaction that
+had a <code class="docutils literal notranslate"><span class="pre">require()</span></code> that failed or a <code class="docutils literal notranslate"><span class="pre">revert()</span></code>. Otherwise,
+it is empty. Our empty string is shown on line 22.</p></li>
+<li><p>Line 10: The exception information is accessed here and pretty
+printed on lines 24 through 26.</p></li>
+</ul>
+<p>You can access these properties instead of the entire message if
+that suits your purpose better in handling <code class="docutils literal notranslate"><span class="pre">simpleth</span></code> errors.</p>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="transaction-exceptions">
+<h2>Transaction exceptions<a class="headerlink" href="#transaction-exceptions" title="Permalink to this headline"></a></h2>
+<p>Exceptions can be thrown by the Solidity Virtual Machine (VM) that runs
+the transaction when it encounters runtime errors such as:</p>
+<ul class="simple">
+<li><p>divide by zero</p></li>
+<li><p>out of bounds array index</p></li>
+<li><p>out of gas</p></li>
+<li><p>out of range enum value</p></li>
+<li><p>ether sent to a non-payable transaction</p></li>
+<li><p>transaction sender was not valid</p></li>
+<li><p>insufficient ether in sender balance to run the transaction</p></li>
+</ul>
+<p>These <strong>transaction error exceptions</strong> will cause <code class="docutils literal notranslate"><span class="pre">SimplEthError</span></code>
+exceptions for your code to handle.</p>
+<p>Other exceptions can be thrown by the VM which are coded into
+a transaction. A contract may be checking for conditions where
+the transaction should not be allowed to proceed and needs to
+be <cite>reverted</cite>. The transaction can:</p>
+<ol class="arabic">
+<li><p>Use the Solidity operation, <code class="docutils literal notranslate"><span class="pre">require</span></code> , to validate a
+condition is met. If the condition is not met, a <code class="docutils literal notranslate"><span class="pre">revert</span></code>
+is done and an optional message string will be available
+in the <code class="docutils literal notranslate"><span class="pre">SimplEthError</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">require</span></code> is commonly used in a contract <code class="docutils literal notranslate"><span class="pre">modifier</span></code> and
+a frequent type of modifier is to limit access to a transaction
+to one or more specified accounts.</p>
+</li>
+<li><p>Use of the Solidity operation, <code class="docutils literal notranslate"><span class="pre">assert</span></code> , to confirm an
+expected condition. There is no message for a failed assert.</p>
+<p><code class="docutils literal notranslate"><span class="pre">assert</span></code> is commonly used to double-check a value meets
+your expectations and should never fail.</p>
+</li>
+<li><p>Use of the Solidity operation, <code class="docutils literal notranslate"><span class="pre">revert</span></code> , will cause the
+transaction to stop and exit. There is no message for a
+revert.</p>
+<p><code class="docutils literal notranslate"><span class="pre">revert</span></code> is used if conditions warrant stopping and undoing
+all actions by the transaction.</p>
+</li>
+</ol>
+<p>These <strong>transaction exceptions</strong> will cause <code class="docutils literal notranslate"><span class="pre">SimplEthError</span></code>
+exceptions for your code to handle.</p>
+<p>We’ll go through some examples. First up is what a transaction error
+exception thrown by an out of bounds index value looks like in the
+Python interpreter and how it might look in your code with a
+<code class="docutils literal notranslate"><span class="pre">try</span></code> / <code class="docutils literal notranslate"><span class="pre">except</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id14">
+<div class="code-block-caption"><span class="caption-text">Handling transaction error exceptions</span><a class="headerlink" href="#id14" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="go"> &gt;&gt;&gt; c.run_trx(user, &#39;storeNum&#39;, 4, 42)</span>
+<span class="linenos"> 2</span><span class="go"> Traceback (most recent call last):</span>
+<span class="linenos"> 3</span><span class="go">   File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="linenos"> 4</span><span class="go">   File &quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;, line 1838, in run_trx</span>
+<span class="linenos"> 5</span><span class="go">     trx_hash: T_HASH = self.submit_trx(</span>
+<span class="linenos"> 6</span><span class="go">   File &quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;, line 2128, in submit_trx</span>
+<span class="linenos"> 7</span><span class="go">     f&#39;HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n&#39;</span>
+<span class="linenos"> 8</span><span class="go"> simpleth.SimplEthError: [C-080-080] ERROR in Test().submit_trx(storeNum).</span>
+<span class="linenos"> 9</span><span class="go"> ValueError says: VM Exception while processing transaction: revert</span>
+<span class="linenos">10</span><span class="go"> HINT1:  Did you fail to pass a transaction require()?</span>
+<span class="linenos">11</span><span class="go"> HINT2:  Did you fail to pass a transaction guard modifier()?</span>
+<span class="linenos">12</span><span class="go"> HINT3:  Did you fail an assert()?</span>
+<span class="linenos">13</span><span class="go"> HINT4:  Did the transaction do a revert()?</span>
+<span class="linenos">14</span><span class="go"> HINT5:  Did you divide by zero?</span>
+<span class="linenos">15</span><span class="go"> HINT6:  Did you pass in an out-of-bounds array index?</span>
+<span class="linenos">16</span><span class="go"> HINT7:  Did you pass in an out-of-range enum value?</span>
+<span class="linenos">17</span><span class="go"> HINT8:  Was the gas limit too low (less than the base fee)?</span>
+<span class="linenos">18</span><span class="go"> HINT9:  Was the gas limit too high (greater than the block gas limit)?</span>
+<span class="linenos">19</span><span class="go"> HINT10: Was max_fee_gwei a float? (It must be an int)</span>
+<span class="linenos">20</span><span class="go"> HINT11: Was max_priority_fee_gwei a float? (It must be an int)</span>
+<span class="linenos">21</span><span class="go"> HINT12: Did this trx call another trx, which failed?</span>
+<span class="linenos">22</span><span class="go"> HINT13: Did you attempt to send ether to a non-payable trx?</span>
+<span class="linenos">23</span><span class="go"> HINT14: Was sender a valid account that can submit a trx?</span>
+<span class="linenos">24</span><span class="go"> HINT15: Does sender have enough Ether to run trx?</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="go"> &gt;&gt;&gt; try:</span>
+<span class="linenos">27</span><span class="go"> ...     c.run_trx(user, &#39;storeNum&#39;, 4, 42)</span>
+<span class="linenos">28</span><span class="go"> ... except SimplEthError as e:</span>
+<span class="linenos">29</span><span class="go"> ...     print(e.code)</span>
+<span class="linenos">30</span><span class="go"> ...     print(e.message)</span>
+<span class="linenos">31</span><span class="go"> ...     print(e.revert_msg)</span>
+<span class="linenos">32</span><span class="go"> ...     pp.pprint(e.exc_info)</span>
+<span class="linenos">33</span><span class="go"> ...</span>
+<span class="linenos">34</span><span class="go"> C-080-080</span>
+<span class="linenos">35</span><span class="go"> ERROR in Test().submit_trx(storeNum).</span>
+<span class="linenos">36</span><span class="go"> ValueError says: VM Exception while processing transaction: revert</span>
+<span class="linenos">37</span><span class="go"> HINT1:  Did you fail to pass a transaction require()?</span>
+<span class="linenos">38</span><span class="go"> HINT2:  Did you fail to pass a transaction guard modifier()?</span>
+<span class="linenos">39</span><span class="go"> HINT3:  Did you fail an assert()?</span>
+<span class="linenos">40</span><span class="go"> HINT4:  Did the transaction do a revert()?</span>
+<span class="linenos">41</span><span class="go"> HINT5:  Did you divide by zero?</span>
+<span class="linenos">42</span><span class="go"> HINT6:  Did you pass in an out-of-bounds array index?</span>
+<span class="linenos">43</span><span class="go"> HINT7:  Did you pass in an out-of-range enum value?</span>
+<span class="linenos">44</span><span class="go"> HINT8:  Was the gas limit too low (less than the base fee)?</span>
+<span class="linenos">45</span><span class="go"> HINT9:  Was the gas limit too high (greater than the block gas limit)?</span>
+<span class="linenos">46</span><span class="go"> HINT10: Was max_fee_gwei a float? (It must be an int)</span>
+<span class="linenos">47</span><span class="go"> HINT11: Was max_priority_fee_gwei a float? (It must be an int)</span>
+<span class="linenos">48</span><span class="go"> HINT12: Did this trx call another trx, which failed?</span>
+<span class="linenos">49</span><span class="go"> HINT13: Did you attempt to send ether to a non-payable trx?</span>
+<span class="linenos">50</span><span class="go"> HINT14: Was sender a valid account that can submit a trx?</span>
+<span class="linenos">51</span><span class="go"> HINT15: Does sender have enough Ether to run trx?</span>
+<span class="linenos">52</span>
+<span class="linenos">53</span>
+<span class="linenos">54</span><span class="go"> ( &lt;class &#39;ValueError&#39;&gt;,</span>
+<span class="linenos">55</span><span class="go">   ValueError({&#39;message&#39;: &#39;VM Exception while processing transaction: revert&#39;, &#39;code&#39;: -32000, &#39;data&#39;: {&#39;0x6f829f521ebd6bf7ab34feea51bb4c18b82c663229004af13fa4ea788f0117d9&#39;: {&#39;error&#39;: &#39;revert&#39;, &#39;program_counter&#39;: 5528, &#39;return&#39;: &#39;0x4e487b710000000000000000000000000000000000000000000000000000000000000032&#39;}, &#39;stack&#39;: &#39;RuntimeError: VM Exception while processing transaction: revert\n    at Function.RuntimeError.fromResults (C:\\Program Files\\WindowsApps\\GanacheUI_2.5.4.0_x64__5dg5pnz03psnj\\app\\resources\\static\\node\\node_modules\\ganache-core\\lib\\utils\\runtimeerror.js:94:13)\n    at BlockchainDouble.processBlock (C:\\Program Files\\WindowsApps\\GanacheUI_2.5.4.0_x64__5dg5pnz03psnj\\app\\resources\\static\\node\\node_modules\\ganache-core\\lib\\blockchain_double.js:627:24)\n    at processTicksAndRejections (internal/process/task_queues.js:93:5)&#39;, &#39;name&#39;: &#39;RuntimeError&#39;}}),</span>
+<span class="linenos">56</span><span class="go">   &lt;traceback object at 0x00000231A2E161C0&gt;)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 1: Let’s cause the VM to throw an exception due to an out
+of bounds array index.  Here we are asking <code class="docutils literal notranslate"><span class="pre">storeNum</span></code> to put
+the value of <cite>42</cite> into <code class="docutils literal notranslate"><span class="pre">nums[4]</span></code>. This is a bad index value.
+<code class="docutils literal notranslate"><span class="pre">nums[]</span></code> only has 3 elements.</p></li>
+<li><p>Line 2: You see the Python interpreter output with the exception.
+The error output ends on line 25.</p></li>
+<li><p>Line 26: In a Python program, you might put the statement
+in a <code class="docutils literal notranslate"><span class="pre">try</span></code> / <code class="docutils literal notranslate"><span class="pre">except</span></code> . The example prints out the properties
+you could access. Your code would probably take steps to notify
+the user of the error or other code to handle the problem; not just
+print error info.</p></li>
+<li><p>Line 34: This is the error code for transaction error
+exceptions. (The <cite>Hints</cite> list covers the usual causes.)</p></li>
+<li><p>Line 35: This is the start of the error message text created by
+<code class="docutils literal notranslate"><span class="pre">simpleth</span></code>. The message text ends on line 52.</p></li>
+<li><p>Line 53: This is the transaction’s revert message. It is an empty
+string for an oob (out-of-bounds) error.</p></li>
+<li><p>Line 53: This is the pretty print of the exception info property.
+A <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> caused an exception. SimplEthError caught it and
+threw its exception with a lot of added info. This lets you see
+the original info from the first exception.</p></li>
+</ul>
+</div>
+<p>Next up, let’s start looking at exceptions that are coded into the <code class="docutils literal notranslate"><span class="pre">Test</span></code>
+contract. The transaction, <code class="docutils literal notranslate"><span class="pre">sumTwoNums</span></code> , has a <code class="docutils literal notranslate"><span class="pre">require()</span></code> that checks
+for the <code class="docutils literal notranslate"><span class="pre">owner</span></code> of the contract to be the address that sent the transaction,
+i.e., the owner is the only one allowed to use this transaction. The
+<code class="docutils literal notranslate"><span class="pre">require()</span></code> has a message that explains the problem.</p>
+<div class="literal-block-wrapper docutils container" id="id15">
+<div class="code-block-caption"><span class="caption-text">Handling transaction thrown exceptions - require and its message</span><a class="headerlink" href="#id15" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="go"> &gt;&gt;&gt; c.run_trx(user, &#39;sumTwoNums&#39;)</span>
+<span class="linenos"> 2</span><span class="go"> Traceback (most recent call last):</span>
+<span class="linenos"> 3</span><span class="go">   File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="linenos"> 4</span><span class="go">   File &quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;, line 1838, in run_trx</span>
+<span class="linenos"> 5</span><span class="go">     trx_hash: T_HASH = self.submit_trx(</span>
+<span class="linenos"> 6</span><span class="go">   File &quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;, line 2128, in submit_trx</span>
+<span class="linenos"> 7</span><span class="go">     f&#39;HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n&#39;</span>
+<span class="linenos"> 8</span><span class="go"> simpleth.SimplEthError: [C-080-080] ERROR in Test().submit_trx(sumTwoNums).</span>
+<span class="linenos"> 9</span><span class="go"> ValueError says: VM Exception while processing transaction: revert must be owner to sum two nums</span>
+<span class="linenos">10</span><span class="go"> HINT1:  Did you fail to pass a transaction require()?</span>
+<span class="linenos">11</span><span class="go"> HINT2:  Did you fail to pass a transaction guard modifier()?</span>
+<span class="linenos">12</span><span class="go"> HINT3:  Did you fail an assert()?</span>
+<span class="linenos">13</span><span class="go"> HINT4:  Did the transaction do a revert()?</span>
+<span class="linenos">14</span><span class="go"> HINT5:  Did you divide by zero?</span>
+<span class="linenos">15</span><span class="go"> HINT6:  Did you pass in an out-of-bounds array index?</span>
+<span class="linenos">16</span><span class="go"> HINT7:  Did you pass in an out-of-range enum value?</span>
+<span class="linenos">17</span><span class="go"> HINT8:  Was the gas limit too low (less than the base fee)?</span>
+<span class="linenos">18</span><span class="go"> HINT9:  Was the gas limit too high (greater than the block gas limit)?</span>
+<span class="linenos">19</span><span class="go"> HINT10: Was max_fee_gwei a float? (It must be an int)</span>
+<span class="linenos">20</span><span class="go"> HINT11: Was max_priority_fee_gwei a float? (It must be an int)</span>
+<span class="linenos">21</span><span class="go"> HINT12: Did this trx call another trx, which failed?</span>
+<span class="linenos">22</span><span class="go"> HINT13: Did you attempt to send ether to a non-payable trx?</span>
+<span class="linenos">23</span><span class="go"> HINT14: Was sender a valid account that can submit a trx?</span>
+<span class="linenos">24</span><span class="go"> HINT15: Does sender have enough Ether to run trx?</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="go"> &gt;&gt;&gt; try:</span>
+<span class="linenos">27</span><span class="go"> ...     c.run_trx(user, &#39;sumTwoNums&#39;)</span>
+<span class="linenos">28</span><span class="go"> ... except SimplEthError as e:</span>
+<span class="linenos">29</span><span class="go"> ...     msg = e.revert_msg</span>
+<span class="linenos">30</span><span class="go"> ...</span>
+<span class="linenos">31</span><span class="go"> &gt;&gt;&gt; msg</span>
+<span class="linenos">32</span><span class="go"> &#39;must be owner to sum two nums&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 1: <code class="docutils literal notranslate"><span class="pre">user</span></code> is not allowed to use this transaction. The transaction’s
+<code class="docutils literal notranslate"><span class="pre">require()</span></code> reverts, throws an exception, and sends back a message.</p></li>
+<li><p>Line 9: Shows the message. It has been passed back as part of the
+<code class="docutils literal notranslate"><span class="pre">ValueError</span></code> exception, which <code class="docutils literal notranslate"><span class="pre">SimplEthError</span></code> catches.</p></li>
+<li><p>Line 26: Uses a <code class="docutils literal notranslate"><span class="pre">try</span></code> / <code class="docutils literal notranslate"><span class="pre">except</span></code> to get the message from the
+failed <code class="docutils literal notranslate"><span class="pre">require()</span></code>.</p></li>
+<li><p>Line 31: <code class="docutils literal notranslate"><span class="pre">msg</span></code> has the message explaining why the transaction was
+reverted.</p></li>
+</ul>
+</div>
+<p>Let’s look at a modifier that fails. <code class="docutils literal notranslate"><span class="pre">Test</span></code> has a transaction, <code class="docutils literal notranslate"><span class="pre">setOwner</span></code>
+that is guarded by a modifier <code class="docutils literal notranslate"><span class="pre">isOwner</span></code>. This is implemented with a
+<code class="docutils literal notranslate"><span class="pre">require()</span></code>. This example is included because modifiers are very common
+and you’ll see they act just like the previous example of a failed
+<code class="docutils literal notranslate"><span class="pre">require()</span></code></p>
+<div class="literal-block-wrapper docutils container" id="id16">
+<div class="code-block-caption"><span class="caption-text">Handling transaction thrown exceptions - modifier with message</span><a class="headerlink" href="#id16" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span> <span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
+<span class="linenos">2</span> <span class="o">...</span>     <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;setOwner&#39;</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+<span class="linenos">3</span> <span class="o">...</span> <span class="k">except</span> <span class="n">SimplEthError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="linenos">4</span> <span class="o">...</span>     <span class="n">msg</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">revert_msg</span>
+<span class="linenos">5</span> <span class="o">...</span>
+<span class="linenos">6</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">msg</span>
+<span class="linenos">7</span> <span class="s1">&#39;Must be owner&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 2: This will fail the <code class="docutils literal notranslate"><span class="pre">isOwner</span></code> modifier since our <code class="docutils literal notranslate"><span class="pre">user</span></code>
+account does not own <code class="docutils literal notranslate"><span class="pre">Test</span></code> .</p></li>
+<li><p>Line 4: Shows how to obtain the message coded in the contract for the
+<code class="docutils literal notranslate"><span class="pre">require()</span></code> used in the <code class="docutils literal notranslate"><span class="pre">modifier</span></code> .</p></li>
+<li><p>Line 6: Your program could now show this error message to your user.</p></li>
+</ul>
+</div>
+<p>This example shows a failed <code class="docutils literal notranslate"><span class="pre">assert()</span></code>. There is no message associated
+with an assert. If the test fails, the transaction is reverted and a Python
+<code class="docutils literal notranslate"><span class="pre">ValueError</span></code> is thrown.</p>
+<div class="literal-block-wrapper docutils container" id="id17">
+<div class="code-block-caption"><span class="caption-text">Handling transaction thrown exceptions - assert</span><a class="headerlink" href="#id17" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="go"> &gt;&gt;&gt; c.run_trx(user, &#39;assertGreaterThan10&#39;, 9)</span>
+<span class="linenos"> 2</span><span class="go"> Traceback (most recent call last):</span>
+<span class="linenos"> 3</span><span class="go">   File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="linenos"> 4</span><span class="go">   File &quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;, line 1838, in run_trx</span>
+<span class="linenos"> 5</span><span class="go">     trx_hash: T_HASH = self.submit_trx(</span>
+<span class="linenos"> 6</span><span class="go">   File &quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;, line 2121, in submit_trx</span>
+<span class="linenos"> 7</span><span class="go">     raise SimplEthError(message, code=&#39;C-080-080&#39;) from None</span>
+<span class="linenos"> 8</span><span class="go"> simpleth.SimplEthError: [C-080-080] ERROR in Test().submit_trx(assertGreaterThan10).</span>
+<span class="linenos"> 9</span><span class="go"> ValueError says:</span>
+<span class="linenos">10</span><span class="go"> HINT1:  Did you fail to pass a transaction require()?</span>
+<span class="linenos">11</span><span class="go"> HINT2:  Did you fail to pass a transaction guard modifier()?</span>
+<span class="linenos">12</span><span class="go"> HINT3:  Did you fail an assert()?</span>
+<span class="linenos">13</span><span class="go"> HINT4:  Did the transaction do a revert()?</span>
+<span class="linenos">14</span><span class="go"> HINT5:  Did you divide by zero?</span>
+<span class="linenos">15</span><span class="go"> HINT6:  Did you pass in an out-of-bounds array index?</span>
+<span class="linenos">16</span><span class="go"> HINT7:  Did you pass in an out-of-range enum value?</span>
+<span class="linenos">17</span><span class="go"> HINT8:  Was the gas limit too low (less than the base fee)?</span>
+<span class="linenos">18</span><span class="go"> HINT9:  Was the gas limit too high (greater than the block gas limit)?</span>
+<span class="linenos">19</span><span class="go"> HINT10: Was max_fee_gwei a float? (It must be an int)</span>
+<span class="linenos">20</span><span class="go"> HINT11: Was max_priority_fee_gwei a float? (It must be an int)</span>
+<span class="linenos">21</span><span class="go"> HINT12: Did this trx call another trx, which failed?</span>
+<span class="linenos">22</span><span class="go"> HINT13: Did you attempt to send ether to a non-payable trx?</span>
+<span class="linenos">23</span><span class="go"> HINT14: Was sender a valid account that can submit a trx?</span>
+<span class="linenos">24</span><span class="go"> HINT15: Does sender have enough Ether to run trx?</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="go"> &gt;&gt;&gt; try:</span>
+<span class="linenos">27</span><span class="go"> ...     c.run_trx(user, &#39;assertGreaterThan10&#39;, 9)</span>
+<span class="linenos">28</span><span class="go"> ... except SimplEthError as e:</span>
+<span class="linenos">29</span><span class="go"> ...     pp.pprint(e.exc_info)</span>
+<span class="linenos">30</span><span class="go"> ...</span>
+<span class="linenos">31</span><span class="go"> ( &lt;class &#39;ValueError&#39;&gt;,</span>
+<span class="linenos">32</span><span class="go">   ValueError({&#39;message&#39;: &#39;VM Exception while processing transaction: revert&#39;, &#39;code&#39;: -32000, &#39;data&#39;: {&#39;0x5d3bee4eee5c9b320eff083666910bf9ff0ab0bb9c9790f27226d4ec78685cb9&#39;: {&#39;error&#39;: &#39;revert&#39;, &#39;program_counter&#39;: 5664, &#39;return&#39;: &#39;0x4e487b710000000000000000000000000000000000000000000000000000000000000001&#39;}, &#39;stack&#39;: &#39;RuntimeError: VM Exception while processing transaction: revert\n    at Function.RuntimeError.fromResults (C:\\Program Files\\WindowsApps\\GanacheUI_2.5.4.0_x64__5dg5pnz03psnj\\app\\resources\\static\\node\\node_modules\\ganache-core\\lib\\utils\\runtimeerror.js:94:13)\n    at BlockchainDouble.processBlock (C:\\Program Files\\WindowsApps\\GanacheUI_2.5.4.0_x64__5dg5pnz03psnj\\app\\resources\\static\\node\\node_modules\\ganache-core\\lib\\blockchain_double.js:627:24)\n    at runMicrotasks (&lt;anonymous&gt;)\n    at processTicksAndRejections (internal/process/task_queues.js:93:5)&#39;, &#39;name&#39;: &#39;RuntimeError&#39;}}),</span>
+<span class="linenos">33</span><span class="go">   &lt;traceback object at 0x000001DE3411BAC0&gt;)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 1: This transaction will fail its <code class="docutils literal notranslate"><span class="pre">assert()</span></code>. We are passing
+in an arg of <cite>9</cite>. The assert requires that arg to be greater than 10.</p></li>
+<li><p>Line 2: This is the output in the interpreter and continues to line25.
+Note that there is nothing passed back in line 9. Unlike in some
+earlier examples where a message from the contract was shown.</p></li>
+<li><p>Line 26: As before, use a <code class="docutils literal notranslate"><span class="pre">try</span></code> / <code class="docutils literal notranslate"><span class="pre">except</span></code> to pretty print
+the <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> exception info. There’s nothing unique to
+pass back to our user.</p></li>
+</ul>
+</div>
+<p>Finally, let’s look at what happens when a transaction uses a <code class="docutils literal notranslate"><span class="pre">revert()</span></code>
+statement. <code class="docutils literal notranslate"><span class="pre">Test</span></code> has a transaction, <code class="docutils literal notranslate"><span class="pre">revertTransaction</span></code> with only
+one statement, a <code class="docutils literal notranslate"><span class="pre">revert()</span></code>. A <code class="docutils literal notranslate"><span class="pre">revert()</span></code> can have a message. We’ll
+look for it in the same manner we did for <code class="docutils literal notranslate"><span class="pre">require()</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id18">
+<div class="code-block-caption"><span class="caption-text">Handling transaction thrown exceptions - revert with message</span><a class="headerlink" href="#id18" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="go"> &gt;&gt;&gt; c.run_trx(user, &#39;revertTransaction&#39;)</span>
+<span class="linenos"> 2</span><span class="go"> Traceback (most recent call last):</span>
+<span class="linenos"> 3</span><span class="go">   File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="linenos"> 4</span><span class="go">   File &quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;, line 1838, in run_trx</span>
+<span class="linenos"> 5</span><span class="go">     trx_hash: T_HASH = self.submit_trx(</span>
+<span class="linenos"> 6</span><span class="go">   File &quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;, line 2128, in submit_trx</span>
+<span class="linenos"> 7</span><span class="go">     f&#39;HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n&#39;</span>
+<span class="linenos"> 8</span><span class="go"> simpleth.SimplEthError: [C-080-080] ERROR in Test().submit_trx(revertTransaction).</span>
+<span class="linenos"> 9</span><span class="go"> ValueError says: VM Exception while processing transaction: revert Revert this transaction.</span>
+<span class="linenos">10</span><span class="go"> HINT1:  Did you fail to pass a transaction require()?</span>
+<span class="linenos">11</span><span class="go"> HINT2:  Did you fail to pass a transaction guard modifier()?</span>
+<span class="linenos">12</span><span class="go"> HINT3:  Did you fail an assert()?</span>
+<span class="linenos">13</span><span class="go"> HINT4:  Did the transaction do a revert()?</span>
+<span class="linenos">14</span><span class="go"> HINT5:  Did you divide by zero?</span>
+<span class="linenos">15</span><span class="go"> HINT6:  Did you pass in an out-of-bounds array index?</span>
+<span class="linenos">16</span><span class="go"> HINT7:  Did you pass in an out-of-range enum value?</span>
+<span class="linenos">17</span><span class="go"> HINT8:  Was the gas limit too low (less than the base fee)?</span>
+<span class="linenos">18</span><span class="go"> HINT9:  Was the gas limit too high (greater than the block gas limit)?</span>
+<span class="linenos">19</span><span class="go"> HINT10: Was max_fee_gwei a float? (It must be an int)</span>
+<span class="linenos">20</span><span class="go"> HINT11: Was max_priority_fee_gwei a float? (It must be an int)</span>
+<span class="linenos">21</span><span class="go"> HINT12: Did this trx call another trx, which failed?</span>
+<span class="linenos">22</span><span class="go"> HINT13: Did you attempt to send ether to a non-payable trx?</span>
+<span class="linenos">23</span><span class="go"> HINT14: Was sender a valid account that can submit a trx?</span>
+<span class="linenos">24</span><span class="go"> HINT15: Does sender have enough Ether to run trx?</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="go"> &gt;&gt;&gt; try:</span>
+<span class="linenos">27</span><span class="go"> ...     c.run_trx(user, &#39;revertTransaction&#39;)</span>
+<span class="linenos">28</span><span class="go"> ... except SimplEthError as e:</span>
+<span class="linenos">29</span><span class="go"> ...     msg = e.revert_msg</span>
+<span class="linenos">30</span><span class="go"> ...</span>
+<span class="linenos">31</span><span class="go"> &gt;&gt;&gt; msg</span>
+<span class="linenos">32</span><span class="go"> &#39;Revert this transaction.&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 1: Call the transaction that always reverts.</p></li>
+<li><p>Line 9: Here’s the way the revert message will appear in the
+interpreter.</p></li>
+<li><p>Line 32: Here’s the revert message.</p></li>
+</ul>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="selfdestruct">
+<h2>Selfdestruct<a class="headerlink" href="#selfdestruct" title="Permalink to this headline"></a></h2>
+<p>Solidity includes the <code class="docutils literal notranslate"><span class="pre">selfdestruct()</span></code> function.
+The <code class="docutils literal notranslate"><span class="pre">Test</span></code> contract includes a transaction, <code class="xref py py-meth docutils literal notranslate"><span class="pre">destroy()</span></code>
+which issues <code class="docutils literal notranslate"><span class="pre">selfdestruct</span></code> and makes the contract unusable. As far as
+<code class="docutils literal notranslate"><span class="pre">simpleth</span></code> goes this is just another transaction, but it makes for
+an interesting example:</p>
+<div class="literal-block-wrapper docutils container" id="id19">
+<div class="code-block-caption"><span class="caption-text">Destroying Test with a selfdestruct</span><a class="headerlink" href="#id19" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="go"> &gt;&gt;&gt; b.balance(c.address)</span>
+<span class="linenos"> 2</span><span class="go"> 610</span>
+<span class="linenos"> 3</span><span class="go"> &gt;&gt;&gt; b.balance(b.accounts[3])</span>
+<span class="linenos"> 4</span><span class="go"> 99889613060000000010</span>
+<span class="linenos"> 5</span><span class="go"> &gt;&gt;&gt; receipt = c.run_trx(owner, &#39;destroy&#39;, b.accounts[3])</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="go"> &gt;&gt;&gt; b.balance(c.address)</span>
+<span class="linenos"> 8</span><span class="go"> 0</span>
+<span class="linenos"> 9</span><span class="go"> &gt;&gt;&gt; b.balance(b.accounts[3])</span>
+<span class="linenos">10</span><span class="go"> 99889613060000000620</span>
+<span class="linenos">11</span><span class="go"> &gt;&gt;&gt; c.get_var(&#39;owner&#39;)</span>
+<span class="linenos">12</span><span class="go"> Traceback (most recent call last):</span>
+<span class="linenos">13</span><span class="go"> ... snip ...</span>
+<span class="linenos">14</span><span class="go"> simpleth.SimplEthError: [C-060-020] ERROR in Test().getvar(): Unable to get variable owner.</span>
+<span class="linenos">15</span><span class="go"> BadFunctionCallOutput says Could not transact with/call contract function, is contract deployed correctly and chain synced?</span>
+<span class="linenos">16</span><span class="go"> HINT1: Has contract been destroyed with selfdestruct()?</span>
+<span class="linenos">17</span><span class="go"> HINT2: Has contract not yet been deployed on a new chain?</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="go"> &gt;&gt;&gt; c.call_fcn(&#39;getNums&#39;)</span>
+<span class="linenos">20</span><span class="go"> Traceback (most recent call last):</span>
+<span class="linenos">21</span><span class="go">   File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="linenos">22</span><span class="go">   File &quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;, line 1253, in call_fcn</span>
+<span class="linenos">23</span><span class="go">     raise SimplEthError(message, code=&#39;C-010-030&#39;) from None</span>
+<span class="linenos">24</span><span class="go"> simpleth.SimplEthError: [C-010-030] ERROR in Test().call_fcn().</span>
+<span class="linenos">25</span><span class="go"> Unable to call function getNums.</span>
+<span class="linenos">26</span><span class="go"> BadFunctionCallOutput says Could not transact with/call contract function, is contract deployed correctly and chain synced?</span>
+<span class="linenos">27</span><span class="go"> HINT1: Has contract been destroyed with a selfdestruct()?</span>
+<span class="linenos">28</span><span class="go"> HINT2: Does contract need a new deploy?</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span><span class="go"> &gt;&gt;&gt; receipt = c.run_trx(user, &#39;storeNums&#39;, 2, 4, 6)</span>
+<span class="linenos">31</span><span class="go"> &gt;&gt;&gt; print(Results(c, receipt))</span>
+<span class="linenos">32</span><span class="go"> Block number     = 7580</span>
+<span class="linenos">33</span><span class="go"> Block time epoch = 1653320103</span>
+<span class="linenos">34</span><span class="go"> Contract name    = Test</span>
+<span class="linenos">35</span><span class="go"> Contract address = 0x82592d5ae9E9ECc14b1740F330D3fAA00403a1F3</span>
+<span class="linenos">36</span><span class="go"> Trx name         = storeNums</span>
+<span class="linenos">37</span><span class="go"> Trx args         = {&#39;_num0&#39;: 2, &#39;_num1&#39;: 4, &#39;_num2&#39;: 6}</span>
+<span class="linenos">38</span><span class="go"> Trx sender       = 0x20e0A619E7Efb741a34b8EDC6251E2702e69bBDd</span>
+<span class="linenos">39</span><span class="go"> Trx value wei    = 0</span>
+<span class="linenos">40</span><span class="go"> Trx hash         = 0xb54e479495ea815943fa08069566c5cf68aaf70c6d42a23f7590bf399e0d6be1</span>
+<span class="linenos">41</span><span class="go"> Gas price wei    = 20000000000</span>
+<span class="linenos">42</span><span class="go"> Gas used         = 21484</span>
+<span class="linenos">43</span>
+<span class="linenos">44</span><span class="go"> &gt;&gt;&gt; e=EventSearch(c, &#39;NumsStored&#39;)</span>
+<span class="linenos">45</span><span class="go"> &gt;&gt;&gt; e.get_old()</span>
+<span class="linenos">46</span><span class="go"> []</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 2: Ether balance of <code class="docutils literal notranslate"><span class="pre">Test</span></code> contract.</p></li>
+<li><p>Line 4: Ether balance of the fourth Ganache account.</p></li>
+<li><p>Line 5: Run <code class="xref py py-meth docutils literal notranslate"><span class="pre">destroy()</span></code>. It takes one argument, the address
+of an account to receive all the Ether in the contract’s balance.
+Once you have destroyed a contract, you can no longer access its
+Ether. Save it now or lose it.</p></li>
+<li><p>Line 8: Contract has no Ether.</p></li>
+<li><p>Line 10: Fourth account got it.</p></li>
+<li><p>Line 11: If you try to get a public state variable’s value,
+you will get an error.</p></li>
+<li><p>Line 19: If you try to call a function, you will get a
+slightly different error.</p></li>
+<li><p>Line 30: Beware, if you try to run a transaction. It does not
+generate any error. For a destroyed contract, transactions will
+not be able to change any values on the blockchain. They look like
+they run, but they have no effect.</p></li>
+<li><p>Line 31: The results do not show any event being emitted.
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">storeNums()</span></code> always emits <code class="xref py py-meth docutils literal notranslate"><span class="pre">NumsStored()</span></code>.</p></li>
+<li><p>Line 46: Confirms that the <code class="xref py py-meth docutils literal notranslate"><span class="pre">NumsStored()</span></code> event was not
+emitted. Because the contract is destroyed, the transaction
+did not alter the blockchain.</p></li>
+</ul>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="send-transactions-get-receipt">
+<h2>Send transactions / Get receipt<a class="headerlink" href="#send-transactions-get-receipt" title="Permalink to this headline"></a></h2>
+<p>The trio of <code class="docutils literal notranslate"><span class="pre">simpleth</span></code> methods described here are an alternative
+to using <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_trx()</span></code> . If you are happy with using <cite>run_trx</cite>,
+you can skip this.</p>
+<p>If you are curious, read on…</p>
+<p>Ganache spoils us. It mines transactions immediately. You submit a
+transaction and can immediately get the results.</p>
+<p>In a production application, running on a testnet or the mainnet,
+this is not the case. There is a delay
+between the time you submit a transaction and the time in which it is
+added to a block and mined. This delay could be a few seconds or many
+hours (or never).</p>
+<p>You might chose to use
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.send_trx()</span></code> with
+<a class="reference internal" href="simpleth.html#simpleth.Contract.get_trx_receipt" title="simpleth.Contract.get_trx_receipt"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.get_trx_receipt()</span></code></a> or
+<a class="reference internal" href="simpleth.html#simpleth.Contract.get_trx_receipt_wait" title="simpleth.Contract.get_trx_receipt_wait"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.get_trx_receipt_wait()</span></code></a>
+to give you more flexibility in managing the mining delay.</p>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_trx()</span></code> submits the transaction and
+immediately returns the <cite>transaction hash</cite>.
+The <cite>hash</cite> is a string that acts as the identifier of the
+transaction.</p>
+<p>Using that <cite>hash</cite> as a parameter, you can call <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_trx_receipt()</span></code>
+to do a quick check to see if the transaction has finished. If not,
+you can wait for some period time and check again. You would repeat this
+until the transaction finishes or you give up. <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_trx_receipt()</span></code>
+makes its check and returns immediately.</p>
+<p>Alternatively, you can use the <cite>hash</cite> as a parameter
+and call <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_trx_receipt_wait()</span></code>. This does not return
+immediately. It will periodically check to see if the transaction
+has finished and returns when it has completed or
+it times out before finding the transaction completed.
+There are parameters for how frequently to poll and how long
+to keep trying before timing out. Note that this call will
+block until it returns.</p>
+<p>Both <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_trx_receipt()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_trx_receipt_wait()</span></code>
+return either <code class="docutils literal notranslate"><span class="pre">None</span></code> if the transaction has not yet been
+mined or <code class="docutils literal notranslate"><span class="pre">transaction</span> <span class="pre">receipt</span></code> if the transaction completed.
+Just like with <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_trx()</span></code>, you can use the <cite>receipt</cite> to
+get the <code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code>.</p>
+<section id="relationship-to-run-trx">
+<h3>Relationship to run_trx()<a class="headerlink" href="#relationship-to-run-trx" title="Permalink to this headline"></a></h3>
+<p>Under the covers, <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_trx()</span></code> simply makes a call to
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">send_trx()</span></code> and then a call to <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_trx_receipt_wait()</span></code>.
+You see that the parameters for <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_trx()</span></code> are the union of
+the parameters of <code class="xref py py-meth docutils literal notranslate"><span class="pre">send_trx()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_trx_receipt_wait()</span></code>.</p>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">run_trx()</span></code> blocks until the transaction completes or it times out.</p>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">run_trx()</span></code> only throws one exception of its own.
+When you use <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_trx()</span></code> most the exceptions
+are thrown by <code class="xref py py-meth docutils literal notranslate"><span class="pre">send_trx()</span></code> or <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_trx_receipt_wait()</span></code> .</p>
+</section>
+<section id="using-ganache-with-a-mining-delay">
+<h3>Using Ganache with a mining delay<a class="headerlink" href="#using-ganache-with-a-mining-delay" title="Permalink to this headline"></a></h3>
+<p>You can simulate a delay in completing a transaction. Ganache
+setting’s allow you to change from the default of <code class="docutils literal notranslate"><span class="pre">automine</span></code> ,
+where all transactions are mined immediately, to setting a constant number
+of seconds before the transaction is put into a new block on the
+chain. This allows you to, say, set a delay of ten seconds in
+order to test use of the periodic checking in <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_trx_receipt_wait()</span></code>
+or <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_trx()</span></code>.</p>
+<div class="literal-block-wrapper docutils container" id="id20">
+<div class="code-block-caption"><span class="caption-text">Send transaction and get the receipt</span><a class="headerlink" href="#id20" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="linenos"> 1</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">trx_hash</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">submit_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span><span class="hll"><span class="linenos"> 2</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">get_trx_receipt</span><span class="p">(</span><span class="n">trx_hash</span><span class="p">)</span>
+</span><span class="linenos"> 3</span> <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Results</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">receipt</span><span class="p">))</span>
+<span class="linenos"> 4</span> <span class="n">Block</span> <span class="n">number</span>     <span class="o">=</span> <span class="mi">7583</span>
+<span class="linenos"> 5</span> <span class="n">Block</span> <span class="n">time</span> <span class="n">epoch</span> <span class="o">=</span> <span class="mi">1653324228</span>
+<span class="linenos"> 6</span> <span class="n">Contract</span> <span class="n">name</span>    <span class="o">=</span> <span class="n">Test</span>
+<span class="linenos"> 7</span> <span class="n">Contract</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xe837B30EFA8Bd88De16276b6009a29ef70b1b693</span>
+<span class="linenos"> 8</span> <span class="n">Trx</span> <span class="n">name</span>         <span class="o">=</span> <span class="n">storeNums</span>
+<span class="linenos"> 9</span> <span class="n">Trx</span> <span class="n">args</span>         <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;_num0&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;_num1&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;_num2&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+<span class="linenos">10</span> <span class="n">Trx</span> <span class="n">sender</span>       <span class="o">=</span> <span class="mh">0x20e0A619E7Efb741a34b8EDC6251E2702e69bBDd</span>
+<span class="linenos">11</span> <span class="n">Trx</span> <span class="n">value</span> <span class="n">wei</span>    <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">12</span> <span class="n">Trx</span> <span class="nb">hash</span>         <span class="o">=</span> <span class="mh">0xae9ac7ab7679b9f808e766153c5dd979fb78ed69cbed54c1e19ed9d0d5c8a881</span>
+<span class="linenos">13</span> <span class="n">Gas</span> <span class="n">price</span> <span class="n">wei</span>    <span class="o">=</span> <span class="mi">20000000000</span>
+<span class="linenos">14</span> <span class="n">Gas</span> <span class="n">used</span>         <span class="o">=</span> <span class="mi">26164</span>
+<span class="linenos">15</span> <span class="n">Event</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>    <span class="o">=</span> <span class="n">NumsStored</span>
+<span class="linenos">16</span> <span class="n">Event</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>    <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="mi">1653324228</span><span class="p">,</span> <span class="s1">&#39;num0&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;num1&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;num2&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+<span class="linenos">17</span>
+<span class="hll"><span class="linenos">18</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">trx_hash</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">submit_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span><span class="linenos">19</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">trx_hash</span>
+<span class="linenos">20</span> <span class="s1">&#39;0x0fe19c89b66c424c4696b2323b68dd72ef2de731709520cc5c24a78b927027a8&#39;</span>
+<span class="hll"><span class="linenos">21</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">get_trx_receipt_wait</span><span class="p">(</span><span class="n">trx_hash</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">3600</span><span class="p">,</span> <span class="n">poll_latency</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+</span><span class="linenos">22</span> <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Results</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">receipt</span><span class="p">))</span>
+<span class="linenos">23</span> <span class="n">Block</span> <span class="n">number</span>     <span class="o">=</span> <span class="mi">7584</span>
+<span class="linenos">24</span> <span class="n">Block</span> <span class="n">time</span> <span class="n">epoch</span> <span class="o">=</span> <span class="mi">1653324309</span>
+<span class="linenos">25</span> <span class="n">Contract</span> <span class="n">name</span>    <span class="o">=</span> <span class="n">Test</span>
+<span class="linenos">26</span> <span class="n">Contract</span> <span class="n">address</span> <span class="o">=</span> <span class="mh">0xe837B30EFA8Bd88De16276b6009a29ef70b1b693</span>
+<span class="linenos">27</span> <span class="n">Trx</span> <span class="n">name</span>         <span class="o">=</span> <span class="n">storeNums</span>
+<span class="linenos">28</span> <span class="n">Trx</span> <span class="n">args</span>         <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;_num0&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;_num1&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;_num2&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+<span class="linenos">29</span> <span class="n">Trx</span> <span class="n">sender</span>       <span class="o">=</span> <span class="mh">0x20e0A619E7Efb741a34b8EDC6251E2702e69bBDd</span>
+<span class="linenos">30</span> <span class="n">Trx</span> <span class="n">value</span> <span class="n">wei</span>    <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">31</span> <span class="n">Trx</span> <span class="nb">hash</span>         <span class="o">=</span> <span class="mh">0x0fe19c89b66c424c4696b2323b68dd72ef2de731709520cc5c24a78b927027a8</span>
+<span class="linenos">32</span> <span class="n">Gas</span> <span class="n">price</span> <span class="n">wei</span>    <span class="o">=</span> <span class="mi">20000000000</span>
+<span class="linenos">33</span> <span class="n">Gas</span> <span class="n">used</span>         <span class="o">=</span> <span class="mi">26164</span>
+<span class="linenos">34</span> <span class="n">Event</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>    <span class="o">=</span> <span class="n">NumsStored</span>
+<span class="linenos">35</span> <span class="n">Event</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>    <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="mi">1653324309</span><span class="p">,</span> <span class="s1">&#39;num0&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;num1&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;num2&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 1: Instead of <code class="docutils literal notranslate"><span class="pre">run_trx</span></code> use <code class="docutils literal notranslate"><span class="pre">submit_trx</span></code> to run <code class="xref py py-meth docutils literal notranslate"><span class="pre">storeNums()</span></code>
+transaction. The transaction’s <cite>hash</cite> is returned.</p></li>
+<li><p>Line 2: Use that <cite>hash</cite> to get the transaction’s <cite>receipt</cite>.</p></li>
+<li><p>Line 3: As before, we can get the results using that <cite>receipt</cite>.</p></li>
+<li><p>Line 18: Sumit again.</p></li>
+<li><p>Line 20: Here’s our <cite>hash</cite>.</p></li>
+<li><p>Line 21: Use <code class="docutils literal notranslate"><span class="pre">get_trx_receipt_wait</span></code> this time and specify overrides
+to the defaults for <code class="docutils literal notranslate"><span class="pre">timeout</span></code> and <code class="docutils literal notranslate"><span class="pre">poll_latency</span></code>. Since my Ganache is not
+doing any mining delay these parameters do not come into play and
+this returns immediately with the <cite>receipt</cite>.</p></li>
+<li><p>Line 22: Get and print the results.</p></li>
+</ul>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+</section>
+<section id="compiling-a-contract">
+<h2>Compiling a contract<a class="headerlink" href="#compiling-a-contract" title="Permalink to this headline"></a></h2>
+<p>After creating a contract or making any code changes to an existing contract
+you need to compile it before it can be deployed on the blockchain.</p>
+<p>You use the Solidity compiler, <code class="docutils literal notranslate"><span class="pre">solc.exe</span></code>, to create two output files
+and store them in the directory named in the environment variable,
+<code class="docutils literal notranslate"><span class="pre">SIMPLETH_ARTIFACT_DIR</span></code>.</p>
+<p>After a successful compile, the contract is ready to deploy.</p>
+<section id="using-solc">
+<h3>Using solc<a class="headerlink" href="#using-solc" title="Permalink to this headline"></a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">solc.exe</span></code> with the arguments shown below to make a contract
+ready to deploy by <code class="docutils literal notranslate"><span class="pre">simpleth</span></code>:</p>
+<div class="literal-block-wrapper docutils container" id="id21">
+<div class="code-block-caption"><span class="caption-text">Command to compile a smart contract for use by simpleth</span><a class="headerlink" href="#id21" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">solc --abi --bin --optimize --overwrite -o &lt;ARTIFACT_DIR&gt; &lt;CONTRACT&gt;</span>
+</pre></div>
+</div>
+</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">abi</span></code> writes the application binary interface file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bin</span></code> writes the binary file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">optimize</span></code> enables the bytecode optimizer to create more efficient
+contracts.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">overwrite</span></code> replaces any existing copies of the files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">o</span></code> specifies the path to the output directory for the files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;CONTRACT&gt;</span></code> is the path to the Solidity smart contract source
+file to compile</p></li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id22">
+<div class="code-block-caption"><span class="caption-text">Example of compiling the Test.sol contract</span><a class="headerlink" href="#id22" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="gp">$ </span>solc --abi --bin --optimize --overwrite -o %SIMPLETH_ARTIFACT_DIR% contracts<span class="se">\T</span>est.sol
+<span class="linenos">2</span><span class="go">Compiler run successful. Artifact(s) can be found in directory &quot;&lt;path to simpleth&gt;\simpleth\artifacts&quot;.</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 1 - the example runs from the <code class="docutils literal notranslate"><span class="pre">simpleth</span></code> directory.</p></li>
+<li><p>Line 2 - uses the environment variable for the path to the output directory</p></li>
+<li><p>Line 3 - success message from compiler</p></li>
+</ul>
+<blockquote>
+<div><p>See <a class="reference external" href="https://docs.soliditylang.org/en/v0.8.7/using-the-compiler.html#using-the-compiler">Solidity compiler documentation </a>
+for compiler details.</p>
+</div></blockquote>
+</div>
+</section>
+</section>
+<section id="artifact-directory">
+<h2>Artifact directory<a class="headerlink" href="#artifact-directory" title="Permalink to this headline"></a></h2>
+<p>The artifact directory is crucial to <code class="docutils literal notranslate"><span class="pre">simpleth</span></code>. It holds the information
+about compiled contracts for the <code class="xref py py-class docutils literal notranslate"><span class="pre">Contract</span></code> methods to use. The
+environment variable, <code class="docutils literal notranslate"><span class="pre">SIMPLETH_ARTIFACT_DIR</span></code>, stores the path to the
+directory.</p>
+<p>There are up to five files for each contract stored in the artifact directory.
+All files have <code class="docutils literal notranslate"><span class="pre">&lt;contract&gt;</span></code> as the filename. The suffixes are explained
+below:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 11%" />
+<col style="width: 79%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Suffix</strong></p></td>
+<td><p><strong>Creator</strong></p></td>
+<td><p><strong>Purpose</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>.abi</p></td>
+<td><p>solc.exe</p></td>
+<td><p>ABI file. Created with <code class="docutils literal notranslate"><span class="pre">--abi</span></code> arg. Must be present to <code class="xref py py-meth docutils literal notranslate"><span class="pre">deploy()</span></code> or <code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>.addr</p></td>
+<td><p>Contract()</p></td>
+<td><p>Blockchain address. Written at deploy(). Required for <code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p>.bin</p></td>
+<td><p>solc.exe</p></td>
+<td><p>BIN file. Created with <code class="docutils literal notranslate"><span class="pre">--bin</span></code> arg. Must be present to <code class="xref py py-meth docutils literal notranslate"><span class="pre">deploy()</span></code> or <code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>.docdev</p></td>
+<td><p>solc.exe</p></td>
+<td><p>Developer Natspec comments JSON file. Created with <code class="docutils literal notranslate"><span class="pre">--docdev</span></code> arg. Used for documentation.</p></td>
+</tr>
+<tr class="row-even"><td><p>.docuser</p></td>
+<td><p>solc.exe</p></td>
+<td><p>User Natspec comments JSON file. Created with <code class="docutils literal notranslate"><span class="pre">--docuser</span></code> arg. Used for documentation.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="literal-block-wrapper docutils container" id="id23">
+<div class="code-block-caption"><span class="caption-text">Example of Test contract files in the artifact directory</span><a class="headerlink" href="#id23" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="gp"> $ </span>&lt;your path to simpleth&gt;<span class="se">\s</span>impleth<span class="se">\a</span>rtifacts&gt;dir Test.*
+<span class="linenos"> 2</span><span class="go">  Volume in drive C is Windows</span>
+<span class="linenos"> 3</span><span class="go">  Volume Serial Number is xxxx-xxxx</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="go">  Directory of &lt;your path to simpleth&gt;\simpleth\artifacts</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="go"> 05/29/2022  09:06 AM            11,865 Test.abi</span>
+<span class="linenos"> 8</span><span class="go"> 05/29/2022  08:02 AM                42 test.addr</span>
+<span class="linenos"> 9</span><span class="go"> 05/29/2022  09:06 AM            12,100 Test.bin</span>
+<span class="linenos">10</span><span class="go"> 05/29/2022  09:06 AM             8,206 Test.docdev</span>
+<span class="linenos">11</span><span class="go"> 05/29/2022  09:06 AM             3,758 Test.docuser</span>
+<span class="linenos">12</span><span class="go">                5 File(s)         35,971 bytes</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 8: Due to DOS file naming convention, upper and lower
+case does not matter in the file names.</p></li>
+</ul>
+</div>
+<p>When <code class="xref py py-meth docutils literal notranslate"><span class="pre">deploy()</span></code> runs, it uses the environment variable to look in
+that directory for the ABI and BIN files needed to install the contract
+on the blockchain. <code class="xref py py-meth docutils literal notranslate"><span class="pre">deploy()</span></code> will write the address of the newly
+installed contract to the <code class="docutils literal notranslate"><span class="pre">&lt;contract&gt;.addr</span></code> file.
+If a contract has been compiled, but not yet deployed, there will be
+no <cite>.addr</cite> file in the directory. After the first-ever deployment the
+<cite>.addr</cite> file is written to  the directory. Any subsequent <code class="xref py py-meth docutils literal notranslate"><span class="pre">deploy()</span></code>
+will update the contract’s address stored in the file.</p>
+<p>When <code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code> runs, it uses that environment variable to
+load up information about the deployed contract, including the address
+of the deployed contract.</p>
+<p>If you destroy an <cite>.addr</cite> file, that contract is lost to <code class="docutils literal notranslate"><span class="pre">simpleth</span></code>.
+You will not be able to access that installed instance of the contract.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you do not set <code class="docutils literal notranslate"><span class="pre">SIMPLETH_ARTIFACT_DIR</span></code>, it will default to, <code class="docutils literal notranslate"><span class="pre">.</span></code>,
+the current working directory.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="starting.html" class="btn btn-neutral float-left" title="Hello World" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="simpleth.html" class="btn btn-neutral float-right" title="Simpleth" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, Stephen Newell.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

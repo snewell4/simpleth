@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hello World &mdash; simpleth 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using" href="using.html" />
+    <link rel="prev" title="Installing" href="installing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> simpleth
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing.html">Installing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Hello World</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#helloworld1-contract">HelloWorld1 Contract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#helloworld2-contract">HelloWorld2 Contract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#helloworld3-contract">HelloWorld3 Contract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#helloworld4-contract">HelloWorld4 Contract</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="using.html">Using</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simpleth.html">Simpleth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Smart Contract Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TestContract.html">Test Contract Source</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">simpleth</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Hello World</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/starting.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="hello-world">
+<h1>Hello World<a class="headerlink" href="#hello-world" title="Permalink to this headline"></a></h1>
+<p>Four simple <cite>Solidity</cite> <strong>hello world</strong> contracts are used as examples.
+Each takes a different approach, growing slightly more complex, in
+returning the <cite>Hello World!</cite> string.</p>
+<p>Solidity smart contracts by themselves can not print a string.
+There is a separate Python program for each
+contract that uses <code class="docutils literal notranslate"><span class="pre">simpleth</span></code> get and print the string.</p>
+<p>The Python programs are found in <code class="docutils literal notranslate"><span class="pre">simpleth/examples</span></code>. They
+and the contracts are ready for you to try.</p>
+<p>The Solidity source for the contracts is found in
+<code class="docutils literal notranslate"><span class="pre">simpleth/contracts</span></code>.</p>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+<section id="helloworld1-contract">
+<h2>HelloWorld1 Contract<a class="headerlink" href="#helloworld1-contract" title="Permalink to this headline"></a></h2>
+<p>The simplest way to display <cite>Hello World!</cite> is to set that string as
+the initial value of a public state variable in the contract
+and use <cite>simpleth</cite> to get that variable and display the string.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">HelloWorld1.sol</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pragma</span> <span class="n">solidity</span> <span class="o">^</span><span class="mf">0.8</span><span class="p">;</span>
+<span class="n">contract</span> <span class="n">HelloWorld1</span> <span class="p">{</span>
+    <span class="n">string</span> <span class="n">public</span> <span class="n">greeting</span> <span class="o">=</span> <span class="s2">&quot;Hello World!&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">helloworld1.py - deploy contract / get greeting variable / print</span><a class="headerlink" href="#id2" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sender</span> <span class="o">=</span> <span class="n">Blockchain</span><span class="p">()</span><span class="o">.</span><span class="n">address</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span><span class="s1">&#39;HelloWorld1&#39;</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">deploy</span><span class="p">(</span><span class="n">sender</span><span class="p">)</span>
+<span class="n">greeting</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">get_var</span><span class="p">(</span><span class="s1">&#39;greeting&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">greeting</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Running helloworld1.py</span><a class="headerlink" href="#id3" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python hello_world1.py
+<span class="go">Hello World!</span>
+</pre></div>
+</div>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="helloworld2-contract">
+<h2>HelloWorld2 Contract<a class="headerlink" href="#helloworld2-contract" title="Permalink to this headline"></a></h2>
+<p>This contract has one function that returns the greeting string.</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">HelloWorld2.sol</span><a class="headerlink" href="#id4" title="Permalink to this code"></a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pragma</span> <span class="n">solidity</span> <span class="o">^</span><span class="mf">0.8</span><span class="p">;</span>
+<span class="n">contract</span> <span class="n">HelloWorld2</span> <span class="p">{</span>
+    <span class="n">function</span> <span class="n">getGreeting</span><span class="p">()</span> <span class="n">public</span> <span class="n">pure</span> <span class="n">returns</span> <span class="p">(</span><span class="n">string</span> <span class="n">memory</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s1">&#39;Hello World!&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">helloworld2.py - deploy contract / call the function to return the greeting / print</span><a class="headerlink" href="#id5" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Blockchain</span><span class="p">,</span> <span class="n">Contract</span>
+
+ <span class="n">sender</span> <span class="o">=</span> <span class="n">Blockchain</span><span class="p">()</span><span class="o">.</span><span class="n">address</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+ <span class="n">c</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span><span class="s1">&#39;HelloWorld2&#39;</span><span class="p">)</span>
+ <span class="n">c</span><span class="o">.</span><span class="n">deploy</span><span class="p">(</span><span class="n">sender</span><span class="p">)</span>
+ <span class="n">greeting</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">call_fcn</span><span class="p">(</span><span class="s1">&#39;getGreeting&#39;</span><span class="p">)</span>
+ <span class="nb">print</span><span class="p">(</span><span class="n">greeting</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Running helloworld2.py</span><a class="headerlink" href="#id6" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python hello_world2.py
+<span class="go">Hello World!</span>
+</pre></div>
+</div>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="helloworld3-contract">
+<h2>HelloWorld3 Contract<a class="headerlink" href="#helloworld3-contract" title="Permalink to this headline"></a></h2>
+<p>This contract has a transaction that lets us set the greeting
+and a function to return the greeting.</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">HelloWorld3.sol</span><a class="headerlink" href="#id7" title="Permalink to this code"></a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pragma</span> <span class="n">solidity</span> <span class="o">^</span><span class="mf">0.8</span><span class="p">;</span>
+<span class="n">contract</span> <span class="n">HelloWorld3</span> <span class="p">{</span>
+    <span class="n">string</span> <span class="n">public</span> <span class="n">greeting</span><span class="p">;</span>
+
+    <span class="n">function</span> <span class="n">setGreeting</span><span class="p">(</span><span class="n">string</span> <span class="n">memory</span> <span class="n">_greeting</span><span class="p">)</span> <span class="n">public</span> <span class="p">{</span>
+        <span class="n">greeting</span> <span class="o">=</span> <span class="n">_greeting</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">function</span> <span class="n">getGreeting</span><span class="p">()</span> <span class="n">public</span> <span class="n">view</span> <span class="n">returns</span> <span class="p">(</span><span class="n">string</span> <span class="n">memory</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">greeting</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">helloworld3.py - Deploy contract / run transaction to set greeting / run function to return greeting / print</span><a class="headerlink" href="#id8" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Blockchain</span><span class="p">,</span> <span class="n">Contract</span>
+
+<span class="n">sender</span> <span class="o">=</span> <span class="n">Blockchain</span><span class="p">()</span><span class="o">.</span><span class="n">address</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span><span class="s1">&#39;HelloWorld3&#39;</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">deploy</span><span class="p">(</span><span class="n">sender</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="s1">&#39;setGreeting&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello World!&#39;</span><span class="p">)</span>
+<span class="n">greeting</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">call_fcn</span><span class="p">(</span><span class="s1">&#39;getGreeting&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">greeting</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Running helloworld3.py</span><a class="headerlink" href="#id9" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python hello_world3.py
+<span class="go">Hello World!</span>
+</pre></div>
+</div>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="helloworld4-contract">
+<h2>HelloWorld4 Contract<a class="headerlink" href="#helloworld4-contract" title="Permalink to this headline"></a></h2>
+<p>This contract uses a constructor that takes the greeting as an arg and emits
+an event with the greeting.</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">HelloWorld4.sol</span><a class="headerlink" href="#id10" title="Permalink to this code"></a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">pragma</span> <span class="n">solidity</span> <span class="o">^</span><span class="mf">0.8</span><span class="p">;</span>
+<span class="linenos"> 2</span><span class="n">contract</span> <span class="n">HelloWorld4</span> <span class="p">{</span>
+<span class="linenos"> 3</span>    <span class="n">string</span> <span class="n">public</span> <span class="n">greeting</span><span class="p">;</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="n">event</span> <span class="n">HelloWorld4Constructed</span><span class="p">(</span>
+<span class="linenos"> 6</span>        <span class="n">uint</span> <span class="n">timestamp</span><span class="p">,</span>
+<span class="linenos"> 7</span>        <span class="n">address</span> <span class="n">sender</span><span class="p">,</span>
+<span class="linenos"> 8</span>        <span class="n">string</span> <span class="n">initGreeting</span><span class="p">,</span>
+<span class="linenos"> 9</span>        <span class="n">address</span> <span class="n">HelloWorld4</span>
+<span class="linenos">10</span>    <span class="p">);</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    <span class="n">constructor</span><span class="p">(</span><span class="n">string</span> <span class="n">memory</span> <span class="n">_initGreeting</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">13</span>        <span class="n">greeting</span> <span class="o">=</span> <span class="n">_initGreeting</span><span class="p">;</span>
+<span class="linenos">14</span>        <span class="n">emit</span> <span class="n">HelloWorld4Constructed</span><span class="p">(</span>
+<span class="linenos">15</span>            <span class="n">block</span><span class="o">.</span><span class="n">timestamp</span><span class="p">,</span>
+<span class="linenos">16</span>            <span class="n">msg</span><span class="o">.</span><span class="n">sender</span><span class="p">,</span>
+<span class="linenos">17</span>            <span class="n">greeting</span><span class="p">,</span>
+<span class="linenos">18</span>            <span class="n">address</span><span class="p">(</span><span class="n">this</span><span class="p">)</span>
+<span class="linenos">19</span>        <span class="p">);</span>
+<span class="linenos">20</span>    <span class="p">}</span>
+<span class="linenos">21</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">helloworld4.py - Deploy contract with greeting / get event / print greeting</span><a class="headerlink" href="#id11" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Blockchain</span><span class="p">,</span> <span class="n">Contract</span><span class="p">,</span> <span class="n">EventSearch</span>
+
+<span class="n">sender</span> <span class="o">=</span> <span class="n">Blockchain</span><span class="p">()</span><span class="o">.</span><span class="n">address</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span><span class="s1">&#39;HelloWorld4&#39;</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">deploy</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="s1">&#39;Hello World!&#39;</span><span class="p">)</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">EventSearch</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;HelloWorld4Constructed&#39;</span><span class="p">)</span>
+<span class="n">event</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">get_old</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;args&#39;</span><span class="p">][</span><span class="s1">&#39;initGreeting&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">Running helloworld4.py</span><a class="headerlink" href="#id12" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python hello_world4.py
+<span class="go">Hello World!</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installing.html" class="btn btn-neutral float-left" title="Installing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="using.html" class="btn btn-neutral float-right" title="Using" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, Stephen Newell.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

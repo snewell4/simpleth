@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Ethereum &mdash; simpleth 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> simpleth
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starting.html">Hello World</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using.html">Using</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simpleth.html">Simpleth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Smart Contract Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TestContract.html">Test Contract Source</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">simpleth</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>Simple Ethereum</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="simple-ethereum">
+<h1>Simple Ethereum<a class="headerlink" href="#simple-ethereum" title="Permalink to this headline"></a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#limitations">Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#latest-software-pre-req-levels-tested">Latest software pre-req levels tested</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#framework-tools-used">Framework/Tools used</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#simpleth-documentation">Simpleth Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#contract-documentation">Contract Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installing.html">Installing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installing.html#install-ganache">1) Install Ganache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installing.html#install-simpleth-package">2) Install simpleth package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installing.html#set-environment-variable">3) Set environment variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installing.html#download-solidity-compiler">4) Download Solidity compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installing.html#confirm-installation">5) Confirm installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="starting.html">Hello World</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="starting.html#helloworld1-contract">HelloWorld1 Contract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="starting.html#helloworld2-contract">HelloWorld2 Contract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="starting.html#helloworld3-contract">HelloWorld3 Contract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="starting.html#helloworld4-contract">HelloWorld4 Contract</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="using.html">Using</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="using.html#test-contract">Test Contract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using.html#deploy">Deploy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using.html#setup-interpreter-session">Setup interpreter session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using.html#get-variables">Get variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using.html#call-functions">Call functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using.html#run-transactions">Run transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using.html#search-for-events">Search for events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using.html#transaction-results">Transaction results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using.html#handling-ether">Handling Ether</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using.html#handling-time">Handling time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using.html#simpleth-exceptions">simpleth exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using.html#transaction-exceptions">Transaction exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using.html#selfdestruct">Selfdestruct</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using.html#send-transactions-get-receipt">Send transactions / Get receipt</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="using.html#relationship-to-run-trx">Relationship to run_trx()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using.html#using-ganache-with-a-mining-delay">Using Ganache with a mining delay</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="using.html#compiling-a-contract">Compiling a contract</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="using.html#using-solc">Using solc</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="using.html#artifact-directory">Artifact directory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simpleth.html">Simpleth</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simpleth.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simpleth.html#exceptions">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simpleth.html#constants">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Smart Contract Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#helloworld1">HelloWorld1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contracts.html#state-variables">STATE VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contracts.html#methods">METHODS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contracts.html#events">EVENTS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#helloworld2">HelloWorld2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contracts.html#id1">STATE VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contracts.html#id2">METHODS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#getgreeting">getGreeting()</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="contracts.html#id3">EVENTS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#helloworld3">HelloWorld3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contracts.html#id4">STATE VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contracts.html#id5">METHODS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#id6">getGreeting()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#setgreeting-string">setGreeting(string)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="contracts.html#id7">EVENTS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#helloworld4">HelloWorld4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contracts.html#id8">STATE VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contracts.html#id9">METHODS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#constructor">constructor()</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="contracts.html#id10">EVENTS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#helloworld4constructed-uint256-address-string-address">HelloWorld4Constructed(uint256,address,string,address)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#test">Test</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contracts.html#id11">STATE VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contracts.html#id12">METHODS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#id13">constructor()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#assertgreaterthan10-int256">assertGreaterThan10(int256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#destroy-address">destroy(address)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#divideinitnum-int256">divideInitNum(int256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#dividenums-uint256">divideNums(uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#getnum-uint8">getNum(uint8)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#getnum0">getNum0()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#getnums">getNums()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#gettypes">getTypes()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#reverttransaction">revertTransaction()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#setowner-address">setOwner(address)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#storenum-uint256-uint256">storeNum(uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#storenums-uint256-uint256-uint256">storeNums(uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#storenumsanddivide-uint256-uint256-uint256-uint256">storeNumsAndDivide(uint256,uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#storenumsandpay-uint256-uint256-uint256">storeNumsAndPay(uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#storenumsandsum-uint256-uint256-uint256">storeNumsAndSum(uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#storenumswithnoevent-uint256-uint256-uint256">storeNumsWithNoEvent(uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#storenumswiththreeevents-uint256-uint256-uint256">storeNumsWithThreeEvents(uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#storetypes-bool-uint8-uint256-int256-address-string-uint256-3">storeTypes(bool,uint8,uint256,int256,address,string,uint256[3])</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#sumnums">sumNums()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#sumtwonums">sumTwoNums()</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="contracts.html#id14">EVENTS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#destroyed-uint256-uint256">Destroyed(uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#initnumdivided-uint256-int256-int256">InitNumDivided(uint256,int256,int256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#num0stored-uint256-uint256">Num0Stored(uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#num1stored-uint256-uint256">Num1Stored(uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#num2stored-uint256-uint256">Num2Stored(uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#numstored-uint256-uint256-uint256">NumStored(uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#numsdivided-uint256-uint256-uint256-uint256-uint256">NumsDivided(uint256,uint256,uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#numsstored-uint256-uint256-uint256-uint256">NumsStored(uint256,uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#numsstoredanddivided-uint256">NumsStoredAndDivided(uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#numsstoredandpaid-uint256-uint256-uint256-uint256-uint256-uint256">NumsStoredAndPaid(uint256,uint256,uint256,uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#numsstoredandsummed-uint256">NumsStoredAndSummed(uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#numssummed-uint256-uint256-uint256-uint256-uint256">NumsSummed(uint256,uint256,uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#ownerset-uint256-address">OwnerSet(uint256,address)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#received-uint256-address-uint256">Received(uint256,address,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#testconstructed-uint256-address-int256-address">TestConstructed(uint256,address,int256,address)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#twonumssummed-uint256-uint256-uint256-uint256">TwoNumsSummed(uint256,uint256,uint256,uint256)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="contracts.html#typesstored-uint256-bool-uint8-uint256-int256-address-string-uint256-3">TypesStored(uint256,bool,uint8,uint256,int256,address,string,uint256[3])</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="TestContract.html">Test Contract Source</a></li>
+</ul>
+</div>
+</section>
+<section id="indices">
+<h1>Indices<a class="headerlink" href="#indices" title="Permalink to this headline"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="intro.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, Stephen Newell.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

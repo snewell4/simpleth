@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction &mdash; simpleth 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installing" href="installing.html" />
+    <link rel="prev" title="Simple Ethereum" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> simpleth
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#limitations">Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#latest-software-pre-req-levels-tested">Latest software pre-req levels tested</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#framework-tools-used">Framework/Tools used</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#simpleth-documentation">Simpleth Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contract-documentation">Contract Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installing.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="starting.html">Hello World</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using.html">Using</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simpleth.html">Simpleth</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Smart Contract Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TestContract.html">Test Contract Source</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">simpleth</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/intro.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">simpleth</span></code> (<strong>Simplified Ethereum</strong>) simplifies
+the use of Python to interact with an Ethereum blockchain and its Solidity
+smart contracts.</p>
+<p><cite>simpleth</cite> is a set of five Python facade classes that use the <code class="docutils literal notranslate"><span class="pre">web3.py</span></code> API
+to interact with the smart contracts through a Ganache Ethereum client.</p>
+<p><cite>simpleth</cite> only supports a portion of the <cite>web3.py</cite> functionality - the
+portion that a Python developer uses to interact with contracts.</p>
+<p>The aim is to provide Python developers a quick and easy way to:</p>
+<ul class="simple">
+<li><p><strong>deploy</strong> contracts onto the blockchain</p></li>
+<li><p><strong>run transactions</strong> in those contracts</p></li>
+<li><p><strong>call functions</strong> in those contracts</p></li>
+<li><p><strong>get values</strong> for public state variables in those contracts</p></li>
+<li><p><strong>use filters</strong> to find events emitted by those contracts</p></li>
+<li><p><strong>get data</strong> about the blockchain, contracts, transactions, and events</p></li>
+</ul>
+<p>The intended audience:</p>
+<ul class="simple">
+<li><p><strong>Python developers</strong> who want to:</p>
+<ul>
+<li><p>learn to code smart contracts in Solidity</p></li>
+<li><p>play around with Ethereum and smart contracts using the Python interpreter
+and scripts</p></li>
+<li><p>build proof-of-concept dapps with Python scripts or <cite>flask</cite></p></li>
+<li><p>build production dapps using Python in a single-user test environment</p></li>
+<li><p>see a working example of the <cite>web3.py</cite> API by looking at <cite>simpleth</cite>
+internals</p></li>
+</ul>
+</li>
+<li><p><strong>Solidity developers</strong> looking for examples of:</p>
+<ul>
+<li><p>basic functions in a smart contract, esp. if just starting out</p></li>
+<li><p>more advanced functions in a smart contract, esp. for use in
+medium-complexity dapps.</p></li>
+</ul>
+</li>
+</ul>
+<section id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline"></a></h2>
+<p>As someone who prefers Python to JavaScript and new to Solidity,
+I found it daunting to learn the <code class="docutils literal notranslate"><span class="pre">web3.py</span></code> API, found few thorough
+examples of using Python for interacting with smart contracts, and found
+few wide-ranging sets of example Solidity contracts. This combination
+made my learning curve steep and long.</p>
+<p>This package is intended to make it easier to get started
+with Ganache, Solidity, and Python to build simple- to medium-complexity
+blockchain apps for learning or prototyping.</p>
+<p>An earlier version of <cite>simpleth</cite> was created as part of an academic
+research project to design a supply chain for non-profit organizations
+A single-user <cite>Flask</cite> app was created for a medium-complexity proof
+of concept that used <cite>simpleth</cite>.</p>
+</section>
+<section id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">simpleth</span></code> is restricted to the following environment:</p>
+<ul class="simple">
+<li><p>Windows 10 or 11 (have not tried it on iOS or Linux)</p></li>
+<li><p>Python 3</p></li>
+<li><p>Ganache blockchain</p></li>
+<li><p>Solidity contracts</p></li>
+<li><p>Learning / Prototyping / Proof of Concept</p></li>
+</ul>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Do not use <code class="docutils literal notranslate"><span class="pre">simpleth</span></code> in a production environment, especially one with
+cryptocurrency or other assets of value.</p>
+<p>No security audits have been done on <code class="docutils literal notranslate"><span class="pre">simpleth</span></code>.</p>
+<p>No production dapps have used <code class="docutils literal notranslate"><span class="pre">simpleth</span></code>.</p>
+</div>
+</section>
+<section id="latest-software-pre-req-levels-tested">
+<span id="sw-levels-label"></span><h2>Latest software pre-req levels tested<a class="headerlink" href="#latest-software-pre-req-levels-tested" title="Permalink to this headline"></a></h2>
+<p>Earlier versions have been used successfully. Here are the current
+tested versions:</p>
+<ul class="simple">
+<li><p>Windows 11</p></li>
+<li><p>Python 3.10.4</p></li>
+<li><p>Ganache 2.5.4</p></li>
+<li><p>Solidity compiler 0.8.14</p></li>
+<li><p>web3 5.29.1</p></li>
+</ul>
+</section>
+<section id="framework-tools-used">
+<h2>Framework/Tools used<a class="headerlink" href="#framework-tools-used" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>PyCharm - IDE</p></li>
+<li><p>pytest - unit and integration testing</p></li>
+<li><p>doctest - test simpleth docstring code examples</p></li>
+<li><p>pylint - linter for code analysis</p></li>
+<li><p>mypy - static type checking</p></li>
+<li><p>git - version control</p></li>
+</ul>
+</section>
+<section id="simpleth-documentation">
+<h2>Simpleth Documentation<a class="headerlink" href="#simpleth-documentation" title="Permalink to this headline"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Title (Hot-linked)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Installation</p></td>
+<td><p><a class="reference internal" href="installing.html"><span class="doc">Installing</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Tutorial</p></td>
+<td><p><a class="reference internal" href="starting.html"><span class="doc">Hello World</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>User Guide</p></td>
+<td><p><a class="reference internal" href="using.html"><span class="doc">Using</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Reference</p></td>
+<td><p><a class="reference internal" href="simpleth.html"><span class="doc">Simpleth</span></a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="contract-documentation">
+<h2>Contract Documentation<a class="headerlink" href="#contract-documentation" title="Permalink to this headline"></a></h2>
+<dl class="glossary simple">
+<dt id="term-Smart-Contract-Reference"><a class="reference internal" href="contracts.html"><span class="doc">Smart Contract Reference</span></a><a class="headerlink" href="#term-Smart-Contract-Reference" title="Permalink to this term"></a></dt><dd><p>Formatted <code class="docutils literal notranslate"><span class="pre">Natspec</span></code> comments in the contracts create a reference
+document for the contracts used by the examples.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Simple Ethereum" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="installing.html" class="btn btn-neutral float-right" title="Installing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2022, Stephen Newell.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
