@@ -1,5 +1,5 @@
 """
-Simpleth (**simpl**\ ified **eth**\ ereum) is a facade of `web3.py` to
+Simpleth (Simplified Ethereum) is a facade of `web3.py` to
 simplify use of an Ethereum blockchain and interaction with Solidity
 contracts.
 
@@ -50,7 +50,8 @@ __status__ = 'Prototype'
 # Placeholders for adding Type.Final.
 #
 # ReadTheDocs # uses Python 3.7 and has errors with Final. When RtD is
-# updated to a newer Python, replace these with use of 'Final'.
+# updated to a newer Python 3.8, or later, replace these with use
+# of 'Final' shown in the docstrings.
 #
 T_FINAL_INT = int
 """Placeholder for 'Final[int]'"""
@@ -78,7 +79,6 @@ BYTECODE_SUFFIX: T_FINAL_STR = '.bin'
 
 ADDRESS_SUFFIX: T_FINAL_STR = '.addr'
 """Filename suffix for the contract address files."""
-
 
 #
 # Transaction processing defaults
