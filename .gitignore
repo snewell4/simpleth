@@ -12,16 +12,11 @@
 *.whl
 *.zip
 .git/
-artifacts/TestNeverDeployed.*
+.idea
 build
 dist
-docs/build
-docs/images
-docs/source/_static
-docs/source/_templates
 env/
 simpleth.egg-info
 solc/
-src/contracts/TestNeverDeployed.sol
 /.mypy_cache/.gitignore
 /tools/.mypy_cache/CACHEDIR.TAG
