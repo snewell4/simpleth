@@ -12,11 +12,11 @@
 *.whl
 *.zip
 .git/
-.idea
-build
-dist
+.idea/
+build/
+dist/
 env/
-simpleth.egg-info
+simpleth.egg-info/
 solc/
 /.mypy_cache/.gitignore
 /tools/.mypy_cache/CACHEDIR.TAG
