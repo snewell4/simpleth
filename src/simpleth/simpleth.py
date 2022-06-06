@@ -24,7 +24,7 @@ import json.decoder
 import datetime
 import time
 import os
-from typing import List, Optional, Union, Dict, Any, Final
+from typing import List, Optional, Union, Dict, Any
 from decimal import Decimal, getcontext
 from web3 import Web3
 from web3 import exceptions as web3e
@@ -46,23 +46,37 @@ __maintainer__ = 'Stephen Newell'
 __email__ = 'snewell4@gmail.com'
 __status__ = 'Prototype'
 
+#
+# Placeholders for adding Type.Final.
+#
+# ReadTheDocs # uses Python 3.7 and has errors with Final. When RtD is
+# updated to a newer Python, replace these with use of 'Final'.
+#
+T_FINAL_INT = int
+"""Placeholder for 'Final[int]'"""
+
+T_FINAL_STR = str
+"""Placeholder for 'Final[str]'"""
+
+T_FINAL_INT_FLOAT = Union[int, float]
+"""Placeholder for 'Final[Union[int, float]]'"""
 
 #
 # Directories and file suffixes
 #
-ARTIFACT_DIR_ENV_VAR: Final[str] = 'SIMPLETH_ARTIFACT_DIR'
+ARTIFACT_DIR_ENV_VAR: T_FINAL_STR = 'SIMPLETH_ARTIFACT_DIR'
 """Environment variable name for filepath to artifact directory"""
 
-ARTIFACT_DIR_DEFAULT: Final[str] = '.'
+ARTIFACT_DIR_DEFAULT: T_FINAL_STR = '.'
 """If environment variable not set, use current working directory"""
 
-ABI_SUFFIX: Final[str] = '.abi'
+ABI_SUFFIX: T_FINAL_STR = '.abi'
 """Filename suffix for the ABI files."""
 
-BYTECODE_SUFFIX: Final[str] = '.bin'
+BYTECODE_SUFFIX: T_FINAL_STR = '.bin'
 """Filename suffix for the bytecode files."""
 
-ADDRESS_SUFFIX: Final[str] = '.addr'
+ADDRESS_SUFFIX: T_FINAL_STR = '.addr'
 """Filename suffix for the contract address files."""
 
 
@@ -73,47 +87,47 @@ ADDRESS_SUFFIX: Final[str] = '.addr'
 # This is the maximum amount of gas any single transaction can consume.
 # If the transaction requires more gas, it will revert. This value is
 # arbitrarily set slightly below the Ganache default value for Gas Limit.
-GAS_LIMIT: Final[int] = 6_000_000
+GAS_LIMIT: T_FINAL_INT = 6_000_000
 """Gas limit for a transaction, in units of gas."""
 
 # Currently, has no effect with Ganache. It is valid for mainnet.
-MAX_BASE_FEE_GWEI: Final[Union[int, float]] = 100
+MAX_BASE_FEE_GWEI: T_FINAL_INT_FLOAT = 100
 """Maximum tip to pay the miners, per unit of gas, in gwei."""
 
 # Currently, has no effect with Ganache. It is valid for main net.
-MAX_PRIORITY_FEE_GWEI: Final[Union[int, float]] = 2
+MAX_PRIORITY_FEE_GWEI: T_FINAL_INT_FLOAT = 2
 """Maximum tip to pay the miners, per unit of gas, in gwei."""
 
 # Currently, has no effect with Ganache. It is valid for main net.
-MAX_FEE_GWEI: Final[Union[int, float]] = \
+MAX_FEE_GWEI: T_FINAL_INT_FLOAT = \
     MAX_BASE_FEE_GWEI + MAX_PRIORITY_FEE_GWEI
 """Maximum total to pay the miners, per unit of gas, in gwei."""
 
-TIMEOUT: Final[Union[int, float]] = 120
+TIMEOUT: T_FINAL_INT_FLOAT = 120
 """Time to wait for transaction to be mined, in seconds."""
 
-POLL_LATENCY: Final[Union[int, float]] = 0.1
+POLL_LATENCY: T_FINAL_INT_FLOAT = 0.1
 """Time between checking if mining is finished, in seconds."""
 
 #
 # Ganache
 #
-GANACHE_URL_ENV_VAR: Final[str] = 'SIMPLETH_GANACHE_URL'
+GANACHE_URL_ENV_VAR: T_FINAL_STR = 'SIMPLETH_GANACHE_URL'
 """Environment variable name for URL to connect to local Ganache blockchain"""
 
-GANACHE_URL_DEFAULT: Final[str] = 'http://127.0.0.1:7545'
+GANACHE_URL_DEFAULT: T_FINAL_STR = 'http://127.0.0.1:7545'
 """If environment variable not set, use Ganache default URL"""
 
 #
 # Formatting
 #
-TIME_FORMAT: Final[str] = '%Y-%m-%d %H:%M:%S'
+TIME_FORMAT: T_FINAL_STR = '%Y-%m-%d %H:%M:%S'
 """Default ``datetime`` format coding used to represent time values as a string"""
 
 #
 # Conversion
 #
-PRECISION: Final[int] = 40
+PRECISION: T_FINAL_INT = 40
 """Level of precision for `Decimal` values used in Ether denomination
 conversions. Arbitrary value. Consider a better value."""
 
@@ -205,7 +219,7 @@ Use `Any` for now. Provided by `web3.py`"""
 #
 # Exception processing
 #
-VALUE_ERROR_REVERT_MESSAGE: Final[str] = \
+VALUE_ERROR_REVERT_MESSAGE: T_FINAL_STR = \
     'VM Exception while processing transaction: revert'
 """ValueError exception message for a reverted transaction."""
 
