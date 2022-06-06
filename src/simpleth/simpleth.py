@@ -3235,8 +3235,8 @@ class Results:
         # Gather details on event(s), if any, emitted by the transaction
         #
         self._event_names: list[str] = []
-        self._event_args: list[dict] = []
-        self._event_logs: list[dict] = []
+        self._event_args: list = []
+        self._event_logs: list = []
         self.web3_event_logs: list[T_EVENT_LOG_OBJ] = []
         for event_name in self._contract.event_names:
             # for every event defined in the contract
@@ -3393,12 +3393,12 @@ class Results:
         return self._contract_name
 
     @property
-    def event_args(self) -> list[dict]:
+    def event_args(self) -> list:
         """Return args for the event emitted by the transaction.
 
-        :rtype: list[dict]
-        :return: one dict for each event emitted; key is the arg name
-             and the value is the value of the arg
+        :rtype: list
+        :return: list containing one dict for each event emitted;
+             the key is the arg name and the value is the value of the arg
 
         :example:
             >>> from simpleth import Blockchain, Contract, Results
@@ -3420,7 +3420,7 @@ class Results:
         return self._event_args
 
     @property
-    def event_logs(self) -> list[dict]:
+    def event_logs(self) -> list:
         """Return event logs resulting from transaction.
 
         This differs from the `web3.py` event logs in three ways:
@@ -3449,11 +3449,11 @@ class Results:
         return self._event_logs
 
     @property
-    def event_names(self) -> list[str]:
+    def event_names(self) -> list:
         """Return names of the event emitted by the transaction.
 
-        :rtype: list[str]
-        :return: list with names of each event emitted
+        :rtype: list
+        :return: list of strings of the names of each event emitted
 
         :example:
             >>> from simpleth import Blockchain, Contract, Results
