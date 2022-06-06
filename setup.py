@@ -2,14 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name='simpleth',
-    version='0.1.6',
+    version='0.1.8',
     author='Stephen Newell',
     author_email='<snewell4@gmail.com>',
     description='Simplified Ethereum for Python',
     long_description=open('README.rst').read(),
     url='https://github.com/snewell4/simpleth',
     packages=find_packages(),
-    python_requires='>=3.8',    # adds Type.Final
+    python_requires='>=3.7',    # arbitrary choice (rethink this)
     install_requires=[
         'web3>=5.23.0'          # adds maxPriorityFeePerGas
         ],

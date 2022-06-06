@@ -7,4 +7,4 @@ document.
 The source file is found at: ``simpleth/src/contracts/Test.sol``
 
 .. include:: C:/Users/snewe/OneDrive/Desktop/simpleth/src/contracts/Test.sol
-   :codee:
+   :code:
