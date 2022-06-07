@@ -12,6 +12,8 @@ artifacts/HelloWorld4.abi
 artifacts/HelloWorld4.bin
 artifacts/Test.abi
 artifacts/Test.bin
+artifacts/TestNeverDeployed.abi
+artifacts/TestNeverDeployed.bin
 examples/event_poll.py
 examples/hello_world1.py
 examples/hello_world2.py
