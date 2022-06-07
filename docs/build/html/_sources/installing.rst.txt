@@ -140,7 +140,7 @@ without error messages.
 
     $ cd %SIMPLETH_ARTIFACTS_DIR%
     $ dir
-    ... Solidity compiler output files ...
+    ... Artifact files ...
 
     $ cd ..\contracts
     $ dir
@@ -178,7 +178,7 @@ without error messages.
         - Test.sol
         - TestNeverDeployed.sol
 
-    There are two **Solidity compiler output files** for each smart contract.
+    There are two **Artifact files** for each smart contract.
     One is suffixed with, `.abi`, and the other with, `.bin`.
 
 **Congratulations!** ``simpleth`` is ready for use.

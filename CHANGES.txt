@@ -14,3 +14,6 @@
 0.1.24, June 7, 2022
       Forgot to do a makedoc in last version, add new shell session dir listing
       showing contracts dir in Installing
+
+0.1.25, June 7, 2022
+      Edits to wording in Installing.
