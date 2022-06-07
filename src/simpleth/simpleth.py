@@ -65,10 +65,10 @@ T_FINAL_INT_FLOAT = Union[int, float]
 #
 # Directories and file suffixes
 #
-ARTIFACT_DIR_ENV_VAR: T_FINAL_STR = 'SIMPLETH_ARTIFACT_DIR'
+ARTIFACTS_DIR_ENV_VAR: T_FINAL_STR = 'SIMPLETH_ARTIFACTS_DIR'
 """Environment variable name for filepath to artifact directory"""
 
-ARTIFACT_DIR_DEFAULT: T_FINAL_STR = '.'
+ARTIFACTS_DIR_DEFAULT: T_FINAL_STR = '.'
 """If environment variable not set, use current working directory"""
 
 ABI_SUFFIX: T_FINAL_STR = '.abi'
@@ -967,7 +967,7 @@ class Contract:
     - ``<contract>.bin`` - Binary for the compiled contract. Created by
       ``solc.exe``.
 
-    The environment variable, ``SIMPLETH_ARTIFACT_DIR``, should be set with
+    The environment variable, ``SIMPLETH_ARTIFACTS_DIR``, should be set with
     the filepath to the directory holding these files.
 
     If the environment variable is not found, the default directory is, ``.``,
@@ -998,8 +998,8 @@ class Contract:
         """Private name of the contract this object represents"""
 
         self._artifact_dir: str = os.environ.get(
-            ARTIFACT_DIR_ENV_VAR,
-            ARTIFACT_DIR_DEFAULT
+            ARTIFACTS_DIR_ENV_VAR,
+            ARTIFACTS_DIR_DEFAULT
             )
         """Private filepath to the directory with artifact files"""
 
@@ -2263,7 +2263,7 @@ class Contract:
                 f'HINT1: Check the spelling of the contract name.\n'
                 f'HINT2: Confirm path to ABI file.\n'
                 f'HINT3: Check setting of environment '
-                f'variable {ARTIFACT_DIR_ENV_VAR}\n'
+                f'variable {ARTIFACTS_DIR_ENV_VAR}\n'
                 f'HINT4: You may need to do a new compile.\n'
                 )
             raise SimplEthError(message, code='C-100-010') from None
@@ -2299,7 +2299,7 @@ class Contract:
                 f'HINT1: Check the spelling of the contract name.\n'
                 f'HINT2: Confirm path to address file.\n'
                 f'HINT3: Check setting of environment '
-                f'variable {ARTIFACT_DIR_ENV_VAR}\n'
+                f'variable {ARTIFACTS_DIR_ENV_VAR}\n'
                 f'HINT4: You may need to do a new deploy.\n'
                 )
             raise SimplEthError(message, code='C-110-010') from None
@@ -2338,7 +2338,7 @@ class Contract:
                 f'HINT1: Check the spelling of the contract name.\n'
                 f'HINT2: Confirm path to bytecode file.\n'
                 f'HINT3: Check setting of environment '
-                f'variable {ARTIFACT_DIR_ENV_VAR}\n'
+                f'variable {ARTIFACTS_DIR_ENV_VAR}\n'
                 f'HINT4: You may need to do a new compile.\n'
                 )
             raise SimplEthError(message, code='C-120-010') from None
@@ -2459,7 +2459,7 @@ class Contract:
                 f'HINT1: Check the spelling of the contract name.\n'
                 f'HINT2: Confirm path to address file.\n'
                 f'HINT3: Check setting of environment '
-                f'variable {ARTIFACT_DIR_ENV_VAR}\n'
+                f'variable {ARTIFACTS_DIR_ENV_VAR}\n'
                 f'HINT4: You may need to do a new compile.\n'
                 )
             raise SimplEthError(message, code='C-150-020') from None

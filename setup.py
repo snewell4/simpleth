@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='simpleth',
-    version='0.1.21',
+    version='0.1.22',
     author='Stephen Newell',
     author_email='<snewell4@gmail.com>',
     description='Simplified Ethereum for Python',
@@ -24,13 +24,6 @@ setup(
         'Topic :: Other/Nonlisted Topic'
         ],
     data_files=[
-        ('examples', [
-                'examples/event_poll.py',
-                'examples/hello_world1.py',
-                'examples/hello_world2.py',
-                'examples/hello_world3.py',
-                'examples/hello_world4.py',
-                ]),
         ('artifacts', [
                 'artifacts/HelloWorld1.abi',
                 'artifacts/HelloWorld1.bin',
@@ -44,6 +37,21 @@ setup(
                 'artifacts/Test.bin',
                 'artifacts/TestNeverDeployed.abi',
                 'artifacts/TestNeverDeployed.bin'
-                ])
+                ]),
+        ('contracts', [
+            'src/contracts/HelloWorld1.sol',
+            'src/contracts/HelloWorld2.sol',
+            'src/contracts/HelloWorld3.sol',
+            'src/contracts/HelloWorld4.sol',
+            'src/contracts/Test.sol',
+            'src/contracts/TestNeverDeployed.sol'
+            ]),
+        ('examples', [
+            'examples/event_poll.py',
+            'examples/hello_world1.py',
+            'examples/hello_world2.py',
+            'examples/hello_world3.py',
+            'examples/hello_world4.py'
+            ])
         ]
     )

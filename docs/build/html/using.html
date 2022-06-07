@@ -1420,7 +1420,7 @@ this returns immediately with the <cite>receipt</cite>.</p></li>
 you need to compile it before it can be deployed on the blockchain.</p>
 <p>You use the Solidity compiler, <code class="docutils literal notranslate"><span class="pre">solc.exe</span></code>, to create two output files
 and store them in the directory named in the environment variable,
-<code class="docutils literal notranslate"><span class="pre">SIMPLETH_ARTIFACT_DIR</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">SIMPLETH_ARTIFACTS_DIR</span></code>.</p>
 <p>After a successful compile, the contract is ready to deploy.</p>
 <section id="using-solc">
 <h3>Using solc<a class="headerlink" href="#using-solc" title="Permalink to this headline"></a></h3>
@@ -1428,7 +1428,7 @@ and store them in the directory named in the environment variable,
 ready to deploy by <code class="docutils literal notranslate"><span class="pre">simpleth</span></code>:</p>
 <div class="literal-block-wrapper docutils container" id="id21">
 <div class="code-block-caption"><span class="caption-text">Command to compile a smart contract for use by simpleth</span><a class="headerlink" href="#id21" title="Permalink to this code"></a></div>
-<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">solc --abi --bin --optimize --overwrite -o &lt;ARTIFACT_DIR&gt; &lt;CONTRACT&gt;</span>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">solc --abi --bin --optimize --overwrite -o &lt;ARTIFACTS_DIR&gt; &lt;CONTRACT&gt;</span>
 </pre></div>
 </div>
 </div>
@@ -1445,7 +1445,7 @@ file to compile</p></li>
 </ul>
 <div class="literal-block-wrapper docutils container" id="id22">
 <div class="code-block-caption"><span class="caption-text">Example of compiling the Test.sol contract</span><a class="headerlink" href="#id22" title="Permalink to this code"></a></div>
-<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="gp">$ </span>solc --abi --bin --optimize --overwrite -o %SIMPLETH_ARTIFACT_DIR% contracts<span class="se">\T</span>est.sol
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="gp">$ </span>solc --abi --bin --optimize --overwrite -o %SIMPLETH_ARTIFACTS_DIR% contracts<span class="se">\T</span>est.sol
 <span class="linenos">2</span><span class="go">Compiler run successful. Artifact(s) can be found in directory &quot;&lt;path to simpleth&gt;\simpleth\artifacts&quot;.</span>
 </pre></div>
 </div>
@@ -1468,7 +1468,7 @@ for compiler details.</p>
 <h2>Artifact directory<a class="headerlink" href="#artifact-directory" title="Permalink to this headline"></a></h2>
 <p>The artifact directory is crucial to <code class="docutils literal notranslate"><span class="pre">simpleth</span></code>. It holds the information
 about compiled contracts for the <code class="xref py py-class docutils literal notranslate"><span class="pre">Contract</span></code> methods to use. The
-environment variable, <code class="docutils literal notranslate"><span class="pre">SIMPLETH_ARTIFACT_DIR</span></code>, stores the path to the
+environment variable, <code class="docutils literal notranslate"><span class="pre">SIMPLETH_ARTIFACTS_DIR</span></code>, stores the path to the
 directory.</p>
 <p>There are up to five files for each contract stored in the artifact directory.
 All files have <code class="docutils literal notranslate"><span class="pre">&lt;contract&gt;</span></code> as the filename. The suffixes are explained
@@ -1545,7 +1545,7 @@ of the deployed contract.</p>
 You will not be able to access that installed instance of the contract.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>If you do not set <code class="docutils literal notranslate"><span class="pre">SIMPLETH_ARTIFACT_DIR</span></code>, it will default to, <code class="docutils literal notranslate"><span class="pre">.</span></code>,
+<p>If you do not set <code class="docutils literal notranslate"><span class="pre">SIMPLETH_ARTIFACTS_DIR</span></code>, it will default to, <code class="docutils literal notranslate"><span class="pre">.</span></code>,
 the current working directory.</p>
 </div>
 </section>

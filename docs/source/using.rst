@@ -1360,7 +1360,7 @@ you need to compile it before it can be deployed on the blockchain.
 
 You use the Solidity compiler, ``solc.exe``, to create two output files
 and store them in the directory named in the environment variable,
-``SIMPLETH_ARTIFACT_DIR``.
+``SIMPLETH_ARTIFACTS_DIR``.
 
 After a successful compile, the contract is ready to deploy.
 
@@ -1372,7 +1372,7 @@ ready to deploy by ``simpleth``:
 .. code-block:: shell-session
    :caption: Command to compile a smart contract for use by simpleth
 
-   solc --abi --bin --optimize --overwrite -o <ARTIFACT_DIR> <CONTRACT>
+   solc --abi --bin --optimize --overwrite -o <ARTIFACTS_DIR> <CONTRACT>
 
 Where:
 
@@ -1390,7 +1390,7 @@ Where:
    :caption: Example of compiling the Test.sol contract
    :linenos:
 
-   $ solc --abi --bin --optimize --overwrite -o %SIMPLETH_ARTIFACT_DIR% contracts\Test.sol
+   $ solc --abi --bin --optimize --overwrite -o %SIMPLETH_ARTIFACTS_DIR% contracts\Test.sol
    Compiler run successful. Artifact(s) can be found in directory "<path to simpleth>\simpleth\artifacts".
 
 .. note::
@@ -1404,11 +1404,13 @@ Where:
     for compiler details.
 
 
+.. artifact_directory_label:
+
 Artifact directory
 ******************
 The artifact directory is crucial to ``simpleth``. It holds the information
 about compiled contracts for the :class:`Contract` methods to use. The
-environment variable, ``SIMPLETH_ARTIFACT_DIR``, stores the path to the
+environment variable, ``SIMPLETH_ARTIFACTS_DIR``, stores the path to the
 directory.
 
 There are up to five files for each contract stored in the artifact directory.
@@ -1467,5 +1469,5 @@ If you destroy an `.addr` file, that contract is lost to ``simpleth``.
 You will not be able to access that installed instance of the contract.
 
 .. warning::
-   If you do not set ``SIMPLETH_ARTIFACT_DIR``, it will default to, ``.``,
+   If you do not set ``SIMPLETH_ARTIFACTS_DIR``, it will default to, ``.``,
    the current working directory.

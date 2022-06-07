@@ -1,1 +1,8 @@
-v0.1.16, 6/6/2022 -- Initial release.
+0.1.16, June 6, 2022
+      Initial release.
+
+0.1.22, June 7, 2022
+      Update Installing.rst with contracts directory, rewrite verify directories,
+      rewrite set env var, update confirm installation.
+      Add contracts to package data files.
+      Rename ABSTRACT_DIR constants to ABSTRACTS_DIR to match directory name.

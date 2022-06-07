@@ -43,7 +43,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#install-ganache">1) Install Ganache</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-simpleth-package">2) Install simpleth package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#set-environment-variable">3) Set environment variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#verify-directories">3) Verify directories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#set-artifacts-environment-variable">3) Set artifacts environment variable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#download-solidity-compiler">4) Download Solidity compiler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#confirm-installation">5) Confirm installation</a></li>
 </ul>
@@ -101,9 +102,76 @@ the <code class="docutils literal notranslate"><span class="pre">Download</span>
 </div>
 <img alt="_images/section_separator.png" src="_images/section_separator.png" />
 </section>
-<section id="set-environment-variable">
-<h2>3) Set environment variable<a class="headerlink" href="#set-environment-variable" title="Permalink to this headline"></a></h2>
-<p>Set <code class="docutils literal notranslate"><span class="pre">SIMPLETH_ARTIFACT_DIR</span></code> to <code class="docutils literal notranslate"><span class="pre">&lt;path</span> <span class="pre">to</span> <span class="pre">project&gt;/simpleth/artifacts</span></code></p>
+<section id="verify-directories">
+<h2>3) Verify directories<a class="headerlink" href="#verify-directories" title="Permalink to this headline"></a></h2>
+<p>Besides installing <code class="docutils literal notranslate"><span class="pre">simpleth</span></code>, ` pip` creates three directories for
+your use:</p>
+<ol class="arabic simple">
+<li><p><strong>artifacts</strong> - smart contract-related files that are needed
+when deploying or using the contracts.</p></li>
+<li><p><strong>examples</strong> - Python programs used for the <cite>Hello Worlds</cite> and
+one program that you will see in the <em>Using</em> document.</p></li>
+<li><p><strong>contracts</strong> - Solidity source code for <cite>Hello Worlds</cite> and
+<cite>Test</cite> contracts.</p></li>
+</ol>
+<p><cite>pip</cite> places these directories in your Python <code class="docutils literal notranslate"><span class="pre">sys.prefix</span></code> directory.</p>
+<p>Let’s check for the presence of the directories. (Note, your path will
+be different than the one shown.)</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Use Python interpreter to get sys.prefix</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp"> $ </span>python
+
+<span class="go"> &gt;&gt;&gt; import sys</span>
+<span class="go"> &gt;&gt;&gt; sys.prefix</span>
+<span class="go"> &#39;C:\\Users\\snewe\\OneDrive\\Desktop\\simpleth-test\\venv&#39;</span>
+<span class="go"> &gt;&gt;&gt; exit()</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Use DOS Window to check for examples and artifacts</span><a class="headerlink" href="#id2" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp"> $ </span><span class="nb">cd</span> C:<span class="se">\\</span>Users<span class="se">\\</span>snewe<span class="se">\\</span>OneDrive<span class="se">\\</span>Desktop<span class="se">\\</span>simpleth-test<span class="se">\\</span>venv
+
+<span class="gp"> $ </span>C:<span class="se">\U</span>sers<span class="se">\s</span>newe<span class="se">\O</span>neDrive<span class="se">\D</span>esktop<span class="se">\s</span>impleth-test<span class="se">\v</span>env&gt;dir
+<span class="go"> ... snip ...</span>
+<span class="go"> TODO - show contracts</span>
+<span class="go"> 06/06/2022  03:43 PM    &lt;DIR&gt;          artifacts</span>
+<span class="go"> 06/06/2022  03:34 PM    &lt;DIR&gt;          examples</span>
+<span class="go"> ... snip ...</span>
+</pre></div>
+</div>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+<section id="set-artifacts-environment-variable">
+<h2>3) Set artifacts environment variable<a class="headerlink" href="#set-artifacts-environment-variable" title="Permalink to this headline"></a></h2>
+<p>The environment variable, <code class="docutils literal notranslate"><span class="pre">SIMPLETH_ARTIFACTS_DIR</span></code>, needs to have
+the path to your <code class="docutils literal notranslate"><span class="pre">artifacts</span></code> directory.</p>
+<p>You can set it in a DOS window. This takes effect immediately but only work in that
+window and lasts for the life of that window.</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Set artifacts variable in DOS window</span><a class="headerlink" href="#id3" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp"> $ </span><span class="nb">set</span> <span class="nv">SIMPLETH_ARTIFACTS_DIR</span><span class="o">=</span>C:<span class="se">\U</span>sers<span class="se">\s</span>newe<span class="se">\O</span>neDrive<span class="se">\D</span>esktop<span class="se">\s</span>impleth-test<span class="se">\v</span>env<span class="se">\a</span>rtifacts
+</pre></div>
+</div>
+</div>
+<p>Or, you can make it a permanent setting by editing the <cite>User environment variables</cite>
+to add it and then start a new DOS window to pick up the change.</p>
+<figure class="align-default" id="id4">
+<a class="reference internal image-reference" href="_images/add_artifacts_dir.png"><img alt="Adding artifacts to user environment variables" src="_images/add_artifacts_dir.png" style="width: 500px;" /></a>
+<figcaption>
+<p><span class="caption-text">Screenshot of adding artifacts as a user environment variable</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>After either way of setting it you can confirm it works:</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Confirm the environment variable value</span><a class="headerlink" href="#id5" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp"> $ </span><span class="nb">cd</span> %SIMPLETH_ARTIFACTS_DIR%
+<span class="gp"> $ </span><span class="nb">cd</span>
+<span class="go"> C:\Users\snewe\OneDrive\Desktop\simpleth-test\venv\artifacts</span>
+</pre></div>
+</div>
+</div>
 <img alt="_images/section_separator.png" src="_images/section_separator.png" />
 </section>
 <section id="download-solidity-compiler">
@@ -116,9 +184,7 @@ skip this step.</p>
 to compile your contracts before using <code class="docutils literal notranslate"><span class="pre">simpleth</span></code> to deploy and
 use them.
 Download <code class="docutils literal notranslate"><span class="pre">solc-windows.exe</span></code> from
-<a class="reference external" href="https://github.com/ethereum/solidity/releases">Github page for ethereum//solidity</a>.
-At the start, you might make a subdirectory, <cite>solc</cite>, and save it in that
-directory with the name, <code class="docutils literal notranslate"><span class="pre">solc.exe</span></code>.</p>
+<a class="reference external" href="https://github.com/ethereum/solidity/releases">Github page for ethereum//solidity</a>.</p>
 <p>It is safest to use the version found in
 <a class="reference internal" href="intro.html#sw-levels-label"><span class="std std-ref">tested levels</span></a> .</p>
 <p>If you prefer to use a different version, download
@@ -127,32 +193,47 @@ it and save it as <code class="docutils literal notranslate"><span class="pre">s
 </section>
 <section id="confirm-installation">
 <h2>5) Confirm installation<a class="headerlink" href="#confirm-installation" title="Permalink to this headline"></a></h2>
-<p>Make sure <cite>G anache</cite> is running and try these commands.
+<p>Make sure <cite>Ganache</cite> is running and try these commands.
 If your install is complete, they should run as shown and
 without error messages.</p>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">Confirming simpleth installation</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
-<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp"> $ </span>dir contracts
-<span class="go"> ... see five smart contract files ...</span>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Confirming simpleth installation</span><a class="headerlink" href="#id6" title="Permalink to this code"></a></div>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp"> $ </span><span class="nb">cd</span> %SIMPLETH_ARTIFACTS_DIR%
+<span class="gp"> $ </span>dir
+<span class="go"> ... Solidity compiler output files ...</span>
 
-<span class="gp"> $ </span>dir %SIMPLETH_ARTIFACT_DIR%
-<span class="go"> ... see ten compiler output files ...</span>
+<span class="gp"> $ </span><span class="nb">cd</span> ..<span class="se">\c</span>ontracts
+<span class="gp"> $ </span>dir
+<span class="go"> ... Solidity smart contract programs ...</span>
+
+<span class="gp"> $ </span><span class="nb">cd</span> ..<span class="se">\e</span>xamples
+<span class="gp"> $ </span>dir
+<span class="go"> ... Python example programs ...</span>
 
 <span class="gp"> $ </span>python
-
 <span class="go"> &gt;&gt;&gt; from simpleth import Blockchain</span>
 <span class="go"> &gt;&gt;&gt; Blockchain().block_number</span>
 <span class="go">     ... see sequence number of block at end of chain ...</span>
 <span class="go"> &gt;&gt;&gt; exit()</span>
 
-<span class="gp"> $ </span>solc<span class="se">\s</span>olc --version
+<span class="gp"> $ </span>solc --version
 <span class="go"> ... see the compiler version number ...</span>
 </pre></div>
 </div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <strong>contract files</strong>:</p>
+<p>The <strong>Python example programs</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>event_poll.py</p></li>
+<li><p>hello_world1.py</p></li>
+<li><p>hello_world2.py</p></li>
+<li><p>hello_world3.py</p></li>
+<li><p>hello_world4.py</p></li>
+</ul>
+</div></blockquote>
+<p>The <strong>Solidity smart contract files</strong>:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>HelloWorld1.sol</p></li>
@@ -160,9 +241,10 @@ without error messages.</p>
 <li><p>HelloWorld3.sol</p></li>
 <li><p>HelloWorld4.sol</p></li>
 <li><p>Test.sol</p></li>
+<li><p>TestNeverDeployed.sol</p></li>
 </ul>
 </div></blockquote>
-<p>There are two <strong>compiler output files</strong> for each of the five contracts.
+<p>There are two <strong>Solidity compiler output files</strong> for each smart contract.
 One is suffixed with, <cite>.abi</cite>, and the other with, <cite>.bin</cite>.</p>
 </div>
 <p><strong>Congratulations!</strong> <code class="docutils literal notranslate"><span class="pre">simpleth</span></code> is ready for use.</p>

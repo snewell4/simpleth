@@ -26,9 +26,82 @@ To install:
 
 .. image:: ../images/section_separator.png
 
-3) Set environment variable
-***************************
-Set ``SIMPLETH_ARTIFACT_DIR`` to ``<path to project>/simpleth/artifacts``
+.. verify_directories_label:
+
+3) Verify directories
+*********************
+Besides installing ``simpleth``, ` pip` creates three directories for
+your use:
+
+#. **artifacts** - smart contract-related files that are needed
+   when deploying or using the contracts.
+#. **examples** - Python programs used for the `Hello Worlds` and
+   one program that you will see in the *Using* document.
+#. **contracts** - Solidity source code for `Hello Worlds` and
+   `Test` contracts.
+
+`pip` places these directories in your Python ``sys.prefix`` directory.
+
+Let's check for the presence of the directories. (Note, your path will
+be different than the one shown.)
+
+.. code-block:: shell-session
+   :caption: Use Python interpreter to get sys.prefix
+
+    $ python
+
+    >>> import sys
+    >>> sys.prefix
+    'C:\\Users\\snewe\\OneDrive\\Desktop\\simpleth-test\\venv'
+    >>> exit()
+
+.. code-block:: shell-session
+   :caption: Use DOS Window to check for examples and artifacts
+
+    $ cd C:\\Users\\snewe\\OneDrive\\Desktop\\simpleth-test\\venv
+
+    $ C:\Users\snewe\OneDrive\Desktop\simpleth-test\venv>dir
+    ... snip ...
+    TODO - show contracts
+    06/06/2022  03:43 PM    <DIR>          artifacts
+    06/06/2022  03:34 PM    <DIR>          examples
+    ... snip ...
+
+
+.. image:: ../images/section_separator.png
+
+.. set_artifacts_label:
+
+3) Set artifacts environment variable
+*************************************
+The environment variable, ``SIMPLETH_ARTIFACTS_DIR``, needs to have
+the path to your ``artifacts`` directory.
+
+You can set it in a DOS window. This takes effect immediately but only work in that
+window and lasts for the life of that window.
+
+.. code-block:: shell-session
+   :caption: Set artifacts variable in DOS window
+
+    $ set SIMPLETH_ARTIFACTS_DIR=C:\Users\snewe\OneDrive\Desktop\simpleth-test\venv\artifacts
+
+Or, you can make it a permanent setting by editing the `User environment variables`
+to add it and then start a new DOS window to pick up the change.
+
+.. figure:: ../images/add_artifacts_dir.png
+   :width: 500
+   :alt: Adding artifacts to user environment variables
+
+   Screenshot of adding artifacts as a user environment variable
+
+After either way of setting it you can confirm it works:
+
+.. code-block:: shell-session
+   :caption: Confirm the environment variable value
+
+    $ cd %SIMPLETH_ARTIFACTS_DIR%
+    $ cd
+    C:\Users\snewe\OneDrive\Desktop\simpleth-test\venv\artifacts
 
 
 .. image:: ../images/section_separator.png
@@ -45,8 +118,6 @@ to compile your contracts before using ``simpleth`` to deploy and
 use them.
 Download ``solc-windows.exe`` from
 `Github page for ethereum//solidity <https://github.com/ethereum/solidity/releases>`_.
-At the start, you might make a subdirectory, `solc`, and save it in that
-directory with the name, ``solc.exe``.
 
 It is safest to use the version found in
 :ref:`tested levels <sw_levels_label>` .
@@ -59,40 +130,54 @@ it and save it as ``solc.exe`` in the `solc` directory.
 
 5) Confirm installation
 ***********************
-Make sure `G anache` is running and try these commands.
+Make sure `Ganache` is running and try these commands.
 If your install is complete, they should run as shown and
 without error messages.
 
 .. code-block:: shell-session
    :caption: Confirming simpleth installation
 
-    $ dir contracts
-    ... see five smart contract files ...
+    $ cd %SIMPLETH_ARTIFACTS_DIR%
+    $ dir
+    ... Solidity compiler output files ...
 
-    $ dir %SIMPLETH_ARTIFACT_DIR%
-    ... see ten compiler output files ...
+    $ cd ..\contracts
+    $ dir
+    ... Solidity smart contract programs ...
+
+    $ cd ..\examples
+    $ dir
+    ... Python example programs ...
 
     $ python
-
     >>> from simpleth import Blockchain
     >>> Blockchain().block_number
         ... see sequence number of block at end of chain ...
     >>> exit()
 
-    $ solc\solc --version
+    $ solc --version
     ... see the compiler version number ...
 
 .. note::
 
-    The **contract files**:
+    The **Python example programs**:
+
+        - event_poll.py
+        - hello_world1.py
+        - hello_world2.py
+        - hello_world3.py
+        - hello_world4.py
+
+    The **Solidity smart contract files**:
 
         - HelloWorld1.sol
         - HelloWorld2.sol
         - HelloWorld3.sol
         - HelloWorld4.sol
         - Test.sol
+        - TestNeverDeployed.sol
 
-    There are two **compiler output files** for each of the five contracts.
+    There are two **Solidity compiler output files** for each smart contract.
     One is suffixed with, `.abi`, and the other with, `.bin`.
 
 **Congratulations!** ``simpleth`` is ready for use.

@@ -24,6 +24,12 @@ simpleth.egg-info/SOURCES.txt
 simpleth.egg-info/dependency_links.txt
 simpleth.egg-info/requires.txt
 simpleth.egg-info/top_level.txt
+src/contracts/HelloWorld1.sol
+src/contracts/HelloWorld2.sol
+src/contracts/HelloWorld3.sol
+src/contracts/HelloWorld4.sol
+src/contracts/Test.sol
+src/contracts/TestNeverDeployed.sol
 src/simpleth/__init__.py
 src/simpleth/simpleth.py
 tests/conftest.py

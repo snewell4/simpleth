@@ -690,8 +690,8 @@ def main():
     """Output Natspec comments in contract to Read the Doc format"""
 
     artifact_dir: str = os.environ.get(
-        simpleth.ARTIFACT_DIR_ENV_VAR,
-        simpleth.ARTIFACT_DIR_DEFAULT
+        simpleth.ARTIFACTS_DIR_ENV_VAR,
+        simpleth.ARTIFACTS_DIR_DEFAULT
         )
     rst_dir: str = os.environ.get(
         RST_DIR_ENV_VAR,

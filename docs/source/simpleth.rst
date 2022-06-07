@@ -7,8 +7,8 @@ Simpleth
 Constants
 *********
 .. Constants that users might care about
-.. autodata:: simpleth.ARTIFACT_DIR_DEFAULT
-.. autodata:: simpleth.ARTIFACT_DIR_ENV_VAR
+.. autodata:: simpleth.ARTIFACTS_DIR_DEFAULT
+.. autodata:: simpleth.ARTIFACTS_DIR_ENV_VAR
 .. autodata:: simpleth.GANACHE_URL_DEFAULT
 .. autodata:: simpleth.GANACHE_URL_ENV_VAR
 .. autodata:: simpleth.GAS_LIMIT

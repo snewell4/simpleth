@@ -86,8 +86,8 @@ def main():
     """Compile Solidity contract source file(s) for use by simpleth"""
 
     artifact_dir: str = os.environ.get(
-        simpleth.ARTIFACT_DIR_ENV_VAR,
-        simpleth.ARTIFACT_DIR_DEFAULT
+        simpleth.ARTIFACTS_DIR_ENV_VAR,
+        simpleth.ARTIFACTS_DIR_DEFAULT
         )
     solc_dir: str = os.environ.get(
         SOLC_DIR_ENV_VAR,
