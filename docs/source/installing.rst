@@ -62,9 +62,9 @@ be different than the one shown.)
 
     $ C:\Users\snewe\OneDrive\Desktop\simpleth-test\venv>dir
     ... snip ...
-    TODO - show contracts
-    06/06/2022  03:43 PM    <DIR>          artifacts
-    06/06/2022  03:34 PM    <DIR>          examples
+    06/07/2022  05:26 PM    <DIR>          artifacts
+    06/07/2022  05:26 PM    <DIR>          contracts
+    06/07/2022  05:26 PM    <DIR>          examples
     ... snip ...
 
 

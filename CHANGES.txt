@@ -6,3 +6,11 @@
       rewrite set env var, update confirm installation.
       Add contracts to package data files.
       Rename ABSTRACT_DIR constants to ABSTRACTS_DIR to match directory name.
+
+0.1.23, June 7, 2022
+      Fix RtD Warning, split upload.bat into buildall.bat and upload.bat,
+      Add README.rst to package.
+
+0.1.24, June 7, 2022
+      Forgot to do a makedoc in last version, add new shell session dir listing
+      showing contracts dir in Installing
