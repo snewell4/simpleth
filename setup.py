@@ -1,9 +1,8 @@
 from setuptools import setup
-from pkg_resources import resource_stream
 
 setup(
     name='simpleth',
-    version='0.1.20',
+    version='0.1.21',
     author='Stephen Newell',
     author_email='<snewell4@gmail.com>',
     description='Simplified Ethereum for Python',
@@ -12,10 +11,10 @@ setup(
     url='https://github.com/snewell4/simpleth',
     license='LICENSE.txt',
     packages=['simpleth'],
-    package_dir={'simpleth' : 'src/simpleth'},
-    package_data={'simpleth' : ['examples/event_poll.py']},
-    python_requires='>=3.7',                    # arbitrary choice
-    install_requires=['web3>=5.23.0'],          # adds maxPriorityFeePerGas
+    package_dir={'simpleth': 'src/simpleth'},
+    package_data={'simpleth': ['examples/event_poll.py']},
+    python_requires='>=3.7',              # arbitrary choice
+    install_requires=['web3>=5.23.0'],   # adds maxPriorityFeePerGas
     keywords='blockchain, ganache, Solidity, ethereum, smart-contract, contract',
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -48,7 +47,3 @@ setup(
                 ])
         ]
     )
-
-event_poll_stream = resource_stream('simpleth', 'examples/event_poll.py')
-with open('test_event_poll.py', 'w', encoding='utf-8') as f:
-    f.write(event_poll_stream)
