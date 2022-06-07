@@ -71,3 +71,9 @@ autodoc_default_options = {
 
 pygments_style = 'sphinx'
 
+# 6/7/22
+# from: https://github.com/readthedocs/readthedocs.org/issues/1776
+# Getting: WARNING: html_static_path entry '_static' does not exist
+# in RtD Build raw view.
+
+html_static_path = []

@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='simpleth',
-    version='0.1.22',
+    version='0.1.23',
     author='Stephen Newell',
     author_email='<snewell4@gmail.com>',
     description='Simplified Ethereum for Python',
@@ -13,6 +13,7 @@ setup(
     packages=['simpleth'],
     package_dir={'simpleth': 'src/simpleth'},
     package_data={'simpleth': ['examples/event_poll.py']},
+    include_package_data=True,
     python_requires='>=3.7',              # arbitrary choice
     install_requires=['web3>=5.23.0'],   # adds maxPriorityFeePerGas
     keywords='blockchain, ganache, Solidity, ethereum, smart-contract, contract',

@@ -89,6 +89,7 @@ Or, you can make it a permanent setting by editing the `User environment variabl
 to add it and then start a new DOS window to pick up the change.
 
 .. figure:: ../images/add_artifacts_dir.png
+   :class: with-border
    :width: 500
    :alt: Adding artifacts to user environment variables
 
