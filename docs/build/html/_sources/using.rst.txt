@@ -26,7 +26,7 @@ We'll use it to show ``simpleth`` usage.
     - A copy of the source code is in the document,
       :doc:`Test Contract <TestContract>`.
     - The source file will be found in
-      ``simpleth/contracts/Test.sol``
+      ``<Python sys.prefix dir>/contracts/Test.sol``
 
 
 .. image:: ../images/section_separator.png
@@ -1382,6 +1382,8 @@ Where:
   contracts.
 - ``overwrite`` replaces any existing copies of the files
 - ``o`` specifies the path to the output directory for the files
+- ``<ARTIFACTS_DIR>`` is the path to the directory to hold the compiler
+  output flies.
 - ``<CONTRACT>`` is the path to the Solidity smart contract source
   file to compile
 
@@ -1391,7 +1393,7 @@ Where:
    :linenos:
 
    $ solc --abi --bin --optimize --overwrite -o %SIMPLETH_ARTIFACTS_DIR% contracts\Test.sol
-   Compiler run successful. Artifact(s) can be found in directory "<path to simpleth>\simpleth\artifacts".
+   Compiler run successful. Artifact(s) can be found in directory "<%SIMPLETH_ARTIFACTS_DIR%>".
 
 .. note::
 
@@ -1435,22 +1437,19 @@ below:
    :caption: Example of Test contract files in the artifact directory
    :linenos:
 
-    $ <your path to simpleth>\simpleth\artifacts>dir Test.*
-     Volume in drive C is Windows
-     Volume Serial Number is xxxx-xxxx
-
-     Directory of <your path to simpleth>\simpleth\artifacts
+    $ cd %SIMPLETH_ARTIFACTS_DIR%
+    $ dir Test.*
+    ... snip ....
 
     05/29/2022  09:06 AM            11,865 Test.abi
     05/29/2022  08:02 AM                42 test.addr
     05/29/2022  09:06 AM            12,100 Test.bin
-    05/29/2022  09:06 AM             8,206 Test.docdev
-    05/29/2022  09:06 AM             3,758 Test.docuser
-                   5 File(s)         35,971 bytes
+
 
 .. note::
    - Line 8: Due to DOS file naming convention, upper and lower
-     case does not matter in the file names.
+     case does not matter in the file names. The `.addr` file will
+     be present after a contract is deployed.
 
 When :meth:`deploy` runs, it uses the environment variable to look in
 that directory for the ABI and BIN files needed to install the contract
