@@ -163,22 +163,23 @@ without error messages.
 
     The **Python example programs**:
 
-        - event_poll.py
-        - hello_world1.py
-        - hello_world2.py
-        - hello_world3.py
-        - hello_world4.py
+    - event_poll.py
+    - hello_world1.py
+    - hello_world2.py
+    - hello_world3.py
+    - hello_world4.py
 
     The **Solidity smart contract files**:
 
-        - HelloWorld1.sol
-        - HelloWorld2.sol
-        - HelloWorld3.sol
-        - HelloWorld4.sol
-        - Test.sol
-        - TestNeverDeployed.sol
+    - HelloWorld1.sol
+    - HelloWorld2.sol
+    - HelloWorld3.sol
+    - HelloWorld4.sol
+    - Test.sol
 
-    There are two **Artifact files** for each smart contract.
-    One is suffixed with, `.abi`, and the other with, `.bin`.
+    There are two **Artifact files** for each smart contract:
+
+    #. <contract>.abi
+    #. <contract>.bin
 
 **Congratulations!** ``simpleth`` is ready for use.
