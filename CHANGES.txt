@@ -26,3 +26,6 @@
 
 0.1.28, June 10, 2022
      Do not package TestNeverDeployed contract
+
+0.1.29, June 10, 2022
+     Clean up pylint complaints

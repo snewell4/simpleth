@@ -154,7 +154,7 @@ Created by `web3.py` methods."""
 T_EVENT = Any
 """``Event`` type is an ``AttributeDict``. Use ``Any`` for now."""
 
-T_EVENT_LOG_OBJ = list
+T_EVENT_LOG_OBJ = Any
 """``Event log`` type is a list of T_EVENT items."""
 
 T_FILTER_OBJ = Any
@@ -2177,7 +2177,7 @@ class Contract:
             elif isinstance(exception.args[0], str):
                 value_error_message = exception.args[0]
             elif isinstance(exception.args[0], dict):
-                value_error_message = exception.args[0]["message"]
+                value_error_message = exception.args[0]['message']
             else:
                 value_error_message = str(exception)
 
