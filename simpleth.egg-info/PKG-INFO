@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: simpleth
-Version: 0.1.29
+Version: 0.1.31
 Summary: Simplified Ethereum for Python
 Home-page: https://github.com/snewell4/simpleth
 Author: Stephen Newell
@@ -12,7 +12,7 @@ Classifier: License :: OSI Approved :: MIT License
 Classifier: Programming Language :: Python :: 3
 Classifier: Operating System :: Microsoft :: Windows
 Classifier: Topic :: Other/Nonlisted Topic
-Requires-Python: >=3.7
+Requires-Python: >=3.8
 Description-Content-Type: text/x-rst
 License-File: LICENSE.txt
 

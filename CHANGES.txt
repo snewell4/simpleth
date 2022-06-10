@@ -29,3 +29,6 @@
 
 0.1.29, June 10, 2022
      Clean up pylint complaints
+
+0.1.31, June 10, 2022
+     Updates to build step

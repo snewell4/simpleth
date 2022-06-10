@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='simpleth',
-    version='0.1.29',
+    version='0.1.31',
     author='Stephen Newell',
     author_email='<snewell4@gmail.com>',
     description='Simplified Ethereum for Python',
@@ -12,10 +12,8 @@ setup(
     license='LICENSE.txt',
     packages=['simpleth'],
     package_dir={'simpleth': 'src/simpleth'},
-    package_data={'simpleth': ['examples/event_poll.py']},
-    include_package_data=True,
-    python_requires='>=3.7',              # arbitrary choice
-    install_requires=['web3>=5.23.0'],   # adds maxPriorityFeePerGas
+    python_requires='>=3.8',             # added Type.Final support
+    install_requires=['web3>=5.23.0'],   # added maxPriorityFeePerGas support
     keywords='blockchain, ganache, Solidity, ethereum, smart-contract, contract',
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -35,9 +33,7 @@ setup(
                 'artifacts/HelloWorld4.abi',
                 'artifacts/HelloWorld4.bin',
                 'artifacts/Test.abi',
-                'artifacts/Test.bin',
-                'artifacts/TestNeverDeployed.abi',
-                'artifacts/TestNeverDeployed.bin'
+                'artifacts/Test.bin'
                 ]),
         ('contracts', [
             'src/contracts/HelloWorld1.sol',
