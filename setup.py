@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='simpleth',
-    version='0.1.26',
+    version='0.1.27',
     author='Stephen Newell',
     author_email='<snewell4@gmail.com>',
     description='Simplified Ethereum for Python',
