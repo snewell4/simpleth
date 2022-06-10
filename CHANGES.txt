@@ -32,3 +32,6 @@
 
 0.1.31, June 10, 2022
      Updates to build step
+
+0.1.32, June 10, 2022
+     Installing doc update for readability
