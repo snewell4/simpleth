@@ -21,5 +21,8 @@
 0.1.26, June 10, 2022
      Edits to Using.rst about artifacts and contracts directories
 
-0.1.27, June 10, 2002
+0.1.27, June 10, 2022
      Add Type.Final to constants
+
+0.1.28, June 10, 2022
+     Do not package TestNeverDeployed contract

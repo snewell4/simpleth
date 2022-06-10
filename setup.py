@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='simpleth',
-    version='0.1.27',
+    version='0.1.28',
     author='Stephen Newell',
     author_email='<snewell4@gmail.com>',
     description='Simplified Ethereum for Python',
@@ -44,8 +44,7 @@ setup(
             'src/contracts/HelloWorld2.sol',
             'src/contracts/HelloWorld3.sol',
             'src/contracts/HelloWorld4.sol',
-            'src/contracts/Test.sol',
-            'src/contracts/TestNeverDeployed.sol'
+            'src/contracts/Test.sol'
             ]),
         ('examples', [
             'examples/event_poll.py',
