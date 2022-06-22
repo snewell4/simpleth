@@ -270,12 +270,10 @@ transaction to set these values that is not shown. We’ll see it soon.)</p></li
 <p><a class="reference internal" href="simpleth.html#simpleth.Contract.run_trx" title="simpleth.Contract.run_trx"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.run_trx()</span></code></a> will execute a contract’s
 <code class="docutils literal notranslate"><span class="pre">public</span></code> functions. <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_trx()</span></code> is the typical and easiest
 way to use transactions with <cite>Ganache</cite>.</p>
-<p>You can compare this approach to the upcoming examples on
-<code class="docutils literal notranslate"><span class="pre">Submit</span> <span class="pre">transactions</span></code> and <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">transaction</span> <span class="pre">receipts</span></code>.</p>
 <p>Unlike a function, a transaction does not return any value.
 If you want to confirm a transaction, you might check for
-expected change(s) in contract state variable(s) or for
-the emission of expected event(s).</p>
+expected changes in contract state variables or for
+the emission of expected events.</p>
 <p>Let’s run a few transactions and check the updated
 variable values:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNum&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
@@ -311,6 +309,8 @@ shown the sender does not matter. Two of them were sent by
 <code class="docutils literal notranslate"><span class="pre">user</span></code> and one <code class="docutils literal notranslate"><span class="pre">owner</span></code>.  We’ll be looking at checks in
 a transaction that can restrict which account(s) are permitted
 to run the transaction.</p>
+<p>You can compare this approach to the upcoming examples of
+<code class="docutils literal notranslate"><span class="pre">Submit</span> <span class="pre">transactions</span></code> and <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">transaction</span> <span class="pre">receipts</span></code>.</p>
 </div>
 <img alt="_images/section_separator.png" src="_images/section_separator.png" />
 </section>
@@ -417,8 +417,8 @@ found, as expected.</p></li>
 </div>
 <p>There is no way to be alerted to a new event without checking periodically.
 There is no callback nor pub/sub available.
-A simple approach is to have a program that does one check for the event,
-waits for a period of time, and repeats those two steps. Here’s an example:</p>
+A simple approach is to have a program that checks for the event,
+sleeps for a period of time, and repeats. Here’s an example:</p>
 <div class="literal-block-wrapper docutils container" id="id4">
 <div class="code-block-caption"><span class="caption-text">Python program (event_poll.py) to watch for events</span><a class="headerlink" href="#id4" title="Permalink to this code"></a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="sd">&quot;&quot;&quot;Simple program to periodically check for an event&quot;&quot;&quot;</span>
@@ -458,7 +458,7 @@ any recent events.</p></li>
 If non-zero, tell user how many we found in this polling cycle.</p></li>
 <li><p>Line 23: Sleep until time for the next check.</p></li>
 </ul>
-<p>The program is found in <code class="docutils literal notranslate"><span class="pre">simpleth/examples</span></code> directory.</p>
+<p>The program is found in <code class="docutils literal notranslate"><span class="pre">&lt;Python</span> <span class="pre">sys.prefix&gt;/examples</span></code> directory.</p>
 </div>
 <p>The next two sessions show a single test of <code class="docutils literal notranslate"><span class="pre">event_poll.py</span></code> .
 There are two windows in use:</p>

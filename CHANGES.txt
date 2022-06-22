@@ -35,3 +35,6 @@
 
 0.1.32, June 10, 2022
      Installing doc update for readability
+
+0.1.33, June 22, 2022
+     Wording changes to documentation for accuracy and readability

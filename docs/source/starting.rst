@@ -8,11 +8,11 @@ Solidity smart contracts by themselves can not print a string.
 There is a separate Python program for each
 contract that uses ``simpleth`` get and print the string.
 
-The Python programs are found in ``simpleth/examples``. They
+The Python programs are found in ``<Python sys.prefix dir>/examples``. They
 and the contracts are ready for you to try.
 
 The Solidity source for the contracts is found in
-``simpleth/contracts``.
+``<Python sys.prefix dir>/contracts``.
 
 .. image:: ../images/section_separator.png
 

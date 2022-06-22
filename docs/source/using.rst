@@ -188,13 +188,10 @@ Run transactions
 ``public`` functions. :meth:`run_trx` is the typical and easiest
 way to use transactions with `Ganache`.
 
-You can compare this approach to the upcoming examples on
-``Submit transactions`` and ``Get transaction receipts``.
-
 Unlike a function, a transaction does not return any value.
 If you want to confirm a transaction, you might check for
-expected change(s) in contract state variable(s) or for
-the emission of expected event(s).
+expected changes in contract state variables or for
+the emission of expected events.
 
 Let's run a few transactions and check the updated
 variable values:
@@ -234,6 +231,9 @@ variable values:
    ``user`` and one ``owner``.  We'll be looking at checks in
    a transaction that can restrict which account(s) are permitted
    to run the transaction.
+
+   You can compare this approach to the upcoming examples of
+   ``Submit transactions`` and ``Get transaction receipts``.
 
 .. image:: ../images/section_separator.png
 
@@ -340,8 +340,8 @@ returns events since the first call and so on.
 
 There is no way to be alerted to a new event without checking periodically.
 There is no callback nor pub/sub available.
-A simple approach is to have a program that does one check for the event,
-waits for a period of time, and repeats those two steps. Here's an example:
+A simple approach is to have a program that checks for the event,
+sleeps for a period of time, and repeats. Here's an example:
 
 
 .. code-block:: python
@@ -382,7 +382,7 @@ waits for a period of time, and repeats those two steps. Here's an example:
      If non-zero, tell user how many we found in this polling cycle.
    - Line 23: Sleep until time for the next check.
 
-   The program is found in ``simpleth/examples`` directory.
+   The program is found in ``<Python sys.prefix>/examples`` directory.
 
 The next two sessions show a single test of ``event_poll.py`` .
 There are two windows in use:
