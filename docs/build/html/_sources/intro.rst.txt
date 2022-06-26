@@ -86,6 +86,8 @@ tested versions:
 - Ganache 2.5.4
 - Solidity compiler 0.8.14
 - web3 5.29.1
+- HexBytes 0.2.2
+- attributedict 0.3.0
 
 
 Framework/Tools used

@@ -23,6 +23,10 @@ To install:
 
    $ pip install simpleth
 
+.. note::
+
+   *attributedict* and *HexBytes* will be installed as pre-reqs.
+   *web3.py* uses these for the transaction receipt data structure.
 
 .. image:: ../images/section_separator.png
 
