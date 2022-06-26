@@ -546,7 +546,7 @@ Received(uint256,address,uint256)
 
 **Parameters:**
 
-:amountGwei: of ether received (in gwei)
+:amountWei: of ether received (in wei)
 :sender: address sending the ether
 :timestamp: block time when paid
 

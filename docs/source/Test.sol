@@ -220,12 +220,12 @@ contract Test {
      *
      * @param timestamp block time when paid
      * @param sender address sending the ether
-     * @param amountGwei of ether received (in gwei)
+     * @param amountWei of ether received (in wei)
      */
     event Received(
         uint timestamp,
         address sender,
-        uint amountGwei
+        uint amountWei
     );
 
     /**

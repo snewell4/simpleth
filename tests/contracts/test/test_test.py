@@ -435,7 +435,7 @@ def test_receive():
     b.send_ether(u, c.address, amount)
     e = EventSearch(c, 'Received')
     event = e.get_old()
-    assert event[0]['args']['amountGwei'] == amount and \
+    assert event[0]['args']['amountWei'] == amount and \
         event[0]['args']['sender'] == u
 
 
