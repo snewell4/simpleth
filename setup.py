@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='simpleth',
-    version='0.1.35',
+    version='0.1.36',
     author='Stephen Newell',
     author_email='<snewell4@gmail.com>',
     description='Simplified Ethereum for Python',
@@ -13,7 +13,14 @@ setup(
     packages=['simpleth'],
     package_dir={'simpleth': 'src/simpleth'},
     python_requires='>=3.8',             # added Type.Final support
-    install_requires=['web3>=5.23.0'],   # added maxPriorityFeePerGas support
+    # web3.py 5.23.0 added maxPriorityFeePerGas support
+    # attributeddict 0.3.0 is the latest version; released on 20190310
+    # hexbytes 0.2.2 is the latest version; released on 20210825
+    install_requires=[
+        'web3>=5.23.0',
+        'attributedict>=0.3.0',
+        'hexbytes>=0.2.2'
+        ],
     keywords='blockchain, ganache, Solidity, ethereum, smart-contract, contract',
     classifiers=[
         'Development Status :: 3 - Alpha',
