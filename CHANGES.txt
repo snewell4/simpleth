@@ -1,3 +1,7 @@
+## 0.1.37 - 2022-06-27
+
+     - Add missing HINTS when sending ether: forgetting to include or to cast to int.
+
 ## 0.1.36 - 2022-06-26
 
      - Add attributedict and hexbytes to install_requires

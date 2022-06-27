@@ -71,7 +71,7 @@ ADDRESS_SUFFIX: Final[str] = '.addr'
 # This is the maximum amount of gas any single transaction can consume.
 # If the transaction requires more gas, it will revert. This value is
 # arbitrarily set slightly below the Ganache default value for Gas Limit.
-GAS_LIMIT: Final[int]= 6_000_000
+GAS_LIMIT: Final[int] = 6_000_000
 """Gas limit for a transaction, in units of gas."""
 
 # Currently, has no effect with Ganache. It is valid for mainnet.
@@ -111,7 +111,7 @@ TIME_FORMAT: Final[str] = '%Y-%m-%d %H:%M:%S'
 #
 # Conversion
 #
-PRECISION: Final[int]= 40
+PRECISION: Final[int] = 40
 """Level of precision for `Decimal` values used in Ether denomination
 conversions. Arbitrary value. Consider a better value."""
 
@@ -766,10 +766,11 @@ class Blockchain:
             message: str = (
                 f'ERROR in transfer(): '
                 f'ValueError says: {exception}.\n'
-                f'HINT 1: Amount exceeds sender balance\n'
-                f'HINT 2: Amount must be positive\n'
-                f'HINT 3: Attempt to send to a non-payable contract\n'
-                f'HINT 4: Bad address used for sender or receiver\n'
+                f'HINT1: Amount exceeds sender balance\n'
+                f'HINT2: Amount must be positive\n'
+                f'HINT3: Attempt to send to a non-payable contract\n'
+                f'HINT4: Bad address used for sender or receiver\n'
+                f'HINT5: Did you use convert_ether() and forget to cast Decimal result to int?'
                 )
             raise SimplEthError(message, code='B-070-010') from None
         except TypeError as exception:
@@ -2214,6 +2215,8 @@ class Contract:
                 f'HINT13: Did you attempt to send ether to a non-payable trx?\n'
                 f'HINT14: Was sender a valid account that can submit a trx?\n'
                 f'HINT15: Does sender have enough Ether to run trx?\n'
+                f'HINT16: Does trx require "value_wei=" for payment and you did not include it?\n'
+                f'HINT17: Did you convert_ether() for "value_wei=" and forget to cast Decimal amount to int?\n'
                 )
             raise SimplEthError(
                 message,
