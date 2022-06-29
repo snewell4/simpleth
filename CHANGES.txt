@@ -1,3 +1,7 @@
+## 0.1.38 - 2022-06-27
+
+     - Add HINT about not using a contract to run deploy().
+
 ## 0.1.37 - 2022-06-27
 
      - Add missing HINTS when sending ether: forgetting to include or to cast to int.

@@ -1428,6 +1428,7 @@ class Contract:
             -  if ``constructor_args`` are wrong type or number (**C-030-030**)
             -  if :meth:`deploy` ran out of gas (**C-030-040**)
             -  if ``gas_limit`` exceeded the block limit (**C-030-040**)
+            -  if ``sender`` address is a contract (**C-030-040**)
 
         :example:
 
@@ -1479,10 +1480,12 @@ class Contract:
             message = (
                 f'ERROR in {self.name}().deploy(): '
                 f'ValueError says {exception}\n'
-                f'HINT 1: If you specified a gas limit, did it exceed the '
+                f'HINT1: If you specified a gas limit, did it exceed the '
                 f'block limit?\n'
-                f'HINT 2: You may have run out of gas. Try a higher '
+                f'HINT2: You may have run out of gas. Try a higher '
                 f'gas_limit.\n'
+                f'HINT3: Did a contract run deploy? Only one of the Ganache '
+                f'accounts can do a deploy.\n'
                 )
             raise SimplEthError(message, code='C-030-040') from None
 

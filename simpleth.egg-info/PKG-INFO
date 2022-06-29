@@ -1,11 +1,11 @@
 Metadata-Version: 2.1
 Name: simpleth
-Version: 0.1.37
+Version: 0.1.38
 Summary: Simplified Ethereum for Python
 Home-page: https://github.com/snewell4/simpleth
 Author: Stephen Newell
 Author-email: <snewell4@gmail.com>
-License: LICENSE.txt
+License: MIT
 Keywords: blockchain,ganache,Solidity,ethereum,smart-contract,contract
 Classifier: Development Status :: 3 - Alpha
 Classifier: License :: OSI Approved :: MIT License

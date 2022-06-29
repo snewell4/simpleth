@@ -2,14 +2,14 @@ from setuptools import setup
 
 setup(
     name='simpleth',
-    version='0.1.37',
+    version='0.1.38',
     author='Stephen Newell',
     author_email='<snewell4@gmail.com>',
     description='Simplified Ethereum for Python',
     long_description=open('README.rst').read(),
     long_description_content_type='text/x-rst',
     url='https://github.com/snewell4/simpleth',
-    license='LICENSE.txt',
+    license='MIT',
     packages=['simpleth'],
     package_dir={'simpleth': 'src/simpleth'},
     python_requires='>=3.8',             # added Type.Final support
