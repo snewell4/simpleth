@@ -1,3 +1,7 @@
+## 0.1.38 - 2022-07-02
+
+     - Update docstrings about output filenames using the contract name.
+
 ## 0.1.38 - 2022-06-27
 
      - Add HINT about not using a contract to run deploy().

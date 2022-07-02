@@ -14,6 +14,14 @@ in a subdirectory to the current working directory named, ``solc``.
 A full path default to this directory can be set in the
 environment variable, ``SIMPLETH_SOLC_DIR``.
 
+If there are multiple contracts in a source file, all contracts will be
+compiled, but ony a single success message is displayed. This is a feature
+of ``sole.exe``.
+
+.. note::
+   The outputted file(s) will use the name of the **contract(s)** in
+   the file and not the filename of the *.sol* file.
+
 
 **USAGE**
 
@@ -143,6 +151,7 @@ def main():
             f'{file}'
             )
 #        print(f' DEBUG\n compiler={args.compiler}\n out={args.out_dir}\n options={args.options}\n file={file}\n')
+        print(f' DEBUG: Command =  {command}')
         os.system(command)
 
 
