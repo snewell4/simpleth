@@ -150,8 +150,6 @@ def main():
             f'{args.options} '
             f'{file}'
             )
-#        print(f' DEBUG\n compiler={args.compiler}\n out={args.out_dir}\n options={args.options}\n file={file}\n')
-        print(f' DEBUG: Command =  {command}')
         os.system(command)
 
 
