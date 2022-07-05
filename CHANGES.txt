@@ -1,6 +1,6 @@
 ## 0.1.41 - 2022-07-05
 
-     - Update connect() to add an optional address parameter
+     - Update connect() to add an optional address parameter.
 
 ## 0.1.40 - 2022-07-02
 
