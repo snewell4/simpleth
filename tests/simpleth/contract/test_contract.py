@@ -172,12 +172,8 @@ class TestContractDeployBad:
         assert excp.value.code == 'C-030-040'
 
 
-@pytest.mark.usefixtures('construct_test_contract')
-class TestContractConnectBad:
-    """Test cases for Contract().connect() with bad values"""
-
-    # The good test case has already been run in fixtures
-    # and elsewhere. No test class TestContractConnectGood.
+class TestContractConnectGood:
+    """Test case for Contract().connect() with arg"""
 
     def test_connect_without_args(self, construct_test_contract):
         """Test normal, expected use. Should pass."""
@@ -185,15 +181,40 @@ class TestContractConnectBad:
         contract_address = c.connect()
         assert Blockchain().is_valid_address(contract_address)
 
+    def test_connect_with_contract_arg(self):
+        """Attempt to do a second connect to Test using the address"""
+        c1 = Contract('Test')
+        c2 = Contract('Test')
+        u = Blockchain().address(0)
+        c1.deploy(u, 100)
+        c2.connect(c1.address)
+        assert c2.get_var('initNum') == 100
+
+
+@pytest.mark.usefixtures('construct_test_contract')
+class TestContractConnectBad:
+    """Test cases for Contract().connect() with bad values"""
+
+    def test_connect_with_bad_arg_raises_simpletherr(
+            self,
+            construct_test_contract
+            ):
+        """Using a bad contract address should raise error."""
+        u = Blockchain().address(0)
+        c = construct_test_contract
+        bad_address = 'bad_arg'
+        with pytest.raises(SimplEthError):
+            c.connect(bad_address)
+
     def test_connect_with_unexpected_arg_raises_type_error(
             self,
             construct_test_contract
             ):
-        """Test bad use of putting in an arg. Should raise TypeError."""
+        """Having an extra arg should raise TypeError."""
         c = construct_test_contract
         unexpected_arg = 'bad_arg'
         with pytest.raises(TypeError):
-            c.connect(unexpected_arg)
+            c.connect(c.address, unexpected_arg)
 
 
 @pytest.mark.usefixtures('connect_to_test_contract')
@@ -1071,7 +1092,7 @@ class TestContractRunTrxBad:
             connect_to_test_contract
             ):
         """Test run_trx() for ContractLogicError. This exception
-        is in the list for web3 exceptions and I saw a mention of
+        is in the list for web3 exceptions, and I saw a mention of
         it in forum posts. submit_trx() will catch it and print
         the exception message. I haven't been able to throw it in
         any of my testing.  Just leaving this test case as a placeholder

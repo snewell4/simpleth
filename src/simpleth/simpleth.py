@@ -1349,7 +1349,7 @@ class Contract:
 
         return fcn_return
 
-    def connect(self) -> str:
+    def connect(self, address: str = None) -> str:
         """Enable the use of a deployed contract.
 
         After instantiating a deployed :class:`Contract` object you
@@ -1357,8 +1357,14 @@ class Contract:
         methods for the contract. It is akin to doing a file `open()`
         to use a file.
 
+        :param address: `address` of the contract (**optional**,
+            default: ``None``)
+        :type address: str
         :rtype: str
         :return:  `address` of the contract
+
+        :raises SimplEthError:
+            -  if address arg was invalid (**C-150-010**)
 
         :example:
             >>> from simpleth import Contract
@@ -1374,9 +1380,30 @@ class Contract:
            - You may have multiple instances of the contract on the
              blockchain. :meth:`connect()` will use the most recently
              deployed version.
+           - :meth:`connect(address)` is intended only for use when
+             a contract uses the Solidity operator, ``new`` to deploy
+             the contract. The contract's new address is not in the ``.addr``
+             file for :meth:`connect' to find. So, that new address is
+             supplied directly to :meth:`connect`.
 
         """
-        self._address = self._get_artifact_address()
+
+        if address is None:
+            # no address arg; get from file
+            self._address = self._get_artifact_address()
+        else:
+            # caller provided contract address as an arg
+            if self._blockchain.is_valid_address(address):
+                # address is valid
+                self._address = address
+            else:
+                # invalid address
+                message = (
+                    f'ERROR in {self.name}().connect(): '
+                    f'Address arg for contract {self.name} is invalid.\n'
+                    )
+                raise SimplEthError(message, code='C-150-010') from None
+
         self._web3_contract = self._blockchain.eth.contract(
             address=self.address,
             abi=self.abi
