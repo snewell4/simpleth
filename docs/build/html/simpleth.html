@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simpleth &mdash; simpleth 0.1.40 documentation</title>
+  <title>Simpleth &mdash; simpleth 0.1.41 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -2059,13 +2059,15 @@ for <code class="docutils literal notranslate"><span class="pre">from_denominati
 
 <dl class="py class">
 <dt class="sig sig-object py" id="simpleth.EventSearch">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">EventSearch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#simpleth.Contract" title="simpleth.Contract"><span class="pre">simpleth.Contract</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpleth.EventSearch" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">EventSearch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#simpleth.Contract" title="simpleth.Contract"><span class="pre">simpleth.Contract</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpleth.EventSearch" title="Permalink to this definition"></a></dt>
 <dd><p>Search for an event emitted a by contract.</p>
-<p>Returns the event info for each occurrence of the named event
-within a set of blocks.</p>
+<p>Returns the event info for each occurrence of an event
+within a set of blocks. The search can be narrowed by also specifying
+one, or more, pairs of event args along with desired values.</p>
 <p><strong>PROPERTIES</strong></p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#simpleth.EventSearch.event_name" title="simpleth.EventSearch.event_name"><code class="xref py py-meth docutils literal notranslate"><span class="pre">event_name()</span></code></a> - name of event being sought</p></li>
+<li><p><a class="reference internal" href="#simpleth.EventSearch.event_args" title="simpleth.EventSearch.event_args"><code class="xref py py-meth docutils literal notranslate"><span class="pre">event_args()</span></code></a> - event argument(s) and value(s) being sought</p></li>
 </ul>
 <p><strong>METHODS</strong></p>
 <ul class="simple">
@@ -2081,28 +2083,72 @@ the methods described.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="simpleth.EventSearch.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#simpleth.Contract" title="simpleth.Contract"><span class="pre">simpleth.Contract</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#simpleth.EventSearch.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#simpleth.Contract" title="simpleth.Contract"><span class="pre">simpleth.Contract</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#simpleth.EventSearch.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Create instance to search for the event emitted by the contract.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>contract</strong> (<em>object</em>) – <a class="reference internal" href="#simpleth.Contract" title="simpleth.Contract"><code class="xref py py-class docutils literal notranslate"><span class="pre">Contract</span></code></a> object</p></li>
 <li><p><strong>event_name</strong> (<em>str</em>) – name of event defined in the contract</p></li>
+<li><p><strong>event_args</strong> (<em>dict</em><em> | </em><em>None</em>) – event arg(s) and value(s) to search for. Specified
+as a dictionary with each item having an event arg name as a
+string for the key and the value to search for being the
+dictionary value. Multiple entries are allowed. They are ANDed.
+(<strong>optional</strong>, default: None)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dt class="field-even">Usage</dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">event_name</span></code> is not found in the <code class="docutils literal notranslate"><span class="pre">contract</span></code> (<strong>E-010-010</strong>)</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">event_args</span></code> is not a dictionary (<strong>E-010-020</strong>)</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">event_args</span></code> has an unknown or misspelled event argument
+name (<strong>E-010-030</strong>)</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">event_args</span></code> has an event value with the wrong type.
+(<strong>E-010-040</strong>)</p></li>
 </ul>
 </p>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Contract</span><span class="p">,</span> <span class="n">EventSearch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">addr</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e1</span> <span class="o">=</span> <span class="n">EventSearch</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;NumsStored&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e2</span> <span class="o">=</span> <span class="n">EventSearch</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;NumsStored&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;num0&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e3</span> <span class="o">=</span> <span class="n">EventSearch</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;NumsStored&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;num0&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;num1&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e1</span>    
+<span class="go">&lt;simpleth.EventSearch object at 0x00000207818D9F00&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e2</span>    
+<span class="go">&lt;simpleth.EventSearch object at 0x000001C676C6BFD0&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e3</span>    
+<span class="go">&lt;simpleth.EventSearch object at 0x000001C67460D900&gt;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="simpleth.EventSearch.event_args">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">event_args</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simpleth.EventSearch.event_args" title="Permalink to this definition"></a></dt>
+<dd><p>Return the event parameter names and values used for the search.</p>
+<dl class="field-list">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>event args used for the search, if any were specified.</p>
 </dd>
 <dt class="field-odd">Example</dt>
 <dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Contract</span><span class="p">,</span> <span class="n">EventSearch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">addr</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="n">EventSearch</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;NumsStored&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="n">EventSearch</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;NumsStored&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;num2&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">e</span>    
 <span class="go">&lt;simpleth.EventSearch object at 0x00000207818D9F00&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span><span class="o">.</span><span class="n">event_args</span>    
+<span class="go">{&#39;num2&#39;: 2}</span>
 </pre></div>
 </div>
 </dd>
@@ -2142,6 +2188,9 @@ the methods described.</p>
 <p>The first call checks for the event in the blocks mined
 since <code class="docutils literal notranslate"><span class="pre">Event()</span></code> was created. Each subsequent call
 checks for the event in the blocks mined since the previous call.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">EventSearch</span></code> specifed <code class="docutils literal notranslate"><span class="pre">event_args</span></code>, the search will be
+narrowed to events matching the <code class="docutils literal notranslate"><span class="pre">event_name</span></code> having the specified
+event args with event values.</p>
 <dl class="field-list">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>list</p>
@@ -2198,25 +2247,19 @@ emitted by this contract.</p>
 <dt class="sig sig-object py" id="simpleth.EventSearch.get_old">
 <span class="sig-name descname"><span class="pre">get_old</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_block</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_block</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#simpleth.EventSearch.get_old" title="Permalink to this definition"></a></dt>
 <dd><p>Search previously mined blocks for a specific event.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">EventSearch</span></code> specifed <code class="docutils literal notranslate"><span class="pre">event_args</span></code>, the search will be
+narrowed to events matching the <code class="docutils literal notranslate"><span class="pre">event_name</span></code> having the specified
+event args with event values in the range of mined blocks in the
+args specified in this call to <code class="docutils literal notranslate"><span class="pre">get_old()</span></code>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>from_block</strong> (<em>int</em>) – starting block to search mined blocks</p></li>
-<li><p><strong>to_block</strong> (<em>int</em>) – ending block to search mined blocks</p></li>
+<li><p><strong>to_block</strong> – ending block to search mined blocks</p></li>
 </ul>
 </dd>
-<dt class="field-even">Usage</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">get_old()</span></code> searches the most recently mined block.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">get_old(-x)</span></code> searches the most recently mined <code class="docutils literal notranslate"><span class="pre">x</span></code>
-blocks; where ‘-1’ will search the most recently mined block,
-‘-2’ will search the two` most recently mined blocks, etc.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">get_old(x)</span></code> searches block <cite>x</cite> to the end of the chain.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">get_old(m,n)</span></code> searches block ‘m’ to block ‘n’.</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is not integer (<strong>E-030-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is not integer (<strong>E-030-020</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is used and <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is also specified (<strong>E-030-030</strong>)</p></li>
@@ -2227,15 +2270,15 @@ blocks; where ‘-1’ will search the most recently mined block,
 </ul>
 </p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>list</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
 </dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>one item for each event found; empty list if
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>one item for each event found; empty list if
 no events found</p>
 </dd>
-<dt class="field-even">Example</dt>
-<dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Blockchain</span><span class="p">,</span> <span class="n">Contract</span><span class="p">,</span> <span class="n">EventSearch</span>
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Blockchain</span><span class="p">,</span> <span class="n">Contract</span><span class="p">,</span> <span class="n">EventSearch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">addr</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="n">Blockchain</span><span class="p">()</span><span class="o">.</span><span class="n">address</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>

@@ -26,6 +26,8 @@ import time
 import os
 from typing import List, Optional, Union, Dict, Any, Final
 from decimal import Decimal, getcontext
+
+import eth_abi.exceptions
 from web3 import Web3
 from web3 import exceptions as web3e
 from web3.logs import DISCARD
@@ -2246,7 +2248,8 @@ class Contract:
                 f'HINT14: Was sender a valid account that can submit a trx?\n'
                 f'HINT15: Does sender have enough Ether to run trx?\n'
                 f'HINT16: Does trx require "value_wei=" for payment and you did not include it?\n'
-                f'HINT17: Did you convert_ether() for "value_wei=" and forget to cast Decimal amount to int?\n'
+                f'HINT17: Did you convert_ether() for "value_wei=" and forget to cast Decimal '
+                f'amount to int?\n'
                 )
             raise SimplEthError(
                 message,
@@ -2797,20 +2800,28 @@ class EventSearch:
         :usage:
         :raises SimplEthError:
             -  if ``event_name`` is not found in the ``contract`` (**E-010-010**)
-               and (**E-010-030**)
             -  if ``event_args`` is not a dictionary (**E-010-020**)
             -  if ``event_args`` has an unknown or misspelled event argument
-               name (**E-010-040**)
+               name (**E-010-030**)
+            -  if ``event_args`` has an event value with the wrong type.
+               (**E-010-040**)
         :example:
 
             >>> from simpleth import Contract, EventSearch
             >>> c = Contract('Test')
             >>> addr = c.connect()
-            >>> e = EventSearch(c, 'NumsStored')
-            >>> e    #doctest: +SKIP
+            >>> e1 = EventSearch(c, 'NumsStored')
+            >>> e2 = EventSearch(c, 'NumsStored', {'num0': 10})
+            >>> e3 = EventSearch(c, 'NumsStored', {'num0': 10, 'num1': 20})
+            >>> e1    #doctest: +SKIP
             <simpleth.EventSearch object at 0x00000207818D9F00>
+            >>> e2    #doctest: +SKIP
+            <simpleth.EventSearch object at 0x000001C676C6BFD0>
+            >>> e3    #doctest: +SKIP
+            <simpleth.EventSearch object at 0x000001C67460D900>
 
         .. note:
+           Using ``event_args``:
            -  If ``event_args`` is not specified, ``get_new()`` and ``get_old()``
               will search for events just using the ``event_name``.
            -  If ``events_args`` is specified, ``get_new()`` and ``get_old()``
@@ -2840,28 +2851,27 @@ class EventSearch:
         """Private :class"`Contract' instance"""
         self._event_name: str = event_name
         """Private variable with the searched for event name"""
-        self._event_args: dict = event_args
+        self._event_args: Union[dict, None] = event_args
         """Private variable with the search filter args"""
         self._web3_contract: T_WEB3_CONTRACT_OBJ = \
             self._contract.web3_contract
         """Private :attr:`Contract.web3_contract` instance"""
 
+        if self._event_name not in self._contract.event_names:
+            message: str = (
+                f'ERROR in Event({self._contract.name},{self._event_name}).\n'
+                f'The event: {self._event_name} was not found.\n'
+                f'Valid event_names are: {self._contract.event_names}\n'
+                f'HINT: Check the spelling of your event_name.\n'
+            )
+            raise SimplEthError(message, code='E-010-010') from None
+
         if self._event_args is None:
             # No event args were specified. Just filter for the event name
-            try:
-                self._event_filter: T_FILTER_OBJ = getattr(
-                    self._web3_contract.events,
-                    self._event_name
-                    )().createFilter(fromBlock='latest')
-            except self._contract.web3e.ABIEventFunctionNotFound:
-                message: str = (
-                    f'ERROR in Event({self._contract.name},{self._event_name}).\n'
-                    f'The event: {self._event_name} was not found.\n'
-                    f'Valid event_names are: {self._contract.event_names}\n'
-                    f'HINT: Check the spelling of your event_name.\n'
-                    )
-                raise SimplEthError(message, code='E-010-010') from None
-
+            self._event_filter: T_FILTER_OBJ = getattr(
+                self._web3_contract.events,
+                self._event_name
+                )().createFilter(fromBlock='latest')
         else:
             # Event args and values were specified.
             # Filter for event name and event args.
@@ -2874,47 +2884,46 @@ class EventSearch:
                     )
                 raise SimplEthError(message, code='E-010-020') from None
             try:
-                self._event_filter: T_FILTER_OBJ = getattr(
+                self._event_filter = getattr(
                     self._web3_contract.events,
                     self._event_name
                     )().createFilter(
                         fromBlock='latest',
                         argument_filters=self._event_args
                         )
-            except self._contract.web3e.ABIEventFunctionNotFound:
-                message: str = (
-                    f'ERROR in EventSearch('
-                    f'{self._contract.name}, {self._event_name}, {self._event_args}).\n'
-                    f'The event: {self._event_name} was not found.\n'
-                    f'Valid event_names are: {self._contract.event_names}\n'
-                    f'HINT: Check the spelling of your event_name.\n'
-                    )
-                raise SimplEthError(message, code='E-010-030') from None
             except KeyError as exception:
-                message: str = (
+                message = (
                     f'ERROR in EventSearch('
                     f'{self._contract.name}, {self._event_name}, {self._event_args}).\n'
                     f'KeyError says: {exception}\n'
                     f'HINT: Check spelling of the event arg name.\n'
                     )
+                raise SimplEthError(message, code='E-010-030') from None
+            except eth_abi.exceptions.EncodingTypeError as exception:
+                message = (
+                    f'ERROR in EventSearch('
+                    f'{self._contract.name}, {self._event_name}, {self._event_args}).\n'
+                    f'EncodingTypeError says: {exception}\n'
+                    f'HINT: Check the event value. You are using the wrong type.\n'
+                    )
                 raise SimplEthError(message, code='E-010-040') from None
 
     @property
-    def event_args(self) -> dict:
+    def event_args(self) -> Union[dict, None]:
         """Return the event parameter names and values used for the search.
 
         :rtype: dict
-        :return: event args used for the search
+        :return: event args used for the search, if any were specified.
         :example:
 
             >>> from simpleth import Contract, EventSearch
             >>> c = Contract('Test')
             >>> addr = c.connect()
-            >>> e = EventSearch(c, 'NumsStored', {'num3': 2})
+            >>> e = EventSearch(c, 'NumsStored', {'num2': 2})
             >>> e    #doctest: +SKIP
             <simpleth.EventSearch object at 0x00000207818D9F00>
-            >>> e.event_args
-            {'num3': 2}
+            >>> e.event_args    #doctest: +SKIP
+            {'num2': 2}
 
         """
         return self._event_args

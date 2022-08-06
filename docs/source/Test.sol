@@ -109,6 +109,23 @@ contract Test {
     );
 
     /**
+     * @notice Emitted when nums[] are divided
+     *
+     * @param timestamp block time when nums divided
+     * @param num0 value in nums[0] after dividing
+     * @param num1 value in nums[1] after dividing
+     * @param num2 value in nums[2] after dividing
+     * @param divisor value used to divide nums[]
+     */
+    event NumsDivided(
+        uint timestamp,
+        uint num0,
+        uint num1,
+        uint num2,
+        uint divisor
+    );
+
+    /**
      * @notice Emitted when a selected nums[] is stored
      *
      * @param timestamp block time when nums was updated
@@ -125,13 +142,13 @@ contract Test {
      * @notice Emitted when new nums are stored
      *
      * @param timestamp block time when nums were updated
-     * @param num0 stored in nums[0]
+     * @param num0 stored in nums[0].  It is indexed for some test cases.
      * @param num1 stored in nums[1]
      * @param num2 stored in nums[2]
      */
     event NumsStored(
         uint timestamp,
-        uint num0,
+        uint indexed num0,
         uint num1,
         uint num2
     );
@@ -169,23 +186,6 @@ contract Test {
      * @param timestamp block time after total was stored
      */
     event NumsStoredAndSummed(uint timestamp);
-
-    /**
-     * @notice Emitted when nums[] are divided
-     *
-     * @param timestamp block time when nums divided
-     * @param num0 value in nums[0] after dividing
-     * @param num1 value in nums[1] after dividing
-     * @param num2 value in nums[2] after dividing
-     * @param divisor value used to divide nums[]
-     */
-    event NumsDivided(
-        uint timestamp,
-        uint num0,
-        uint num1,
-        uint num2,
-        uint divisor
-    );
 
     /**
      * @notice Emitted when nums[] total is stored

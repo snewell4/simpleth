@@ -455,7 +455,7 @@ NumsStored(uint256,uint256,uint256,uint256)
 
 **Parameters:**
 
-:num0: stored in nums[0]
+:num0: stored in nums[0].  It is indexed for some test cases.
 :num1: stored in nums[1]
 :num2: stored in nums[2]
 :timestamp: block time when nums were updated

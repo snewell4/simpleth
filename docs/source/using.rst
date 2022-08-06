@@ -493,6 +493,90 @@ eight events emitted. Print them.
 .. image:: ../images/section_separator.png
 
 
+Search for events with event arguments
+**************************************
+:class:`simpleth.EventSearch` has an optional parameter to specify
+``event_args``. This allows you to narrow the search to events with
+a desired value for an event parameter.
+
+You setup and call either :meth:`simpleth.EventSearch.get_old` or
+:meth:`simpleth.EventSearch.get_new` as above. But, they will only
+return events where the the event argument and its value match
+the ``event_args`` you specified in :class:`simpleth.EventSearch`.
+
+You can specify multiple args and values in the ``event_args`` dictionary.
+These will be ANDed together. Your search will return only events that
+meet all the criteria. You should specify the name of an event argument
+only once. If the dictionary repeats a key, only the last one is used.
+
+.. code-block:: python
+  :linenos:
+  :caption: Get old and new events with event args
+
+    >>> import pprint
+    >>> pp = pprint.PrettyPrinter(indent=4)
+    >>> from simpleth import EventSearch, Contract
+    >>> c = Contract('Test')
+    >>> c.connect()
+    >>> all_nums_stored = EventSearch(c, 'NumsStored')
+    >>> pp.pprint(all_nums_stored.get_old(-5))
+    [   {   'args': {'num0': 10, 'num1': 10, 'num2': 10, 'timestamp': 1659807711},
+            'block_number': 6940,
+            'trx_hash': '0xac4da74d96c3854b276c138e9b1984638f1d78d0c0e739973bd669e6cde0de47'},
+        {   'args': {'num0': 10, 'num1': 10, 'num2': 20, 'timestamp': 1659807729},
+            'block_number': 6941,
+            'trx_hash': '0xba5c070b1e39de9520c3f75bef2a3e85d9070d967d5235c427d4c3104125bf5a'},
+        {   'args': {'num0': 10, 'num1': 20, 'num2': 20, 'timestamp': 1659807737},
+            'block_number': 6942,
+            'trx_hash': '0x5158aeb329c780da6bc508ae43cad8cf83a114dd07cd44b101a48b0dcaf246af'},
+        {   'args': {'num0': 20, 'num1': 20, 'num2': 20, 'timestamp': 1659807752},
+            'block_number': 6943,
+            'trx_hash': '0x5d573d5d636b8ebad2d1d9d0e767ff51547e050220b4e53cef54bb5220707b51'}]
+    >>> num0_is_10 = EventSearch(c, 'NumsStored', {'num0': 10})
+    >>> pp.pprint(num0_is_10.get_old(-5))
+    [   {   'args': {'num0': 10, 'num1': 10, 'num2': 10, 'timestamp': 1659807711},
+            'block_number': 6940,
+            'trx_hash': '0xac4da74d96c3854b276c138e9b1984638f1d78d0c0e739973bd669e6cde0de47'},
+        {   'args': {'num0': 10, 'num1': 10, 'num2': 20, 'timestamp': 1659807729},
+            'block_number': 6941,
+            'trx_hash': '0xba5c070b1e39de9520c3f75bef2a3e85d9070d967d5235c427d4c3104125bf5a'},
+        {   'args': {'num0': 10, 'num1': 20, 'num2': 20, 'timestamp': 1659807737},
+            'block_number': 6942,
+            'trx_hash': '0x5158aeb329c780da6bc508ae43cad8cf83a114dd07cd44b101a48b0dcaf246af'}]
+    >>> pp.pprint(num0_is_10.get_old(from_block=6942))
+    [   {   'args': {'num0': 10, 'num1': 20, 'num2': 20, 'timestamp': 1659807737},
+            'block_number': 6942,
+            'trx_hash': '0x5158aeb329c780da6bc508ae43cad8cf83a114dd07cd44b101a48b0dcaf246af'}]
+    >>> num0_is_10_and_num1_is_10 = EventSearch(c, 'NumsStored', {'num0': 10, 'num1':10})
+    >>> pp.pprint(num0_is_10_and_num1_is_10.get_old(-5))
+    [   {   'args': {'num0': 10, 'num1': 10, 'num2': 10, 'timestamp': 1659807711},
+            'block_number': 6940,
+            'trx_hash': '0xac4da74d96c3854b276c138e9b1984638f1d78d0c0e739973bd669e6cde0de47'},
+        {   'args': {'num0': 10, 'num1': 10, 'num2': 20, 'timestamp': 1659807729},
+            'block_number': 6941,
+            'trx_hash': '0xba5c070b1e39de9520c3f75bef2a3e85d9070d967d5235c427d4c3104125bf5a'}]
+    >>> all_nums_are_20 = EventSearch(c, 'NumsStored', {'num0': 10, 'num1':10, 'num2':10})
+    >>> pp.pprint(all_nums_are_20.get_old(-5))
+    [   {   'args': {'num0': 10, 'num1': 10, 'num2': 10, 'timestamp': 1659807711},
+            'block_number': 6940,
+            'trx_hash': '0xac4da74d96c3854b276c138e9b1984638f1d78d0c0e739973bd669e6cde0de47'}]
+    >>>
+    >>> # Use existing EventSearch() object to look for new transactions. None yet.
+    >>> num0_is_10.get_new()
+    []
+    >>> # Run a transaction. Look again. There was one new transaction found.
+    >>> r = c.run_trx(u, 'storeNums', 10, 100, 1000)
+    >>> pp.pprint(num0_is_10.get_new())
+    [   {   'args': {   'num0': 10,
+                        'num1': 100,
+                        'num2': 1000,
+                        'timestamp': 1659808773},
+            'block_number': 6944,
+            'trx_hash': '0x00965e2e84c9b6940ac3129bc1f2a97a720b7b56085e029ad1828a7afc1cb0d3'}]
+
+.. image:: ../images/section_separator.png
+
+
 Transaction results
 *******************
 :class:`simpleth.Results` can be used after a transaction completes

@@ -142,7 +142,7 @@ contract Test {
      * @notice Emitted when new nums are stored
      *
      * @param timestamp block time when nums were updated
-     * @param num0 stored in nums[0]
+     * @param num0 stored in nums[0].  It is indexed for some test cases.
      * @param num1 stored in nums[1]
      * @param num2 stored in nums[2]
      */

@@ -1,3 +1,7 @@
+## 0.1.42 - 2022-08-06
+
+     - Add event_args to EventSearch() as an optional parameter.
+
 ## 0.1.41 - 2022-07-05
 
      - Update connect() to add an optional address parameter.
