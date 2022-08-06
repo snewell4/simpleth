@@ -171,3 +171,21 @@ class TestEventSearchGetNewGood:
         c.run_trx(u, 'storeNums', 3, 3, 3)
         e2 = len(e.get_new())
         assert e0 == 0 and e1 == 1 and e2 == 2
+
+
+class TestEventSearchGetArgsGood:
+    """Test cases for EventSearch().get_args() with good test cases"""
+
+    def test_get_args_range(self):
+        """Run three store_num() trxs. Verify get_old() with range args"""
+        c = Contract('Test')
+        c.connect()
+        u = Blockchain().address(0)
+        e = EventSearch(c, 'NumsStored')
+        c.run_trx(u, 'storeNums', 1, 1, 1)
+        c.run_trx(u, 'storeNums', 2, 2, 2)
+        c.run_trx(u, 'storeNums', 3, 3, 3)
+        n = Blockchain().block_number
+        e1 = len(e.get_args({'num0': 1}, from_block=-2))
+        print(f'DEBUG - e1 = {e1}')
+        assert e1 ==1

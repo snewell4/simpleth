@@ -2756,12 +2756,14 @@ class Convert:
 class EventSearch:
     """Search for an event emitted a by contract.
 
-    Returns the event info for each occurrence of the named event
-    within a set of blocks.
+    Returns the event info for each occurrence of an event
+    within a set of blocks. The search can be narrowed by also specifying
+    one, or more, pairs of event args along with desired values.
 
     **PROPERTIES**
 
     -  :meth:`event_name` - name of event being sought
+    -  :meth:`event_args` - event argument(s) and value(s) being sought
 
     **METHODS**
 
@@ -2777,7 +2779,8 @@ class EventSearch:
     """
     def __init__(self,
                  contract: Contract,
-                 event_name: str
+                 event_name: str,
+                 event_args: Optional[Union[dict, None]] = None
                  ) -> None:
         """Create instance to search for the event emitted by the contract.
 
@@ -2785,8 +2788,19 @@ class EventSearch:
         :type contract: object
         :param event_name: name of event defined in the contract
         :type event_name: str
+        :param event_args: event arg(s) and value(s) to search for. Specified
+            as a dictionary with each item having an event arg name as a
+            string for the key and the value to search for being the
+            dictionary value. Multiple entries are allowed. They are ANDed.
+            (**optional**, default: None)
+        :type event_args: dict | None
+        :usage:
         :raises SimplEthError:
-            - if ``event_name`` is not found in the ``contract`` (**E-010-010**)
+            -  if ``event_name`` is not found in the ``contract`` (**E-010-010**)
+               and (**E-010-030**)
+            -  if ``event_args`` is not a dictionary (**E-010-020**)
+            -  if ``event_args`` has an unknown or misspelled event argument
+               name (**E-010-040**)
         :example:
 
             >>> from simpleth import Contract, EventSearch
@@ -2796,27 +2810,114 @@ class EventSearch:
             >>> e    #doctest: +SKIP
             <simpleth.EventSearch object at 0x00000207818D9F00>
 
+        .. note:
+           -  If ``event_args`` is not specified, ``get_new()`` and ``get_old()``
+              will search for events just using the ``event_name``.
+           -  If ``events_args`` is specified, ``get_new()`` and ``get_old()``
+              will narrow the search to events that match the value(s)
+              specified for event args.
+           -  When specifying ``event_args``, any number of dictionary entries
+              are allowed.
+           -  When multiple ``event_args`` dictionary items are specified, the
+              search will `AND`  them together. There is no way to specify
+              an `OR`. (To do an `OR` you could create mutliple ``EventSearch``
+              objects, each with one of the values for the args you want, and
+              run both searches and combine the resulting event lists.)
+           -  An empty dictionary will search for the ``event_name`` only;
+              same as not specifying that empty dictionary.
+           -  An event name should only be specified once. If you specify it
+              multiple times, only the last entry is used; for example,
+              **{'num0': 10, 'num0': 20}** is the same as **{'num0': 20}**.
+           -  You can have multiple EventSearch() objects at one time for a
+              spcific event, for example:
+              **e_all = EventSearch(c, 'NumsStored')** along with
+              **e_num0_10 - EventSearch(c, 'NumsStored, {'num0': 10}))**.
+              You can then use any number of ``get_new()`` and ``get_old()``
+              with both of them.
+
         """
         self._contract: Contract = contract
         """Private :class"`Contract' instance"""
         self._event_name: str = event_name
         """Private variable with the searched for event name"""
+        self._event_args: dict = event_args
+        """Private variable with the search filter args"""
         self._web3_contract: T_WEB3_CONTRACT_OBJ = \
             self._contract.web3_contract
         """Private :attr:`Contract.web3_contract` instance"""
-        try:
-            self._event_filter: T_FILTER_OBJ = getattr(
-                self._web3_contract.events,
-                self._event_name
-                )().createFilter(fromBlock='latest')
-        except self._contract.web3e.ABIEventFunctionNotFound:
-            message: str = (
-                f'ERROR in Event({self._contract.name},{self._event_name}).\n'
-                f'The event: {self._event_name} was not found.\n'
-                f'Valid event_names: {self._contract.event_names}\n'
-                f'HINT: Check the spelling of your event_name.\n'
-                )
-            raise SimplEthError(message, code='E-010-010') from None
+
+        if self._event_args is None:
+            # No event args were specified. Just filter for the event name
+            try:
+                self._event_filter: T_FILTER_OBJ = getattr(
+                    self._web3_contract.events,
+                    self._event_name
+                    )().createFilter(fromBlock='latest')
+            except self._contract.web3e.ABIEventFunctionNotFound:
+                message: str = (
+                    f'ERROR in Event({self._contract.name},{self._event_name}).\n'
+                    f'The event: {self._event_name} was not found.\n'
+                    f'Valid event_names are: {self._contract.event_names}\n'
+                    f'HINT: Check the spelling of your event_name.\n'
+                    )
+                raise SimplEthError(message, code='E-010-010') from None
+
+        else:
+            # Event args and values were specified.
+            # Filter for event name and event args.
+            if isinstance(self._event_args, dict) is False:
+                message = (
+                    f'ERROR in EventSearch({self.event_name}, {self._event_args}).\n'
+                    f'event_args is optional and if specified, it must be a dictionary \n'
+                    f'HINT: Specify event args and values to search for as: '
+                    f'{{<event arg>: <value searched for>}}.\n'
+                    )
+                raise SimplEthError(message, code='E-010-020') from None
+            try:
+                self._event_filter: T_FILTER_OBJ = getattr(
+                    self._web3_contract.events,
+                    self._event_name
+                    )().createFilter(
+                        fromBlock='latest',
+                        argument_filters=self._event_args
+                        )
+            except self._contract.web3e.ABIEventFunctionNotFound:
+                message: str = (
+                    f'ERROR in EventSearch('
+                    f'{self._contract.name}, {self._event_name}, {self._event_args}).\n'
+                    f'The event: {self._event_name} was not found.\n'
+                    f'Valid event_names are: {self._contract.event_names}\n'
+                    f'HINT: Check the spelling of your event_name.\n'
+                    )
+                raise SimplEthError(message, code='E-010-030') from None
+            except KeyError as exception:
+                message: str = (
+                    f'ERROR in EventSearch('
+                    f'{self._contract.name}, {self._event_name}, {self._event_args}).\n'
+                    f'KeyError says: {exception}\n'
+                    f'HINT: Check spelling of the event arg name.\n'
+                    )
+                raise SimplEthError(message, code='E-010-040') from None
+
+    @property
+    def event_args(self) -> dict:
+        """Return the event parameter names and values used for the search.
+
+        :rtype: dict
+        :return: event args used for the search
+        :example:
+
+            >>> from simpleth import Contract, EventSearch
+            >>> c = Contract('Test')
+            >>> addr = c.connect()
+            >>> e = EventSearch(c, 'NumsStored', {'num3': 2})
+            >>> e    #doctest: +SKIP
+            <simpleth.EventSearch object at 0x00000207818D9F00>
+            >>> e.event_args
+            {'num3': 2}
+
+        """
+        return self._event_args
 
     @property
     def event_name(self) -> str:
@@ -2845,6 +2946,10 @@ class EventSearch:
         The first call checks for the event in the blocks mined
         since ``Event()`` was created. Each subsequent call
         checks for the event in the blocks mined since the previous call.
+
+        If ``EventSearch`` specifed ``event_args``, the search will be
+        narrowed to events matching the ``event_name`` having the specified
+        event args with event values.
 
         :rtype: list
         :return:
@@ -2899,11 +3004,16 @@ class EventSearch:
             ) -> List:
         """Search previously mined blocks for a specific event.
 
+        If ``EventSearch`` specifed ``event_args``, the search will be
+        narrowed to events matching the ``event_name`` having the specified
+        event args with event values in the range of mined blocks in the
+        args specified in this call to ``get_old()``.
+
         :param from_block: starting block to search mined blocks
         :type from_block: int
         :param to_block: ending block to search mined blocks
         :type to_block: int
-        :usage:
+
             -  ``get_old()`` searches the most recently mined block.
             -  ``get_old(-x)`` searches the most recently mined ``x``
                blocks; where '-1' will search the most recently mined block,
@@ -3026,15 +3136,17 @@ class EventSearch:
             _from_block = from_block
             _to_block = to_block
 
-        # CreateFilter should not fail. It was created once before
+        # This CreateFilter should not fail. It was created once before
         # in the constructor. No need to put this line in a try/except.
         event_filter: T_FILTER_OBJ = getattr(
             self._web3_contract.events,
             self._event_name
             )().createFilter(
             fromBlock=_from_block,
-            toBlock=_to_block
+            toBlock=_to_block,
+            argument_filters=self._event_args
             )
+
         filter_list: T_FILTER_LIST = event_filter.get_all_entries()
         return self._create_simple_events(filter_list)
 
