@@ -2797,7 +2797,6 @@ class EventSearch:
             dictionary value. Multiple entries are allowed. They are ANDed.
             (**optional**, default: None)
         :type event_args: dict | None
-        :usage:
         :raises SimplEthError:
             -  if ``event_name`` is not found in the ``contract`` (**E-010-010**)
             -  if ``event_args`` is not a dictionary (**E-010-020**)
@@ -2820,8 +2819,9 @@ class EventSearch:
             >>> e3    #doctest: +SKIP
             <simpleth.EventSearch object at 0x000001C67460D900>
 
-        .. note:
+        .. note::
            Using ``event_args``:
+
            -  If ``event_args`` is not specified, ``get_new()`` and ``get_old()``
               will search for events just using the ``event_name``.
            -  If ``events_args`` is specified, ``get_new()`` and ``get_old()``

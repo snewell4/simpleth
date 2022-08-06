@@ -25,7 +25,7 @@ copyright = '2021-2022, Stephen Newell'
 author = 'Stephen Newell'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1.44'
+release = '0.1.45'
 
 # -- General configuration ---------------------------------------------------
 

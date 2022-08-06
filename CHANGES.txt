@@ -1,3 +1,7 @@
+## 0.1.45 - 2022-08-06
+
+     - Fix missing colon in notes for searching with event args
+
 ## 0.1.44 - 2022-08-06
 
      - Add notes section to Search for events with event arguments
