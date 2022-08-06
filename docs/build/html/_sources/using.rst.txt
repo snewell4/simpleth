@@ -561,10 +561,8 @@ only once. If the dictionary repeats a key, only the last one is used.
             'block_number': 6940,
             'trx_hash': '0xac4da74d96c3854b276c138e9b1984638f1d78d0c0e739973bd669e6cde0de47'}]
     >>>
-    >>> # Use existing EventSearch() object to look for new transactions. None yet.
     >>> num0_is_10.get_new()
     []
-    >>> # Run a transaction. Look again. There was one new transaction found.
     >>> r = c.run_trx(u, 'storeNums', 10, 100, 1000)
     >>> pp.pprint(num0_is_10.get_new())
     [   {   'args': {   'num0': 10,
@@ -574,8 +572,31 @@ only once. If the dictionary repeats a key, only the last one is used.
             'block_number': 6944,
             'trx_hash': '0x00965e2e84c9b6940ac3129bc1f2a97a720b7b56085e029ad1828a7afc1cb0d3'}]
 
-.. image:: ../images/section_separator.png
+.. note::
+   - Line 6: Create an event search to find all `NumsStored`.
+   - Line 7: Get all 'NumsStored' events in last five mined blocks and pretty
+     print them
+   - Line 20: Create a second event search to find events where 'num0' was
+     set to 10.
+   - Line 21: Finds three of those in the last five blocks.
+   - Line 31: Shows how to check if block number 6942 has a transaction
+     that emitted 'NumsStored' with num0 equal to 10. One is found.
+   - Line 35: Shows how to specify multiple arguments/values. Here we want
+     to find StoredNum events have both num1 and num2 equal to 10.
+     There are two in the last five blocks mined.
+   - Line 43: Go a step further and look for events where all three numbers
+     were set to 10. There is one found.
+   - Line 49: Switch to showing how ``get_new()`` operates. We can look
+     for any newly mined transactions where num0 is 10. Line 51 shows that
+     there have been none since `num0_is_10` EventSearch was defined back on
+     line 20.
+   - Line 51: Run a transaction that has num0 equal to 10. (Defining the
+     sender ``u`` is not shown.)
+   - Line 52: As expected. when we check for a new transaction it is
+     returned.
 
+
+.. image:: ../images/section_separator.png
 
 Transaction results
 *******************

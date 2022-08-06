@@ -1,3 +1,7 @@
+## 0.1.44 - 2022-08-06
+
+     - Add notes section to Search for events with event arguments
+
 ## 0.1.43 - 2022-08-06
 
      - git push failed. Retry to push 0.1.42.

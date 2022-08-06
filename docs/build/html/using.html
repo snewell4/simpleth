@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Using &mdash; simpleth 0.1.41 documentation</title>
+  <title>Using &mdash; simpleth 0.1.44 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -630,20 +630,44 @@ only once. If the dictionary repeats a key, only the last one is used.</p>
 <span class="linenos">46</span>          <span class="s1">&#39;block_number&#39;</span><span class="p">:</span> <span class="mi">6940</span><span class="p">,</span>
 <span class="linenos">47</span>          <span class="s1">&#39;trx_hash&#39;</span><span class="p">:</span> <span class="s1">&#39;0xac4da74d96c3854b276c138e9b1984638f1d78d0c0e739973bd669e6cde0de47&#39;</span><span class="p">}]</span>
 <span class="linenos">48</span>  <span class="o">&gt;&gt;&gt;</span>
-<span class="linenos">49</span>  <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Use existing EventSearch() object to look for new transactions. None yet.</span>
-<span class="linenos">50</span>  <span class="o">&gt;&gt;&gt;</span> <span class="n">num0_is_10</span><span class="o">.</span><span class="n">get_new</span><span class="p">()</span>
-<span class="linenos">51</span>  <span class="p">[]</span>
-<span class="linenos">52</span>  <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Run a transaction. Look again. There was one new transaction found.</span>
-<span class="linenos">53</span>  <span class="o">&gt;&gt;&gt;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="linenos">54</span>  <span class="o">&gt;&gt;&gt;</span> <span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">num0_is_10</span><span class="o">.</span><span class="n">get_new</span><span class="p">())</span>
-<span class="linenos">55</span>  <span class="p">[</span>   <span class="p">{</span>   <span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="p">{</span>   <span class="s1">&#39;num0&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-<span class="linenos">56</span>                      <span class="s1">&#39;num1&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
-<span class="linenos">57</span>                      <span class="s1">&#39;num2&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
-<span class="linenos">58</span>                      <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="mi">1659808773</span><span class="p">},</span>
-<span class="linenos">59</span>          <span class="s1">&#39;block_number&#39;</span><span class="p">:</span> <span class="mi">6944</span><span class="p">,</span>
-<span class="linenos">60</span>          <span class="s1">&#39;trx_hash&#39;</span><span class="p">:</span> <span class="s1">&#39;0x00965e2e84c9b6940ac3129bc1f2a97a720b7b56085e029ad1828a7afc1cb0d3&#39;</span><span class="p">}]</span>
+<span class="linenos">49</span>  <span class="o">&gt;&gt;&gt;</span> <span class="n">num0_is_10</span><span class="o">.</span><span class="n">get_new</span><span class="p">()</span>
+<span class="linenos">50</span>  <span class="p">[]</span>
+<span class="linenos">51</span>  <span class="o">&gt;&gt;&gt;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="linenos">52</span>  <span class="o">&gt;&gt;&gt;</span> <span class="n">pp</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">num0_is_10</span><span class="o">.</span><span class="n">get_new</span><span class="p">())</span>
+<span class="linenos">53</span>  <span class="p">[</span>   <span class="p">{</span>   <span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="p">{</span>   <span class="s1">&#39;num0&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+<span class="linenos">54</span>                      <span class="s1">&#39;num1&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+<span class="linenos">55</span>                      <span class="s1">&#39;num2&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+<span class="linenos">56</span>                      <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="mi">1659808773</span><span class="p">},</span>
+<span class="linenos">57</span>          <span class="s1">&#39;block_number&#39;</span><span class="p">:</span> <span class="mi">6944</span><span class="p">,</span>
+<span class="linenos">58</span>          <span class="s1">&#39;trx_hash&#39;</span><span class="p">:</span> <span class="s1">&#39;0x00965e2e84c9b6940ac3129bc1f2a97a720b7b56085e029ad1828a7afc1cb0d3&#39;</span><span class="p">}]</span>
 </pre></div>
 </div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Line 6: Create an event search to find all <cite>NumsStored</cite>.</p></li>
+<li><p>Line 7: Get all ‘NumsStored’ events in last five mined blocks and pretty
+print them</p></li>
+<li><p>Line 20: Create a second event search to find events where ‘num0’ was
+set to 10.</p></li>
+<li><p>Line 21: Finds three of those in the last five blocks.</p></li>
+<li><p>Line 31: Shows how to check if block number 6942 has a transaction
+that emitted ‘NumsStored’ with num0 equal to 10. One is found.</p></li>
+<li><p>Line 35: Shows how to specify multiple arguments/values. Here we want
+to find StoredNum events have both num1 and num2 equal to 10.
+There are two in the last five blocks mined.</p></li>
+<li><p>Line 43: Go a step further and look for events where all three numbers
+were set to 10. There is one found.</p></li>
+<li><p>Line 49: Switch to showing how <code class="docutils literal notranslate"><span class="pre">get_new()</span></code> operates. We can look
+for any newly mined transactions where num0 is 10. Line 51 shows that
+there have been none since <cite>num0_is_10</cite> EventSearch was defined back on
+line 20.</p></li>
+<li><p>Line 51: Run a transaction that has num0 equal to 10. (Defining the
+sender <code class="docutils literal notranslate"><span class="pre">u</span></code> is not shown.)</p></li>
+<li><p>Line 52: As expected. when we check for a new transaction it is
+returned.</p></li>
+</ul>
 </div>
 <img alt="_images/section_separator.png" src="_images/section_separator.png" />
 </section>
