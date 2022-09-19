@@ -7,7 +7,7 @@ from simpleth import Blockchain, \
     Results, \
     EventSearch, \
     Convert, \
-    SimplEthError
+    SimplethError
 
 
 def test_deploy():
@@ -82,7 +82,7 @@ def test_setOwner_with_bad_owner():
     new_owner = Blockchain().address(1)
     c = Contract('test')
     c.connect()
-    with pytest.raises(SimplEthError) as excp:
+    with pytest.raises(SimplethError) as excp:
         c.run_trx(bogus_owner, 'setOwner', new_owner)
     assert excp.value.code == 'C-080-080'
 
@@ -298,7 +298,7 @@ def test_sumTwoNums_by_non_owner():
     u = Blockchain().address(9)
     c = Contract('test')
     c.connect()
-    with pytest.raises(SimplEthError) as excp:
+    with pytest.raises(SimplethError) as excp:
         c.run_trx(u, 'sumTwoNums')
     assert excp.value.code == 'C-080-080'
 
@@ -410,7 +410,7 @@ def test_assertGreaterThan10_fails():
     u = Blockchain().address(0)
     c = Contract('test')
     c.connect()
-    with pytest.raises(SimplEthError) as excp:
+    with pytest.raises(SimplethError) as excp:
         c.run_trx(u, 'assertGreaterThan10', bad_num)
     assert excp.value.code == 'C-080-080'
 
@@ -420,7 +420,7 @@ def test_revertTransaction_reverts():
     u = Blockchain().address(0)
     c = Contract('test')
     c.connect()
-    with pytest.raises(SimplEthError) as excp:
+    with pytest.raises(SimplethError) as excp:
         c.run_trx(u, 'revertTransaction')
     assert excp.value.code == 'C-080-080'
 
@@ -461,6 +461,6 @@ def test_destroy_confirm():
 
     c = Contract('test')
     c.connect()
-    with pytest.raises(SimplEthError) as excp:
+    with pytest.raises(SimplethError) as excp:
         c.get_var('initNum')
     assert excp.value.code == 'C-060-020'

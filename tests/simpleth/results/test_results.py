@@ -3,7 +3,7 @@
 import pytest
 import re
 
-from simpleth import Contract, Results, SimplEthError
+from simpleth import Contract, Results, SimplethError
 import testconstants as constants
 
 
@@ -15,7 +15,7 @@ class TestResultsBadConstructorParams:
         """Check using a bogus receipt value"""
         bogus_contract = 10
         r = run_test_trx_to_store_nums.trx_receipt
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Results(bogus_contract, r)
         assert excp.value.code == 'R-010-010'
 
@@ -23,7 +23,7 @@ class TestResultsBadConstructorParams:
         """Check using a bogus receipt value"""
         bogus_receipt = 10
         c = run_test_trx_to_store_nums.contract
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Results(c, bogus_receipt)
         assert excp.value.code == 'R-010-020'
 

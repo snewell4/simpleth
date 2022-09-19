@@ -228,7 +228,7 @@ storeNumsAndDivide(uint256,uint256,uint256,uint256)
 ---------------------------------------------------
 :Purpose:  Stores the three args in nums[] and call sumNums() to divide nums
 
-:Notes:  Used to test calling a function that fails
+:Notes:  There is no test to check for a _divisor of 0. Zero is used in testing for this transaction to call another transaction that fails.
 
 **Parameters:**
 

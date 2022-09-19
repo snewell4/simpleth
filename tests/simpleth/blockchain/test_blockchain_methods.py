@@ -1,7 +1,7 @@
 """Test Blockchain() methods"""
 import pytest
 import re
-from simpleth import Contract, Blockchain, SimplEthError
+from simpleth import Contract, Blockchain, SimplethError
 
 
 class TestBlockchainMethodsGood:
@@ -135,8 +135,8 @@ class TestBlockchainMethodsBad:
                              [-1, len(Blockchain().accounts), 'xxx']
                              )
     def test_address_raises_b_020_010(self, bad_acct_num):
-        """address() with bad account_num raises SimplEthError"""
-        with pytest.raises(SimplEthError) as excp:
+        """address() with bad account_num raises SimplethError"""
+        with pytest.raises(SimplethError) as excp:
             Blockchain().address(bad_acct_num)
         assert excp.value.code == 'B-020-010'
 
@@ -156,16 +156,16 @@ class TestBlockchainMethodsBad:
             Blockchain().balance()
 
     def test_balance_bad_address_type_raises_b_030_010(self):
-        """balance() with bad address type raises SimplEthError"""
+        """balance() with bad address type raises SimplethError"""
         bad_addr_type = 200
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Blockchain().balance(bad_addr_type)
         assert excp.value.code == 'B-030-010'
 
     def test_balance_bad_address_raises_b_030_020(self):
-        """balance() with bad address raises SimplEthError"""
+        """balance() with bad address raises SimplethError"""
         bad_addr = '0xF0E9C98500f34BE7C7c4a99700e4c56C0D9d6e6'
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Blockchain().balance(bad_addr)
         assert excp.value.code == 'B-030-020'
 
@@ -185,16 +185,16 @@ class TestBlockchainMethodsBad:
             ):
         print(Blockchain().block_number)
         print(bad_block_num)
-        """block_time_epoch() with bad block_num raises SimplEthError"""
-        with pytest.raises(SimplEthError) as excp:
+        """block_time_epoch() with bad block_num raises SimplethError"""
+        with pytest.raises(SimplethError) as excp:
             Blockchain().block_time_epoch(bad_block_num)
         assert excp.value.code == 'B-040-010'
 
     def test_block_time_with_bad_block_number_raises_b_050_010(self):
-        """block_time_string() with bad block_number type raises SimplEthError"""
+        """block_time_string() with bad block_number type raises SimplethError"""
         block_num = Blockchain().block_number + 10
         time_format_string = "%M"
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Blockchain().block_time_string(
                 block_num,
                 time_format_string
@@ -202,10 +202,10 @@ class TestBlockchainMethodsBad:
         assert excp.value.code == 'B-050-010'
 
     def test_block_time_with_bad_time_format_type_raises_b_050_020(self):
-        """block_time_string() with bad block_format type raises SimplEthError"""
+        """block_time_string() with bad block_format type raises SimplethError"""
         block_num = Blockchain().block_number
         bad_format_type = 100
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Blockchain().block_time_string(
                 block_num,
                 bad_format_type
@@ -217,15 +217,15 @@ class TestBlockchainMethodsBad:
                               'xxx', 123]
                              )
     def test_is_valid_address_returns_false(self, bad_address):
-        """address() with bad account_num raises SimplEthError"""
+        """address() with bad account_num raises SimplethError"""
         assert Blockchain().is_valid_address(bad_address) is False
 
     def test_send_ether_with_too_big_amount_raises_b_070_010(self):
-        """send_ether() with amount > from balance raises SimplEthError"""
+        """send_ether() with amount > from balance raises SimplethError"""
         user6 = Blockchain().address(6)
         user7 = Blockchain().address(7)
         too_big_amount = Blockchain().balance(user6) + 1
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Blockchain().send_ether(user6, user7, too_big_amount)
         assert excp.value.code == 'B-070-010'
 
@@ -236,11 +236,11 @@ class TestBlockchainMethodsBad:
             self,
             bad_address
             ):
-        """send_ether() with bad address for from raises SimplEthError"""
+        """send_ether() with bad address for from raises SimplethError"""
         bad_address_user6 = bad_address
         user7 = Blockchain().address(7)
         amount = 2_000_000_000
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Blockchain().send_ether(bad_address_user6, user7, amount)
         assert excp.value.code == 'B-070-010'
 
@@ -251,11 +251,11 @@ class TestBlockchainMethodsBad:
             self,
             bad_address
             ):
-        """send_ether() with bad address for to raises SimplEthError"""
+        """send_ether() with bad address for to raises SimplethError"""
         user6 = Blockchain().address(6)
         bad_address_user7 = bad_address
         amount = 2_000_000_000
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Blockchain().send_ether(user6, bad_address_user7, amount)
         assert excp.value.code == 'B-070-010'
 
@@ -266,50 +266,50 @@ class TestBlockchainMethodsBad:
             self,
             bad_address
             ):
-        """send_ethers() with bad address for from raises SimplEthError"""
+        """send_ethers() with bad address for from raises SimplethError"""
         bad_address_user6 = bad_address
         user7 = Blockchain().address(7)
         amount = 2_000_000_000
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Blockchain().send_ether(bad_address_user6, user7, amount)
         assert excp.value.code == 'B-070-010'
 
     def test_send_ether_with_bad_type_to_raises_b_070_020(self):
-        """send_ether() with bad address for to raises SimplEthError"""
+        """send_ether() with bad address for to raises SimplethError"""
         user6 = Blockchain().address(6)
         bad_type_user7 = 123456
         amount = 2_000_000_000
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Blockchain().send_ether(user6, bad_type_user7, amount)
         assert excp.value.code == 'B-070-020'
 
     def test_send_ether_with_bad_type_from_raises_b_070_020(self):
-        """send_ether() with bad address for to raises SimplEthError"""
+        """send_ether() with bad address for to raises SimplethError"""
         bad_type_user6 = 123456
         user7 = Blockchain().address(7)
         amount = 2_000_000_000
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Blockchain().send_ether(bad_type_user6, user7, amount)
         assert excp.value.code == 'B-070-020'
 
     def test_send_ether_with_float_amount_raises_b_070_020(self):
-        """send_ether() with a float amount raises SimplEthError"""
+        """send_ether() with a float amount raises SimplethError"""
         user6 = Blockchain().address(6)
         user7 = Blockchain().address(7)
         float_amount = 2_000_000_000.00
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Blockchain().send_ether(user6, user7, float_amount)
         assert excp.value.code == 'B-070-020'
 
     def test_send_ether_to_nonpayable_contract_raises_b_070_020(self):
-        """send_ether() to a non-payable account raises SimplEthError"""
+        """send_ether() to a non-payable account raises SimplethError"""
         # HelloWorld1 is a non-payable contract. User will attempt to
         # send ether to it.
         user0 = Blockchain().address(0)
         hello_contract = Contract('HelloWorld1')
         hello_contract.deploy(user0)
         amount = 2_000_000_000
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Blockchain().send_ether(user0, hello_contract, amount)
         assert excp.value.code == 'B-070-020'
 
@@ -320,15 +320,15 @@ class TestBlockchainMethodsBad:
             self,
             bad_hash
             ):
-        """transaction() with bad trx_hash raises SimplEthError"""
-        with pytest.raises(SimplEthError) as excp:
+        """transaction() with bad trx_hash raises SimplethError"""
+        with pytest.raises(SimplethError) as excp:
             Blockchain().transaction(bad_hash)
         assert excp.value.code == 'B-080-010'
 
     def test_transaction_with_non_hex_hash_raises_b_080_020(self):
-        """transaction() with trx_hash that is not a hex value raises SimplEthError"""
+        """transaction() with trx_hash that is not a hex value raises SimplethError"""
         non_hex_trx_hash = 'non_hex string'
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Blockchain().transaction(non_hex_trx_hash)
         assert excp.value.code == 'B-080-020'
 
@@ -338,9 +338,9 @@ class TestBlockchainMethodsBad:
             Blockchain().trx_count()
 
     def test_trx_count_with_bad_address_type_raises_b_090_010(self):
-        """trx_count() with bad address raises SimplEthError"""
+        """trx_count() with bad address raises SimplethError"""
         bad_address_type = 200
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Blockchain().trx_count(bad_address_type)
         assert excp.value.code == 'B-090-010'
 
@@ -351,8 +351,8 @@ class TestBlockchainMethodsBad:
             self,
             bad_address
             ):
-        """trx_count() with bad address raises SimplEthError"""
-        with pytest.raises(SimplEthError) as excp:
+        """trx_count() with bad address raises SimplethError"""
+        with pytest.raises(SimplethError) as excp:
             Blockchain().trx_count(bad_address)
         assert excp.value.code == 'B-090-020'
 
@@ -363,15 +363,15 @@ class TestBlockchainMethodsBad:
             self,
             bad_hash
             ):
-        """trx_sender() with bad trx_hash raises SimplEthError"""
-        with pytest.raises(SimplEthError) as excp:
+        """trx_sender() with bad trx_hash raises SimplethError"""
+        with pytest.raises(SimplethError) as excp:
             Blockchain().trx_sender(bad_hash)
         assert excp.value.code == 'B-080-010'
 
     def test_trx_sender_with_non_hex_hash_raises_b_080_020(self):
-        """trx_sender() with trx_hash that is not a hex value raises SimplEthError"""
+        """trx_sender() with trx_hash that is not a hex value raises SimplethError"""
         non_hex_trx_hash = 'non_hex string'
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             Blockchain().transaction(non_hex_trx_hash)
         assert excp.value.code == 'B-080-020'
     

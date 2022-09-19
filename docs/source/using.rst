@@ -818,14 +818,14 @@ epoch time:
 
 simpleth exceptions
 *******************
-:class:`simpleth.SimplEthError` throws exceptions for errors in all
+:class:`simpleth.SimplethError` throws exceptions for errors in all
 ``simpleth`` classes. The intent is to let you code to catch this
 single exception to simplify error-handling and provide hints to
 quickly identify the cause of the error.
 
 .. code-block:: python
    :linenos:
-   :caption: Getting a SimplEthError in the Python interpreter
+   :caption: Getting a SimplethError in the Python interpreter
 
     >>> c = Contract('bogus')
     Traceback (most recent call last):
@@ -833,8 +833,8 @@ quickly identify the cause of the error.
       File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 943, in __init__
         self._abi: List = self._get_artifact_abi()
       File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 2151, in _get_artifact_abi
-        raise SimplEthError(message, code='C-100-010') from None
-    simpleth.SimplEthError: [C-100-010] ERROR in bogus()._get_artifact_abi(). Unable to read ABI file.
+        raise SimplethError(message, code='C-100-010') from None
+    simpleth.SimplethError: [C-100-010] ERROR in bogus()._get_artifact_abi(). Unable to read ABI file.
     Full path: C:/Users/snewe/OneDrive/Desktop/simpleth/artifacts/bogus.abi
     Contract name of "bogus" is bad.
     HINT 1: Check the spelling of the contract name.
@@ -844,16 +844,16 @@ quickly identify the cause of the error.
 
    - Line 1: Cause an exception with a bad `contract` name. This is the
      typical type of message you will see when using the Python interpreter.
-   - Line 8: This is the start of the ``SimplEthError`` message and hints
+   - Line 8: This is the start of the ``SimplethError`` message and hints
      on possible causes.
 
 .. code-block:: shell-session
    :linenos:
-   :caption: Handling a SimplEthError
+   :caption: Handling a SimplethError
 
     >>> try:
     ...     c = Contract('bogus')
-    ... except SimplEthError as e:
+    ... except SimplethError as e:
     ...     print(e)
     ...
     [C-100-010] ERROR in bogus()._get_artifact_abi(). Unable to read ABI file.
@@ -872,13 +872,13 @@ quickly identify the cause of the error.
 
 .. code-block:: shell-session
    :linenos:
-   :caption: Properties of a SimplEthError
+   :caption: Properties of a SimplethError
 
     >>> import pprint
     >>> pp = pprint.PrettyPrinter(indent = 2)
     >>> try:
     ...     c = Contract('bogus')
-    ... except SimplEthError as e:
+    ... except SimplethError as e:
     ...     print(f'code = \n{e.code}')
     ...     print(f'message = \n{e.message}')
     ...     print(f'revert_msg = \n{e.revert_msg}')
@@ -933,7 +933,7 @@ the transaction when it encounters runtime errors such as:
 - transaction sender was not valid
 - insufficient ether in sender balance to run the transaction
 
-These **transaction error exceptions** will cause ``SimplEthError``
+These **transaction error exceptions** will cause ``SimplethError``
 exceptions for your code to handle.
 
 Other exceptions can be thrown by the VM which are coded into
@@ -944,7 +944,7 @@ be `reverted`. The transaction can:
 #. Use the Solidity operation, ``require`` , to validate a
    condition is met. If the condition is not met, a ``revert``
    is done and an optional message string will be available
-   in the ``SimplEthError``
+   in the ``SimplethError``
 
    ``require`` is commonly used in a contract ``modifier`` and
    a frequent type of modifier is to limit access to a transaction
@@ -963,7 +963,7 @@ be `reverted`. The transaction can:
    ``revert`` is used if conditions warrant stopping and undoing
    all actions by the transaction.
 
-These **transaction exceptions** will cause ``SimplEthError``
+These **transaction exceptions** will cause ``SimplethError``
 exceptions for your code to handle.
 
 We'll go through some examples. First up is what a transaction error
@@ -982,7 +982,7 @@ Python interpreter and how it might look in your code with a
         trx_hash: T_HASH = self.submit_trx(
       File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 2128, in submit_trx
         f'HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n'
-    simpleth.SimplEthError: [C-080-080] ERROR in Test().submit_trx(storeNum).
+    simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(storeNum).
     ValueError says: VM Exception while processing transaction: revert
     HINT1:  Did you fail to pass a transaction require()?
     HINT2:  Did you fail to pass a transaction guard modifier()?
@@ -1002,7 +1002,7 @@ Python interpreter and how it might look in your code with a
 
     >>> try:
     ...     c.run_trx(user, 'storeNum', 4, 42)
-    ... except SimplEthError as e:
+    ... except SimplethError as e:
     ...     print(e.code)
     ...     print(e.message)
     ...     print(e.revert_msg)
@@ -1052,7 +1052,7 @@ Python interpreter and how it might look in your code with a
    - Line 53: This is the transaction's revert message. It is an empty
      string for an oob (out-of-bounds) error.
    - Line 53: This is the pretty print of the exception info property.
-     A ``ValueError`` caused an exception. SimplEthError caught it and
+     A ``ValueError`` caused an exception. SimplethError caught it and
      threw its exception with a lot of added info. This lets you see
      the original info from the first exception.
 
@@ -1073,7 +1073,7 @@ i.e., the owner is the only one allowed to use this transaction. The
         trx_hash: T_HASH = self.submit_trx(
       File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 2128, in submit_trx
         f'HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n'
-    simpleth.SimplEthError: [C-080-080] ERROR in Test().submit_trx(sumTwoNums).
+    simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(sumTwoNums).
     ValueError says: VM Exception while processing transaction: revert must be owner to sum two nums
     HINT1:  Did you fail to pass a transaction require()?
     HINT2:  Did you fail to pass a transaction guard modifier()?
@@ -1093,7 +1093,7 @@ i.e., the owner is the only one allowed to use this transaction. The
 
     >>> try:
     ...     c.run_trx(user, 'sumTwoNums')
-    ... except SimplEthError as e:
+    ... except SimplethError as e:
     ...     msg = e.revert_msg
     ...
     >>> msg
@@ -1104,7 +1104,7 @@ i.e., the owner is the only one allowed to use this transaction. The
    - Line 1: ``user`` is not allowed to use this transaction. The transaction's
      ``require()`` reverts, throws an exception, and sends back a message.
    - Line 9: Shows the message. It has been passed back as part of the
-     ``ValueError`` exception, which ``SimplEthError`` catches.
+     ``ValueError`` exception, which ``SimplethError`` catches.
    - Line 26: Uses a ``try`` / ``except`` to get the message from the
      failed ``require()``.
    - Line 31: ``msg`` has the message explaining why the transaction was
@@ -1122,7 +1122,7 @@ and you'll see they act just like the previous example of a failed
 
     >>> try:
     ...     c.run_trx(user, 'setOwner', user)
-    ... except SimplEthError as e:
+    ... except SimplethError as e:
     ...     msg = e.revert_msg
     ...
     >>> msg
@@ -1150,8 +1150,8 @@ with an assert. If the test fails, the transaction is reverted and a Python
       File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 1838, in run_trx
         trx_hash: T_HASH = self.submit_trx(
       File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 2121, in submit_trx
-        raise SimplEthError(message, code='C-080-080') from None
-    simpleth.SimplEthError: [C-080-080] ERROR in Test().submit_trx(assertGreaterThan10).
+        raise SimplethError(message, code='C-080-080') from None
+    simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(assertGreaterThan10).
     ValueError says:
     HINT1:  Did you fail to pass a transaction require()?
     HINT2:  Did you fail to pass a transaction guard modifier()?
@@ -1171,7 +1171,7 @@ with an assert. If the test fails, the transaction is reverted and a Python
 
     >>> try:
     ...     c.run_trx(user, 'assertGreaterThan10', 9)
-    ... except SimplEthError as e:
+    ... except SimplethError as e:
     ...     pp.pprint(e.exc_info)
     ...
     ( <class 'ValueError'>,
@@ -1205,7 +1205,7 @@ look for it in the same manner we did for ``require()``:
         trx_hash: T_HASH = self.submit_trx(
       File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 2128, in submit_trx
         f'HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n'
-    simpleth.SimplEthError: [C-080-080] ERROR in Test().submit_trx(revertTransaction).
+    simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(revertTransaction).
     ValueError says: VM Exception while processing transaction: revert Revert this transaction.
     HINT1:  Did you fail to pass a transaction require()?
     HINT2:  Did you fail to pass a transaction guard modifier()?
@@ -1225,7 +1225,7 @@ look for it in the same manner we did for ``require()``:
 
     >>> try:
     ...     c.run_trx(user, 'revertTransaction')
-    ... except SimplEthError as e:
+    ... except SimplethError as e:
     ...     msg = e.revert_msg
     ...
     >>> msg
@@ -1266,7 +1266,7 @@ an interesting example:
     >>> c.get_var('owner')
     Traceback (most recent call last):
     ... snip ...
-    simpleth.SimplEthError: [C-060-020] ERROR in Test().getvar(): Unable to get variable owner.
+    simpleth.SimplethError: [C-060-020] ERROR in Test().getvar(): Unable to get variable owner.
     BadFunctionCallOutput says Could not transact with/call contract function, is contract deployed correctly and chain synced?
     HINT1: Has contract been destroyed with selfdestruct()?
     HINT2: Has contract not yet been deployed on a new chain?
@@ -1275,8 +1275,8 @@ an interesting example:
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
       File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 1253, in call_fcn
-        raise SimplEthError(message, code='C-010-030') from None
-    simpleth.SimplEthError: [C-010-030] ERROR in Test().call_fcn().
+        raise SimplethError(message, code='C-010-030') from None
+    simpleth.SimplethError: [C-010-030] ERROR in Test().call_fcn().
     Unable to call function getNums.
     BadFunctionCallOutput says Could not transact with/call contract function, is contract deployed correctly and chain synced?
     HINT1: Has contract been destroyed with a selfdestruct()?

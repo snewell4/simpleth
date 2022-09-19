@@ -472,7 +472,9 @@ contract Test {
      * @notice Stores the three args in nums[] and call
      * sumNums() to divide nums
      *
-     * @dev Used to test calling a function that fails
+     * @dev There is no test to check for a _divisor of 0.
+     * Zero is used in testing for this transaction to call
+     * another transaction that fails.
      *
      * @param _num0 value to store in nums[0]
      * @param _num1 value to store in nums[1]

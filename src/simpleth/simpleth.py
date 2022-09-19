@@ -14,7 +14,7 @@ Classes
 
 Exceptions
 ----------
-- :class:`SimplEthError` - raised on errors from methods in `Blockchain`,
+- :class:`SimplethError` - raised on errors from methods in `Blockchain`,
   `Convert`, `Contract`, `EventSearch` or `Results`.
 
 """
@@ -38,7 +38,7 @@ __all__ = [
     'Convert',
     'EventSearch',
     'Results',
-    'SimplEthError'
+    'SimplethError'
     ]
 __author__ = 'Stephen Newell'
 __copyright__ = 'Copyright 2021 - 2022, Stephen Newell'
@@ -282,7 +282,7 @@ class Blockchain:
             default: ``None``)
         :type url: str
         :rtype: None
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if unable to connect to the blockchain client (**B-010-010**)
 
         :example:
@@ -314,7 +314,7 @@ class Blockchain:
                 f'HINT3: If you just made changes to simpleth.py, you may '
                 f'need to start a new DOS window.\n'
                 )
-            raise SimplEthError(message, code='B-010-010') from None
+            raise SimplethError(message, code='B-010-010') from None
 
         self._eth: T_WEB3_ETH_OBJ = self.web3.eth
         """private ``web3.eth`` object"""
@@ -494,7 +494,7 @@ class Blockchain:
         :type account_num: int
         :rtype: str
         :return: blockchain ``address`` of the requested account
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``account_num`` is out of range (**B-020-010**)
 
         :example:
@@ -515,7 +515,7 @@ class Blockchain:
             f'{len(self.accounts)}.\n'
             f'HINT: account_num is bad.\n'
             )
-        raise SimplEthError(message, code='B-020-010') from None
+        raise SimplethError(message, code='B-020-010') from None
 
     def balance(self, address: str) -> int:
         """Return the amount of Ether owned by an account.
@@ -524,7 +524,7 @@ class Blockchain:
         :type address: str
         :rtype: int
         :return: account's ether balance, in wei
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``address`` is not a string (**B-030-010**)
             -  if ``address`` is not a valid account (**B-030-020**)
 
@@ -544,14 +544,14 @@ class Blockchain:
                 f'TypeError says: {exception}.\n'
                 f'HINT: Did you use a string for the account address?\n'
                 )
-            raise SimplEthError(message, code='B-030-010') from None
+            raise SimplethError(message, code='B-030-010') from None
         except self._web3e.InvalidAddress as exception:
             message = (
                 f'ERROR in get_balance(): '
                 f'InvalidAddress says: {exception}.\n'
                 f'HINT: Did you specify a valid account address?\n'
                 )
-            raise SimplEthError(message, code='B-030-020') from None
+            raise SimplethError(message, code='B-030-020') from None
         return balance
 
     def block_time_epoch(self, block_number: int) -> int:
@@ -561,7 +561,7 @@ class Blockchain:
         :type block_number: int
         :rtype: int
         :return: time block was mined, in epoch seconds.
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``block_number`` is invalid (**B-040-010**)
 
         :example:
@@ -578,7 +578,7 @@ class Blockchain:
                 f'0 and {self.block_number}.\n'
                 f'HINT: check type and value for block_number.\n'
                 )
-            raise SimplEthError(message, code='B-040-010') from None
+            raise SimplethError(message, code='B-040-010') from None
         return self.eth.get_block(block_number).timestamp
 
     def block_time_string(
@@ -595,7 +595,7 @@ class Blockchain:
         :type time_format: str
         :rtype: str
         :return: time block was mined, in local timezone, as a string
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``block_number`` is invalid (**B-050-010**)
             -  if ``time_format`` is not a string (**B-050-020**)
 
@@ -622,7 +622,7 @@ class Blockchain:
                 f'0 and {self.block_number}.\n'
                 f'HINT: check type and value for block_num.\n'
                 )
-            raise SimplEthError(message, code='B-050-010') from None
+            raise SimplethError(message, code='B-050-010') from None
         if isinstance(time_format, str):
             epoch_seconds: int = self.block_time_epoch(block_number)
         else:
@@ -631,7 +631,7 @@ class Blockchain:
                 f'time_format must be a string.\n'
                 f'HINT: Use a string with a valid strftime format code for '
                 f'time_format.')
-            raise SimplEthError(message, code='B-050-020') from None
+            raise SimplethError(message, code='B-050-020') from None
         return datetime.datetime. \
             fromtimestamp(epoch_seconds). \
             strftime(time_format)
@@ -657,7 +657,7 @@ class Blockchain:
             -  `'oldestBlock'`: `block number` for the oldest block in
                the list and will be :attr:`block_number` - ``num_blocks``
 
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if the method is called (**B-060-010**)
 
         .. warning::
@@ -687,7 +687,7 @@ class Blockchain:
                 f'ValueError says: {exception}\n'
                 f'HINT: method not yet implemented in Ganache.\n'
                 )
-            raise SimplEthError(message, code='B-060-010') from None
+            raise SimplethError(message, code='B-060-010') from None
         return dict(history)     # cast from AttributeDict to dict
 
     def is_valid_address(self, address: str) -> bool:
@@ -733,7 +733,7 @@ class Blockchain:
         :type amount_wei: int
         :rtype: str
         :return: `trx_hash` of the transfer transaction
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``sender`` is bad (**B-070-010**)
             -  if ``receiver`` is bad (**B-070-010**)
             -  if ``amount`` exceeds the ``sender`` balance  (**B-070-010**)
@@ -774,7 +774,7 @@ class Blockchain:
                 f'HINT4: Bad address used for sender or receiver\n'
                 f'HINT5: Did you use convert_ether() and forget to cast Decimal result to int?'
                 )
-            raise SimplEthError(message, code='B-070-010') from None
+            raise SimplethError(message, code='B-070-010') from None
         except TypeError as exception:
             message = (
                 f'ERROR in transfer(): '
@@ -783,7 +783,7 @@ class Blockchain:
                 f'HINT2: Did you use a non-string used for the sender or '
                 f'receiver address?\n'
                 )
-            raise SimplEthError(message, code='B-070-020') from None
+            raise SimplethError(message, code='B-070-020') from None
         except AttributeError as exception:
             # Non-payable contract seems to throw B-070-010. Not able
             # to get this exception with unit tests. Leaving it in place
@@ -794,7 +794,7 @@ class Blockchain:
                 f'HINT: Did you attempt to send Ether to a non-payable '
                 f'contract?\n'
                 )
-            raise SimplEthError(message, code='B-070-030') from None
+            raise SimplethError(message, code='B-070-030') from None
         return trx_hash
 
     def transaction(self, trx_hash: str) -> T_TRANSACTION:
@@ -806,7 +806,7 @@ class Blockchain:
         :type trx_hash: str
         :rtype: dict
         :return: transaction details as a dictionary
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if transaction for ``trx_hash`` is not found (**B-080-010**)
             -  if ``trx_hash`` is not a valid type (**B-080-020**)
 
@@ -831,14 +831,14 @@ class Blockchain:
                 f'TransactionNotFound says: {exception}\n'
                 f'HINT: Did you use a valid trx_hash?'
                 )
-            raise SimplEthError(message, code='B-080-010') from None
+            raise SimplethError(message, code='B-080-010') from None
         except ValueError as exception:
             message = (
                 f'ERROR in transaction({trx_hash}): '
                 f'ValueError says: {exception}\n'
                 f'HINT: Was trx_hash a hex value?'
                 )
-            raise SimplEthError(message, code='B-080-020') from None
+            raise SimplethError(message, code='B-080-020') from None
         return transaction
 
     def trx_count(self, address: str) -> int:
@@ -848,7 +848,7 @@ class Blockchain:
         :type address: str
         :rtype: int
         :return: total number of transactions on the blockchain
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``address`` is not a string (**B-090-010**)
             -  if ``address`` is not a valid account (**B-090-020**)
 
@@ -868,14 +868,14 @@ class Blockchain:
                 f'TypeError says: {exception}.\n'
                 f'HINT: Did you use a string with a valid account address?\n'
                 )
-            raise SimplEthError(message, code='B-090-010') from None
+            raise SimplethError(message, code='B-090-010') from None
         except self._web3e.InvalidAddress as exception:
             message = (
                 f'ERROR in get_trx_count(): '
                 f'InvalidAddress says: {exception}.\n'
                 f'HINT: Did you use a valid account address?\n'
                 )
-            raise SimplEthError(message, code='B-090-020') from None
+            raise SimplethError(message, code='B-090-020') from None
         return count
 
     def trx_sender(self, trx_hash: str) -> str:
@@ -967,7 +967,7 @@ class Contract:
         :param name: contract name
         :type name: str
         :rtype: None
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``name`` is misspelled or has not been compiled.
 
         :example:
@@ -1283,7 +1283,7 @@ class Contract:
         :param fcn_args: argument(s) required by the function
             (**optional**, default: None)
         :type fcn_args: int | float | str | None
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``fcn_name`` is bad or a :meth:`connect` is needed (**C-010-010**)
             -  if ``fcn_args`` are the wrong type or number (**C-010-020**)
             -  if :class:`contract` has done a `selfdestruct()` or needs a
@@ -1320,7 +1320,7 @@ class Contract:
                 f'HINT1 - Do you need to do a connect()?\n'
                 f"HINT2 - Check spelling of the function.\n"
                 )
-            raise SimplEthError(message, code='C-010-010') from None
+            raise SimplethError(message, code='C-010-010') from None
         except self._web3e.ValidationError as exception:
             message = (
                 f'ERROR in {self.name}().call_fcn().\n'
@@ -1331,7 +1331,7 @@ class Contract:
                 f'HINT 2: Check you specified the correct types for the '
                 f'arguments.\n'
                 )
-            raise SimplEthError(message, code='C-010-020') from None
+            raise SimplethError(message, code='C-010-020') from None
         except self._web3e.BadFunctionCallOutput as exception:
             message = (
                 f'ERROR in {self.name}().call_fcn().\n'
@@ -1340,14 +1340,14 @@ class Contract:
                 f'HINT1: Has contract been destroyed with a selfdestruct()?\n'
                 f'HINT2: Does contract need a new deploy?\n'
                 )
-            raise SimplEthError(message, code='C-010-030') from None
+            raise SimplethError(message, code='C-010-030') from None
         except self._web3e.ContractLogicError as exception:
             message = (
                 f'ERROR in {self.name}().call_fcn().\n'
                 f'ContractLogicError says: {exception}\n'
                 f'HINT: Did you use an out of bounds array index?\n'
                 )
-            raise SimplEthError(message, code='C-010-040') from None
+            raise SimplethError(message, code='C-010-040') from None
 
         return fcn_return
 
@@ -1365,7 +1365,7 @@ class Contract:
         :rtype: str
         :return:  `address` of the contract
 
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if address arg was invalid (**C-150-010**)
 
         :example:
@@ -1404,7 +1404,7 @@ class Contract:
                     f'ERROR in {self.name}().connect(): '
                     f'Address arg for contract {self.name} is invalid.\n'
                     )
-                raise SimplEthError(message, code='C-150-010') from None
+                raise SimplethError(message, code='C-150-010') from None
 
         self._web3_contract = self._blockchain.eth.contract(
             address=self.address,
@@ -1450,7 +1450,7 @@ class Contract:
         :rtype: T_RECEIPT
         :return: transaction receipt
 
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if unable to get artifact info and create contract
                class (**C-030-010**)
             -  if ``sender`` address is bad (**C-030-020**)
@@ -1478,7 +1478,7 @@ class Contract:
                 f'ValueError says {exception}\n'
                 f'HINT: Did you use the correct contract name?\n'
                 )
-            raise SimplEthError(message, code='C-030-010') from None
+            raise SimplethError(message, code='C-030-010') from None
 
         try:
             trx_hash: T_HASH = \
@@ -1497,14 +1497,14 @@ class Contract:
                 f'ERROR in {self.name}().deploy(): '
                 f'Used bad sender arg; not a valid address.\n'
                 )
-            raise SimplEthError(message, code='C-030-020') from None
+            raise SimplethError(message, code='C-030-020') from None
         except TypeError as exception:
             message = (
                 f'ERROR in {self.name}().deploy(): '
                 f'TypeError says {exception}.\n'
                 f'HINT: Check contract constructor args: type and number.\n'
                 )
-            raise SimplEthError(message, code='C-030-030') from None
+            raise SimplethError(message, code='C-030-030') from None
         except ValueError as exception:
             message = (
                 f'ERROR in {self.name}().deploy(): '
@@ -1516,7 +1516,7 @@ class Contract:
                 f'HINT3: Did a contract run deploy? Only one of the Ganache '
                 f'accounts can do a deploy.\n'
                 )
-            raise SimplEthError(message, code='C-030-040') from None
+            raise SimplethError(message, code='C-030-040') from None
 
         try:
             trx_receipt: T_RECEIPT = \
@@ -1553,7 +1553,7 @@ class Contract:
         :type args: Any
         :rtype: int
         :return: estimated number of gas units to run the transaction
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``trx_name`` is bad (**C-040-010**)
             -  if ``args`` are bad; either wrong type or number (**C-040-020**)
             -  if :class:`contract` has not yet been deployed on a new chain
@@ -1590,14 +1590,14 @@ class Contract:
                 f'transaction {trx_name}() not found in contract.\n'
                 f'HINT: Check spelling of transaction name.\n'
                 )
-            raise SimplEthError(message, code='C-040-010') from None
+            raise SimplethError(message, code='C-040-010') from None
         except self._web3e.ValidationError:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
                 f'Wrong number or type of args for transaction "{trx_name}".\n'
                 f'HINT: Check transaction definition in contract.\n'
                 )
-            raise SimplEthError(message, code='C-040-020') from None
+            raise SimplethError(message, code='C-040-020') from None
         except self._web3e.BadFunctionCallOutput:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
@@ -1605,27 +1605,27 @@ class Contract:
                 f'HINT: If you just switched Ganache workspace, has '
                 f'        the contract been deployed yet?\n'
                 )
-            raise SimplEthError(message, code='C-040-030') from None
+            raise SimplethError(message, code='C-040-030') from None
         except self._web3e.ContractLogicError as exception:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
                 f'ContractLogicError says: {exception}\n'
                 f'HINT: Did you use an out of bounds index value?\n'
                 )
-            raise SimplEthError(message, code='C-040-040') from None
+            raise SimplethError(message, code='C-040-040') from None
         except self._web3e.InvalidAddress:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
                 f'sender arg has a bad address.\n'
                 )
-            raise SimplEthError(message, code='C-040-050') from None
+            raise SimplethError(message, code='C-040-050') from None
         except AttributeError:
             message = (
                 f'ERROR in {self._name}().submit_trx(): '
                 f'Contract does not have a valid contract object.\n'
                 f'HINT: Do you need to do a connect()?\n'
                 )
-            raise SimplEthError(message, code='C-040-060') from None
+            raise SimplethError(message, code='C-040-060') from None
         except TypeError:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
@@ -1634,7 +1634,7 @@ class Contract:
                 f'HINT2: Check all transaction arguments were specified.\n'
                 f'HINT3: Check sender arg was provided.\n'
                 )
-            raise SimplEthError(message, code='C-040-070') from None
+            raise SimplethError(message, code='C-040-070') from None
         return gas_estimate
 
     def get_trx_receipt(self, trx_hash: T_HASH) -> T_RECEIPT:
@@ -1715,7 +1715,7 @@ class Contract:
         :type poll_latency: int | float
         :rtype: T_RECEIPT
         :return: transaction receipt
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``timeout`` is not float or int (**C-050-010**)
             -  if ``poll_latency`` is not float or int (**C-050-020**)
 
@@ -1758,7 +1758,7 @@ class Contract:
                 f'Bad type for timeout: {timeout}.\n'
                 f'HINT: Specify an integer or float for timeout.\n'
                 )
-            raise SimplEthError(message, code='C-050-010') from None
+            raise SimplethError(message, code='C-050-010') from None
         if not isinstance(timeout, (int, float)):
             message = (
                 f'ERROR in get_trx_receipt_wait(\n'
@@ -1766,7 +1766,7 @@ class Contract:
                 f'Bad type for poll_latency: {poll_latency}.\n'
                 f'HINT: Specify an integer or float for poll_latency.\n'
                 )
-            raise SimplEthError(message, code='C-050-020') from None
+            raise SimplethError(message, code='C-050-020') from None
         try:
             trx_receipt: T_RECEIPT = \
                 self._blockchain.eth.wait_for_transaction_receipt(
@@ -1796,7 +1796,7 @@ class Contract:
         :type args: int
         :rtype: int | string | float | list | None
         :return: value of the variable
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``var_name`` is bad (**C-060-010**)
             -  if :class:`contract` has done a selfdestruct() or not yet
                deployed on a new chain (**C-060-020**)
@@ -1832,7 +1832,7 @@ class Contract:
                 f'HINT1: Is ABI old? Do you need to do a new deploy()?\n'
                 f'HINT2: Check spelling of variable name.\n'
                 )
-            raise SimplEthError(message, code='C-060-010') from None
+            raise SimplethError(message, code='C-060-010') from None
         except self._web3e.BadFunctionCallOutput as exception:
             message = (
                 f'ERROR in {self.name}().getvar(): '
@@ -1841,7 +1841,7 @@ class Contract:
                 f'HINT1: Has contract been destroyed with selfdestruct()?\n.'
                 f'HINT2: Has contract not yet been deployed on a new chain?\n'
                 )
-            raise SimplEthError(message, code='C-060-020') from None
+            raise SimplethError(message, code='C-060-020') from None
         except self._web3e.ValidationError as exception:
             message = (
                 f'ERROR in {self.name}().getvar(): '
@@ -1852,7 +1852,7 @@ class Contract:
                 f'HINT2: Did you specify an array variable but did not '
                 f'specify an index value?\n'
                 )
-            raise SimplEthError(message, code='C-060-030') from None
+            raise SimplethError(message, code='C-060-030') from None
         except self._web3e.ContractLogicError as exception:
             message = (
                 f'ERROR in {self.name}().getvar(): '
@@ -1860,7 +1860,7 @@ class Contract:
                 f'ContractLogicError says: {exception}\n'
                 f'HINT: Did you use an out of bounds index value?\n'
                 )
-            raise SimplEthError(message, code='C-060-040') from None
+            raise SimplethError(message, code='C-060-040') from None
         except AttributeError as exception:
             message = (
                 f'ERROR in {self.name}().getvar(): '
@@ -1868,7 +1868,7 @@ class Contract:
                 f'AttributeError says: {exception}\n'
                 f'HINT: Do you need to do a connect()?\n'
                 )
-            raise SimplEthError(message, code='C-060-050') from None
+            raise SimplethError(message, code='C-060-050') from None
         return var_value
 
     def run_trx(self,
@@ -1931,7 +1931,7 @@ class Contract:
         :type poll_latency: int | float
         :rtype: T_RECEIPT
         :return: `web3` transaction receipt
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if unable to submit the transaction; no hash was returned
                (**C-070-010**)
             -  :meth:`submit_trx` and :meth:`get_receipt_wait` will raise
@@ -1969,7 +1969,7 @@ class Contract:
                 f'No transaction hash was returned after submit_trx() of '
                 f'transaction: {trx_name}.\n'
                 )
-            raise SimplEthError(message, code='C-070-010') from None
+            raise SimplethError(message, code='C-070-010') from None
 
         trx_receipt: T_RECEIPT = self.get_trx_receipt_wait(
             trx_hash,
@@ -2058,7 +2058,7 @@ class Contract:
         :rtype: str
         :return: ``trx_hash`` the transaction hash that identifies
            this transaction on the blockchain
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``trx_name`` is not in the contract (**C-080-010**)
             -  if ``args`` are missing, wrong number of args, or wrong type
                (**C-080-020**)
@@ -2139,7 +2139,7 @@ class Contract:
                 f'transaction {trx_name}() not found in contract.\n'
                 f'HINT: Check spelling of transaction name.\n'
                 )
-            raise SimplEthError(message, code='C-080-010') from None
+            raise SimplethError(message, code='C-080-010') from None
         except self._web3e.ValidationError:
             message = (
                 f'ERROR in {self.name}().submit_trx({trx_name}): '
@@ -2148,7 +2148,7 @@ class Contract:
                 f'the contract.\n'
                 f'HINT2: Check run_trx() optional parameter types.\n'
                 )
-            raise SimplEthError(message, code='C-080-020') from None
+            raise SimplethError(message, code='C-080-020') from None
         except self._web3e.BadFunctionCallOutput:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
@@ -2156,13 +2156,13 @@ class Contract:
                 f'HINT: If you just switched Ganache workspace, has '
                 f'        the contract been deployed yet?\n'
                 )
-            raise SimplEthError(message, code='C-080-030') from None
+            raise SimplethError(message, code='C-080-030') from None
         except self._web3e.InvalidAddress:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
                 f'sender arg has a bad address.\n'
                 )
-            raise SimplEthError(message, code='C-080-040') from None
+            raise SimplethError(message, code='C-080-040') from None
         except self._web3e.InvalidTransaction as exception:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
@@ -2171,21 +2171,21 @@ class Contract:
                 f'Max_fee_gwei (total you will be willing to pay) must '
                 f'be >= Max_priority_fee_gwei (the tip).\n'
                 )
-            raise SimplEthError(message, code='C-080-050') from None
+            raise SimplethError(message, code='C-080-050') from None
         except AttributeError:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
                 f'Contract does not have a valid contract object.\n'
                 f'HINT: Do you need to do a connect()?\n'
                 )
-            raise SimplEthError(message, code='C-080-060') from None
+            raise SimplethError(message, code='C-080-060') from None
         except TypeError:
             message = (
                 f'ERROR in {self.name}().submit_trx(): '
                 f'sender or trx_name are missing.\n'
                 f'HINT1: Check all arguments are specified.\n'
                 )
-            raise SimplEthError(message, code='C-080-070') from None
+            raise SimplethError(message, code='C-080-070') from None
         except self._web3e.ContractLogicError as exception:
             # pylint said to test this exception before ValueError.
             # Made the exception codes out of order. Too much trouble
@@ -2195,7 +2195,7 @@ class Contract:
                 f'ContractLogicError exception says:\n{exception}\n'
                 f'HINT: ABI may not be valid. Try a new deploy().\n'
                 )
-            raise SimplEthError(message, code='C-080-090') from None
+            raise SimplethError(message, code='C-080-090') from None
         except ValueError as exception:
             # ValueError returns details about the error in a variety of forms.
             # Seems like, currently, it can be a string, a tuple with a string,
@@ -2251,7 +2251,7 @@ class Contract:
                 f'HINT17: Did you convert_ether() for "value_wei=" and forget to cast Decimal '
                 f'amount to int?\n'
                 )
-            raise SimplEthError(
+            raise SimplethError(
                 message,
                 code='C-080-080',
                 revert_msg=trx_revert_message
@@ -2269,7 +2269,7 @@ class Contract:
         :rtype: list
         :return: contract `ABI`
 
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ABI artifact file not found (**C-100-010**)
 
         """
@@ -2286,7 +2286,7 @@ class Contract:
                 f'variable {ARTIFACTS_DIR_ENV_VAR}\n'
                 f'HINT4: You may need to do a new compile.\n'
                 )
-            raise SimplEthError(message, code='C-100-010') from None
+            raise SimplethError(message, code='C-100-010') from None
         return abi
 
     def _get_artifact_address(self) -> str:
@@ -2303,7 +2303,7 @@ class Contract:
 
         :rtype: str
         :return: contract blockchain address
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if artifact address file is not found (**C-110-010**)
             -  if the address is not valid (**C-110-020**)
 
@@ -2322,7 +2322,7 @@ class Contract:
                 f'variable {ARTIFACTS_DIR_ENV_VAR}\n'
                 f'HINT4: You may need to do a new deploy.\n'
                 )
-            raise SimplEthError(message, code='C-110-010') from None
+            raise SimplethError(message, code='C-110-010') from None
 
         if not self._blockchain.is_valid_address(artifact_address):
             message = (
@@ -2330,7 +2330,7 @@ class Contract:
                 f'Address for contract {self.name} is invalid.\n'
                 f'Address read from file: {artifact_address}.\n'
                 )
-            raise SimplEthError(message, code='C-110-020') from None
+            raise SimplethError(message, code='C-110-020') from None
         return artifact_address
 
     def _get_artifact_bytecode(self) -> str:
@@ -2343,7 +2343,7 @@ class Contract:
 
         :rtype: str
         :return: contract bytecode
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if unable to read bytecode file (**C-120-010**)
 
         """
@@ -2361,7 +2361,7 @@ class Contract:
                 f'variable {ARTIFACTS_DIR_ENV_VAR}\n'
                 f'HINT4: You may need to do a new compile.\n'
                 )
-            raise SimplEthError(message, code='C-120-010') from None
+            raise SimplethError(message, code='C-120-010') from None
         return bytecode
 
     def _get_contract_events(self) -> List[str]:
@@ -2369,7 +2369,7 @@ class Contract:
 
         :rtype: list
         :return: events, if any, defined in the Solidity contract
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if a :meth:`connect` is needed (**C-130-010**)
 
         """
@@ -2381,7 +2381,7 @@ class Contract:
                 f'AttributeError says {exception}\n'
                 f'HINT: Did you do a connect()?\n'
                 )
-            raise SimplEthError(message, code='C-130-010') from None
+            raise SimplethError(message, code='C-130-010') from None
         event_list: List = [
             str(event).
             removeprefix("<class 'web3._utils.datatypes.").
@@ -2395,7 +2395,7 @@ class Contract:
 
         :rtype: list
         :return: functions defined in the Solidity contract.
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if a :meth:`connect` is needed (**C-140-010**)
 
         """
@@ -2407,7 +2407,7 @@ class Contract:
                 f'AttributeError says {exception}\n'
                 f'HINT: Did you do a connect()?\n'
                 )
-            raise SimplEthError(message, code='C-140-010') from None
+            raise SimplethError(message, code='C-140-010') from None
         else:
             functions: List[str] = [
                 str(f).removeprefix('<Function ').removesuffix('>')
@@ -2450,7 +2450,7 @@ class Contract:
         :type contract_address: str
         :rtype: bool
         :return: ``True`` if successfully set the address
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``contract_address`` is bad (**C-150-010**)
             -  if unable to write to the artifact `address` file
                (**C-150-020**)
@@ -2462,7 +2462,7 @@ class Contract:
                 f'Address for contract {self.name} is invalid.\n'
                 f'Address was not written to address file.\n'
                 )
-            raise SimplEthError(message, code='C-150-010') from None
+            raise SimplethError(message, code='C-150-010') from None
 
         try:
             with open(
@@ -2482,7 +2482,7 @@ class Contract:
                 f'variable {ARTIFACTS_DIR_ENV_VAR}\n'
                 f'HINT4: You may need to do a new compile.\n'
                 )
-            raise SimplEthError(message, code='C-150-020') from None
+            raise SimplethError(message, code='C-150-020') from None
         return True
 # end of Contract()
 
@@ -2516,7 +2516,7 @@ class Convert:
         :type to_denomination: str
         :rtype: Decimal
         :return: converted ``amount``
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``from_denomination`` is bad (**V-010-010**)
             -  if ``to_denomination`` is bad (**V-010-020**)
         :example:
@@ -2546,7 +2546,7 @@ class Convert:
                 f'the from_denomination is bad.\n'
                 f'HINT: Check spelling and make sure it is a string.'
                 )
-            raise SimplEthError(message, code='V-010-010') from None
+            raise SimplethError(message, code='V-010-010') from None
         if to_denomination not in self.denominations_to_wei():
             message = (
                 f'ERROR in convert_ether({amount}, {from_denomination}, '
@@ -2554,7 +2554,7 @@ class Convert:
                 f'the to_denomination is bad.\n'
                 f'HINT: Check spelling and make sure it is a string.'
                 )
-            raise SimplEthError(message, code='V-010-020') from None
+            raise SimplethError(message, code='V-010-020') from None
         from_units_wei = self.denominations_to_wei()[from_denomination]
         to_units_wei = self.denominations_to_wei()[to_denomination]
 
@@ -2670,7 +2670,7 @@ class Convert:
         :param t_format: str
         :rtype: str
         :return: current time
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``t_format`` is bad (**V-020-010**)
 
         :example:
@@ -2700,7 +2700,7 @@ class Convert:
                 f'strftime format code.\n'
                 f'HINT: Make sure t_format is a string.'
                 )
-            raise SimplEthError(message, code='V-020-010') from None
+            raise SimplethError(message, code='V-020-010') from None
         return local_time_string
 
     @staticmethod
@@ -2718,7 +2718,7 @@ class Convert:
         :param t_format: str
         :rtype: str
         :return: local time equivalent to epoch seconds
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``t_format`` is bad (**V-030-010**)
 
         :example:
@@ -2751,7 +2751,7 @@ class Convert:
                 f'strftime format code.\n'
                 f'HINT: Make sure t_format is a string.'
                 )
-            raise SimplEthError(message, code='V-030-010') from None
+            raise SimplethError(message, code='V-030-010') from None
         return to_local_time_string
 # end of Convert()
 
@@ -2770,9 +2770,10 @@ class EventSearch:
 
     **METHODS**
 
-    -  :meth:`get_new` - return event info from newly mined blocks
+    -  :meth:`get_new` - return event info from newly mined blocks;
+       looks forward.
     -  :meth:`get_old` - return event info from specified range of
-       previously mined blocks
+       previously mined blocks; looks backward.
 
     .. seealso::
        `web3.py API documentation <https://web3py.readthedocs.io/en/stable/web3.eth.html#filters>`_
@@ -2797,7 +2798,7 @@ class EventSearch:
             dictionary value. Multiple entries are allowed. They are ANDed.
             (**optional**, default: None)
         :type event_args: dict | None
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``event_name`` is not found in the ``contract`` (**E-010-010**)
             -  if ``event_args`` is not a dictionary (**E-010-020**)
             -  if ``event_args`` has an unknown or misspelled event argument
@@ -2863,8 +2864,8 @@ class EventSearch:
                 f'The event: {self._event_name} was not found.\n'
                 f'Valid event_names are: {self._contract.event_names}\n'
                 f'HINT: Check the spelling of your event_name.\n'
-            )
-            raise SimplEthError(message, code='E-010-010') from None
+                )
+            raise SimplethError(message, code='E-010-010') from None
 
         if self._event_args is None:
             # No event args were specified. Just filter for the event name
@@ -2882,7 +2883,7 @@ class EventSearch:
                     f'HINT: Specify event args and values to search for as: '
                     f'{{<event arg>: <value searched for>}}.\n'
                     )
-                raise SimplEthError(message, code='E-010-020') from None
+                raise SimplethError(message, code='E-010-020') from None
             try:
                 self._event_filter = getattr(
                     self._web3_contract.events,
@@ -2898,7 +2899,7 @@ class EventSearch:
                     f'KeyError says: {exception}\n'
                     f'HINT: Check spelling of the event arg name.\n'
                     )
-                raise SimplEthError(message, code='E-010-030') from None
+                raise SimplethError(message, code='E-010-030') from None
             except eth_abi.exceptions.EncodingTypeError as exception:
                 message = (
                     f'ERROR in EventSearch('
@@ -2906,7 +2907,7 @@ class EventSearch:
                     f'EncodingTypeError says: {exception}\n'
                     f'HINT: Check the event value. You are using the wrong type.\n'
                     )
-                raise SimplEthError(message, code='E-010-040') from None
+                raise SimplethError(message, code='E-010-040') from None
 
     @property
     def event_args(self) -> Union[dict, None]:
@@ -2992,11 +2993,6 @@ class EventSearch:
                   },
                'trx_hash': '0x45345fb27043b978875d13 ... 8c80708c0d813cd'}]
 
-        .. note::
-           :meth:`get_old` looks backward and searches old
-           blocks. :meth:`get_new` looks forward at the
-           newly mined blocks.
-
         .. seealso::
             :attr:`Contract.events` for the list of events
             emitted by this contract.
@@ -3023,18 +3019,11 @@ class EventSearch:
         :param to_block: ending block to search mined blocks
         :type to_block: int
 
-            -  ``get_old()`` searches the most recently mined block.
-            -  ``get_old(-x)`` searches the most recently mined ``x``
-               blocks; where '-1' will search the most recently mined block,
-               '-2' will search the two` most recently mined blocks, etc.
-            -  ``get_old(x)`` searches block `x` to the end of the chain.
-            -  ``get_old(m,n)`` searches block 'm' to block 'n'.
-
-        :raises SimplEthError:
+        :raises SimplethError:
             -  if ``from_block`` is not integer (**E-030-010**)
             -  if ``to_block`` is not integer (**E-030-020**)
-            -  if ``from_block`` is used and ``to_block`` is also specified (**E-030-030**)
-            -  if ``from_block`` exceeds the number of blocks in chain (**E-030-040**)
+            -  if negative ``from_block`` is used and ``to_block`` is also specified (**E-030-030**)
+            -  if negative ``from_block`` exceeds the number of blocks in chain (**E-030-040**)
             -  if ``from_block`` is greater than ``to_block`` (**E-030-050**)
             -  if ``from_block`` is greater than ``Blockchain().block_number`` (**E-030-060**)
             -  if ``to_block`` is greater than ``Blockchain().block_number`` (**E-030-070**)
@@ -3070,9 +3059,14 @@ class EventSearch:
             2
 
         .. note::
-           :meth:`get_old` looks backward and searches old
-           blocks. :meth:`get_new` looks forward at the
-           newly mined blocks.
+           Using ``from_block`` and ``to_block``:
+
+           -  ``get_old()`` searches the most recently mined block.
+           -  ``get_old(-x)`` searches the most recently mined ``x``
+              blocks; where '-1' will search the most recently mined block,
+              '-2' will search the two` most recently mined blocks, etc.
+           -  ``get_old(x)`` searches block `x` to the end of the chain.
+           -  ``get_old(m,n)`` searches block 'm' to block 'n'.
 
         .. seealso::
            :attr:`Contract.events` for the list of valid events
@@ -3086,35 +3080,35 @@ class EventSearch:
                 f'The block numbers must be an integer.\n'
                 f'HINT: Provide integers for from_block.\n'
                 )
-            raise SimplEthError(message, code='E-030-010') from None
+            raise SimplethError(message, code='E-030-010') from None
         if not isinstance(to_block, int):
             message = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
                 f'The block numbers must be an integer.\n'
                 f'HINT: Provide integers for to_block.\n'
                 )
-            raise SimplEthError(message, code='E-030-020') from None
+            raise SimplethError(message, code='E-030-020') from None
         if from_block < 0 and to_block != 0:
             message = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
                 f'Do not specify to_block when you provide a negative from_block.\n'
                 f'HINT: When searching relative to the last block do not specify to_block.\n'
                 )
-            raise SimplEthError(message, code='E-030-030') from None
+            raise SimplethError(message, code='E-030-030') from None
         if from_block < 0 and abs(from_block) > latest_block:
             message = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
                 f'from_block exceeds the number of blocks in the chain.\n'
                 f'HINT: Provide a number between 0 and -{latest_block}.\n'
                 )
-            raise SimplEthError(message, code='E-030-040') from None
+            raise SimplethError(message, code='E-030-040') from None
         if to_block != 0 and from_block > to_block:
             message = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
                 f'The from_block needs to be less than or equal to the to_block.\n'
                 f'HINT: Provide a valid range.\n'
                 )
-            raise SimplEthError(message, code='E-030-050') from None
+            raise SimplethError(message, code='E-030-050') from None
         if from_block > latest_block:
             message = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
@@ -3122,7 +3116,7 @@ class EventSearch:
                 f'{latest_block} is the latest block mined and the end of the chain.\n'
                 f'HINT: Provide a valid block number.\n'
                 )
-            raise SimplEthError(message, code='E-030-060') from None
+            raise SimplethError(message, code='E-030-060') from None
         if to_block > latest_block:
             message = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
@@ -3130,7 +3124,7 @@ class EventSearch:
                 f'{latest_block} is the last block mined and the end of the chain.\n'
                 f'HINT: Provide a valid block number.\n'
                 )
-            raise SimplEthError(message, code='E-030-070') from None
+            raise SimplethError(message, code='E-030-070') from None
 
         if from_block == 0 and to_block == 0:
             _from_block = latest_block
@@ -3277,8 +3271,8 @@ class Results:
 
     **RAISES**
 
-    -  :class:`SimplEthError` if constructor params are bad (**R-010-010**)
-    -  :class:`SimplEthError` if unable to gather data for events (internal error
+    -  :class:`SimplethError` if constructor params are bad (**R-010-010**)
+    -  :class:`SimplethError` if unable to gather data for events (internal error
        that should not happen) (**R-010-020**, **R-010-030**, **R-010-040**)
 
     """
@@ -3301,7 +3295,7 @@ class Results:
                 'contract is invalid.\n'
                 'HINT: Did you specify a valid and connected contract?\n'
                 )
-            raise SimplEthError(message, code='R-010-010')
+            raise SimplethError(message, code='R-010-010')
 
         #
         # Gather information from the transaction's web3 receipt data.
@@ -3320,7 +3314,7 @@ class Results:
                 'receipt is invalid.\n'
                 'HINT: Did you specify a valid transaction receipt?\n'
                 )
-            raise SimplEthError(message, code='R-010-020') from None
+            raise SimplethError(message, code='R-010-020') from None
 
         #
         # Gather information from the web3 transaction data
@@ -3395,7 +3389,7 @@ class Results:
                     f'a typical error.\n'
                     f'HINT: try recompiling and redeploying the contract.'
                     )
-                raise SimplEthError(message, code='R-010-030') from None
+                raise SimplethError(message, code='R-010-030') from None
 
             try:
                 # use the `web3` contract event object to get the details for the
@@ -3425,7 +3419,7 @@ class Results:
                     f'of the contract?\n'
                     f'HINT2: try recompiling and redeploying the contract.'
                     )
-                raise SimplEthError(message, code='R-010-040') from None
+                raise SimplethError(message, code='R-010-040') from None
 
     @property
     def block_number(self) -> int:
@@ -3987,7 +3981,7 @@ class Results:
 # end of Results
 
 
-class SimplEthError(Exception):
+class SimplethError(Exception):
     """Simple Ethereum Error exception class.
 
     It is used by :class:`Contract`, :class:`Convert`, :class:`Blockchain`,
@@ -3996,14 +3990,14 @@ class SimplEthError(Exception):
     Ethereum blockchain.
 
     The `web3` API throws many types of exceptions and
-    its methods are not consistent in which they throw. :class:`SimplEthError`
+    its methods are not consistent in which they throw. :class:`SimplethError`
     catches almost all of these (when new ones are found, they are added)
     and reports the details. This means you only have to have a `try/except`
-    with just `SimplEthError` instead of having half-dozen Python exceptions
+    with just `SimplethError` instead of having half-dozen Python exceptions
     in the `except`.
 
     Besides, passing back the details from the original Python exception,
-    :class:`SimplEthError` offers hints as to the cause of the problem.
+    :class:`SimplethError` offers hints as to the cause of the problem.
     Some exceptions, esp. the ones caused by an error with the Solidity
     contract, can be rather mysterious, esp. to someone just starting out
     with Ethereum. The hints may quickly point you to the cause.
@@ -4013,7 +4007,7 @@ class SimplEthError(Exception):
     locate the cause. More recent versions of `web3.py` are adding good
     descriptions of the error in their exception ``Message`` parameter.
     If all `web3.py` exceptions add helpful messages, one of the big
-    reasons for `SimplEthError` is fixed and time to consider doing away
+    reasons for `SimplethError` is fixed and time to consider doing away
     with it.
 
     """
@@ -4034,23 +4028,23 @@ class SimplEthError(Exception):
             require() (**optional**, default: `''`)
         :type code: str
         :example:
-            >>> from simpleth import SimplEthError
+            >>> from simpleth import SimplethError
             >>> try:
-            ...     raise SimplEthError('test')
-            ... except SimplEthError as e:
+            ...     raise SimplethError('test')
+            ... except SimplethError as e:
             ...     print(f'{e}')
             ...
             test
             >>> try:
-            ...     raise SimplEthError('test', '10')
-            ... except SimplEthError as e:
+            ...     raise SimplethError('test', '10')
+            ... except SimplethError as e:
             ...     print(f'{e}')
             ...
             [10] test
-            >>> from simpleth import SimplEthError
+            >>> from simpleth import SimplethError
             >>> try:
-            ...     raise SimplEthError('test', 'ERR-020-010')
-            ... except SimplEthError as e:
+            ...     raise SimplethError('test', 'ERR-020-010')
+            ... except SimplethError as e:
             ...     print(f'e = {e}')
             ...     print(f'code = {e.code}')
             ...     print(f'message = {e.message}')
@@ -4088,7 +4082,7 @@ class SimplEthError(Exception):
               -  ``<method>`` is a 3-digit sequence number for the method
                  in the class.
               -  ``<id>`` is a 3-digit sequence number for the exception
-                 in the class.
+                 in the method.
 
         :TBD: make exc_info, message, and code private, so they do not
             appear in doc.
@@ -4112,7 +4106,7 @@ class SimplEthError(Exception):
             msg = f'{message}'
 
         super().__init__(msg)    # let Exception take over
-# end of SimplEthError
+# end of SimplethError
 
 
 #

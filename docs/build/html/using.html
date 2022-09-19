@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Using &mdash; simpleth 0.1.44 documentation</title>
+  <title>Using &mdash; simpleth 0.1.45 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -889,20 +889,20 @@ for details on directives available for the strings.</p>
 </section>
 <section id="simpleth-exceptions">
 <h2>simpleth exceptions<a class="headerlink" href="#simpleth-exceptions" title="Permalink to this headline"></a></h2>
-<p><a class="reference internal" href="simpleth.html#simpleth.SimplEthError" title="simpleth.SimplEthError"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.SimplEthError</span></code></a> throws exceptions for errors in all
+<p><a class="reference internal" href="simpleth.html#simpleth.SimplethError" title="simpleth.SimplethError"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.SimplethError</span></code></a> throws exceptions for errors in all
 <code class="docutils literal notranslate"><span class="pre">simpleth</span></code> classes. The intent is to let you code to catch this
 single exception to simplify error-handling and provide hints to
 quickly identify the cause of the error.</p>
 <div class="literal-block-wrapper docutils container" id="id12">
-<div class="code-block-caption"><span class="caption-text">Getting a SimplEthError in the Python interpreter</span><a class="headerlink" href="#id12" title="Permalink to this code"></a></div>
+<div class="code-block-caption"><span class="caption-text">Getting a SimplethError in the Python interpreter</span><a class="headerlink" href="#id12" title="Permalink to this code"></a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span><span class="s1">&#39;bogus&#39;</span><span class="p">)</span>
 <span class="linenos"> 2</span> <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
 <span class="linenos"> 3</span>   <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="linenos"> 4</span>   <span class="n">File</span> <span class="s2">&quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">943</span><span class="p">,</span> <span class="ow">in</span> <span class="fm">__init__</span>
 <span class="linenos"> 5</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_abi</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_artifact_abi</span><span class="p">()</span>
 <span class="linenos"> 6</span>   <span class="n">File</span> <span class="s2">&quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2151</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_get_artifact_abi</span>
-<span class="linenos"> 7</span>     <span class="k">raise</span> <span class="n">SimplEthError</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="s1">&#39;C-100-010&#39;</span><span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
-<span class="linenos"> 8</span> <span class="n">simpleth</span><span class="o">.</span><span class="n">SimplEthError</span><span class="p">:</span> <span class="p">[</span><span class="n">C</span><span class="o">-</span><span class="mi">100</span><span class="o">-</span><span class="mi">010</span><span class="p">]</span> <span class="n">ERROR</span> <span class="ow">in</span> <span class="n">bogus</span><span class="p">()</span><span class="o">.</span><span class="n">_get_artifact_abi</span><span class="p">()</span><span class="o">.</span> <span class="n">Unable</span> <span class="n">to</span> <span class="n">read</span> <span class="n">ABI</span> <span class="n">file</span><span class="o">.</span>
+<span class="linenos"> 7</span>     <span class="k">raise</span> <span class="n">SimplethError</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="s1">&#39;C-100-010&#39;</span><span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
+<span class="linenos"> 8</span> <span class="n">simpleth</span><span class="o">.</span><span class="n">SimplethError</span><span class="p">:</span> <span class="p">[</span><span class="n">C</span><span class="o">-</span><span class="mi">100</span><span class="o">-</span><span class="mi">010</span><span class="p">]</span> <span class="n">ERROR</span> <span class="ow">in</span> <span class="n">bogus</span><span class="p">()</span><span class="o">.</span><span class="n">_get_artifact_abi</span><span class="p">()</span><span class="o">.</span> <span class="n">Unable</span> <span class="n">to</span> <span class="n">read</span> <span class="n">ABI</span> <span class="n">file</span><span class="o">.</span>
 <span class="linenos"> 9</span> <span class="n">Full</span> <span class="n">path</span><span class="p">:</span> <span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">snewe</span><span class="o">/</span><span class="n">OneDrive</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">simpleth</span><span class="o">/</span><span class="n">artifacts</span><span class="o">/</span><span class="n">bogus</span><span class="o">.</span><span class="n">abi</span>
 <span class="linenos">10</span> <span class="n">Contract</span> <span class="n">name</span> <span class="n">of</span> <span class="s2">&quot;bogus&quot;</span> <span class="ow">is</span> <span class="n">bad</span><span class="o">.</span>
 <span class="linenos">11</span> <span class="n">HINT</span> <span class="mi">1</span><span class="p">:</span> <span class="n">Check</span> <span class="n">the</span> <span class="n">spelling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">contract</span> <span class="n">name</span><span class="o">.</span>
@@ -915,15 +915,15 @@ quickly identify the cause of the error.</p>
 <ul class="simple">
 <li><p>Line 1: Cause an exception with a bad <cite>contract</cite> name. This is the
 typical type of message you will see when using the Python interpreter.</p></li>
-<li><p>Line 8: This is the start of the <code class="docutils literal notranslate"><span class="pre">SimplEthError</span></code> message and hints
+<li><p>Line 8: This is the start of the <code class="docutils literal notranslate"><span class="pre">SimplethError</span></code> message and hints
 on possible causes.</p></li>
 </ul>
 </div>
 <div class="literal-block-wrapper docutils container" id="id13">
-<div class="code-block-caption"><span class="caption-text">Handling a SimplEthError</span><a class="headerlink" href="#id13" title="Permalink to this code"></a></div>
+<div class="code-block-caption"><span class="caption-text">Handling a SimplethError</span><a class="headerlink" href="#id13" title="Permalink to this code"></a></div>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="go"> &gt;&gt;&gt; try:</span>
 <span class="linenos"> 2</span><span class="go"> ...     c = Contract(&#39;bogus&#39;)</span>
-<span class="linenos"> 3</span><span class="go"> ... except SimplEthError as e:</span>
+<span class="linenos"> 3</span><span class="go"> ... except SimplethError as e:</span>
 <span class="linenos"> 4</span><span class="go"> ...     print(e)</span>
 <span class="linenos"> 5</span><span class="go"> ...</span>
 <span class="linenos"> 6</span><span class="go"> [C-100-010] ERROR in bogus()._get_artifact_abi(). Unable to read ABI file.</span>
@@ -944,12 +944,12 @@ A program could take action to fix the problem at this point.</p></li>
 </ul>
 </div>
 <div class="literal-block-wrapper docutils container" id="id14">
-<div class="code-block-caption"><span class="caption-text">Properties of a SimplEthError</span><a class="headerlink" href="#id14" title="Permalink to this code"></a></div>
+<div class="code-block-caption"><span class="caption-text">Properties of a SimplethError</span><a class="headerlink" href="#id14" title="Permalink to this code"></a></div>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="go"> &gt;&gt;&gt; import pprint</span>
 <span class="linenos"> 2</span><span class="go"> &gt;&gt;&gt; pp = pprint.PrettyPrinter(indent = 2)</span>
 <span class="linenos"> 3</span><span class="go"> &gt;&gt;&gt; try:</span>
 <span class="linenos"> 4</span><span class="go"> ...     c = Contract(&#39;bogus&#39;)</span>
-<span class="linenos"> 5</span><span class="go"> ... except SimplEthError as e:</span>
+<span class="linenos"> 5</span><span class="go"> ... except SimplethError as e:</span>
 <span class="linenos"> 6</span><span class="go"> ...     print(f&#39;code = \n{e.code}&#39;)</span>
 <span class="linenos"> 7</span><span class="go"> ...     print(f&#39;message = \n{e.message}&#39;)</span>
 <span class="linenos"> 8</span><span class="go"> ...     print(f&#39;revert_msg = \n{e.revert_msg}&#39;)</span>
@@ -1006,7 +1006,7 @@ the transaction when it encounters runtime errors such as:</p>
 <li><p>transaction sender was not valid</p></li>
 <li><p>insufficient ether in sender balance to run the transaction</p></li>
 </ul>
-<p>These <strong>transaction error exceptions</strong> will cause <code class="docutils literal notranslate"><span class="pre">SimplEthError</span></code>
+<p>These <strong>transaction error exceptions</strong> will cause <code class="docutils literal notranslate"><span class="pre">SimplethError</span></code>
 exceptions for your code to handle.</p>
 <p>Other exceptions can be thrown by the VM which are coded into
 a transaction. A contract may be checking for conditions where
@@ -1016,7 +1016,7 @@ be <cite>reverted</cite>. The transaction can:</p>
 <li><p>Use the Solidity operation, <code class="docutils literal notranslate"><span class="pre">require</span></code> , to validate a
 condition is met. If the condition is not met, a <code class="docutils literal notranslate"><span class="pre">revert</span></code>
 is done and an optional message string will be available
-in the <code class="docutils literal notranslate"><span class="pre">SimplEthError</span></code></p>
+in the <code class="docutils literal notranslate"><span class="pre">SimplethError</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">require</span></code> is commonly used in a contract <code class="docutils literal notranslate"><span class="pre">modifier</span></code> and
 a frequent type of modifier is to limit access to a transaction
 to one or more specified accounts.</p>
@@ -1033,7 +1033,7 @@ revert.</p>
 all actions by the transaction.</p>
 </li>
 </ol>
-<p>These <strong>transaction exceptions</strong> will cause <code class="docutils literal notranslate"><span class="pre">SimplEthError</span></code>
+<p>These <strong>transaction exceptions</strong> will cause <code class="docutils literal notranslate"><span class="pre">SimplethError</span></code>
 exceptions for your code to handle.</p>
 <p>We’ll go through some examples. First up is what a transaction error
 exception thrown by an out of bounds index value looks like in the
@@ -1048,7 +1048,7 @@ Python interpreter and how it might look in your code with a
 <span class="linenos"> 5</span><span class="go">     trx_hash: T_HASH = self.submit_trx(</span>
 <span class="linenos"> 6</span><span class="go">   File &quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;, line 2128, in submit_trx</span>
 <span class="linenos"> 7</span><span class="go">     f&#39;HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n&#39;</span>
-<span class="linenos"> 8</span><span class="go"> simpleth.SimplEthError: [C-080-080] ERROR in Test().submit_trx(storeNum).</span>
+<span class="linenos"> 8</span><span class="go"> simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(storeNum).</span>
 <span class="linenos"> 9</span><span class="go"> ValueError says: VM Exception while processing transaction: revert</span>
 <span class="linenos">10</span><span class="go"> HINT1:  Did you fail to pass a transaction require()?</span>
 <span class="linenos">11</span><span class="go"> HINT2:  Did you fail to pass a transaction guard modifier()?</span>
@@ -1068,7 +1068,7 @@ Python interpreter and how it might look in your code with a
 <span class="linenos">25</span>
 <span class="linenos">26</span><span class="go"> &gt;&gt;&gt; try:</span>
 <span class="linenos">27</span><span class="go"> ...     c.run_trx(user, &#39;storeNum&#39;, 4, 42)</span>
-<span class="linenos">28</span><span class="go"> ... except SimplEthError as e:</span>
+<span class="linenos">28</span><span class="go"> ... except SimplethError as e:</span>
 <span class="linenos">29</span><span class="go"> ...     print(e.code)</span>
 <span class="linenos">30</span><span class="go"> ...     print(e.message)</span>
 <span class="linenos">31</span><span class="go"> ...     print(e.revert_msg)</span>
@@ -1121,7 +1121,7 @@ exceptions. (The <cite>Hints</cite> list covers the usual causes.)</p></li>
 <li><p>Line 53: This is the transaction’s revert message. It is an empty
 string for an oob (out-of-bounds) error.</p></li>
 <li><p>Line 53: This is the pretty print of the exception info property.
-A <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> caused an exception. SimplEthError caught it and
+A <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> caused an exception. SimplethError caught it and
 threw its exception with a lot of added info. This lets you see
 the original info from the first exception.</p></li>
 </ul>
@@ -1140,7 +1140,7 @@ i.e., the owner is the only one allowed to use this transaction. The
 <span class="linenos"> 5</span><span class="go">     trx_hash: T_HASH = self.submit_trx(</span>
 <span class="linenos"> 6</span><span class="go">   File &quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;, line 2128, in submit_trx</span>
 <span class="linenos"> 7</span><span class="go">     f&#39;HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n&#39;</span>
-<span class="linenos"> 8</span><span class="go"> simpleth.SimplEthError: [C-080-080] ERROR in Test().submit_trx(sumTwoNums).</span>
+<span class="linenos"> 8</span><span class="go"> simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(sumTwoNums).</span>
 <span class="linenos"> 9</span><span class="go"> ValueError says: VM Exception while processing transaction: revert must be owner to sum two nums</span>
 <span class="linenos">10</span><span class="go"> HINT1:  Did you fail to pass a transaction require()?</span>
 <span class="linenos">11</span><span class="go"> HINT2:  Did you fail to pass a transaction guard modifier()?</span>
@@ -1160,7 +1160,7 @@ i.e., the owner is the only one allowed to use this transaction. The
 <span class="linenos">25</span>
 <span class="linenos">26</span><span class="go"> &gt;&gt;&gt; try:</span>
 <span class="linenos">27</span><span class="go"> ...     c.run_trx(user, &#39;sumTwoNums&#39;)</span>
-<span class="linenos">28</span><span class="go"> ... except SimplEthError as e:</span>
+<span class="linenos">28</span><span class="go"> ... except SimplethError as e:</span>
 <span class="linenos">29</span><span class="go"> ...     msg = e.revert_msg</span>
 <span class="linenos">30</span><span class="go"> ...</span>
 <span class="linenos">31</span><span class="go"> &gt;&gt;&gt; msg</span>
@@ -1174,7 +1174,7 @@ i.e., the owner is the only one allowed to use this transaction. The
 <li><p>Line 1: <code class="docutils literal notranslate"><span class="pre">user</span></code> is not allowed to use this transaction. The transaction’s
 <code class="docutils literal notranslate"><span class="pre">require()</span></code> reverts, throws an exception, and sends back a message.</p></li>
 <li><p>Line 9: Shows the message. It has been passed back as part of the
-<code class="docutils literal notranslate"><span class="pre">ValueError</span></code> exception, which <code class="docutils literal notranslate"><span class="pre">SimplEthError</span></code> catches.</p></li>
+<code class="docutils literal notranslate"><span class="pre">ValueError</span></code> exception, which <code class="docutils literal notranslate"><span class="pre">SimplethError</span></code> catches.</p></li>
 <li><p>Line 26: Uses a <code class="docutils literal notranslate"><span class="pre">try</span></code> / <code class="docutils literal notranslate"><span class="pre">except</span></code> to get the message from the
 failed <code class="docutils literal notranslate"><span class="pre">require()</span></code>.</p></li>
 <li><p>Line 31: <code class="docutils literal notranslate"><span class="pre">msg</span></code> has the message explaining why the transaction was
@@ -1190,7 +1190,7 @@ and you’ll see they act just like the previous example of a failed
 <div class="code-block-caption"><span class="caption-text">Handling transaction thrown exceptions - modifier with message</span><a class="headerlink" href="#id17" title="Permalink to this code"></a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span> <span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
 <span class="linenos">2</span> <span class="o">...</span>     <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;setOwner&#39;</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
-<span class="linenos">3</span> <span class="o">...</span> <span class="k">except</span> <span class="n">SimplEthError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="linenos">3</span> <span class="o">...</span> <span class="k">except</span> <span class="n">SimplethError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 <span class="linenos">4</span> <span class="o">...</span>     <span class="n">msg</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">revert_msg</span>
 <span class="linenos">5</span> <span class="o">...</span>
 <span class="linenos">6</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">msg</span>
@@ -1219,8 +1219,8 @@ with an assert. If the test fails, the transaction is reverted and a Python
 <span class="linenos"> 4</span><span class="go">   File &quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;, line 1838, in run_trx</span>
 <span class="linenos"> 5</span><span class="go">     trx_hash: T_HASH = self.submit_trx(</span>
 <span class="linenos"> 6</span><span class="go">   File &quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;, line 2121, in submit_trx</span>
-<span class="linenos"> 7</span><span class="go">     raise SimplEthError(message, code=&#39;C-080-080&#39;) from None</span>
-<span class="linenos"> 8</span><span class="go"> simpleth.SimplEthError: [C-080-080] ERROR in Test().submit_trx(assertGreaterThan10).</span>
+<span class="linenos"> 7</span><span class="go">     raise SimplethError(message, code=&#39;C-080-080&#39;) from None</span>
+<span class="linenos"> 8</span><span class="go"> simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(assertGreaterThan10).</span>
 <span class="linenos"> 9</span><span class="go"> ValueError says:</span>
 <span class="linenos">10</span><span class="go"> HINT1:  Did you fail to pass a transaction require()?</span>
 <span class="linenos">11</span><span class="go"> HINT2:  Did you fail to pass a transaction guard modifier()?</span>
@@ -1240,7 +1240,7 @@ with an assert. If the test fails, the transaction is reverted and a Python
 <span class="linenos">25</span>
 <span class="linenos">26</span><span class="go"> &gt;&gt;&gt; try:</span>
 <span class="linenos">27</span><span class="go"> ...     c.run_trx(user, &#39;assertGreaterThan10&#39;, 9)</span>
-<span class="linenos">28</span><span class="go"> ... except SimplEthError as e:</span>
+<span class="linenos">28</span><span class="go"> ... except SimplethError as e:</span>
 <span class="linenos">29</span><span class="go"> ...     pp.pprint(e.exc_info)</span>
 <span class="linenos">30</span><span class="go"> ...</span>
 <span class="linenos">31</span><span class="go"> ( &lt;class &#39;ValueError&#39;&gt;,</span>
@@ -1275,7 +1275,7 @@ look for it in the same manner we did for <code class="docutils literal notransl
 <span class="linenos"> 5</span><span class="go">     trx_hash: T_HASH = self.submit_trx(</span>
 <span class="linenos"> 6</span><span class="go">   File &quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;, line 2128, in submit_trx</span>
 <span class="linenos"> 7</span><span class="go">     f&#39;HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n&#39;</span>
-<span class="linenos"> 8</span><span class="go"> simpleth.SimplEthError: [C-080-080] ERROR in Test().submit_trx(revertTransaction).</span>
+<span class="linenos"> 8</span><span class="go"> simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(revertTransaction).</span>
 <span class="linenos"> 9</span><span class="go"> ValueError says: VM Exception while processing transaction: revert Revert this transaction.</span>
 <span class="linenos">10</span><span class="go"> HINT1:  Did you fail to pass a transaction require()?</span>
 <span class="linenos">11</span><span class="go"> HINT2:  Did you fail to pass a transaction guard modifier()?</span>
@@ -1295,7 +1295,7 @@ look for it in the same manner we did for <code class="docutils literal notransl
 <span class="linenos">25</span>
 <span class="linenos">26</span><span class="go"> &gt;&gt;&gt; try:</span>
 <span class="linenos">27</span><span class="go"> ...     c.run_trx(user, &#39;revertTransaction&#39;)</span>
-<span class="linenos">28</span><span class="go"> ... except SimplEthError as e:</span>
+<span class="linenos">28</span><span class="go"> ... except SimplethError as e:</span>
 <span class="linenos">29</span><span class="go"> ...     msg = e.revert_msg</span>
 <span class="linenos">30</span><span class="go"> ...</span>
 <span class="linenos">31</span><span class="go"> &gt;&gt;&gt; msg</span>
@@ -1336,7 +1336,7 @@ an interesting example:</p>
 <span class="linenos">11</span><span class="go"> &gt;&gt;&gt; c.get_var(&#39;owner&#39;)</span>
 <span class="linenos">12</span><span class="go"> Traceback (most recent call last):</span>
 <span class="linenos">13</span><span class="go"> ... snip ...</span>
-<span class="linenos">14</span><span class="go"> simpleth.SimplEthError: [C-060-020] ERROR in Test().getvar(): Unable to get variable owner.</span>
+<span class="linenos">14</span><span class="go"> simpleth.SimplethError: [C-060-020] ERROR in Test().getvar(): Unable to get variable owner.</span>
 <span class="linenos">15</span><span class="go"> BadFunctionCallOutput says Could not transact with/call contract function, is contract deployed correctly and chain synced?</span>
 <span class="linenos">16</span><span class="go"> HINT1: Has contract been destroyed with selfdestruct()?</span>
 <span class="linenos">17</span><span class="go"> HINT2: Has contract not yet been deployed on a new chain?</span>
@@ -1345,8 +1345,8 @@ an interesting example:</p>
 <span class="linenos">20</span><span class="go"> Traceback (most recent call last):</span>
 <span class="linenos">21</span><span class="go">   File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
 <span class="linenos">22</span><span class="go">   File &quot;C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py&quot;, line 1253, in call_fcn</span>
-<span class="linenos">23</span><span class="go">     raise SimplEthError(message, code=&#39;C-010-030&#39;) from None</span>
-<span class="linenos">24</span><span class="go"> simpleth.SimplEthError: [C-010-030] ERROR in Test().call_fcn().</span>
+<span class="linenos">23</span><span class="go">     raise SimplethError(message, code=&#39;C-010-030&#39;) from None</span>
+<span class="linenos">24</span><span class="go"> simpleth.SimplethError: [C-010-030] ERROR in Test().call_fcn().</span>
 <span class="linenos">25</span><span class="go"> Unable to call function getNums.</span>
 <span class="linenos">26</span><span class="go"> BadFunctionCallOutput says Could not transact with/call contract function, is contract deployed correctly and chain synced?</span>
 <span class="linenos">27</span><span class="go"> HINT1: Has contract been destroyed with a selfdestruct()?</span>

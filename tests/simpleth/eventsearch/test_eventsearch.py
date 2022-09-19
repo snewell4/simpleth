@@ -2,7 +2,7 @@
 
 import pytest
 
-from simpleth import EventSearch, SimplEthError, Contract, Blockchain
+from simpleth import EventSearch, SimplethError, Contract, Blockchain
 
 
 class TestEventSearchConstructorGood:
@@ -39,7 +39,7 @@ class TestEventSearchConstructorBad:
         c = Contract('Test')
         c.connect()
         bogus_event_name = 'bogus'
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             EventSearch(c, bogus_event_name)
         assert excp.value.code == 'E-010-010'
 
@@ -48,7 +48,7 @@ class TestEventSearchConstructorBad:
         c = Contract('Test')
         c.connect()
         bogus_event_args = 100
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             EventSearch(c, 'NumsStored', bogus_event_args)
         assert excp.value.code == 'E-010-020'
 
@@ -57,7 +57,7 @@ class TestEventSearchConstructorBad:
         c = Contract('Test')
         c.connect()
         bogus_event_arg_name = 'bogus'
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             EventSearch(c, 'NumsStored', {bogus_event_arg_name: 20})
         assert excp.value.code == 'E-010-030'
 
@@ -66,7 +66,7 @@ class TestEventSearchConstructorBad:
         c = Contract('Test')
         c.connect()
         bogus_event_value = 'bogus'
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             EventSearch(c, 'NumsStored', {'num0': bogus_event_value})
         assert excp.value.code == 'E-010-040'
 
@@ -155,7 +155,7 @@ class TestEventSearchGetOldBad:
         c.connect()
         e = EventSearch(c, 'NumsStored')
         bogus_from_block = 'bogus'
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             e.get_old(bogus_from_block, 100)
         assert excp.value.code == 'E-030-010'
 
@@ -165,7 +165,7 @@ class TestEventSearchGetOldBad:
         c.connect()
         e = EventSearch(c, 'NumsStored')
         bogus_to_block = 'bogus'
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             e.get_old(100, bogus_to_block)
         assert excp.value.code == 'E-030-020'
 
@@ -174,7 +174,7 @@ class TestEventSearchGetOldBad:
         c = Contract('Test')
         c.connect()
         e = EventSearch(c, 'NumsStored')
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             e.get_old(-2, 20)
         assert excp.value.code == 'E-030-030'
 
@@ -183,7 +183,7 @@ class TestEventSearchGetOldBad:
         c = Contract('Test')
         c.connect()
         e = EventSearch(c, 'NumsStored')
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             e.get_old(-(Blockchain().block_number + 1))
         assert excp.value.code == 'E-030-040'
 
@@ -192,7 +192,7 @@ class TestEventSearchGetOldBad:
         c = Contract('Test')
         c.connect()
         e = EventSearch(c, 'NumsStored')
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             e.get_old(30, 20)
         assert excp.value.code == 'E-030-050'
 
@@ -202,7 +202,7 @@ class TestEventSearchGetOldBad:
         c.connect()
         e = EventSearch(c, 'NumsStored')
         n = Blockchain().block_number
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             e.get_old(n+1, n+2)
         assert excp.value.code == 'E-030-060'
 
@@ -212,7 +212,7 @@ class TestEventSearchGetOldBad:
         c.connect()
         e = EventSearch(c, 'NumsStored')
         n = Blockchain().block_number
-        with pytest.raises(SimplEthError) as excp:
+        with pytest.raises(SimplethError) as excp:
             e.get_old(n-1, n+2)
         assert excp.value.code == 'E-030-070'
 

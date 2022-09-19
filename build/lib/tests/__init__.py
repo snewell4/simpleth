@@ -1,1 +1,1 @@
-from simpleth import Blockchain, Contract, Convert, Results, SimplEthError
+from simpleth import Blockchain, Contract, Convert, Results, SimplethError

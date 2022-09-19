@@ -59,7 +59,7 @@ Limitations
 ***********
 ``simpleth`` is restricted to the following environment:
 
--  Windows 10 or 11 (have not tried it on iOS or Linux)
+-  Windows 10 or 11 (have not tried it on macOS or Linux)
 -  Python 3
 -  Ganache blockchain
 -  Solidity contracts

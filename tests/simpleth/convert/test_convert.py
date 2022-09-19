@@ -3,7 +3,7 @@ import pytest
 import time
 import re
 
-from simpleth import Blockchain, Convert, SimplEthError
+from simpleth import Blockchain, Convert, SimplethError
 
 
 # Ether denomination names to their value in wei
@@ -113,16 +113,16 @@ def test_convert_ether_all(from_denominations, to_denominations):
 
 @pytest.mark.parametrize('bad_denominations', ['xxx', 1234])
 def test_convert_ether_bad_from(bad_denominations):
-    """convert_ether() with bad from denomination raises SimplEthError"""
-    with pytest.raises(SimplEthError) as excp:
+    """convert_ether() with bad from denomination raises SimplethError"""
+    with pytest.raises(SimplethError) as excp:
         Convert().convert_ether(10, bad_denominations, 'ether')
     assert excp.value.code == 'V-010-010'
 
 
 @pytest.mark.parametrize('bad_denominations', ['xxx', 1234])
 def test_convert_ether_bad_to(bad_denominations):
-    """convert_ether() with bad to denomination raises SimplEthError"""
-    with pytest.raises(SimplEthError) as excp:
+    """convert_ether() with bad to denomination raises SimplethError"""
+    with pytest.raises(SimplethError) as excp:
         Convert().convert_ether(10, 'ether', bad_denominations)
     assert excp.value.code == 'V-010-020'
 
@@ -161,9 +161,9 @@ def test_local_time_with_time_format():
 
 
 def test_local_time_string_raises_v_020_010():
-    """local_time_string() with bad t_format type raises SimplEthError"""
+    """local_time_string() with bad t_format type raises SimplethError"""
     bad_format_type = 100
-    with pytest.raises(SimplEthError) as excp:
+    with pytest.raises(SimplethError) as excp:
         Convert().local_time_string(bad_format_type)
     assert excp.value.code == 'V-020-010'
 
@@ -211,9 +211,9 @@ def test_to_local_time_with_time_format():
 
 
 def test_to_local_time_string_raises_v_030_010():
-    """to_local_time_string() with bad t_format type raises SimplEthError"""
+    """to_local_time_string() with bad t_format type raises SimplethError"""
     bad_format_type = 100
     test_epoch_sec = 1639932637
-    with pytest.raises(SimplEthError) as excp:
+    with pytest.raises(SimplethError) as excp:
         Convert().to_local_time_string(test_epoch_sec, bad_format_type)
     assert excp.value.code == 'V-030-010'

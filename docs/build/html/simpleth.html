@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simpleth &mdash; simpleth 0.1.44 documentation</title>
+  <title>Simpleth &mdash; simpleth 0.1.45 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -95,7 +95,7 @@ contracts.</p>
 <section id="exceptions">
 <h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline"></a></h2>
 <ul class="simple">
-<li><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimplEthError</span></code></a> - raised on errors from methods in <cite>Blockchain</cite>,
+<li><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimplethError</span></code></a> - raised on errors from methods in <cite>Blockchain</cite>,
 <cite>Convert</cite>, <cite>Contract</cite>, <cite>EventSearch</cite> or <cite>Results</cite>.</p></li>
 </ul>
 <dl class="py class">
@@ -170,7 +170,7 @@ default: <code class="docutils literal notranslate"><span class="pre">None</span
 <dd class="field-even"><p>None</p>
 </dd>
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-odd"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if unable to connect to the blockchain client (<strong>B-010-010</strong>)</p></li>
 </ul>
 </p>
@@ -414,7 +414,7 @@ account addresses.</p>
 <dd class="field-odd"><p>blockchain <code class="docutils literal notranslate"><span class="pre">address</span></code> of the requested account</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">account_num</span></code> is out of range (<strong>B-020-010</strong>)</p></li>
 </ul>
 </p>
@@ -445,7 +445,7 @@ account addresses.</p>
 <dd class="field-odd"><p>account’s ether balance, in wei</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">address</span></code> is not a string (<strong>B-030-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">address</span></code> is not a valid account (<strong>B-030-020</strong>)</p></li>
 </ul>
@@ -478,7 +478,7 @@ account addresses.</p>
 <dd class="field-odd"><p>time block was mined, in epoch seconds.</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">block_number</span></code> is invalid (<strong>B-040-010</strong>)</p></li>
 </ul>
 </p>
@@ -513,7 +513,7 @@ account addresses.</p>
 <dd class="field-odd"><p>time block was mined, in local timezone, as a string</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">block_number</span></code> is invalid (<strong>B-050-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">time_format</span></code> is not a string (<strong>B-050-020</strong>)</p></li>
 </ul>
@@ -569,7 +569,7 @@ the list and will be <a class="reference internal" href="#simpleth.Blockchain.bl
 </p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if the method is called (<strong>B-060-010</strong>)</p></li>
 </ul>
 </p>
@@ -656,7 +656,7 @@ in <cite>wei</cite></p></li>
 <dd class="field-odd"><p><cite>trx_hash</cite> of the transfer transaction</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">sender</span></code> is bad (<strong>B-070-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">receiver</span></code> is bad (<strong>B-070-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">amount</span></code> exceeds the <code class="docutils literal notranslate"><span class="pre">sender</span></code> balance  (<strong>B-070-010</strong>)</p></li>
@@ -703,7 +703,7 @@ transaction of interest</p>
 <dd class="field-odd"><p>transaction details as a dictionary</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if transaction for <code class="docutils literal notranslate"><span class="pre">trx_hash</span></code> is not found (<strong>B-080-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">trx_hash</span></code> is not a valid type (<strong>B-080-020</strong>)</p></li>
 </ul>
@@ -743,7 +743,7 @@ transaction of interest</p>
 <dd class="field-odd"><p>total number of transactions on the blockchain</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">address</span></code> is not a string (<strong>B-090-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">address</span></code> is not a valid account (<strong>B-090-020</strong>)</p></li>
 </ul>
@@ -861,7 +861,7 @@ the current working directory.</p>
 <dd class="field-even"><p>None</p>
 </dd>
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-odd"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">name</span></code> is misspelled or has not been compiled.</p></li>
 </ul>
 </p>
@@ -1216,7 +1216,7 @@ variables. They are defined in the Solidity code as
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">fcn_name</span></code> is bad or a <a class="reference internal" href="#simpleth.Contract.connect" title="simpleth.Contract.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code></a> is needed (<strong>C-010-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">fcn_args</span></code> are the wrong type or number (<strong>C-010-020</strong>)</p></li>
 <li><p>if <code class="xref py py-class docutils literal notranslate"><span class="pre">contract</span></code> has done a <cite>selfdestruct()</cite> or needs a
@@ -1272,7 +1272,7 @@ default: <code class="docutils literal notranslate"><span class="pre">None</span
 <dd class="field-odd"><p><cite>address</cite> of the contract</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if address arg was invalid (<strong>C-150-010</strong>)</p></li>
 </ul>
 </p>
@@ -1337,7 +1337,7 @@ transaction mined, in gwei (<strong>optional</strong>, default:
 <dd class="field-odd"><p>transaction receipt</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if unable to get artifact info and create contract
 class (<strong>C-030-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">sender</span></code> address is bad (<strong>C-030-020</strong>)</p></li>
@@ -1381,7 +1381,7 @@ default: None)</p></li>
 <dd class="field-odd"><p>estimated number of gas units to run the transaction</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">trx_name</span></code> is bad (<strong>C-040-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">args</span></code> are bad; either wrong type or number (<strong>C-040-020</strong>)</p></li>
 <li><p>if <code class="xref py py-class docutils literal notranslate"><span class="pre">contract</span></code> has not yet been deployed on a new chain
@@ -1488,7 +1488,7 @@ for transaction completion (<strong>optional</strong>, default:
 <dd class="field-odd"><p>transaction receipt</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">timeout</span></code> is not float or int (<strong>C-050-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">poll_latency</span></code> is not float or int (<strong>C-050-020</strong>)</p></li>
 </ul>
@@ -1556,7 +1556,7 @@ into an array (<strong>optional</strong>, default: None)</p></li>
 <dd class="field-odd"><p>value of the variable</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">var_name</span></code> is bad (<strong>C-060-010</strong>)</p></li>
 <li><p>if <code class="xref py py-class docutils literal notranslate"><span class="pre">contract</span></code> has done a selfdestruct() or not yet
 deployed on a new chain (<strong>C-060-020</strong>)</p></li>
@@ -1634,7 +1634,7 @@ for transaction completion
 <dd class="field-odd"><p><cite>web3</cite> transaction receipt</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if unable to submit the transaction; no hash was returned
 (<strong>C-070-010</strong>)</p></li>
 <li><p><a class="reference internal" href="#simpleth.Contract.submit_trx" title="simpleth.Contract.submit_trx"><code class="xref py py-meth docutils literal notranslate"><span class="pre">submit_trx()</span></code></a> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_receipt_wait()</span></code> will raise
@@ -1736,7 +1736,7 @@ transaction
 this transaction on the blockchain</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">trx_name</span></code> is not in the contract (<strong>C-080-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">args</span></code> are missing, wrong number of args, or wrong type
 (<strong>C-080-020</strong>)</p></li>
@@ -1846,7 +1846,7 @@ time string, in local time</p></li>
 <dd class="field-odd"><p>converted <code class="docutils literal notranslate"><span class="pre">amount</span></code></p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">from_denomination</span></code> is bad (<strong>V-010-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">to_denomination</span></code> is bad (<strong>V-010-020</strong>)</p></li>
 </ul>
@@ -1986,7 +1986,7 @@ for <code class="docutils literal notranslate"><span class="pre">from_denominati
 <dd class="field-odd"><p>current time</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">t_format</span></code> is bad (<strong>V-020-010</strong>)</p></li>
 </ul>
 </p>
@@ -2029,7 +2029,7 @@ for <code class="docutils literal notranslate"><span class="pre">from_denominati
 <dd class="field-odd"><p>local time equivalent to epoch seconds</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">t_format</span></code> is bad (<strong>V-030-010</strong>)</p></li>
 </ul>
 </p>
@@ -2071,9 +2071,10 @@ one, or more, pairs of event args along with desired values.</p>
 </ul>
 <p><strong>METHODS</strong></p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#simpleth.EventSearch.get_new" title="simpleth.EventSearch.get_new"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_new()</span></code></a> - return event info from newly mined blocks</p></li>
+<li><p><a class="reference internal" href="#simpleth.EventSearch.get_new" title="simpleth.EventSearch.get_new"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_new()</span></code></a> - return event info from newly mined blocks;
+looks forward.</p></li>
 <li><p><a class="reference internal" href="#simpleth.EventSearch.get_old" title="simpleth.EventSearch.get_old"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_old()</span></code></a> - return event info from specified range of
-previously mined blocks</p></li>
+previously mined blocks; looks backward.</p></li>
 </ul>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -2098,7 +2099,7 @@ dictionary value. Multiple entries are allowed. They are ANDed.
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">event_name</span></code> is not found in the <code class="docutils literal notranslate"><span class="pre">contract</span></code> (<strong>E-010-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">event_args</span></code> is not a dictionary (<strong>E-010-020</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">event_args</span></code> has an unknown or misspelled event argument
@@ -2257,12 +2258,6 @@ call.</p></li>
 </div>
 </dd>
 </dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><a class="reference internal" href="#simpleth.EventSearch.get_old" title="simpleth.EventSearch.get_old"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_old()</span></code></a> looks backward and searches old
-blocks. <a class="reference internal" href="#simpleth.EventSearch.get_new" title="simpleth.EventSearch.get_new"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_new()</span></code></a> looks forward at the
-newly mined blocks.</p>
-</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><code class="xref py py-attr docutils literal notranslate"><span class="pre">Contract.events</span></code> for the list of events
@@ -2282,15 +2277,15 @@ args specified in this call to <code class="docutils literal notranslate"><span 
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>from_block</strong> (<em>int</em>) – starting block to search mined blocks</p></li>
-<li><p><strong>to_block</strong> – ending block to search mined blocks</p></li>
+<li><p><strong>to_block</strong> (<em>int</em>) – ending block to search mined blocks</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><strong>SimplEthError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is not integer (<strong>E-030-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is not integer (<strong>E-030-020</strong>)</p></li>
-<li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is used and <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is also specified (<strong>E-030-030</strong>)</p></li>
-<li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> exceeds the number of blocks in chain (<strong>E-030-040</strong>)</p></li>
+<li><p>if negative <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is used and <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is also specified (<strong>E-030-030</strong>)</p></li>
+<li><p>if negative <code class="docutils literal notranslate"><span class="pre">from_block</span></code> exceeds the number of blocks in chain (<strong>E-030-040</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is greater than <code class="docutils literal notranslate"><span class="pre">to_block</span></code> (<strong>E-030-050</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is greater than <code class="docutils literal notranslate"><span class="pre">Blockchain().block_number</span></code> (<strong>E-030-060</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is greater than <code class="docutils literal notranslate"><span class="pre">Blockchain().block_number</span></code> (<strong>E-030-070</strong>)</p></li>
@@ -2335,9 +2330,15 @@ no events found</p>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><a class="reference internal" href="#simpleth.EventSearch.get_old" title="simpleth.EventSearch.get_old"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_old()</span></code></a> looks backward and searches old
-blocks. <a class="reference internal" href="#simpleth.EventSearch.get_new" title="simpleth.EventSearch.get_new"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_new()</span></code></a> looks forward at the
-newly mined blocks.</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">from_block</span></code> and <code class="docutils literal notranslate"><span class="pre">to_block</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">get_old()</span></code> searches the most recently mined block.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_old(-x)</span></code> searches the most recently mined <code class="docutils literal notranslate"><span class="pre">x</span></code>
+blocks; where ‘-1’ will search the most recently mined block,
+‘-2’ will search the two` most recently mined blocks, etc.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_old(x)</span></code> searches block <cite>x</cite> to the end of the chain.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_old(m,n)</span></code> searches block ‘m’ to block ‘n’.</p></li>
+</ul>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -2440,8 +2441,8 @@ as shown below.</p>
 </dl>
 <p><strong>RAISES</strong></p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimplEthError</span></code></a> if constructor params are bad (<strong>R-010-010</strong>)</p></li>
-<li><p><a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimplEthError</span></code></a> if unable to gather data for events (internal error
+<li><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimplethError</span></code></a> if constructor params are bad (<strong>R-010-010</strong>)</p></li>
+<li><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimplethError</span></code></a> if unable to gather data for events (internal error
 that should not happen) (<strong>R-010-020</strong>, <strong>R-010-030</strong>, <strong>R-010-040</strong>)</p></li>
 </ul>
 <dl class="py method">
@@ -2950,21 +2951,21 @@ those data types is available as the attribute, <code class="xref py py-attr doc
 </dd></dl>
 
 <dl class="py exception">
-<dt class="sig sig-object py" id="simpleth.SimplEthError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">SimplEthError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revert_msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpleth.SimplEthError" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="simpleth.SimplethError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">SimplethError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revert_msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpleth.SimplethError" title="Permalink to this definition"></a></dt>
 <dd><p>Simple Ethereum Error exception class.</p>
 <p>It is used by <a class="reference internal" href="#simpleth.Contract" title="simpleth.Contract"><code class="xref py py-class docutils literal notranslate"><span class="pre">Contract</span></code></a>, <a class="reference internal" href="#simpleth.Convert" title="simpleth.Convert"><code class="xref py py-class docutils literal notranslate"><span class="pre">Convert</span></code></a>, <a class="reference internal" href="#simpleth.Blockchain" title="simpleth.Blockchain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Blockchain</span></code></a>,
 <a class="reference internal" href="#simpleth.Results" title="simpleth.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code></a>, and <a class="reference internal" href="#simpleth.EventSearch" title="simpleth.EventSearch"><code class="xref py py-class docutils literal notranslate"><span class="pre">EventSearch</span></code></a> to throw exceptions for
 errors resulting from interacting with Solidity contracts and the
 Ethereum blockchain.</p>
 <p>The <cite>web3</cite> API throws many types of exceptions and
-its methods are not consistent in which they throw. <a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimplEthError</span></code></a>
+its methods are not consistent in which they throw. <a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimplethError</span></code></a>
 catches almost all of these (when new ones are found, they are added)
 and reports the details. This means you only have to have a <cite>try/except</cite>
-with just <cite>SimplEthError</cite> instead of having half-dozen Python exceptions
+with just <cite>SimplethError</cite> instead of having half-dozen Python exceptions
 in the <cite>except</cite>.</p>
 <p>Besides, passing back the details from the original Python exception,
-<a class="reference internal" href="#simpleth.SimplEthError" title="simpleth.SimplEthError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimplEthError</span></code></a> offers hints as to the cause of the problem.
+<a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimplethError</span></code></a> offers hints as to the cause of the problem.
 Some exceptions, esp. the ones caused by an error with the Solidity
 contract, can be rather mysterious, esp. to someone just starting out
 with Ethereum. The hints may quickly point you to the cause.</p>
@@ -2973,11 +2974,11 @@ being thrown had very little explanation and could be difficult to
 locate the cause. More recent versions of <cite>web3.py</cite> are adding good
 descriptions of the error in their exception <code class="docutils literal notranslate"><span class="pre">Message</span></code> parameter.
 If all <cite>web3.py</cite> exceptions add helpful messages, one of the big
-reasons for <cite>SimplEthError</cite> is fixed and time to consider doing away
+reasons for <cite>SimplethError</cite> is fixed and time to consider doing away
 with it.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="simpleth.SimplEthError.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revert_msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#simpleth.SimplEthError.__init__" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="simpleth.SimplethError.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revert_msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#simpleth.SimplethError.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Create error exception.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -2990,23 +2991,23 @@ require() (<strong>optional</strong>, default: <cite>‘’</cite>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Example</dt>
-<dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">SimplEthError</span>
+<dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">SimplethError</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">raise</span> <span class="n">SimplEthError</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
-<span class="gp">... </span><span class="k">except</span> <span class="n">SimplEthError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">raise</span> <span class="n">SimplethError</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">SimplethError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="go">test</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">raise</span> <span class="n">SimplEthError</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;10&#39;</span><span class="p">)</span>
-<span class="gp">... </span><span class="k">except</span> <span class="n">SimplEthError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">raise</span> <span class="n">SimplethError</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;10&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">SimplethError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="go">[10] test</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">SimplEthError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">SimplethError</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">raise</span> <span class="n">SimplEthError</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;ERR-020-010&#39;</span><span class="p">)</span>
-<span class="gp">... </span><span class="k">except</span> <span class="n">SimplEthError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">raise</span> <span class="n">SimplethError</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;ERR-020-010&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">SimplethError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;e = </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;code = </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;message = </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -3051,7 +3052,7 @@ code that raised a specific SimplEthException.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;method&gt;</span></code> is a 3-digit sequence number for the method
 in the class.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;id&gt;</span></code> is a 3-digit sequence number for the exception
-in the class.</p></li>
+in the method.</p></li>
 </ul>
 </li>
 </ul>
@@ -3065,28 +3066,28 @@ appear in doc.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="simpleth.SimplEthError.exc_info">
-<span class="sig-name descname"><span class="pre">exc_info</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#simpleth.SimplEthError.exc_info" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="simpleth.SimplethError.exc_info">
+<span class="sig-name descname"><span class="pre">exc_info</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><a class="headerlink" href="#simpleth.SimplethError.exc_info" title="Permalink to this definition"></a></dt>
 <dd><p>Exception instance variable with exception
 info: (<cite>type</cite>, <cite>value</cite>, <cite>traceback</cite>)</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="simpleth.SimplEthError.message">
-<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simpleth.SimplEthError.message" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="simpleth.SimplethError.message">
+<span class="sig-name descname"><span class="pre">message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simpleth.SimplethError.message" title="Permalink to this definition"></a></dt>
 <dd><p>Exception instance variable with <code class="docutils literal notranslate"><span class="pre">message</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="simpleth.SimplEthError.revert_msg">
-<span class="sig-name descname"><span class="pre">revert_msg</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simpleth.SimplEthError.revert_msg" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="simpleth.SimplethError.revert_msg">
+<span class="sig-name descname"><span class="pre">revert_msg</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simpleth.SimplethError.revert_msg" title="Permalink to this definition"></a></dt>
 <dd><p>Exception instance variable with <code class="docutils literal notranslate"><span class="pre">assert()</span></code> or
 <code class="docutils literal notranslate"><span class="pre">require()</span></code> message from transaction</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="simpleth.SimplEthError.code">
-<span class="sig-name descname"><span class="pre">code</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simpleth.SimplEthError.code" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="simpleth.SimplethError.code">
+<span class="sig-name descname"><span class="pre">code</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simpleth.SimplethError.code" title="Permalink to this definition"></a></dt>
 <dd><p>Exception instance variable with <code class="docutils literal notranslate"><span class="pre">code</span></code></p>
 </dd></dl>
 

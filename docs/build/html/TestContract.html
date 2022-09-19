@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Test Contract Source &mdash; simpleth 0.1.44 documentation</title>
+  <title>Test Contract Source &mdash; simpleth 0.1.45 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -551,7 +551,9 @@ contract Test {
      * @notice Stores the three args in nums[] and call
      * sumNums() to divide nums
      *
-     * @dev Used to test calling a function that fails
+     * @dev There is no test to check for a _divisor of 0.
+     * Zero is used in testing for this transaction to call
+     * another transaction that fails.
      *
      * @param _num0 value to store in nums[0]
      * @param _num1 value to store in nums[1]
