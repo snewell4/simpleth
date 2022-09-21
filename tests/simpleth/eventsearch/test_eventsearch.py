@@ -94,10 +94,11 @@ class TestEventSearchGetOldGood:
         c.run_trx(u, 'storeNums', 1, 1, 1)
         c.run_trx(u, 'storeNums', 2, 2, 2)
         c.run_trx(u, 'storeNums', 3, 3, 3)
-        e1 = len(e.get_old())
-        e2 = len(e.get_old(-2))
-        e3 = len(e.get_old(-3))
-        assert e1 == 1 and e2 == 2 and e3 == 3
+        e1a = len(e.get_old())
+        e1b = len(e.get_old(0))
+        e2 = len(e.get_old(-1))
+        e3 = len(e.get_old(-2))
+        assert e1a == 1 and e1b == 1 and e2 == 2 and e3 == 3
 
     def test_get_old_one_arg(self):
         """Run three store_num() trxs. Verify get_old() with single arg"""
@@ -140,9 +141,9 @@ class TestEventSearchGetOldGood:
         c.run_trx(u, 'storeNums', 10, 10, 10)
         c.run_trx(u, 'storeNums', 10, 20, 20)
         c.run_trx(u, 'storeNums', 10, 20, 30)
-        e0 = len(e_num0_10.get_old(-3))
-        e1 = len(e_num1_20.get_old(-3))
-        e2 = len(e_num2_30.get_old(-3))
+        e0 = len(e_num0_10.get_old(-2))
+        e1 = len(e_num1_20.get_old(-2))
+        e2 = len(e_num2_30.get_old(-2))
         assert e0 == 3 and e1 == 2 and e2 == 1
 
 
@@ -247,5 +248,5 @@ class TestEventSearchGetArgsGood:
         c.run_trx(u, 'storeNums', 1, 1, 1)
         c.run_trx(u, 'storeNums', 2, 2, 2)
         c.run_trx(u, 'storeNums', 3, 3, 3)
-        e1 = len(e.get_old(from_block=-3))
+        e1 = len(e.get_old(from_block=-2))
         assert e1 == 1

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simpleth &mdash; simpleth 0.1.45 documentation</title>
+  <title>Simpleth &mdash; simpleth 0.1.47 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -2267,7 +2267,7 @@ emitted by this contract.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simpleth.EventSearch.get_old">
-<span class="sig-name descname"><span class="pre">get_old</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_block</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_block</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#simpleth.EventSearch.get_old" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_old</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_block</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_block</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span></span></span><a class="headerlink" href="#simpleth.EventSearch.get_old" title="Permalink to this definition"></a></dt>
 <dd><p>Search previously mined blocks for a specific event.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">EventSearch</span></code> specifed <code class="docutils literal notranslate"><span class="pre">event_args</span></code>, the search will be
 narrowed to events matching the <code class="docutils literal notranslate"><span class="pre">event_name</span></code> having the specified
@@ -2276,19 +2276,25 @@ args specified in this call to <code class="docutils literal notranslate"><span 
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>from_block</strong> (<em>int</em>) – starting block to search mined blocks</p></li>
-<li><p><strong>to_block</strong> (<em>int</em>) – ending block to search mined blocks</p></li>
+<li><p><strong>from_block</strong> (<em>int</em><em> | </em><em>None</em>) – starting block to search mined blocks (<strong>optional</strong>,
+default: <cite>None</cite>)</p></li>
+<li><p><strong>to_block</strong> (<em>int</em><em> | </em><em>None</em>) – ending block to search mined blocks (<strong>optional</strong>,
+default: <cite>None</cite>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
-<li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is not integer (<strong>E-030-010</strong>)</p></li>
-<li><p>if <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is not integer (<strong>E-030-020</strong>)</p></li>
-<li><p>if negative <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is used and <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is also specified (<strong>E-030-030</strong>)</p></li>
-<li><p>if negative <code class="docutils literal notranslate"><span class="pre">from_block</span></code> exceeds the number of blocks in chain (<strong>E-030-040</strong>)</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is not integer or None (<strong>E-030-010</strong>)</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is not integer or None (<strong>E-030-020</strong>)</p></li>
+<li><p>if negative <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is used and <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is also
+specified (<strong>E-030-030</strong>)</p></li>
+<li><p>if negative <code class="docutils literal notranslate"><span class="pre">from_block</span></code> exceeds the number of blocks in chain
+(<strong>E-030-040</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is greater than <code class="docutils literal notranslate"><span class="pre">to_block</span></code> (<strong>E-030-050</strong>)</p></li>
-<li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is greater than <code class="docutils literal notranslate"><span class="pre">Blockchain().block_number</span></code> (<strong>E-030-060</strong>)</p></li>
-<li><p>if <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is greater than <code class="docutils literal notranslate"><span class="pre">Blockchain().block_number</span></code> (<strong>E-030-070</strong>)</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is greater than <code class="docutils literal notranslate"><span class="pre">Blockchain().block_number</span></code>
+(<strong>E-030-060</strong>)</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is greater than <code class="docutils literal notranslate"><span class="pre">Blockchain().block_number</span></code>
+(<strong>E-030-070</strong>)</p></li>
 </ul>
 </p>
 </dd>
@@ -2320,7 +2326,7 @@ no events found</p>
 <span class="go">    },</span>
 <span class="go">    &#39;trx_hash&#39;: &#39;0xf3629545d ... 3982ad3e2d07d9&#39;</span>
 <span class="go">}]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">get_old</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">get_old</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 <span class="go">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">get_old</span><span class="p">(</span><span class="mi">2736</span><span class="p">,</span> <span class="mi">2737</span><span class="p">))</span>    
 <span class="go">2</span>
@@ -2333,10 +2339,10 @@ no events found</p>
 <p>Using <code class="docutils literal notranslate"><span class="pre">from_block</span></code> and <code class="docutils literal notranslate"><span class="pre">to_block</span></code>:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">get_old()</span></code> searches the most recently mined block.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">get_old(-x)</span></code> searches the most recently mined <code class="docutils literal notranslate"><span class="pre">x</span></code>
-blocks; where ‘-1’ will search the most recently mined block,
-‘-2’ will search the two` most recently mined blocks, etc.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">get_old(x)</span></code> searches block <cite>x</cite> to the end of the chain.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_old(0)</span></code> also searches the most recently mined block.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_old(-x)</span></code> searches the most recently mined blocks;
+where ‘-1’ will search the two most recently mined block,
+‘-2’ will search the three most recently mined blocks, etc.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">get_old(m,n)</span></code> searches block ‘m’ to block ‘n’.</p></li>
 </ul>
 </div>

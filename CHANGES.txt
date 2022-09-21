@@ -1,3 +1,7 @@
+## 0.1.47 - 2022-09-21
+
+     - Redid EventSearch.get_old() argument values
+
 ## 0.1.46 - 2022-09-19
 
      - Rename SimplEthError() to SimplethError()
