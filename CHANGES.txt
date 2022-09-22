@@ -1,3 +1,7 @@
+## 0.1.478- 2022-09-21
+
+     - Fix class property docstrings
+
 ## 0.1.47 - 2022-09-21
 
      - Redid EventSearch.get_old() argument values

@@ -219,13 +219,13 @@ class Blockchain:
 
     **PROPERTIES**
 
-    -  :meth:`accounts` - list of Ganache account addresses
-    -  :meth:`api_version` - `web3` API version in use
-    -  :meth:`block_number` - sequence number of last block on chain
-    -  :meth:`client_version` - `Ethereum` client version in use
-    -  :meth:`eth` - `web3.eth` object
-    -  :meth:`url` - URL for the Ganache blockchain
-    -  :meth:`web3` - `web3` object
+    -  :attr:`accounts` - list of Ganache account addresses
+    -  :attr:`api_version` - `web3` API version in use
+    -  :attr:`block_number` - sequence number of last block on chain
+    -  :attr:`client_version` - `Ethereum` client version in use
+    -  :attr:`eth` - `web3.eth` object
+    -  :attr:`url` - URL for the Ganache blockchain
+    -  :attr:`web3` - `web3` object
 
     **METHODS**
 
@@ -915,18 +915,18 @@ class Contract:
 
     **PROPERTIES**
 
-    -  :meth:`abi` - contract ABI
-    -  :meth:`address` - contract address on blockchain
-    -  :meth:`artifact_dir` - filepath to artifact directory
-    -  :meth:`blockchain` - `web3` blockchain object
-    -  :meth:`bytecode` - contract bytecode
-    -  :meth:`deployed_code` - contract bytecode as deployed on chain
-    -  :meth:`event_names` - event names defined in contract
-    -  :meth:`functions` - function names defined in contract
-    -  :meth:`name` - name of contract
-    -  :meth:`size` - deployed contract size, in bytes
-    -  :meth:`web3_contract` - `web3` contract object
-    -  :meth:`web3e` - `web3` exception module
+    -  :attr:`abi` - contract ABI
+    -  :attr:`address` - contract address on blockchain
+    -  :attr:`artifact_dir` - filepath to artifact directory
+    -  :attr:`blockchain` - `web3` blockchain object
+    -  :attr:`bytecode` - contract bytecode
+    -  :attr:`deployed_code` - contract bytecode as deployed on chain
+    -  :attr:`event_names` - event names defined in contract
+    -  :attr:`functions` - function names defined in contract
+    -  :attr:`name` - name of contract
+    -  :attr:`size` - deployed contract size, in bytes
+    -  :attr:`web3_contract` - `web3` contract object
+    -  :attr:`web3e` - `web3` exception module
 
     **METHODS**
 
@@ -2765,8 +2765,8 @@ class EventSearch:
 
     **PROPERTIES**
 
-    -  :meth:`event_name` - name of event being sought
-    -  :meth:`event_args` - event argument(s) and value(s) being sought
+    -  :attr:`event_name` - name of event being sought
+    -  :attr:`event_args` - event argument(s) and value(s) being sought
 
     **METHODS**
 
@@ -3207,23 +3207,23 @@ class Results:
 
     **PROPERTIES**
 
-    -  :meth:`block_number` - block number containing transaction
-    -  :meth:`block_time_epoch` - time block mined, in epoch seconds
-    -  :meth:`contract` - :class:`Contract` object and same as ``contract`` constructor arg
-    -  :meth:`contract_address` - address of contract with the transaction
-    -  :meth:`contract_name` - name of contract with the transaction
-    -  :meth:`event_args` - arg(s) for event(s) emitted by transaction
-    -  :meth:`event_logs` - event log(s) from transaction for ``event_name``
-    -  :meth:`event_names` - event name(s) emitted by transaction
-    -  :meth:`gas_price_wei` - price of gas used by transaction, in wei
-    -  :meth:`gas_used` - units of gas needed for transaction
-    -  :meth:`transaction` - `web3.eth` transaction dictionary info
-    -  :meth:`trx_args` - arguments passed into transaction
-    -  :meth:`trx_hash` - transaction hash to identify submitted transaction
-    -  :meth:`trx_name` - name of transaction
-    -  :meth:`trx_receipt` - receipt to identify mined transaction
-    -  :meth:`trx_sender` - address sending the transaction
-    -  :meth:`trx_value_wei` - amount of Ether, in wei, sent with transaction
+    -  :attr:`block_number` - block number containing transaction
+    -  :attr:`block_time_epoch` - time block mined, in epoch seconds
+    -  :attr:`contract` - :class:`Contract` object and same as ``contract`` constructor arg
+    -  :attr:`contract_address` - address of contract with the transaction
+    -  :attr:`contract_name` - name of contract with the transaction
+    -  :attr:`event_args` - arg(s) for event(s) emitted by transaction
+    -  :attr:`event_logs` - event log(s) from transaction for ``event_name``
+    -  :attr:`event_names` - event name(s) emitted by transaction
+    -  :attr:`gas_price_wei` - price of gas used by transaction, in wei
+    -  :attr:`gas_used` - units of gas needed for transaction
+    -  :attr:`transaction` - `web3.eth` transaction dictionary info
+    -  :attr:`trx_args` - arguments passed into transaction
+    -  :attr:`trx_hash` - transaction hash to identify submitted transaction
+    -  :attr:`trx_name` - name of transaction
+    -  :attr:`trx_receipt` - receipt to identify mined transaction
+    -  :attr:`trx_sender` - address sending the transaction
+    -  :attr:`trx_value_wei` - amount of Ether, in wei, sent with transaction
 
     **METHODS**
 

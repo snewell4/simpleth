@@ -129,7 +129,7 @@ for the contract in, <a class="reference internal" href="contracts.html"><span c
 </section>
 <section id="deploy">
 <h2>Deploy<a class="headerlink" href="#deploy" title="Permalink to this headline"></a></h2>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.deploy()</span></code> will add a contract to the blockchain.
+<p><a class="reference internal" href="simpleth.html#simpleth.Contract.deploy" title="simpleth.Contract.deploy"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.deploy()</span></code></a> will add a contract to the blockchain.
 After a contract is deployed, it is ready for use.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Deploy the Test contract</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
@@ -147,11 +147,11 @@ After a contract is deployed, it is ready for use.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul>
-<li><p>Line 2: <code class="docutils literal notranslate"><span class="pre">b</span></code> is our <code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.Blockchain</span></code> object for the examples.</p></li>
+<li><p>Line 2: <code class="docutils literal notranslate"><span class="pre">b</span></code> is our <a class="reference internal" href="simpleth.html#simpleth.Blockchain" title="simpleth.Blockchain"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.Blockchain</span></code></a> object for the examples.</p></li>
 <li><p>Line 3: Assign the blockchain account
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Blockchain.address()</span></code> for the first <cite>Ganache</cite> account
+<a class="reference internal" href="simpleth.html#simpleth.Blockchain.address" title="simpleth.Blockchain.address"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Blockchain.address()</span></code></a> for the first <cite>Ganache</cite> account
 to <code class="docutils literal notranslate"><span class="pre">owner</span></code> .</p></li>
-<li><p>Line 4: <code class="docutils literal notranslate"><span class="pre">c</span></code> is our <code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.Contract</span></code> object for the <code class="docutils literal notranslate"><span class="pre">Test</span></code> contract
+<li><p>Line 4: <code class="docutils literal notranslate"><span class="pre">c</span></code> is our <a class="reference internal" href="simpleth.html#simpleth.Contract" title="simpleth.Contract"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.Contract</span></code></a> object for the <code class="docutils literal notranslate"><span class="pre">Test</span></code> contract
 to be used in all examples.</p></li>
 <li><p>Line 6: <code class="docutils literal notranslate"><span class="pre">deploy</span></code> adds the <code class="docutils literal notranslate"><span class="pre">Test</span></code> contract to the blockchain.
 <code class="docutils literal notranslate"><span class="pre">Test</span></code> has a constructor parameter that we need
@@ -167,7 +167,7 @@ this print out, I stored it in <code class="docutils literal notranslate"><span 
 anything with it for now.</p>
 </li>
 <li><p>Line 7: Gets the blockchain address where this contract now resides.
-It is the value of the <code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.address()</span></code> property.
+It is the value of the <a class="reference internal" href="simpleth.html#simpleth.Contract.address" title="simpleth.Contract.address"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.address()</span></code></a> property.
 The address is shown on line 8.</p></li>
 </ul>
 </div>
@@ -192,7 +192,7 @@ statements.</p>
 </div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Line 6: You must do a <code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.connect()</span></code>
+<p>Line 6: You must do a <a class="reference internal" href="simpleth.html#simpleth.Contract.connect" title="simpleth.Contract.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.connect()</span></code></a>
 before doing anything with a contract. A <code class="docutils literal notranslate"><span class="pre">deploy</span></code> includes a
 <code class="docutils literal notranslate"><span class="pre">connect</span></code>; no need to do a connect after a deploy.</p>
 </div>
@@ -207,7 +207,7 @@ will give us two accounts for our examples.</p>
 </section>
 <section id="get-variables">
 <h2>Get variables<a class="headerlink" href="#get-variables" title="Permalink to this headline"></a></h2>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.get_var()</span></code> will retrieve the
+<p><a class="reference internal" href="simpleth.html#simpleth.Contract.get_var" title="simpleth.Contract.get_var"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.get_var()</span></code></a> will retrieve the
 specified <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">state</span></code> variable.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">get_var</span><span class="p">(</span><span class="s1">&#39;initNum&#39;</span><span class="p">)</span>
 <span class="linenos">2</span><span class="go">42</span>
@@ -239,7 +239,7 @@ those values. We’ll get to those soon.)</p></li>
 </section>
 <section id="call-functions">
 <h2>Call functions<a class="headerlink" href="#call-functions" title="Permalink to this headline"></a></h2>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.call_fcn()</span></code> will execute a contract’s
+<p><a class="reference internal" href="simpleth.html#simpleth.Contract.call_fcn" title="simpleth.Contract.call_fcn"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.call_fcn()</span></code></a> will execute a contract’s
 <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">pure</span></code> or <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">view</span></code> functions and pass
 back the returned value(s).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="o">.</span><span class="n">call_fcn</span><span class="p">(</span><span class="s1">&#39;getNum0&#39;</span><span class="p">)</span>
@@ -268,7 +268,7 @@ transaction to set these values that is not shown. We’ll see it soon.)</p></li
 </section>
 <section id="run-transactions">
 <h2>Run transactions<a class="headerlink" href="#run-transactions" title="Permalink to this headline"></a></h2>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.run_trx()</span></code> will execute a contract’s
+<p><a class="reference internal" href="simpleth.html#simpleth.Contract.run_trx" title="simpleth.Contract.run_trx"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.run_trx()</span></code></a> will execute a contract’s
 <code class="docutils literal notranslate"><span class="pre">public</span></code> functions. <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_trx()</span></code> is the typical and easiest
 way to use transactions with <cite>Ganache</cite>.</p>
 <p>Unlike a function, a transaction does not return any value.
@@ -317,12 +317,12 @@ to run the transaction.</p>
 </section>
 <section id="search-for-events">
 <h2>Search for events<a class="headerlink" href="#search-for-events" title="Permalink to this headline"></a></h2>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.EventSearch</span></code> has two methods to find and retrieve
+<p><a class="reference internal" href="simpleth.html#simpleth.EventSearch" title="simpleth.EventSearch"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.EventSearch</span></code></a> has two methods to find and retrieve
 the information from events emitted by transactions:</p>
 <ol class="arabic simple">
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.EventSearch.get_old()</span></code> returns event info
+<li><p><a class="reference internal" href="simpleth.html#simpleth.EventSearch.get_old" title="simpleth.EventSearch.get_old"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.EventSearch.get_old()</span></code></a> returns event info
 from a specified range of previously mined blocks</p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.EventSearch.get_new()</span></code> returns event info
+<li><p><a class="reference internal" href="simpleth.html#simpleth.EventSearch.get_new" title="simpleth.EventSearch.get_new"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.EventSearch.get_new()</span></code></a> returns event info
 from newly mined blocks.</p></li>
 </ol>
 <div class="literal-block-wrapper docutils container" id="id2">
@@ -569,13 +569,13 @@ were timestamped in a two-second period. They were found by
 </section>
 <section id="search-for-events-with-event-arguments">
 <h2>Search for events with event arguments<a class="headerlink" href="#search-for-events-with-event-arguments" title="Permalink to this headline"></a></h2>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.EventSearch</span></code> has an optional parameter to specify
+<p><a class="reference internal" href="simpleth.html#simpleth.EventSearch" title="simpleth.EventSearch"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.EventSearch</span></code></a> has an optional parameter to specify
 <code class="docutils literal notranslate"><span class="pre">event_args</span></code>. This allows you to narrow the search to events with
 a desired value for an event parameter.</p>
-<p>You setup and call either <code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.EventSearch.get_old()</span></code> or
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.EventSearch.get_new()</span></code> as above. But, they will only
+<p>You setup and call either <a class="reference internal" href="simpleth.html#simpleth.EventSearch.get_old" title="simpleth.EventSearch.get_old"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.EventSearch.get_old()</span></code></a> or
+<a class="reference internal" href="simpleth.html#simpleth.EventSearch.get_new" title="simpleth.EventSearch.get_new"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.EventSearch.get_new()</span></code></a> as above. But, they will only
 return events where the the event argument and its value match
-the <code class="docutils literal notranslate"><span class="pre">event_args</span></code> you specified in <code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.EventSearch</span></code>.</p>
+the <code class="docutils literal notranslate"><span class="pre">event_args</span></code> you specified in <a class="reference internal" href="simpleth.html#simpleth.EventSearch" title="simpleth.EventSearch"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.EventSearch</span></code></a>.</p>
 <p>You can specify multiple args and values in the <code class="docutils literal notranslate"><span class="pre">event_args</span></code> dictionary.
 These will be ANDed together. Your search will return only events that
 meet all the criteria. You should specify the name of an event argument
@@ -673,7 +673,7 @@ returned.</p></li>
 </section>
 <section id="transaction-results">
 <h2>Transaction results<a class="headerlink" href="#transaction-results" title="Permalink to this headline"></a></h2>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.Results</span></code> can be used after a transaction completes
+<p><a class="reference internal" href="simpleth.html#simpleth.Results" title="simpleth.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.Results</span></code></a> can be used after a transaction completes
 to see the details about it.</p>
 <div class="literal-block-wrapper docutils container" id="id9">
 <div class="code-block-caption"><span class="caption-text">Get the results of a transaction</span><a class="headerlink" href="#id9" title="Permalink to this code"></a></div>
@@ -730,7 +730,7 @@ constant when using Ganache.</p></li>
 <li><p>Line 10: Pretty print the <code class="docutils literal notranslate"><span class="pre">web3.eth</span></code> transaction information.</p></li>
 <li><p>Line 25: A <code class="docutils literal notranslate"><span class="pre">Results</span></code> object can be printed. Here’s the output.</p></li>
 </ul>
-<p>See <code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.Results</span></code> documentation for the full list of
+<p>See <a class="reference internal" href="simpleth.html#simpleth.Results" title="simpleth.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.Results</span></code></a> documentation for the full list of
 properties, including more from <code class="docutils literal notranslate"><span class="pre">web3.eth</span></code> .</p>
 </div>
 <img alt="_images/section_separator.png" src="_images/section_separator.png" />
@@ -739,15 +739,15 @@ properties, including more from <code class="docutils literal notranslate"><span
 <h2>Handling Ether<a class="headerlink" href="#handling-ether" title="Permalink to this headline"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">simpleth</span></code> has a handful of methods and properties for handling Ether:</p>
 <ol class="arabic simple">
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.denominations_to_wei()</span></code> returns Ether
+<li><p><a class="reference internal" href="simpleth.html#simpleth.Convert.denominations_to_wei" title="simpleth.Convert.denominations_to_wei"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.denominations_to_wei()</span></code></a> returns Ether
 denominations and values.</p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.convert_ether()</span></code> to convert amount from one
+<li><p><a class="reference internal" href="simpleth.html#simpleth.Convert.convert_ether" title="simpleth.Convert.convert_ether"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.convert_ether()</span></code></a> to convert amount from one
 denomination to another.</p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Blockchain.balance()</span></code> returns the Ether balance,
+<li><p><a class="reference internal" href="simpleth.html#simpleth.Blockchain.balance" title="simpleth.Blockchain.balance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Blockchain.balance()</span></code></a> returns the Ether balance,
 in <cite>wei</cite> , for a specified address.</p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Blockchain.send_ether()</span></code> transfers the specified amount
+<li><p><a class="reference internal" href="simpleth.html#simpleth.Blockchain.send_ether" title="simpleth.Blockchain.send_ether"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Blockchain.send_ether()</span></code></a> transfers the specified amount
 of Ether, in <cite>wei</cite> , from one address to another.</p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.run_trx()</span></code> has an optional parameter,
+<li><p><a class="reference internal" href="simpleth.html#simpleth.Contract.run_trx" title="simpleth.Contract.run_trx"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.run_trx()</span></code></a> has an optional parameter,
 <code class="docutils literal notranslate"><span class="pre">value_wei</span></code> which will send the specified amount of Ether,
 in <cite>wei</cite> , to the transaction.</p></li>
 </ol>
@@ -794,7 +794,7 @@ in <cite>wei</cite> , to the transaction.</p></li>
 <p class="admonition-title">Note</p>
 <ul class="simple">
 <li><p>Line 23: You can specify a denomination to get the value in <cite>wei</cite>.
-See the the <cite>Example</cite> for <code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.denominations_to_wei()</span></code>
+See the the <cite>Example</cite> for <a class="reference internal" href="simpleth.html#simpleth.Convert.denominations_to_wei" title="simpleth.Convert.denominations_to_wei"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.denominations_to_wei()</span></code></a>
 for the list of valid denominations.</p></li>
 <li><p>Line 6: <code class="xref py py-meth docutils literal notranslate"><span class="pre">convert_ether()</span></code> is the usual way to compute
 a conversion between denominations. This line shows the number
@@ -831,9 +831,9 @@ function in the contract.</p></li>
 <p><code class="docutils literal notranslate"><span class="pre">simpleth</span></code> provides support for handing time, especially
 epoch time:</p>
 <ol class="arabic simple">
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.epoch_time()</span></code> returns the current time in epoch seconds.</p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.local_time_string()</span></code> returns the current time as a string.</p></li>
-<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.to_local_time_string()</span></code> converts epoch seconds to a
+<li><p><a class="reference internal" href="simpleth.html#simpleth.Convert.epoch_time" title="simpleth.Convert.epoch_time"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.epoch_time()</span></code></a> returns the current time in epoch seconds.</p></li>
+<li><p><a class="reference internal" href="simpleth.html#simpleth.Convert.local_time_string" title="simpleth.Convert.local_time_string"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.local_time_string()</span></code></a> returns the current time as a string.</p></li>
+<li><p><a class="reference internal" href="simpleth.html#simpleth.Convert.to_local_time_string" title="simpleth.Convert.to_local_time_string"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.to_local_time_string()</span></code></a> converts epoch seconds to a
 time string.</p></li>
 </ol>
 <div class="literal-block-wrapper docutils container" id="id11">
@@ -889,7 +889,7 @@ for details on directives available for the strings.</p>
 </section>
 <section id="simpleth-exceptions">
 <h2>simpleth exceptions<a class="headerlink" href="#simpleth-exceptions" title="Permalink to this headline"></a></h2>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.SimplethError</span></code> throws exceptions for errors in all
+<p><a class="reference internal" href="simpleth.html#simpleth.SimplethError" title="simpleth.SimplethError"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.SimplethError</span></code></a> throws exceptions for errors in all
 <code class="docutils literal notranslate"><span class="pre">simpleth</span></code> classes. The intent is to let you code to catch this
 single exception to simplify error-handling and provide hints to
 quickly identify the cause of the error.</p>
@@ -1415,8 +1415,8 @@ added to a block and mined. This delay could be a few seconds or many
 hours (or never).</p>
 <p>You might chose to use
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.send_trx()</span></code> with
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.get_trx_receipt()</span></code> or
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.get_trx_receipt_wait()</span></code>
+<a class="reference internal" href="simpleth.html#simpleth.Contract.get_trx_receipt" title="simpleth.Contract.get_trx_receipt"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.get_trx_receipt()</span></code></a> or
+<a class="reference internal" href="simpleth.html#simpleth.Contract.get_trx_receipt_wait" title="simpleth.Contract.get_trx_receipt_wait"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Contract.get_trx_receipt_wait()</span></code></a>
 to give you more flexibility in managing the mining delay.</p>
 <p><code class="xref py py-meth docutils literal notranslate"><span class="pre">send_trx()</span></code> submits the transaction and
 immediately returns the <cite>transaction hash</cite>.
