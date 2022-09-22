@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simpleth &mdash; simpleth 0.1.47 documentation</title>
+  <title>Simpleth &mdash; simpleth 0.1.49 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -2286,15 +2286,18 @@ default: <cite>None</cite>)</p></li>
 <dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is not integer or None (<strong>E-030-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is not integer or None (<strong>E-030-020</strong>)</p></li>
-<li><p>if negative <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is used and <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is also
-specified (<strong>E-030-030</strong>)</p></li>
-<li><p>if negative <code class="docutils literal notranslate"><span class="pre">from_block</span></code> exceeds the number of blocks in chain
-(<strong>E-030-040</strong>)</p></li>
-<li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is greater than <code class="docutils literal notranslate"><span class="pre">to_block</span></code> (<strong>E-030-050</strong>)</p></li>
-<li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is greater than <code class="docutils literal notranslate"><span class="pre">Blockchain().block_number</span></code>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is specified without a ‘’from_block’’
+(<strong>E-030-030</strong>)</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code>, by itself, is greater than zero (<strong>E-030-040</strong>)</p></li>
+<li><p>if a negative ‘’from_block’’ goes beyond the length of the chain
+(<strong>E-030-050</strong>)</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is specified and <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is negative
 (<strong>E-030-060</strong>)</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is greater than <code class="docutils literal notranslate"><span class="pre">to_block</span></code> (<strong>E-030-070</strong>)</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">from_block</span></code> is greater than <code class="docutils literal notranslate"><span class="pre">Blockchain().block_number</span></code>
+(<strong>E-030-080</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">to_block</span></code> is greater than <code class="docutils literal notranslate"><span class="pre">Blockchain().block_number</span></code>
-(<strong>E-030-070</strong>)</p></li>
+(<strong>E-030-090</strong>)</p></li>
 </ul>
 </p>
 </dd>
@@ -2344,6 +2347,8 @@ no events found</p>
 where ‘-1’ will search the two most recently mined block,
 ‘-2’ will search the three most recently mined blocks, etc.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">get_old(m,n)</span></code> searches block ‘m’ to block ‘n’.</p></li>
+<li><p>To search one specific block, use <code class="docutils literal notranslate"><span class="pre">get_old(&lt;block&gt;,</span> <span class="pre">&lt;block&gt;)</span></code>.
+<code class="docutils literal notranslate"><span class="pre">get_old(&lt;block&gt;)</span></code> is not valid.</p></li>
 </ul>
 </div>
 <div class="admonition seealso">

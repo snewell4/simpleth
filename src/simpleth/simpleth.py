@@ -3024,15 +3024,18 @@ class EventSearch:
         :raises SimplethError:
             -  if ``from_block`` is not integer or None (**E-030-010**)
             -  if ``to_block`` is not integer or None (**E-030-020**)
-            -  if negative ``from_block`` is used and ``to_block`` is also
-               specified (**E-030-030**)
-            -  if negative ``from_block`` exceeds the number of blocks in chain
-               (**E-030-040**)
-            -  if ``from_block`` is greater than ``to_block`` (**E-030-050**)
-            -  if ``from_block`` is greater than ``Blockchain().block_number``
+            -  if ``to_block`` is specified without a ''from_block''
+               (**E-030-030**)
+            -  if ``from_block``, by itself, is greater than zero (**E-030-040**)
+            -  if a negative ''from_block'' goes beyond the length of the chain
+               (**E-030-050**)
+            -  if ``to_block`` is specified and ``from_block`` is negative
                (**E-030-060**)
+            -  if ``from_block`` is greater than ``to_block`` (**E-030-070**)
+            -  if ``from_block`` is greater than ``Blockchain().block_number``
+               (**E-030-080**)
             -  if ``to_block`` is greater than ``Blockchain().block_number``
-               (**E-030-070**)
+               (**E-030-090**)
 
         :rtype: list
         :return: one item for each event found; empty list if
@@ -3073,6 +3076,8 @@ class EventSearch:
               where '-1' will search the two most recently mined block,
               '-2' will search the three most recently mined blocks, etc.
            -  ``get_old(m,n)`` searches block 'm' to block 'n'.
+           -  To search one specific block, use ``get_old(<block>, <block>)``.
+              ``get_old(<block>)`` is not valid.
 
         .. seealso::
            :attr:`Contract.events` for the list of valid events
@@ -3080,6 +3085,8 @@ class EventSearch:
 
         """
         latest_block: int = self._contract.blockchain.block_number
+
+        # Check that args are either an int or None
         if not (isinstance(from_block, int) or from_block is None):
             message: str = (
                 f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
@@ -3095,22 +3102,54 @@ class EventSearch:
                 )
             raise SimplethError(message, code='E-030-020') from None
 
-        if isinstance(from_block, int):
-            if from_block < 0 and to_block is not None:
+        # If to_block is specified, from_block must be specified.
+        if to_block is not None and from_block is None:
+            message = (
+                f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
+                f'When to_block is specified, from_block can not be None.\n'
+                f'HINT: Provide values for both from_block and to_block.\n'
+                )
+            raise SimplethError(message, code='E-030-030') from None
+
+        # Check from_block when it is specified by itself
+        if from_block is not None and to_block is None:
+            if from_block > 0:
                 message = (
                     f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
-                    f'Do not specify to_block when you provide a negative from_block.\n'
-                    f'HINT: When searching relative to the last block do not specify '
-                    f'to_block.\n'
-                    )
-                raise SimplethError(message, code='E-030-030') from None
-            if from_block < 0 and abs(from_block) > latest_block:
-                message = (
-                    f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
-                    f'from_block exceeds the number of blocks in the chain.\n'
-                    f'HINT: Provide a number between 0 and -{latest_block}.\n'
+                    f'Invalid value for from_block. If it is specified without '
+                    f'a to_block it must be less than or equal to zero.\n'
+                    f'HINT1: Use zero to search most recent block.\n'
+                    f'HINT2: Use negative number to search recent blocks.\n'
                     )
                 raise SimplethError(message, code='E-030-040') from None
+            else:
+                # from_block is negative, as it should be, make sure it is
+                # not going past the end of the chain.
+                if abs(from_block) > latest_block:
+                    message = (
+                        f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
+                        f'from_block exceeds the number of blocks in the chain.\n'
+                        f'HINT: Provide a number between 0 and -{latest_block}.\n'
+                        )
+                    raise SimplethError(message, code='E-030-050') from None
+
+        # Check from_block and to_block when they are both specified
+        if from_block is not None and to_block is not None:
+            if from_block <= 0:
+                message = (
+                    f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
+                    f'When both from_block and to_block are specified '
+                    f'from_block can not be negative.\n'
+                    f'HINT: Provide a positive integer for from_block.\n'
+                    )
+                raise SimplethError(message, code='E-030-060') from None
+            if from_block > to_block:
+                message = (
+                    f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
+                    f'The from_block needs to be less than or equal to the to_block.\n'
+                    f'HINT: Provide a valid range.\n'
+                )
+                raise SimplethError(message, code='E-030-070') from None
             if from_block > latest_block:
                 message = (
                     f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
@@ -3118,24 +3157,15 @@ class EventSearch:
                     f'{latest_block} is the latest block mined and the end of the chain.\n'
                     f'HINT: Provide a valid block number.\n'
                     )
-                raise SimplethError(message, code='E-030-060') from None
-
-            if isinstance(to_block, int):
-                if from_block > to_block:
-                    message = (
-                        f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
-                        f'The from_block needs to be less than or equal to the to_block.\n'
-                        f'HINT: Provide a valid range.\n'
-                        )
-                    raise SimplethError(message, code='E-030-050') from None
-                if to_block > latest_block:
-                    message = (
-                        f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
-                        f'to_block is beyond the end of the chain. \n'
-                        f'{latest_block} is the last block mined and the end of the chain.\n'
-                        f'HINT: Provide a valid block number.\n'
-                        )
-                    raise SimplethError(message, code='E-030-070') from None
+                raise SimplethError(message, code='E-030-080') from None
+            if to_block > latest_block:
+                message = (
+                    f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
+                    f'to_block is beyond the end of the chain. \n'
+                    f'{latest_block} is the last block mined and the end of the chain.\n'
+                    f'HINT: Provide a valid block number.\n'
+                    )
+                raise SimplethError(message, code='E-030-090') from None
 
         if (from_block is None or from_block == 0) and to_block is None:
             _from_block: Union[int, None] = latest_block

@@ -100,8 +100,8 @@ class TestEventSearchGetOldGood:
         e3 = len(e.get_old(-2))
         assert e1a == 1 and e1b == 1 and e2 == 2 and e3 == 3
 
-    def test_get_old_one_arg(self):
-        """Run three store_num() trxs. Verify get_old() with single arg"""
+    def test_get_old_two_args(self):
+        """Run three store_num() trxs. Verify get_old() using range of two args"""
         c = Contract('Test')
         c.connect()
         u = Blockchain().address(0)
@@ -110,9 +110,9 @@ class TestEventSearchGetOldGood:
         c.run_trx(u, 'storeNums', 2, 2, 2)
         c.run_trx(u, 'storeNums', 3, 3, 3)
         n = Blockchain().block_number
-        e1 = len(e.get_old(n))
-        e2 = len(e.get_old(n-1))
-        e3 = len(e.get_old(n-2))
+        e1 = len(e.get_old(n, n))
+        e2 = len(e.get_old(n-1, n))
+        e3 = len(e.get_old(n-2, n))
         assert e1 == 1 and e2 == 2 and e3 == 3
 
     def test_get_old_range(self):
@@ -170,14 +170,23 @@ class TestEventSearchGetOldBad:
             e.get_old(100, bogus_to_block)
         assert excp.value.code == 'E-030-020'
 
-    def test_get_old_bad_relative_search(self):
-        """Test get_old() relative search with bad to_block"""
+    def test_get_old_missing_from_block(self):
+        """Test get_old() relative search with to_block but no from_block"""
         c = Contract('Test')
         c.connect()
         e = EventSearch(c, 'NumsStored')
         with pytest.raises(SimplethError) as excp:
-            e.get_old(-2, 20)
+            e.get_old(to_block=20)
         assert excp.value.code == 'E-030-030'
+
+    def test_get_old_positive_from_block_by_itself(self):
+        """Test get_old() relative search with positive from_block"""
+        c = Contract('Test')
+        c.connect()
+        e = EventSearch(c, 'NumsStored')
+        with pytest.raises(SimplethError) as excp:
+            e.get_old(2)
+        assert excp.value.code == 'E-030-040'
 
     def test_get_old_oob_from(self):
         """Test get_old() with from beyond start of change (out of bounds)"""
@@ -186,18 +195,27 @@ class TestEventSearchGetOldBad:
         e = EventSearch(c, 'NumsStored')
         with pytest.raises(SimplethError) as excp:
             e.get_old(-(Blockchain().block_number + 1))
-        assert excp.value.code == 'E-030-040'
+        assert excp.value.code == 'E-030-050'
 
-    def test_get_old_bad_range(self):
+    def test_get_old_negative_from_block_in_range(self):
+        """Test get_old() relative search with to_block and negative from_block"""
+        c = Contract('Test')
+        c.connect()
+        e = EventSearch(c, 'NumsStored')
+        with pytest.raises(SimplethError) as excp:
+            e.get_old(-2, 20)
+        assert excp.value.code == 'E-030-060'
+
+    def test_get_old_with_reversed_range(self):
         """Test get_old() with from_block greater than to_block"""
         c = Contract('Test')
         c.connect()
         e = EventSearch(c, 'NumsStored')
         with pytest.raises(SimplethError) as excp:
             e.get_old(30, 20)
-        assert excp.value.code == 'E-030-050'
+        assert excp.value.code == 'E-030-070'
 
-    def test_get_old_bad_from(self):
+    def test_get_old_with_oob_from(self):
         """Test get_old() with from_block greater than end of chain"""
         c = Contract('Test')
         c.connect()
@@ -205,9 +223,9 @@ class TestEventSearchGetOldBad:
         n = Blockchain().block_number
         with pytest.raises(SimplethError) as excp:
             e.get_old(n+1, n+2)
-        assert excp.value.code == 'E-030-060'
+        assert excp.value.code == 'E-030-080'
 
-    def test_get_old_bad_to(self):
+    def test_get_old_with_oob_to(self):
         """Test get_old() with to_block greater than end of chain"""
         c = Contract('Test')
         c.connect()
@@ -215,7 +233,7 @@ class TestEventSearchGetOldBad:
         n = Blockchain().block_number
         with pytest.raises(SimplethError) as excp:
             e.get_old(n-1, n+2)
-        assert excp.value.code == 'E-030-070'
+        assert excp.value.code == 'E-030-090'
 
 
 class TestEventSearchGetNewGood:

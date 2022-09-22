@@ -1,4 +1,8 @@
-## 0.1.478- 2022-09-21
+## 0.1.49- 2022-09-22
+
+     - Redo EventSearch.get_old() parameter validation testing
+
+## 0.1.48- 2022-09-21
 
      - Fix class property docstrings
 
