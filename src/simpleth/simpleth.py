@@ -3024,10 +3024,9 @@ class EventSearch:
         :raises SimplethError:
             -  if ``from_block`` is not integer or None (**E-030-010**)
             -  if ``to_block`` is not integer or None (**E-030-020**)
-            -  if ``to_block`` is specified without a ''from_block''
-               (**E-030-030**)
+            -  if ``to_block`` is specified without a ``from_block``             (**E-030-030**)
             -  if ``from_block``, by itself, is greater than zero (**E-030-040**)
-            -  if a negative ''from_block'' goes beyond the length of the chain
+            -  if a negative ``from_block`` goes beyond the length of the chain
                (**E-030-050**)
             -  if ``to_block`` is specified and ``from_block`` is negative
                (**E-030-060**)

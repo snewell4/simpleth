@@ -1,3 +1,7 @@
+## 0.1.50- 2022-09-22
+
+     - Fix four typos in EventSearch.get_old() docstrings
+
 ## 0.1.49- 2022-09-22
 
      - Redo EventSearch.get_old() parameter validation testing
