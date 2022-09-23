@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simpleth &mdash; simpleth 0.1.50 documentation</title>
+  <title>Simpleth &mdash; simpleth 0.1.51 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -119,7 +119,7 @@ to various values and functions related to the blockchain.</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#simpleth.Blockchain.account_num" title="simpleth.Blockchain.account_num"><code class="xref py py-meth docutils literal notranslate"><span class="pre">account_num()</span></code></a> - return account number for an address</p></li>
 <li><p><a class="reference internal" href="#simpleth.Blockchain.address" title="simpleth.Blockchain.address"><code class="xref py py-meth docutils literal notranslate"><span class="pre">address()</span></code></a> - return blockchain address for an account number</p></li>
-<li><p><a class="reference internal" href="#simpleth.Blockchain.balance" title="simpleth.Blockchain.balance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">balance()</span></code></a> - return amount of Ether for an address</p></li>
+<li><p><a class="reference internal" href="#simpleth.Blockchain.balance_of" title="simpleth.Blockchain.balance_of"><code class="xref py py-meth docutils literal notranslate"><span class="pre">balance_of()</span></code></a> - return amount of Ether for an address</p></li>
 <li><p><a class="reference internal" href="#simpleth.Blockchain.block_time_epoch" title="simpleth.Blockchain.block_time_epoch"><code class="xref py py-meth docutils literal notranslate"><span class="pre">block_time_epoch()</span></code></a> - return time block was mined in
 epoch seconds</p></li>
 <li><p><a class="reference internal" href="#simpleth.Blockchain.block_time_string" title="simpleth.Blockchain.block_time_string"><code class="xref py py-meth docutils literal notranslate"><span class="pre">block_time_string()</span></code></a> - return time block was mined in
@@ -431,8 +431,8 @@ account addresses.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="simpleth.Blockchain.balance">
-<span class="sig-name descname"><span class="pre">balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#simpleth.Blockchain.balance" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="simpleth.Blockchain.balance_of">
+<span class="sig-name descname"><span class="pre">balance_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#simpleth.Blockchain.balance_of" title="Permalink to this definition"></a></dt>
 <dd><p>Return the amount of Ether owned by an account.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -455,7 +455,7 @@ account addresses.</p>
 <dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Blockchain</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Blockchain</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">user0</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">address</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">balance</span><span class="p">(</span><span class="n">user0</span><span class="p">)</span>    
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">balance_of</span><span class="p">(</span><span class="n">user0</span><span class="p">)</span>    
 <span class="go">99977013240000000000</span>
 </pre></div>
 </div>
@@ -659,7 +659,7 @@ in <cite>wei</cite></p></li>
 <dd class="field-even"><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><strong>SimplethError</strong></a> – <ul class="simple">
 <li><p>if <code class="docutils literal notranslate"><span class="pre">sender</span></code> is bad (<strong>B-070-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">receiver</span></code> is bad (<strong>B-070-010</strong>)</p></li>
-<li><p>if <code class="docutils literal notranslate"><span class="pre">amount</span></code> exceeds the <code class="docutils literal notranslate"><span class="pre">sender</span></code> balance  (<strong>B-070-010</strong>)</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">amount</span></code> exceeds the <code class="docutils literal notranslate"><span class="pre">sender</span></code> balance_of  (<strong>B-070-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">receiver</span></code> is a <cite>non-payable</cite> contract  (<strong>B-070-010</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">amount</span></code> is not an int (<strong>B-070-020</strong>)</p></li>
 <li><p>if <code class="docutils literal notranslate"><span class="pre">receiver</span></code> is a <cite>non-payable</cite> contract  (<strong>B-070-030</strong>)</p></li>
@@ -679,7 +679,7 @@ in <cite>wei</cite></p></li>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#simpleth.Blockchain.balance" title="simpleth.Blockchain.balance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">balance()</span></code></a> to get amount of Ether owned by
+<li><p><a class="reference internal" href="#simpleth.Blockchain.balance_of" title="simpleth.Blockchain.balance_of"><code class="xref py py-meth docutils literal notranslate"><span class="pre">balance_of()</span></code></a> to get amount of Ether owned by
 an account.</p></li>
 <li><p><a class="reference internal" href="#simpleth.Blockchain.transaction" title="simpleth.Blockchain.transaction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">transaction()</span></code></a> to get details of the transfer
 transaction using the <cite>trx_hash</cite>.</p></li>

@@ -19,9 +19,9 @@ class TestBlockchainMethodsGood:
         assert(Blockchain().account_num(addr7) == 7)
 
     def test_balance(self):
-        """balance() returns an integer for an address"""
+        """balance_of() returns an integer for an address"""
         addr3 = Blockchain().address(3)
-        assert(isinstance(Blockchain().balance(addr3), int))
+        assert(isinstance(Blockchain().balance_of(addr3), int))
 
     def test_block_time_epoch(self):
         """block_time_epoch() returns an integer for epoch seconds"""
@@ -67,18 +67,18 @@ class TestBlockchainMethodsGood:
     def test_is_valid_address_returns_true(self):
         """is_valid_address() returns true for a valid address"""
         addr3 = Blockchain().address(3)
-        assert (isinstance(Blockchain().balance(addr3), int))
+        assert (isinstance(Blockchain().balance_of(addr3), int))
 
     def test_send_ether(self):
         """send_ether() transfers Ether from one account to another"""
         user6 = Blockchain().address(6)
         user7 = Blockchain().address(7)
-        start_bal6 = Blockchain().balance(user6)
-        start_bal7 = Blockchain().balance(user7)
+        start_bal6 = Blockchain().balance_of(user6)
+        start_bal7 = Blockchain().balance_of(user7)
         amount = 2_000_000_000  # wei
         Blockchain().send_ether(user6, user7, amount)
-        end_bal6 = Blockchain().balance(user6)
-        end_bal7 = Blockchain().balance(user7)
+        end_bal6 = Blockchain().balance_of(user6)
+        end_bal7 = Blockchain().balance_of(user7)
         # user6's end bal = start_bal6 - amount - cost of send_ether() trx
         # The amount and cost of gas is not computed here. Just check
         # that user6's end balance is less than
@@ -92,10 +92,10 @@ class TestBlockchainMethodsGood:
         user6 = Blockchain().address(6)
         contract = Contract('test')
         contract.deploy(user6, 10)   # has a fallback receive() function
-        start_bal = Blockchain().balance(contract.address)
+        start_bal = Blockchain().balance_of(contract.address)
         amount = 2_000  # wei
         Blockchain().send_ether(user6, contract.address, amount)
-        end_bal = Blockchain().balance(contract.address)
+        end_bal = Blockchain().balance_of(contract.address)
         change_in_balance = end_bal - start_bal
         assert change_in_balance == amount
 
@@ -151,22 +151,22 @@ class TestBlockchainMethodsBad:
         assert(Blockchain().account_num(bad_type) is None)
 
     def test_balance_with_missing_addr_raises_type_error(self):
-        """Test balance() with missing address."""
+        """Test balance_of() with missing address."""
         with pytest.raises(TypeError):
-            Blockchain().balance()
+            Blockchain().balance_of()
 
     def test_balance_bad_address_type_raises_b_030_010(self):
-        """balance() with bad address type raises SimplethError"""
+        """balance_of() with bad address type raises SimplethError"""
         bad_addr_type = 200
         with pytest.raises(SimplethError) as excp:
-            Blockchain().balance(bad_addr_type)
+            Blockchain().balance_of(bad_addr_type)
         assert excp.value.code == 'B-030-010'
 
     def test_balance_bad_address_raises_b_030_020(self):
-        """balance() with bad address raises SimplethError"""
+        """balance_of() with bad address raises SimplethError"""
         bad_addr = '0xF0E9C98500f34BE7C7c4a99700e4c56C0D9d6e6'
         with pytest.raises(SimplethError) as excp:
-            Blockchain().balance(bad_addr)
+            Blockchain().balance_of(bad_addr)
         assert excp.value.code == 'B-030-020'
 
     @pytest.mark.parametrize('bad_block_num',
@@ -224,7 +224,7 @@ class TestBlockchainMethodsBad:
         """send_ether() with amount > from balance raises SimplethError"""
         user6 = Blockchain().address(6)
         user7 = Blockchain().address(7)
-        too_big_amount = Blockchain().balance(user6) + 1
+        too_big_amount = Blockchain().balance_of(user6) + 1
         with pytest.raises(SimplethError) as excp:
             Blockchain().send_ether(user6, user7, too_big_amount)
         assert excp.value.code == 'B-070-010'

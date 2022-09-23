@@ -671,7 +671,7 @@ Handling Ether
    denominations and values.
 #. :meth:`simpleth.Convert.convert_ether` to convert amount from one
    denomination to another.
-#. :meth:`simpleth.Blockchain.balance` returns the Ether balance,
+#. :meth:`simpleth.Blockchain.balance_of` returns the Ether balance_of,
    in `wei` , for a specified address.
 #. :meth:`simpleth.Blockchain.send_ether` transfers the specified amount
    of Ether, in `wei` , from one address to another.
@@ -683,6 +683,566 @@ Handling Ether
 .. code-block:: python
    :linenos:
    :caption: Methods and properties to handle ether
+
+       >>> from simpleth import Convert
+       >>> v = Convert()
+       >>> v.denominations_to_wei()['szabo']
+       1000000000000
+
+       >>> int(v.convert_ether(20, 'ether', 'gwei'))
+       20000000000
+       >>> float(v.convert_ether(100, 'wei', 'ether'))
+       1e-16
+
+       >>> b.balance(owner)
+       57816514559996298520
+       >>> float(v.convert_ether(b.balance(user), 'wei', 'ether'))
+       99.52299804
+       >>> b.balance(c.address)
+       10
+
+       >>> b.balance_of(user)
+       99522998040000000000
+       >>> trx_hash = b.send_ether(owner, user, 10)
+       >>> b.balance(user)
+       99522998040000000010
+
+       >>> b.balance(c.address)
+       10
+       >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+       >>> Results(c, receipt).trx_value_wei
+       100
+       >>> b.balance(c.address)
+       110
+       >>> b.send_ether(user, c.address, 500)
+       '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+       >>> b.balance(c.address)
+       610
+
+       >>> from simpleth import Convert
+       >>> v = Convert()
+       >>> v.denominations_to_wei()['szabo']
+       1000000000000
+
+       >>> int(v.convert_ether(20, 'ether', 'gwei'))
+       20000000000
+       >>> float(v.convert_ether(100, 'wei', 'ether'))
+       1e-16
+
+       >>> b.balance(owner)
+       57816514559996298520
+       >>> float(v.convert_ether(b.balance(user), 'wei', 'ether'))
+       99.52299804
+       >>> b.balance(c.address)
+       10
+
+       >>> b.balance_of(user)
+       99522998040000000000
+       >>> trx_hash = b.send_ether(owner, user, 10)
+       >>> b.balance(user)
+       99522998040000000010
+
+       >>> b.balance(c.address)
+       10
+       >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+       >>> Results(c, receipt).trx_value_wei
+       100
+       >>> b.balance(c.address)
+       110
+       >>> b.send_ether(user, c.address, 500)
+       '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+       >>> b.balance(c.address)
+       610
+
+       >>> from simpleth import Convert
+       >>> v = Convert()
+       >>> v.denominations_to_wei()['szabo']
+       1000000000000
+
+       >>> int(v.convert_ether(20, 'ether', 'gwei'))
+       20000000000
+       >>> float(v.convert_ether(100, 'wei', 'ether'))
+       1e-16
+
+       >>> b.balance(owner)
+       57816514559996298520
+       >>> float(v.convert_ether(b.balance(user), 'wei', 'ether'))
+       99.52299804
+       >>> b.balance(c.address)
+       10
+
+       >>> b.balance(user)
+       99522998040000000000
+       >>> trx_hash = b.send_ether(owner, user, 10)
+       >>> b.balance(user)
+       99522998040000000010
+
+       >>> b.balance_of(c.address)
+       10
+       >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+       >>> Results(c, receipt).trx_value_wei
+       100
+       >>> b.balance(c.address)
+       110
+       >>> b.send_ether(user, c.address, 500)
+       '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+       >>> b.balance(c.address)
+       610
+
+       >>> from simpleth import Convert
+       >>> v = Convert()
+       >>> v.denominations_to_wei()['szabo']
+       1000000000000
+
+       >>> int(v.convert_ether(20, 'ether', 'gwei'))
+       20000000000
+       >>> float(v.convert_ether(100, 'wei', 'ether'))
+       1e-16
+
+       >>> b.balance(owner)
+       57816514559996298520
+       >>> float(v.convert_ether(b.balance(user), 'wei', 'ether'))
+       99.52299804
+       >>> b.balance(c.address)
+       10
+
+       >>> b.balance(user)
+       99522998040000000000
+       >>> trx_hash = b.send_ether(owner, user, 10)
+       >>> b.balance(user)
+       99522998040000000010
+
+       >>> b.balance_of(c.address)
+       10
+       >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+       >>> Results(c, receipt).trx_value_wei
+       100
+       >>> b.balance(c.address)
+       110
+       >>> b.send_ether(user, c.address, 500)
+       '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+       >>> b.balance(c.address)
+       610
+
+       >>> from simpleth import Convert
+       >>> v = Convert()
+       >>> v.denominations_to_wei()['szabo']
+       1000000000000
+
+       >>> int(v.convert_ether(20, 'ether', 'gwei'))
+       20000000000
+       >>> float(v.convert_ether(100, 'wei', 'ether'))
+       1e-16
+
+       >>> b.balance(owner)
+       57816514559996298520
+       >>> float(v.convert_ether(b.balance_of(user), 'wei', 'ether'))
+       99.52299804
+       >>> b.balance(c.address)
+       10
+
+       >>> b.balance(user)
+       99522998040000000000
+       >>> trx_hash = b.send_ether(owner, user, 10)
+       >>> b.balance(user)
+       99522998040000000010
+
+       >>> b.balance(c.address)
+       10
+       >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+       >>> Results(c, receipt).trx_value_wei
+       100
+       >>> b.balance(c.address)
+       110
+       >>> b.send_ether(user, c.address, 500)
+       '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+       >>> b.balance(c.address)
+       610
+
+       >>> from simpleth import Convert
+       >>> v = Convert()
+       >>> v.denominations_to_wei()['szabo']
+       1000000000000
+
+       >>> int(v.convert_ether(20, 'ether', 'gwei'))
+       20000000000
+       >>> float(v.convert_ether(100, 'wei', 'ether'))
+       1e-16
+
+       >>> b.balance(owner)
+       57816514559996298520
+       >>> float(v.convert_ether(b.balance_of(user), 'wei', 'ether'))
+       99.52299804
+       >>> b.balance(c.address)
+       10
+
+       >>> b.balance(user)
+       99522998040000000000
+       >>> trx_hash = b.send_ether(owner, user, 10)
+       >>> b.balance(user)
+       99522998040000000010
+
+       >>> b.balance(c.address)
+       10
+       >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+       >>> Results(c, receipt).trx_value_wei
+       100
+       >>> b.balance(c.address)
+       110
+       >>> b.send_ether(user, c.address, 500)
+       '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+       >>> b.balance(c.address)
+       610
+
+       >>> from simpleth import Convert
+       >>> v = Convert()
+       >>> v.denominations_to_wei()['szabo']
+       1000000000000
+
+       >>> int(v.convert_ether(20, 'ether', 'gwei'))
+       20000000000
+       >>> float(v.convert_ether(100, 'wei', 'ether'))
+       1e-16
+
+       >>> b.balance_of(owner)
+       57816514559996298520
+       >>> float(v.convert_ether(b.balance(user), 'wei', 'ether'))
+       99.52299804
+       >>> b.balance(c.address)
+       10
+
+       >>> b.balance(user)
+       99522998040000000000
+       >>> trx_hash = b.send_ether(owner, user, 10)
+       >>> b.balance(user)
+       99522998040000000010
+
+       >>> b.balance(c.address)
+       10
+       >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+       >>> Results(c, receipt).trx_value_wei
+       100
+       >>> b.balance(c.address)
+       110
+       >>> b.send_ether(user, c.address, 500)
+       '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+       >>> b.balance(c.address)
+       610
+
+       >>> from simpleth import Convert
+       >>> v = Convert()
+       >>> v.denominations_to_wei()['szabo']
+       1000000000000
+
+       >>> int(v.convert_ether(20, 'ether', 'gwei'))
+       20000000000
+       >>> float(v.convert_ether(100, 'wei', 'ether'))
+       1e-16
+
+       >>> b.balance_of(owner)
+       57816514559996298520
+       >>> float(v.convert_ether(b.balance(user), 'wei', 'ether'))
+       99.52299804
+       >>> b.balance(c.address)
+       10
+
+       >>> b.balance(user)
+       99522998040000000000
+       >>> trx_hash = b.send_ether(owner, user, 10)
+       >>> b.balance(user)
+       99522998040000000010
+
+       >>> b.balance(c.address)
+       10
+       >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+       >>> Results(c, receipt).trx_value_wei
+       100
+       >>> b.balance(c.address)
+       110
+       >>> b.send_ether(user, c.address, 500)
+       '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+       >>> b.balance(c.address)
+       610
+
+       >>> from simpleth import Convert
+       >>> v = Convert()
+       >>> v.denominations_to_wei()['szabo']
+       1000000000000
+
+       >>> int(v.convert_ether(20, 'ether', 'gwei'))
+       20000000000
+       >>> float(v.convert_ether(100, 'wei', 'ether'))
+       1e-16
+
+       >>> b.balance(owner)
+       57816514559996298520
+       >>> float(v.convert_ether(b.balance(user), 'wei', 'ether'))
+       99.52299804
+       >>> b.balance_of(c.address)
+       10
+
+       >>> b.balance(user)
+       99522998040000000000
+       >>> trx_hash = b.send_ether(owner, user, 10)
+       >>> b.balance(user)
+       99522998040000000010
+
+       >>> b.balance(c.address)
+       10
+       >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+       >>> Results(c, receipt).trx_value_wei
+       100
+       >>> b.balance(c.address)
+       110
+       >>> b.send_ether(user, c.address, 500)
+       '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+       >>> b.balance(c.address)
+       610
+
+       >>> from simpleth import Convert
+       >>> v = Convert()
+       >>> v.denominations_to_wei()['szabo']
+       1000000000000
+
+       >>> int(v.convert_ether(20, 'ether', 'gwei'))
+       20000000000
+       >>> float(v.convert_ether(100, 'wei', 'ether'))
+       1e-16
+
+       >>> b.balance(owner)
+       57816514559996298520
+       >>> float(v.convert_ether(b.balance(user), 'wei', 'ether'))
+       99.52299804
+       >>> b.balance_of(c.address)
+       10
+
+       >>> b.balance(user)
+       99522998040000000000
+       >>> trx_hash = b.send_ether(owner, user, 10)
+       >>> b.balance(user)
+       99522998040000000010
+
+       >>> b.balance(c.address)
+       10
+       >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+       >>> Results(c, receipt).trx_value_wei
+       100
+       >>> b.balance(c.address)
+       110
+       >>> b.send_ether(user, c.address, 500)
+       '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+       >>> b.balance(c.address)
+       610
+
+       >>> from simpleth import Convert
+       >>> v = Convert()
+       >>> v.denominations_to_wei()['szabo']
+       1000000000000
+
+       >>> int(v.convert_ether(20, 'ether', 'gwei'))
+       20000000000
+       >>> float(v.convert_ether(100, 'wei', 'ether'))
+       1e-16
+
+       >>> b.balance(owner)
+       57816514559996298520
+       >>> float(v.convert_ether(b.balance(user), 'wei', 'ether'))
+       99.52299804
+       >>> b.balance(c.address)
+       10
+
+       >>> b.balance(user)
+       99522998040000000000
+       >>> trx_hash = b.send_ether(owner, user, 10)
+       >>> b.balance(user)
+       99522998040000000010
+
+       >>> b.balance(c.address)
+       10
+       >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+       >>> Results(c, receipt).trx_value_wei
+       100
+       >>> b.balance_of(c.address)
+       110
+       >>> b.send_ether(user, c.address, 500)
+       '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+       >>> b.balance(c.address)
+       610
+
+       >>> from simpleth import Convert
+       >>> v = Convert()
+       >>> v.denominations_to_wei()['szabo']
+       1000000000000
+
+       >>> int(v.convert_ether(20, 'ether', 'gwei'))
+       20000000000
+       >>> float(v.convert_ether(100, 'wei', 'ether'))
+       1e-16
+
+       >>> b.balance(owner)
+       57816514559996298520
+       >>> float(v.convert_ether(b.balance(user), 'wei', 'ether'))
+       99.52299804
+       >>> b.balance(c.address)
+       10
+
+       >>> b.balance(user)
+       99522998040000000000
+       >>> trx_hash = b.send_ether(owner, user, 10)
+       >>> b.balance(user)
+       99522998040000000010
+
+       >>> b.balance(c.address)
+       10
+       >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+       >>> Results(c, receipt).trx_value_wei
+       100
+       >>> b.balance_of(c.address)
+       110
+       >>> b.send_ether(user, c.address, 500)
+       '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+       >>> b.balance(c.address)
+       610
+
+       >>> from simpleth import Convert
+       >>> v = Convert()
+       >>> v.denominations_to_wei()['szabo']
+       1000000000000
+
+       >>> int(v.convert_ether(20, 'ether', 'gwei'))
+       20000000000
+       >>> float(v.convert_ether(100, 'wei', 'ether'))
+       1e-16
+
+       >>> b.balance(owner)
+       57816514559996298520
+       >>> float(v.convert_ether(b.balance(user), 'wei', 'ether'))
+       99.52299804
+       >>> b.balance(c.address)
+       10
+
+       >>> b.balance(user)
+       99522998040000000000
+       >>> trx_hash = b.send_ether(owner, user, 10)
+       >>> b.balance_of(user)
+       99522998040000000010
+
+       >>> b.balance(c.address)
+       10
+       >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+       >>> Results(c, receipt).trx_value_wei
+       100
+       >>> b.balance(c.address)
+       110
+       >>> b.send_ether(user, c.address, 500)
+       '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+       >>> b.balance(c.address)
+       610
+
+       >>> from simpleth import Convert
+       >>> v = Convert()
+       >>> v.denominations_to_wei()['szabo']
+       1000000000000
+
+       >>> int(v.convert_ether(20, 'ether', 'gwei'))
+       20000000000
+       >>> float(v.convert_ether(100, 'wei', 'ether'))
+       1e-16
+
+       >>> b.balance(owner)
+       57816514559996298520
+       >>> float(v.convert_ether(b.balance(user), 'wei', 'ether'))
+       99.52299804
+       >>> b.balance(c.address)
+       10
+
+       >>> b.balance(user)
+       99522998040000000000
+       >>> trx_hash = b.send_ether(owner, user, 10)
+       >>> b.balance_of(user)
+       99522998040000000010
+
+       >>> b.balance(c.address)
+       10
+       >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+       >>> Results(c, receipt).trx_value_wei
+       100
+       >>> b.balance(c.address)
+       110
+       >>> b.send_ether(user, c.address, 500)
+       '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+       >>> b.balance(c.address)
+       610
+
+       >>> from simpleth import Convert
+       >>> v = Convert()
+       >>> v.denominations_to_wei()['szabo']
+       1000000000000
+
+       >>> int(v.convert_ether(20, 'ether', 'gwei'))
+       20000000000
+       >>> float(v.convert_ether(100, 'wei', 'ether'))
+       1e-16
+
+       >>> b.balance(owner)
+       57816514559996298520
+       >>> float(v.convert_ether(b.balance(user), 'wei', 'ether'))
+       99.52299804
+       >>> b.balance(c.address)
+       10
+
+       >>> b.balance(user)
+       99522998040000000000
+       >>> trx_hash = b.send_ether(owner, user, 10)
+       >>> b.balance(user)
+       99522998040000000010
+
+       >>> b.balance(c.address)
+       10
+       >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+       >>> Results(c, receipt).trx_value_wei
+       100
+       >>> b.balance(c.address)
+       110
+       >>> b.send_ether(user, c.address, 500)
+       '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+       >>> b.balance_of(c.address)
+       610
+
+       >>> from simpleth import Convert
+       >>> v = Convert()
+       >>> v.denominations_to_wei()['szabo']
+       1000000000000
+
+       >>> int(v.convert_ether(20, 'ether', 'gwei'))
+       20000000000
+       >>> float(v.convert_ether(100, 'wei', 'ether'))
+       1e-16
+
+       >>> b.balance(owner)
+       57816514559996298520
+       >>> float(v.convert_ether(b.balance(user), 'wei', 'ether'))
+       99.52299804
+       >>> b.balance(c.address)
+       10
+
+       >>> b.balance(user)
+       99522998040000000000
+       >>> trx_hash = b.send_ether(owner, user, 10)
+       >>> b.balance(user)
+       99522998040000000010
+
+       >>> b.balance(c.address)
+       10
+       >>> receipt = c.run_trx(user, 'storeNumsAndPay', 10, 20, 30, value_wei=100)
+       >>> Results(c, receipt).trx_value_wei
+       100
+       >>> b.balance(c.address)
+       110
+       >>> b.send_ether(user, c.address, 500)
+       '0xcbbec5f820b25318d5654526d7390ba6d74231d194775304a7cddfc3b075a652'
+       >>> b.balance_of(c.address)
+       610
 
     >>> from simpleth import Convert
     >>> v = Convert()
@@ -1252,6 +1812,190 @@ an interesting example:
 .. code-block:: shell-session
    :linenos:
    :caption: Destroying Test with a selfdestruct
+
+       >>> b.balance_of(c.address)
+       610
+       >>> b.balance(b.accounts[3])
+       99889613060000000010
+       >>> receipt = c.run_trx(owner, 'destroy', b.accounts[3])
+
+       >>> b.balance(c.address)
+       0
+       >>> b.balance(b.accounts[3])
+       99889613060000000620
+       >>> c.get_var('owner')
+       Traceback (most recent call last):
+       ... snip ...
+       simpleth.SimplethError: [C-060-020] ERROR in Test().getvar(): Unable to get variable owner.
+       BadFunctionCallOutput says Could not transact with/call contract function, is contract deployed correctly and chain synced?
+       HINT1: Has contract been destroyed with selfdestruct()?
+       HINT2: Has contract not yet been deployed on a new chain?
+
+       >>> c.call_fcn('getNums')
+       Traceback (most recent call last):
+         File "<stdin>", line 1, in <module>
+         File "C:
+
+       >>> b.balance_of(c.address)
+       610
+       >>> b.balance(b.accounts[3])
+       99889613060000000010
+       >>> receipt = c.run_trx(owner, 'destroy', b.accounts[3])
+
+       >>> b.balance(c.address)
+       0
+       >>> b.balance(b.accounts[3])
+       99889613060000000620
+       >>> c.get_var('owner')
+       Traceback (most recent call last):
+       ... snip ...
+       simpleth.SimplethError: [C-060-020] ERROR in Test().getvar(): Unable to get variable owner.
+       BadFunctionCallOutput says Could not transact with/call contract function, is contract deployed correctly and chain synced?
+       HINT1: Has contract been destroyed with selfdestruct()?
+       HINT2: Has contract not yet been deployed on a new chain?
+
+       >>> c.call_fcn('getNums')
+       Traceback (most recent call last):
+         File "<stdin>", line 1, in <module>
+         File "C:
+
+       >>> b.balance(c.address)
+       610
+       >>> b.balance_of(b.accounts[3])
+       99889613060000000010
+       >>> receipt = c.run_trx(owner, 'destroy', b.accounts[3])
+
+       >>> b.balance(c.address)
+       0
+       >>> b.balance(b.accounts[3])
+       99889613060000000620
+       >>> c.get_var('owner')
+       Traceback (most recent call last):
+       ... snip ...
+       simpleth.SimplethError: [C-060-020] ERROR in Test().getvar(): Unable to get variable owner.
+       BadFunctionCallOutput says Could not transact with/call contract function, is contract deployed correctly and chain synced?
+       HINT1: Has contract been destroyed with selfdestruct()?
+       HINT2: Has contract not yet been deployed on a new chain?
+
+       >>> c.call_fcn('getNums')
+       Traceback (most recent call last):
+         File "<stdin>", line 1, in <module>
+         File "C:
+
+       >>> b.balance(c.address)
+       610
+       >>> b.balance_of(b.accounts[3])
+       99889613060000000010
+       >>> receipt = c.run_trx(owner, 'destroy', b.accounts[3])
+
+       >>> b.balance(c.address)
+       0
+       >>> b.balance(b.accounts[3])
+       99889613060000000620
+       >>> c.get_var('owner')
+       Traceback (most recent call last):
+       ... snip ...
+       simpleth.SimplethError: [C-060-020] ERROR in Test().getvar(): Unable to get variable owner.
+       BadFunctionCallOutput says Could not transact with/call contract function, is contract deployed correctly and chain synced?
+       HINT1: Has contract been destroyed with selfdestruct()?
+       HINT2: Has contract not yet been deployed on a new chain?
+
+       >>> c.call_fcn('getNums')
+       Traceback (most recent call last):
+         File "<stdin>", line 1, in <module>
+         File "C:
+
+       >>> b.balance(c.address)
+       610
+       >>> b.balance(b.accounts[3])
+       99889613060000000010
+       >>> receipt = c.run_trx(owner, 'destroy', b.accounts[3])
+
+       >>> b.balance(c.address)
+       0
+       >>> b.balance_of(b.accounts[3])
+       99889613060000000620
+       >>> c.get_var('owner')
+       Traceback (most recent call last):
+       ... snip ...
+       simpleth.SimplethError: [C-060-020] ERROR in Test().getvar(): Unable to get variable owner.
+       BadFunctionCallOutput says Could not transact with/call contract function, is contract deployed correctly and chain synced?
+       HINT1: Has contract been destroyed with selfdestruct()?
+       HINT2: Has contract not yet been deployed on a new chain?
+
+       >>> c.call_fcn('getNums')
+       Traceback (most recent call last):
+         File "<stdin>", line 1, in <module>
+         File "C:
+
+       >>> b.balance(c.address)
+       610
+       >>> b.balance(b.accounts[3])
+       99889613060000000010
+       >>> receipt = c.run_trx(owner, 'destroy', b.accounts[3])
+
+       >>> b.balance(c.address)
+       0
+       >>> b.balance_of(b.accounts[3])
+       99889613060000000620
+       >>> c.get_var('owner')
+       Traceback (most recent call last):
+       ... snip ...
+       simpleth.SimplethError: [C-060-020] ERROR in Test().getvar(): Unable to get variable owner.
+       BadFunctionCallOutput says Could not transact with/call contract function, is contract deployed correctly and chain synced?
+       HINT1: Has contract been destroyed with selfdestruct()?
+       HINT2: Has contract not yet been deployed on a new chain?
+
+       >>> c.call_fcn('getNums')
+       Traceback (most recent call last):
+         File "<stdin>", line 1, in <module>
+         File "C:
+
+       >>> b.balance(c.address)
+       610
+       >>> b.balance(b.accounts[3])
+       99889613060000000010
+       >>> receipt = c.run_trx(owner, 'destroy', b.accounts[3])
+
+       >>> b.balance_of(c.address)
+       0
+       >>> b.balance(b.accounts[3])
+       99889613060000000620
+       >>> c.get_var('owner')
+       Traceback (most recent call last):
+       ... snip ...
+       simpleth.SimplethError: [C-060-020] ERROR in Test().getvar(): Unable to get variable owner.
+       BadFunctionCallOutput says Could not transact with/call contract function, is contract deployed correctly and chain synced?
+       HINT1: Has contract been destroyed with selfdestruct()?
+       HINT2: Has contract not yet been deployed on a new chain?
+
+       >>> c.call_fcn('getNums')
+       Traceback (most recent call last):
+         File "<stdin>", line 1, in <module>
+         File "C:
+
+       >>> b.balance(c.address)
+       610
+       >>> b.balance(b.accounts[3])
+       99889613060000000010
+       >>> receipt = c.run_trx(owner, 'destroy', b.accounts[3])
+
+       >>> b.balance_of(c.address)
+       0
+       >>> b.balance(b.accounts[3])
+       99889613060000000620
+       >>> c.get_var('owner')
+       Traceback (most recent call last):
+       ... snip ...
+       simpleth.SimplethError: [C-060-020] ERROR in Test().getvar(): Unable to get variable owner.
+       BadFunctionCallOutput says Could not transact with/call contract function, is contract deployed correctly and chain synced?
+       HINT1: Has contract been destroyed with selfdestruct()?
+       HINT2: Has contract not yet been deployed on a new chain?
+
+       >>> c.call_fcn('getNums')
+       Traceback (most recent call last):
+         File "<stdin>", line 1, in <module>
+         File "C:
 
     >>> b.balance(c.address)
     610

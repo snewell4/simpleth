@@ -158,7 +158,7 @@ def test_storeNumsAndPay():
     u = b.address(0)
     c = Contract('test')
     c.connect()
-    init_contract_bal_wei = b.balance(c.address)
+    init_contract_bal_wei = b.balance_of(c.address)
     c.run_trx(u,
               'storeNumsAndPay',
               new_nums[0],
@@ -168,7 +168,7 @@ def test_storeNumsAndPay():
               )
     end_contract_bal_wei = init_contract_bal_wei + payment_wei
     assert (c.call_fcn('getNums') == new_nums) and \
-           end_contract_bal_wei == b.balance(c.address)
+           end_contract_bal_wei == b.balance_of(c.address)
 
 
 def test_storeNumsAndPay_event():
@@ -187,7 +187,7 @@ def test_storeNumsAndPay_event():
         event[0]['args']['num1'] == new_nums[1] and \
         event[0]['args']['num2'] == new_nums[2] and \
         event[0]['args']['paid'] == payment_wei and \
-        event[0]['args']['balance'] == b.balance(c.address)
+        event[0]['args']['balance'] == b.balance_of(c.address)
 
 
 def test_storeNumsAndSum():
@@ -448,9 +448,9 @@ def test_destroy():
     c = Contract('Test')
     c.connect()
     b.send_ether(u, c.address, amount)
-    init_u6_bal = b.balance(u6)
+    init_u6_bal = b.balance_of(u6)
     c.run_trx(u, 'destroy', u6)
-    amount = b.balance(u6) - init_u6_bal
+    amount = b.balance_of(u6) - init_u6_bal
     e = EventSearch(c, 'Destroyed')
     event = e.get_old()
     assert event[0]['args']['amountGwei'] == amount

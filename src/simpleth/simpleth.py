@@ -231,7 +231,7 @@ class Blockchain:
 
     -  :meth:`account_num` - return account number for an address
     -  :meth:`address` - return blockchain address for an account number
-    -  :meth:`balance` - return amount of Ether for an address
+    -  :meth:`balance_of` - return amount of Ether for an address
     -  :meth:`block_time_epoch` - return time block was mined in
        epoch seconds
     -  :meth:`block_time_string` - return time block was mined in
@@ -517,7 +517,7 @@ class Blockchain:
             )
         raise SimplethError(message, code='B-020-010') from None
 
-    def balance(self, address: str) -> int:
+    def balance_of(self, address: str) -> int:
         """Return the amount of Ether owned by an account.
 
         :param address: blockchain `address` of the account
@@ -532,22 +532,29 @@ class Blockchain:
             >>> from simpleth import Blockchain
             >>> b = Blockchain()
             >>> user0 = b.address(0)
-            >>> b.balance(user0)    #doctest: +SKIP
+            >>> b.balance_of(user0)    #doctest: +SKIP
             99977013240000000000
+
+        .. note:
+           The method name, ``balance_of()`` was chosen to match the name used
+           in the ERC-20 standard for tokens. You use `balance_of` with a
+           ``Blockchain()`` object to get the Ether balance of an address and
+           use the same method name with a token object to the token balance
+           for an address.
 
         """
         try:
             balance: int = self.eth.get_balance(address)
         except TypeError as exception:
             message: str = (
-                f'ERROR in get_balance(): '
+                f'ERROR in balance_of(): '
                 f'TypeError says: {exception}.\n'
                 f'HINT: Did you use a string for the account address?\n'
                 )
             raise SimplethError(message, code='B-030-010') from None
         except self._web3e.InvalidAddress as exception:
             message = (
-                f'ERROR in get_balance(): '
+                f'ERROR in balance_of(): '
                 f'InvalidAddress says: {exception}.\n'
                 f'HINT: Did you specify a valid account address?\n'
                 )
@@ -736,7 +743,7 @@ class Blockchain:
         :raises SimplethError:
             -  if ``sender`` is bad (**B-070-010**)
             -  if ``receiver`` is bad (**B-070-010**)
-            -  if ``amount`` exceeds the ``sender`` balance  (**B-070-010**)
+            -  if ``amount`` exceeds the ``sender`` balance_of  (**B-070-010**)
             -  if ``receiver`` is a `non-payable` contract  (**B-070-010**)
             -  if ``amount`` is not an int (**B-070-020**)
             -  if ``receiver`` is a `non-payable` contract  (**B-070-030**)
@@ -750,7 +757,7 @@ class Blockchain:
             >>> b.send_ether(user4, user8, 1000)    #doctest: +SKIP
 
         .. seealso::
-           -  :meth:`balance` to get amount of Ether owned by
+           -  :meth:`balance_of` to get amount of Ether owned by
               an account.
            -  :meth:`transaction` to get details of the transfer
               transaction using the `trx_hash`.
@@ -768,7 +775,7 @@ class Blockchain:
             message: str = (
                 f'ERROR in transfer(): '
                 f'ValueError says: {exception}.\n'
-                f'HINT1: Amount exceeds sender balance\n'
+                f'HINT1: Amount exceeds sender balance_of\n'
                 f'HINT2: Amount must be positive\n'
                 f'HINT3: Attempt to send to a non-payable contract\n'
                 f'HINT4: Bad address used for sender or receiver\n'
