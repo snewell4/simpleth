@@ -535,7 +535,7 @@ class Blockchain:
             >>> b.balance_of(user0)    #doctest: +SKIP
             99977013240000000000
 
-        .. note:
+        .. note::
            The method name, ``balance_of()`` was chosen to match the name used
            in the ERC-20 standard for tokens. You use `balance_of` with a
            ``Blockchain()`` object to get the Ether balance of an address and

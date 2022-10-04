@@ -1,3 +1,7 @@
+## 0.1.53 2022-10-04
+
+     - Improved docstrings
+
 ## 0.1.52 2022-09-22
 
      - Rename Blockchain().balance() to balance_of()
