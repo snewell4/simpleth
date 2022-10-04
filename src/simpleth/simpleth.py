@@ -3128,16 +3128,16 @@ class EventSearch:
                     f'HINT2: Use negative number to search recent blocks.\n'
                     )
                 raise SimplethError(message, code='E-030-040') from None
-            else:
-                # from_block is negative, as it should be, make sure it is
-                # not going past the end of the chain.
-                if abs(from_block) > latest_block-1:
-                    message = (
-                        f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
-                        f'from_block exceeds the number of blocks in the chain.\n'
-                        f'HINT: Provide a number between 0 and -({latest_block}-1).\n'
-                        )
-                    raise SimplethError(message, code='E-030-050') from None
+
+            # from_block is negative, as it should be. Make sure it is
+            # not going past the end of the chain.
+            if abs(from_block) > latest_block-1:
+                message = (
+                    f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
+                    f'from_block exceeds the number of blocks in the chain.\n'
+                    f'HINT: Provide a number between 0 and -({latest_block}-1).\n'
+                    )
+                raise SimplethError(message, code='E-030-050') from None
 
         # Check from_block and to_block when they are both specified
         if from_block is not None and to_block is not None:

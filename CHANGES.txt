@@ -1,3 +1,7 @@
+## 0.1.54 2022-10-04
+
+     - Remove unneeded 'else' since 'if' raises an exception
+
 ## 0.1.53 2022-10-04
 
      - Improved docstrings
