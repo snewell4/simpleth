@@ -32,14 +32,6 @@ from web3 import Web3
 from web3 import exceptions as web3e
 from web3.logs import DISCARD
 
-__all__ = [
-    'Blockchain',
-    'Contract',
-    'Convert',
-    'EventSearch',
-    'Results',
-    'SimplethError'
-    ]
 __author__ = 'Stephen Newell'
 __copyright__ = 'Copyright 2021 - 2022, Stephen Newell'
 __license__ = 'MIT'

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simpleth &mdash; simpleth 0.1.53 documentation</title>
+  <title>Simpleth &mdash; simpleth 0.1.54 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -46,7 +46,6 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Simpleth</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#classes">Classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#exceptions">Exceptions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#constants">Constants</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="contracts.html">Smart Contract Reference</a></li>
@@ -98,6 +97,251 @@ contracts.</p>
 <li><p><a class="reference internal" href="#simpleth.SimplethError" title="simpleth.SimplethError"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimplethError</span></code></a> - raised on errors from methods in <cite>Blockchain</cite>,
 <cite>Convert</cite>, <cite>Contract</cite>, <cite>EventSearch</cite> or <cite>Results</cite>.</p></li>
 </ul>
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.ARTIFACTS_DIR_ENV_VAR">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">ARTIFACTS_DIR_ENV_VAR</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SIMPLETH_ARTIFACTS_DIR'</span></em><a class="headerlink" href="#simpleth.ARTIFACTS_DIR_ENV_VAR" title="Permalink to this definition"></a></dt>
+<dd><p>Environment variable name for filepath to artifact directory</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.ARTIFACTS_DIR_DEFAULT">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">ARTIFACTS_DIR_DEFAULT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'.'</span></em><a class="headerlink" href="#simpleth.ARTIFACTS_DIR_DEFAULT" title="Permalink to this definition"></a></dt>
+<dd><p>If environment variable not set, use current working directory</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.ABI_SUFFIX">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">ABI_SUFFIX</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'.abi'</span></em><a class="headerlink" href="#simpleth.ABI_SUFFIX" title="Permalink to this definition"></a></dt>
+<dd><p>Filename suffix for the ABI files.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.BYTECODE_SUFFIX">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">BYTECODE_SUFFIX</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'.bin'</span></em><a class="headerlink" href="#simpleth.BYTECODE_SUFFIX" title="Permalink to this definition"></a></dt>
+<dd><p>Filename suffix for the bytecode files.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.ADDRESS_SUFFIX">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">ADDRESS_SUFFIX</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'.addr'</span></em><a class="headerlink" href="#simpleth.ADDRESS_SUFFIX" title="Permalink to this definition"></a></dt>
+<dd><p>Filename suffix for the contract address files.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.GAS_LIMIT">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">GAS_LIMIT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6000000</span></em><a class="headerlink" href="#simpleth.GAS_LIMIT" title="Permalink to this definition"></a></dt>
+<dd><p>Gas limit for a transaction, in units of gas.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.MAX_BASE_FEE_GWEI">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">MAX_BASE_FEE_GWEI</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">100</span></em><a class="headerlink" href="#simpleth.MAX_BASE_FEE_GWEI" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum tip to pay the miners, per unit of gas, in gwei.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.MAX_PRIORITY_FEE_GWEI">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">MAX_PRIORITY_FEE_GWEI</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#simpleth.MAX_PRIORITY_FEE_GWEI" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum tip to pay the miners, per unit of gas, in gwei.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.MAX_FEE_GWEI">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">MAX_FEE_GWEI</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">102</span></em><a class="headerlink" href="#simpleth.MAX_FEE_GWEI" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum total to pay the miners, per unit of gas, in gwei.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.TIMEOUT">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">TIMEOUT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">120</span></em><a class="headerlink" href="#simpleth.TIMEOUT" title="Permalink to this definition"></a></dt>
+<dd><p>Time to wait for transaction to be mined, in seconds.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.POLL_LATENCY">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">POLL_LATENCY</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.1</span></em><a class="headerlink" href="#simpleth.POLL_LATENCY" title="Permalink to this definition"></a></dt>
+<dd><p>Time between checking if mining is finished, in seconds.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.GANACHE_URL_ENV_VAR">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">GANACHE_URL_ENV_VAR</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SIMPLETH_GANACHE_URL'</span></em><a class="headerlink" href="#simpleth.GANACHE_URL_ENV_VAR" title="Permalink to this definition"></a></dt>
+<dd><p>Environment variable name for URL to connect to local Ganache blockchain</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.GANACHE_URL_DEFAULT">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">GANACHE_URL_DEFAULT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'http://127.0.0.1:7545'</span></em><a class="headerlink" href="#simpleth.GANACHE_URL_DEFAULT" title="Permalink to this definition"></a></dt>
+<dd><p>If environment variable not set, use Ganache default URL</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.TIME_FORMAT">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">TIME_FORMAT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'%Y-%m-%d</span> <span class="pre">%H:%M:%S'</span></em><a class="headerlink" href="#simpleth.TIME_FORMAT" title="Permalink to this definition"></a></dt>
+<dd><p>Default <code class="docutils literal notranslate"><span class="pre">datetime</span></code> format coding used to represent time values as a string</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.PRECISION">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">PRECISION</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">40</span></em><a class="headerlink" href="#simpleth.PRECISION" title="Permalink to this definition"></a></dt>
+<dd><p>Level of precision for <cite>Decimal</cite> values used in Ether denomination
+conversions. Arbitrary value. Consider a better value.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_ABI">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_ABI</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_ABI" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ABI</span></code> type is a list with JSON read from the <cite>artifact</cite> file.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_ATTRIBUTE_DICT">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_ATTRIBUTE_DICT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_ATTRIBUTE_DICT" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">AttributeDict</span></code> type is not known to type hint. Use <cite>Any</cite> for now.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_BLOCKCHAIN_OBJ">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_BLOCKCHAIN_OBJ</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_BLOCKCHAIN_OBJ" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Blockchain</span> <span class="pre">object</span></code> type is <cite>simpleth.Blockchain</cite>. Use <cite>Any</cite> for now.
+Created by <cite>simpleth</cite> methods. See <code class="docutils literal notranslate"><span class="pre">T_result</span></code> about those single quotes.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_BYTECODE">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_BYTECODE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_BYTECODE" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">bytecode</span></code> type is HexBytes read from the <cite>artifact</cite> file.
+Use <cite>Any</cite> for now.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_CONTRACT_EVENT">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_CONTRACT_EVENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_CONTRACT_EVENT" title="Permalink to this definition"></a></dt>
+<dd><p><cite>contract_event`</cite> type is <code class="docutils literal notranslate"><span class="pre">web3._utils.datatypes.&lt;event_name&gt;'</span></code>.
+Use <code class="docutils literal notranslate"><span class="pre">Any</span></code> for now.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_DECIMAL">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_DECIMAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_DECIMAL" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Decimal</span></code> type. Use <code class="docutils literal notranslate"><span class="pre">Any</span></code> for now.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_DEPLOYED_CODE">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_DEPLOYED_CODE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_DEPLOYED_CODE" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Deployed</span> <span class="pre">code</span></code> type is class <cite>HexBytes</cite>. Use
+<cite>Any</cite> for now.  Created by <cite>web3.py</cite> method.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_EXC_INFO">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_EXC_INFO</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_EXC_INFO" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Transaction</span> <span class="pre">exception</span> <span class="pre">info</span></code> type is a tuple returned by
+<cite>sys.exc_info()</cite> after an exception. Use <cite>Any</cite> for now.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_ETH_OBJ">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_ETH_OBJ</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_ETH_OBJ" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Eth</span> <span class="pre">object</span></code> type is <cite>web3.eth.Eth</cite>. Use <cite>Any</cite> for now.
+Created by <cite>web3.py</cite> methods.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_EVENT">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_EVENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_EVENT" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Event</span></code> type is an <code class="docutils literal notranslate"><span class="pre">AttributeDict</span></code>. Use <code class="docutils literal notranslate"><span class="pre">Any</span></code> for now.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_EVENT_LOG_OBJ">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_EVENT_LOG_OBJ</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_EVENT_LOG_OBJ" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Event</span> <span class="pre">log</span></code> type is a list of T_EVENT items.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_FILTER_OBJ">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_FILTER_OBJ</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_FILTER_OBJ" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">EventSearch</span> <span class="pre">object</span></code> type is <cite>web3._utils.filters.LogFilter</cite>.
+Use <cite>Any</cite> for now. Created by <cite>web3.py</cite> methods.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_FILTER_LIST">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_FILTER_LIST</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_FILTER_LIST" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">EventSearch</span> <span class="pre">list</span></code> type is created by <cite>web3.py</cite> <cite>event_filter</cite>.
+Use <cite>Any</cite> for now.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_HASH">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_HASH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_HASH" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Transaction</span> <span class="pre">hash</span></code> type is HexBytes in <code class="docutils literal notranslate"><span class="pre">web3.py</span></code>. Use <cite>Any</cite>
+for now.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_HEX_BYTE">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_HEX_BYTE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_HEX_BYTE" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">HexByte</span></code> type is not known to type hint. Use <cite>Any</cite> for now.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_RECEIPT">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_RECEIPT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_RECEIPT" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Transaction</span> <span class="pre">receipt</span></code> type is AttributeDict. Use <cite>Any</cite> for now.
+Created by <cite>web3.py</cite> methods.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_RESULT">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_RESULT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_RESULT" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Transaction</span> <span class="pre">result</span></code> is a class object with the various outcomes
+from mining a transaction. Created by the <cite>simpleth</cite> class,
+<code class="docutils literal notranslate"><span class="pre">Results</span></code>. Use Any for now.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_TRANSACTION">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_TRANSACTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_TRANSACTION" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Transaction</span></code> type is class <cite>web3.datastructures.AttributeDict</cite>.
+Use <cite>Any</cite> for now. Created by <cite>web3.py</cite> <cite>getTransaction()</cite>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_WEB3_OBJ">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_WEB3_OBJ</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_WEB3_OBJ" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Web3</span> <span class="pre">object</span></code> type is <cite>web3.main.Web3 object</cite>. Use <cite>Any</cite> for now.
+Created by <cite>web3.py</cite> methods.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_WEB3_ETH_OBJ">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_WEB3_ETH_OBJ</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_WEB3_ETH_OBJ" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Web3</span> <span class="pre">object</span></code> type is <cite>web3.eth.Eth object</cite>. Use <cite>Any</cite> for now.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_WEB3_CONTRACT_OBJ">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_WEB3_CONTRACT_OBJ</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_WEB3_CONTRACT_OBJ" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Web3</span> <span class="pre">contract</span> <span class="pre">object</span></code> type is <code class="docutils literal notranslate"><span class="pre">web3._utils.datatypes.Contract</span></code>
+object. Use <code class="docutils literal notranslate"><span class="pre">Any</span></code> for now.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.T_WEB3_EXC">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">T_WEB3_EXC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">typing.Any</span></em><a class="headerlink" href="#simpleth.T_WEB3_EXC" title="Permalink to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">Web3</span> <span class="pre">Exception</span></code> type is <cite>module web3.exceptions</cite>.
+Use <cite>Any</cite> for now. Provided by <cite>web3.py</cite></p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="simpleth.VALUE_ERROR_REVERT_MESSAGE">
+<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">VALUE_ERROR_REVERT_MESSAGE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'VM</span> <span class="pre">Exception</span> <span class="pre">while</span> <span class="pre">processing</span> <span class="pre">transaction:</span> <span class="pre">revert'</span></em><a class="headerlink" href="#simpleth.VALUE_ERROR_REVERT_MESSAGE" title="Permalink to this definition"></a></dt>
+<dd><p>ValueError exception message for a reverted transaction.</p>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="simpleth.Blockchain">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">Blockchain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpleth.Blockchain" title="Permalink to this definition"></a></dt>
@@ -3109,69 +3353,6 @@ info: (<cite>type</cite>, <cite>value</cite>, <cite>traceback</cite>)</p>
 <dd><p>Exception instance variable with <code class="docutils literal notranslate"><span class="pre">code</span></code></p>
 </dd></dl>
 
-</dd></dl>
-
-</section>
-<section id="constants">
-<h2>Constants<a class="headerlink" href="#constants" title="Permalink to this headline"></a></h2>
-<dl class="py data">
-<dt class="sig sig-object py" id="simpleth.ARTIFACTS_DIR_DEFAULT">
-<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">ARTIFACTS_DIR_DEFAULT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'.'</span></em><a class="headerlink" href="#simpleth.ARTIFACTS_DIR_DEFAULT" title="Permalink to this definition"></a></dt>
-<dd><p>If environment variable not set, use current working directory</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="simpleth.ARTIFACTS_DIR_ENV_VAR">
-<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">ARTIFACTS_DIR_ENV_VAR</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SIMPLETH_ARTIFACTS_DIR'</span></em><a class="headerlink" href="#simpleth.ARTIFACTS_DIR_ENV_VAR" title="Permalink to this definition"></a></dt>
-<dd><p>Environment variable name for filepath to artifact directory</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="simpleth.GANACHE_URL_DEFAULT">
-<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">GANACHE_URL_DEFAULT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'http://127.0.0.1:7545'</span></em><a class="headerlink" href="#simpleth.GANACHE_URL_DEFAULT" title="Permalink to this definition"></a></dt>
-<dd><p>If environment variable not set, use Ganache default URL</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="simpleth.GANACHE_URL_ENV_VAR">
-<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">GANACHE_URL_ENV_VAR</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'SIMPLETH_GANACHE_URL'</span></em><a class="headerlink" href="#simpleth.GANACHE_URL_ENV_VAR" title="Permalink to this definition"></a></dt>
-<dd><p>Environment variable name for URL to connect to local Ganache blockchain</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="simpleth.GAS_LIMIT">
-<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">GAS_LIMIT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6000000</span></em><a class="headerlink" href="#simpleth.GAS_LIMIT" title="Permalink to this definition"></a></dt>
-<dd><p>Gas limit for a transaction, in units of gas.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="simpleth.MAX_PRIORITY_FEE_GWEI">
-<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">MAX_PRIORITY_FEE_GWEI</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#simpleth.MAX_PRIORITY_FEE_GWEI" title="Permalink to this definition"></a></dt>
-<dd><p>Maximum tip to pay the miners, per unit of gas, in gwei.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="simpleth.MAX_FEE_GWEI">
-<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">MAX_FEE_GWEI</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">102</span></em><a class="headerlink" href="#simpleth.MAX_FEE_GWEI" title="Permalink to this definition"></a></dt>
-<dd><p>Maximum total to pay the miners, per unit of gas, in gwei.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="simpleth.POLL_LATENCY">
-<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">POLL_LATENCY</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.1</span></em><a class="headerlink" href="#simpleth.POLL_LATENCY" title="Permalink to this definition"></a></dt>
-<dd><p>Time between checking if mining is finished, in seconds.</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="simpleth.TIME_FORMAT">
-<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">TIME_FORMAT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'%Y-%m-%d</span> <span class="pre">%H:%M:%S'</span></em><a class="headerlink" href="#simpleth.TIME_FORMAT" title="Permalink to this definition"></a></dt>
-<dd><p>Default <code class="docutils literal notranslate"><span class="pre">datetime</span></code> format coding used to represent time values as a string</p>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="simpleth.TIMEOUT">
-<span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">TIMEOUT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">120</span></em><a class="headerlink" href="#simpleth.TIMEOUT" title="Permalink to this definition"></a></dt>
-<dd><p>Time to wait for transaction to be mined, in seconds.</p>
 </dd></dl>
 
 </section>
