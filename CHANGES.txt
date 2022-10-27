@@ -1,4 +1,8 @@
-## 0.1.55 2022-10-04
+## 0.1.56 2022-10-26
+
+     - Add revert_msg to Contract().call_fcn() error C-010-040
+
+ ## 0.1.55 2022-10-04
 
      - Move __all__ from simpleth.py to __init__.py
 

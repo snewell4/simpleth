@@ -952,10 +952,10 @@ class TestContractRunTrxBad:
         with pytest.raises(SimplethError) as excp:
             c.run_trx(
                 constants.TRX_SENDER,
-                'revertTransaction'
+                'revertFunction'
                 )
         assert excp.value.code == 'C-080-080' and \
-               excp.value.revert_msg == 'Revert this transaction.'
+               excp.value.revert_msg == 'Function reverted'
 
     def test_run_trx_with_db0_arg_raises_C_080_080(
             self,

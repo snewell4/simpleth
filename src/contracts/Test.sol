@@ -17,8 +17,10 @@ pragma solidity ^0.8;
  *  PyTest tests that use this contract.
  */
 contract Test {
-    /// @dev address that constructed and deployed the contract.
-    address public owner;
+
+    /// @dev used to store enum
+    enum Size {SMALL, MEDIUM, LARGE}
+    Size public testEnum;
 
     /// @dev set by constructor. Has no other purpose.
     int public initNum;
@@ -29,27 +31,26 @@ contract Test {
     /// @dev used by sumNums() to hold the sum of nums[].
     uint public numsTotal;
 
-    /// @dev used to store an unsigned integer
-    uint public testUint;
-
-    /// @dev used to store a signed integer
-    int public testInt;
+    /// @dev address that constructed and deployed the contract.
+    address public owner;
 
     /// @dev used to store an address
     address public testAddr;
 
-    /// @dev used to store a string
-    string public testStr;
+    /// @dev used to store an array
+    uint[3] public testArray;
 
     /// @dev used to store a boolean
     bool public testBool;
 
-    /// @dev used to store an array
-    uint[3] public testArray;
+    /// @dev used to store a signed integer
+    int public testInt;
 
-    /// @dev used to store enum
-    enum Size {SMALL, MEDIUM, LARGE}
-    Size public testEnum;
+    /// @dev used to store a string
+    string public testStr;
+
+    /// @dev used to store an unsigned integer
+    uint public testUint;
 
     /**
      * @notice Emitted when contract is destroyed
@@ -396,15 +397,94 @@ contract Test {
     }
 
     /**
+     * @notice Function to return nums[index]
+     *
+     * @param index specifies the nums[] entry to return
+     *
+     * @return num value for nums[index]
+     */
+    function getNum(uint8 index) public view returns(uint num) {
+        return nums[index];
+    }
+
+    /**
+     * @notice Function to return nums[0]
+     *
+     * @return num the first element of nums[]
+     */
+    function getNum0() public view returns(uint num) {
+        return nums[0];
+    }
+
+    /**
+     * @notice Function to return an array
+     *
+     * @dev Shows how to return all values as a list
+     *
+     * @return nums all values in nums[]
+     */
+    function getNums() public view returns(uint[3] memory) {
+        return nums;
+    }
+
+    /**
+     * @notice Function to return multiple values
+     *
+     * @dev Shows how to return multiple values and types
+     * set with storeTypes()
+     *
+     * @return testBool_ testBool value
+     * @return testEnum_ testEnum value
+     * @return testUint_ testUint value
+     * @return testInt_ testInt value
+     * @return testAddr_ testAddress value
+     * @return testStr_ testStr value
+     * @return testArray_ testArray value
+     */
+    function getTypes()
+        public
+        view
+        returns(
+            bool testBool_,
+            Size testEnum_,
+            uint testUint_,
+            int testInt_,
+            address testAddr_,
+            string memory testStr_,
+            uint[3] memory testArray_
+        )
+    {
+        return (
+            testBool,
+            testEnum,
+            testUint,
+            testInt,
+            testAddr,
+            testStr,
+            testArray
+        );
+    }
+
+    /**
+     * @notice Function with require() that fails
+     *
+     * @dev Require always passes badk a message.
+     */
+    function requireFailsFunction() public pure {
+        uint256 test_value = 100;
+        require(test_value == 1, "Function require failed");
+    }
+
+    /**
      * @notice Allows test of revert()
      *
      * @dev Always reverts. No event emitted. Passes back a message.
      */
-    function revertTransaction()
+    function revertFunction()
         public
         pure
     {
-        revert("Revert this transaction.");
+        revert("Function reverted");
     }
 
     /**
@@ -606,43 +686,6 @@ contract Test {
     }
 
     /**
-     * @notice Sums values in nums[] and stores in numsTotal
-     *
-     * @dev Emits NumsSummed()
-     */
-    function sumNums()
-        public
-    {
-        numsTotal = nums[0] + nums[1] + nums[2];
-        emit NumsSummed(
-            block.timestamp,
-            nums[0],
-            nums[1],
-            nums[2],
-            numsTotal
-        );
-    }
-
-    /**
-     * @notice Sums values in nums[0] and nums[1] and stores in
-     * numsTotal. Required to be owner to call
-     *
-     * @dev Emits TwoNumsSummed()
-     */
-    function sumTwoNums()
-        public
-    {
-        require(msg.sender == owner, "must be owner to sum two nums");
-        numsTotal = nums[0] + nums[1];
-        emit TwoNumsSummed(
-            block.timestamp,
-            nums[0],
-            nums[1],
-            numsTotal
-        );
-    }
-
-    /**
      * @notice Stores a variety of data types into public state
      * variables
      *
@@ -687,71 +730,39 @@ contract Test {
     }
 
     /**
-     * @notice Function to return nums[0]
+     * @notice Sums values in nums[] and stores in numsTotal
      *
-     * @return num the first element of nums[]
+     * @dev Emits NumsSummed()
      */
-    function getNum0() public view returns(uint num) {
-        return nums[0];
-    }
-
-    /**
-     * @notice Function to return nums[index]
-     *
-     * @param index specifies the nums[] entry to return
-     *
-     * @return num value for nums[index]
-     */
-    function getNum(uint8 index) public view returns(uint num) {
-        return nums[index];
-    }
-
-    /**
-     * @notice Function to return an array
-     *
-     * @dev Shows how to return all values as a list
-     *
-     * @return nums all values in nums[]
-     */
-    function getNums() public view returns(uint[3] memory) {
-        return nums;
-    }
-
-    /**
-     * @notice Function to return multiple values
-     *
-     * @dev Shows how to return multiple values and types
-     * set with storeTypes()
-     *
-     * @return testBool_ testBool value
-     * @return testEnum_ testEnum value
-     * @return testUint_ testUint value
-     * @return testInt_ testInt value
-     * @return testAddr_ testAddress value
-     * @return testStr_ testStr value
-     * @return testArray_ testArray value
-     */
-    function getTypes()
+    function sumNums()
         public
-        view
-        returns(
-            bool testBool_,
-            Size testEnum_,
-            uint testUint_,
-            int testInt_,
-            address testAddr_,
-            string memory testStr_,
-            uint[3] memory testArray_
-        )
     {
-        return (
-            testBool,
-            testEnum,
-            testUint,
-            testInt,
-            testAddr,
-            testStr,
-            testArray
+        numsTotal = nums[0] + nums[1] + nums[2];
+        emit NumsSummed(
+            block.timestamp,
+            nums[0],
+            nums[1],
+            nums[2],
+            numsTotal
+        );
+    }
+
+    /**
+     * @notice Sums values in nums[0] and nums[1] and stores in
+     * numsTotal. Required to be owner to call
+     *
+     * @dev Emits TwoNumsSummed()
+     */
+    function sumTwoNums()
+        public
+    {
+        require(msg.sender == owner, "must be owner to sum two nums");
+        numsTotal = nums[0] + nums[1];
+        emit TwoNumsSummed(
+            block.timestamp,
+            nums[0],
+            nums[1],
+            numsTotal
         );
     }
 

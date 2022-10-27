@@ -170,8 +170,17 @@ getTypes()
 
 ________________________________________
 
-revertTransaction()
--------------------
+requireFailsFunction()
+----------------------
+:Purpose:  Function with require() that fails
+
+:Notes:  Require always passes badk a message.
+
+
+________________________________________
+
+revertFunction()
+----------------
 :Purpose:  Allows test of revert()
 
 :Notes:  Always reverts. No event emitted. Passes back a message.

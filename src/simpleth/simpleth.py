@@ -197,6 +197,10 @@ Use `Any` for now. Provided by `web3.py`"""
 #
 # Exception processing
 #
+CONTRACT_LOGIC_ERROR_REVERT_MESSAGE: Final[str] = \
+    'execution reverted: VM Exception while processing transaction: revert'
+"""ContractLogicError exception message for a reverted transaction."""
+
 VALUE_ERROR_REVERT_MESSAGE: Final[str] = \
     'VM Exception while processing transaction: revert'
 """ValueError exception message for a reverted transaction."""
@@ -1341,13 +1345,25 @@ class Contract:
                 )
             raise SimplethError(message, code='C-010-030') from None
         except self._web3e.ContractLogicError as exception:
+            # If function did assert() or require() and specified a message,
+            # the ContractLogicException exception will be in the form of:
+            # <CONTRACT_LOGIC_ERROR_REVERT_MESSAGE><trx_revert_message>
+            # Strip off <CONTRACT_LOGIC_ERROR_REVERT_MESSAGE>
+            trx_revert_message: str = \
+                str(exception).replace(
+                    CONTRACT_LOGIC_ERROR_REVERT_MESSAGE + ' ',
+                    ''
+                    )
             message = (
                 f'ERROR in {self.name}().call_fcn().\n'
                 f'ContractLogicError says: {exception}\n'
                 f'HINT: Did you use an out of bounds array index?\n'
                 )
-            raise SimplethError(message, code='C-010-040') from None
-
+            raise SimplethError(
+                message,
+                code='C-010-040',
+                revert_msg=trx_revert_message
+                ) from None
         return fcn_return
 
     def connect(self, address: str = None) -> str:
@@ -2217,11 +2233,11 @@ class Contract:
             # specified a message, that message is to the right
             # of the standard revert message plus a space
             # from ValueError. The space is important: no space
-            # standard message and no trx revert message follows;
+            # means no trx revert message follows and one
             # space means a trx revert message follows. Strip
-            # out the standard message to get the trx revert message.
-            # Otherwise, trx revert message is the standard
-            # VALUE_ERROR_REVERT_MESSAGE.
+            # out the boilerplate message to get the trx revert message.
+            # Otherwise, the replace() does nothing and the trx revert message
+            # is just the standard VALUE_ERROR_REVERT_MESSAGE.
             trx_revert_message: str = \
                 value_error_message.replace(
                     VALUE_ERROR_REVERT_MESSAGE + ' ',
@@ -3146,7 +3162,7 @@ class EventSearch:
                     f'ERROR in get_old({self.event_name},{from_block},{to_block}).\n'
                     f'The from_block needs to be less than or equal to the to_block.\n'
                     f'HINT: Provide a valid range.\n'
-                )
+                    )
                 raise SimplethError(message, code='E-030-070') from None
             if from_block > latest_block:
                 message = (

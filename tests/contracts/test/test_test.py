@@ -415,14 +415,50 @@ def test_assertGreaterThan10_fails():
     assert excp.value.code == 'C-080-080'
 
 
-def test_revertTransaction_reverts():
-    """Test the trx that calls revert()"""
+def test_revertFunction_reverts_as_a_transaction():
+    """Test a transaction that calls revert() sends back the message"""
+    # It is a one-line function that is called with run_trx()
     u = Blockchain().address(0)
     c = Contract('test')
     c.connect()
     with pytest.raises(SimplethError) as excp:
-        c.run_trx(u, 'revertTransaction')
+        c.run_trx(u, 'revertFunction')
     assert excp.value.code == 'C-080-080'
+    assert excp.value.revert_msg == 'Function reverted'
+
+
+def test_revertFunction_reverts_as_a_function():
+    """Test a function that calls revert() sends back the message"""
+    # It is a one-line function that is called with call_fcn()
+    c = Contract('test')
+    c.connect()
+    with pytest.raises(SimplethError) as excp:
+        c.call_fcn('revertFunction')
+    assert excp.value.code == 'C-010-040'
+    assert excp.value.revert_msg == 'Function reverted'
+
+
+def test_requireFailsFunction_reverts_as_a_transaction():
+    """Test a transaction that calls revert() sends back the message"""
+    # It is a two-line function that is called with run_trx()
+    u = Blockchain().address(0)
+    c = Contract('test')
+    c.connect()
+    with pytest.raises(SimplethError) as excp:
+        c.run_trx(u, 'requireFailsFunction')
+    assert excp.value.code == 'C-080-080'
+    assert excp.value.revert_msg == 'Function require failed'
+
+
+def test_requireFailsFunction_reverts_as_a_function():
+    """Test a transaction that calls revert() sends back the message"""
+    # It is a two-line function that is called with run_trx()
+    c = Contract('test')
+    c.connect()
+    with pytest.raises(SimplethError) as excp:
+        c.call_fcn('requireFailsFunction')
+    assert excp.value.code == 'C-010-040'
+    assert excp.value.revert_msg == 'Function require failed'
 
 
 def test_receive():
