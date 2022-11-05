@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Using &mdash; simpleth 0.1.56 documentation</title>
+  <title>Using &mdash; simpleth 0.1.58 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -51,6 +51,15 @@
 <li class="toctree-l2"><a class="reference internal" href="#run-transactions">Run transactions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#search-for-events">Search for events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#search-for-events-with-event-arguments">Search for events with event arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handling-bytes">Handling bytes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#initial-null-value">Initial null value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-a-character-value">Set a character value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-an-integer-value">Set an integer value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-a-hex-value">Set a hex value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exception-if-arg-has-too-many-bytes">Exception if arg has too many bytes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#more-fun-with-hex-values">More fun with hex values</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#transaction-results">Transaction results</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#handling-ether">Handling Ether</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#handling-time">Handling time</a></li>
@@ -671,12 +680,277 @@ returned.</p></li>
 </div>
 <img alt="_images/section_separator.png" src="_images/section_separator.png" />
 </section>
+<section id="handling-bytes">
+<h2>Handling bytes<a class="headerlink" href="#handling-bytes" title="Permalink to this headline"></a></h2>
+<p>Passing values for transaction arguments with the Solidity data type of
+<cite>bytes</cite> requires an understanding of how a smart contract stores
+and returns those values plus Python functions to create and
+use the values.</p>
+<p>We will be using the <cite>bytes</cite> variables along with their getter,
+setter, and event in <cite>Test.sol</cite>.
+This code allows testing of two fixed-size arrays of bytes,
+one of four-bytes and the other of 32-bytes, along with one dynamic
+array of bytes.</p>
+<p>Solidity uses big endian format for storing bytes and characters are
+encoded using the unicode standard, <cite>utf-8</cite>.
+This will influence parameters used in a few of the Python functions.</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Test.sol bytes-related code</span><a class="headerlink" href="#id9" title="Permalink to this code"></a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="n">bytes4</span> <span class="n">public</span> <span class="n">testBytes4</span><span class="p">;</span>
+<span class="linenos"> 2</span> <span class="n">bytes32</span> <span class="n">public</span> <span class="n">testBytes32</span><span class="p">;</span>
+<span class="linenos"> 3</span> <span class="nb">bytes</span> <span class="n">public</span> <span class="n">testBytes</span><span class="p">;</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span> <span class="n">function</span> <span class="n">getBytes</span><span class="p">()</span>
+<span class="linenos"> 6</span>     <span class="n">public</span>
+<span class="linenos"> 7</span>     <span class="n">view</span>
+<span class="linenos"> 8</span>     <span class="n">returns</span><span class="p">(</span>
+<span class="linenos"> 9</span>         <span class="n">bytes4</span> <span class="n">testBytes4_</span><span class="p">,</span>
+<span class="linenos">10</span>         <span class="n">bytes32</span> <span class="n">testBytes32_</span><span class="p">,</span>
+<span class="linenos">11</span>         <span class="nb">bytes</span> <span class="n">memory</span> <span class="n">testBytes_</span>
+<span class="linenos">12</span>     <span class="p">)</span>
+<span class="linenos">13</span> <span class="p">{</span>
+<span class="linenos">14</span>     <span class="k">return</span> <span class="p">(</span><span class="n">testBytes4</span><span class="p">,</span> <span class="n">testBytes32</span><span class="p">,</span> <span class="n">testBytes</span><span class="p">);</span>
+<span class="linenos">15</span> <span class="p">}</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span> <span class="n">function</span> <span class="n">storeBytes</span><span class="p">(</span>
+<span class="linenos">18</span>         <span class="n">bytes4</span> <span class="n">_testBytes4</span><span class="p">,</span>
+<span class="linenos">19</span>         <span class="n">bytes32</span> <span class="n">_testBytes32</span><span class="p">,</span>
+<span class="linenos">20</span>         <span class="nb">bytes</span> <span class="n">memory</span> <span class="n">_testBytes</span>
+<span class="linenos">21</span>     <span class="p">)</span>
+<span class="linenos">22</span>     <span class="n">public</span>
+<span class="linenos">23</span> <span class="p">{</span>
+<span class="linenos">24</span>     <span class="n">testBytes4</span> <span class="o">=</span> <span class="n">_testBytes4</span><span class="p">;</span>
+<span class="linenos">25</span>     <span class="n">testBytes32</span> <span class="o">=</span> <span class="n">_testBytes32</span><span class="p">;</span>
+<span class="linenos">26</span>     <span class="n">testBytes</span> <span class="o">=</span> <span class="n">_testBytes</span><span class="p">;</span>
+<span class="linenos">27</span>     <span class="n">emit</span> <span class="n">BytesStored</span><span class="p">(</span>
+<span class="linenos">28</span>         <span class="n">block</span><span class="o">.</span><span class="n">timestamp</span><span class="p">,</span>
+<span class="linenos">29</span>         <span class="n">testBytes4</span><span class="p">,</span>
+<span class="linenos">30</span>         <span class="n">testBytes32</span><span class="p">,</span>
+<span class="linenos">31</span>         <span class="n">testBytes</span>
+<span class="linenos">32</span>     <span class="p">);</span>
+<span class="linenos">33</span> <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<section id="initial-null-value">
+<h3>Initial null value<a class="headerlink" href="#initial-null-value" title="Permalink to this headline"></a></h3>
+<p>The three <cite>bytes</cite> public state variables are not given an initial value
+in the contract.
+Use <cite>getBytes()</cite> to return them.
+The <cite>bytes4</cite> variable is set to four null bytes.
+The <cite>bytes32</cite> vairable is set to 32 null bytes.
+The <cite>bytes</cite> variable is set to an empty array.
+Python shows them as byte strings.</p>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">Get initial values</span><a class="headerlink" href="#id10" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>  <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Contract</span><span class="p">,</span> <span class="n">Blockchain</span>
+<span class="linenos">2</span>  <span class="o">&gt;&gt;&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+<span class="linenos">3</span>  <span class="o">&gt;&gt;&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="linenos">4</span>  <span class="s1">&#39;0x16db9563B047A1535629389ED5AA4a3494B753a7&#39;</span>
+<span class="linenos">5</span>  <span class="o">&gt;&gt;&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">call_fcn</span><span class="p">(</span><span class="s1">&#39;getBytes&#39;</span><span class="p">)</span>
+<span class="linenos">6</span>  <span class="p">[</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00\x00\x00\x00</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
+<span class="linenos">7</span>  <span class="o">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="set-a-character-value">
+<h3>Set a character value<a class="headerlink" href="#set-a-character-value" title="Permalink to this headline"></a></h3>
+<p>The example below will store the characters, ‘a’, ‘b’, and ‘c’ as three
+bytes in the four-byte, 32-byte, and byte array variables.
+Python’s method, <cite>encode()</cite>, will create the array of bytes that is
+passed as args to <cite>storeBytes()</cite>.
+<cite>encode()</cite> uses <cite>utf-8</cite> as the default encoding.</p>
+<p>The call to <cite>getBytes()</cite> returns the three Solidiity variable values.
+The two fixed byte array variables are null-padded to fill out the
+length of the byte array.
+These are the bytes with values of <cite>x00</cite>.
+The dynamic byte array variable does not have any padding.</p>
+<p>To convert the Python byte arrays to a string, use the <cite>decode()</cite> method.
+The resulting string will have the null padding at the end.
+One approach, using <cite>split()</cite>, is shown to remove those nulls.</p>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">Set Solidity bytes with a string of characters</span><a class="headerlink" href="#id11" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">Blockchain</span><span class="p">()</span>
+<span class="linenos"> 2</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">user</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">address</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="linenos"> 3</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">string</span> <span class="o">=</span> <span class="s1">&#39;abc&#39;</span>
+<span class="linenos"> 4</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">string_as_bytes</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+<span class="linenos"> 5</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">trx_receipt</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeBytes&#39;</span><span class="p">,</span> <span class="n">string_as_bytes</span><span class="p">,</span> <span class="n">string_as_bytes</span><span class="p">,</span> <span class="n">string_as_bytes</span><span class="p">)</span>
+<span class="linenos"> 6</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">values</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">call_fcn</span><span class="p">(</span><span class="s1">&#39;getBytes&#39;</span><span class="p">)</span>
+<span class="linenos"> 7</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">values</span>
+<span class="linenos"> 8</span> <span class="p">[</span><span class="sa">b</span><span class="s1">&#39;abc</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;abc</span><span class="se">\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;abc&#39;</span><span class="p">]</span>
+<span class="linenos"> 9</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+<span class="linenos">10</span> <span class="s1">&#39;abc</span><span class="se">\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00</span><span class="s1">&#39;</span>
+<span class="linenos">11</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">12</span> <span class="s1">&#39;abc&#39;</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="set-an-integer-value">
+<h3>Set an integer value<a class="headerlink" href="#set-an-integer-value" title="Permalink to this headline"></a></h3>
+<p>If you need to store an integer value in a bytes data, use Python’s
+<cite>to_bytes()</cite> method to create the byte string and pass that as
+an argument to Solidity.
+You must specify the number of bytes to hold the integer.
+Null bytes will be prepended to fill out the fixed byte array.
+For a dynamic byte array, if you wish to have the smallest array size,
+specify the number of bytes that will hold the binary value for the
+integer.
+You will also specify big endian format.</p>
+<p>The example below creates three different values to use as the args
+for <cite>storeBytes()</cite>, each is a different size.
+After storing the bytes, the value for the public state variable,
+<cite>testBytes4</cite> is shown.
+Next a call to <cite>getBytes()</cite> returns the values.
+Python’s <cite>from_bytes()</cite> method is used to convert each of the returned
+values back to the original integer.</p>
+<p>Finally, if you are storing a negative integer, the same approach
+is used but you must add another arg to indicate this integer is signed.
+The example only shows converting a negative integer to a byte string
+and back.</p>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">Set Solidity bytes with an integer value</span><a class="headerlink" href="#id12" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">integer</span> <span class="o">=</span> <span class="mi">12345</span>
+<span class="linenos"> 2</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">integer_as_4bytes</span> <span class="o">=</span> <span class="n">integer</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+<span class="linenos"> 3</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">integer_as_32bytes</span> <span class="o">=</span> <span class="n">integer</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+<span class="linenos"> 4</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">integer_as_byte_array</span> <span class="o">=</span> <span class="n">integer</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">)</span>
+<span class="linenos"> 5</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">trx_receipt</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeBytes&#39;</span><span class="p">,</span> <span class="n">integer_as_4bytes</span><span class="p">,</span> <span class="n">integer_as_32bytes</span><span class="p">,</span> <span class="n">integer_as_byte_array</span><span class="p">)</span>
+<span class="linenos"> 6</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">get_var</span><span class="p">(</span><span class="s1">&#39;testBytes4&#39;</span><span class="p">)</span>
+<span class="linenos"> 7</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00\x00</span><span class="s1">09&#39;</span>
+<span class="linenos"> 8</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">values</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">call_fcn</span><span class="p">(</span><span class="s1">&#39;getBytes&#39;</span><span class="p">)</span>
+<span class="linenos"> 9</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">values</span>
+<span class="linenos">10</span> <span class="p">[</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00\x00</span><span class="s1">09&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00</span><span class="s1">09&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;09&#39;</span><span class="p">]</span>
+<span class="linenos">11</span> <span class="o">&gt;&gt;&gt;</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">byteorder</span><span class="o">=</span><span class="s1">&#39;big&#39;</span><span class="p">)</span>
+<span class="linenos">12</span> <span class="mi">12345</span>
+<span class="linenos">13</span> <span class="o">&gt;&gt;&gt;</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">byteorder</span><span class="o">=</span><span class="s1">&#39;big&#39;</span><span class="p">)</span>
+<span class="linenos">14</span> <span class="mi">12345</span>
+<span class="linenos">15</span> <span class="o">&gt;&gt;&gt;</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">byteorder</span><span class="o">=</span><span class="s1">&#39;big&#39;</span><span class="p">)</span>
+<span class="linenos">16</span> <span class="mi">12345</span>
+<span class="linenos">17</span> <span class="o">&gt;&gt;&gt;</span>
+<span class="linenos">18</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">neg_integer</span> <span class="o">=</span> <span class="o">-</span><span class="mi">42</span>
+<span class="linenos">19</span> <span class="o">&gt;&gt;&gt;</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="n">neg_integer</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">20</span> <span class="o">&gt;&gt;&gt;</span> <span class="nb">bytes</span>
+<span class="linenos">21</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\xff\xff\xff\xd6</span><span class="s1">&#39;</span>
+<span class="linenos">22</span> <span class="o">&gt;&gt;&gt;</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="s1">&#39;big&#39;</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">23</span> <span class="o">-</span><span class="mi">42</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="set-a-hex-value">
+<h3>Set a hex value<a class="headerlink" href="#set-a-hex-value" title="Permalink to this headline"></a></h3>
+<p>If you need to store a string of hex characters, you can use the
+<cite>fromhex()</cite> method to place the hex equivalent in a Python byte
+string and use that as an arg to a Solidity transaction.
+The example below creates a four bytes from eight hex characters
+and stores into the three different bytes variables.
+The example finishes by getting the four-byte public state variable value
+holding the eight hex characters as well as the returned values
+from all three variables.</p>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text">Store eight hex characters as four bytes</span><a class="headerlink" href="#id13" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">hex_string</span> <span class="o">=</span> <span class="s1">&#39;AAAABBBB&#39;</span>
+<span class="linenos">2</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">hex_string_as_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">hex_string</span><span class="p">)</span>
+<span class="linenos">3</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">trx_receipt</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeBytes&#39;</span><span class="p">,</span> <span class="n">hex_string_as_bytes</span><span class="p">,</span> <span class="n">hex_string_as_bytes</span><span class="p">,</span> <span class="n">hex_string_as_bytes</span><span class="p">)</span>
+<span class="linenos">4</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">get_var</span><span class="p">(</span><span class="s1">&#39;testBytes4&#39;</span><span class="p">)</span>
+<span class="linenos">5</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\xaa\xaa\xbb\xbb</span><span class="s1">&#39;</span>
+<span class="linenos">6</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">call_fcn</span><span class="p">(</span><span class="s1">&#39;getBytes&#39;</span><span class="p">)</span>
+<span class="linenos">7</span> <span class="p">[</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\xaa\xaa\xbb\xbb</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\xaa\xaa\xbb\xbb\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\xaa\xaa\xbb\xbb</span><span class="s1">&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="exception-if-arg-has-too-many-bytes">
+<h3>Exception if arg has too many bytes<a class="headerlink" href="#exception-if-arg-has-too-many-bytes" title="Permalink to this headline"></a></h3>
+<p>If you attempt to pass an arg with more bytes than the Solidity size
+of a fixed array byte variable, the transaction will revert.
+The example below uses <code class="xref py py-class docutils literal notranslate"><span class="pre">SimplethError</span></code> to catch the exception
+thrown when an eight-byte value is passed to the four-byte arg;
+this is the wrong arg type - it is not <cite>bytes4</cite>.</p>
+<div class="literal-block-wrapper docutils container" id="id14">
+<div class="code-block-caption"><span class="caption-text">Exception when attempting to store eight bytes into four</span><a class="headerlink" href="#id14" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">string</span> <span class="o">=</span> <span class="s1">&#39;testtest&#39;</span>
+<span class="linenos"> 2</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">eight_bytes</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+<span class="linenos"> 3</span> <span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
+<span class="linenos"> 4</span> <span class="o">...</span>     <span class="n">t</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeBytes&#39;</span><span class="p">,</span> <span class="n">eight_bytes</span><span class="p">,</span> <span class="n">eight_bytes</span><span class="p">,</span> <span class="n">eight_bytes</span><span class="p">)</span>
+<span class="linenos"> 5</span> <span class="o">...</span> <span class="k">except</span> <span class="n">SimplethError</span> <span class="k">as</span> <span class="n">excp</span><span class="p">:</span>
+<span class="linenos"> 6</span> <span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="n">excp</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+<span class="linenos"> 7</span> <span class="o">...</span>
+<span class="linenos"> 8</span> <span class="n">ERROR</span> <span class="ow">in</span> <span class="n">Test</span><span class="p">()</span><span class="o">.</span><span class="n">submit_trx</span><span class="p">(</span><span class="n">storeBytes</span><span class="p">):</span> <span class="n">Wrong</span> <span class="n">number</span> <span class="ow">or</span> <span class="nb">type</span> <span class="n">of</span> <span class="n">args</span><span class="s2">&quot;&quot;</span><span class="o">.</span>
+<span class="linenos"> 9</span> <span class="n">HINT1</span><span class="p">:</span> <span class="n">Check</span> <span class="n">parameter</span> <span class="n">definition</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">the</span> <span class="n">transaction</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">contract</span><span class="o">.</span>
+<span class="linenos">10</span> <span class="n">HINT2</span><span class="p">:</span> <span class="n">Check</span> <span class="n">run_trx</span><span class="p">()</span> <span class="n">optional</span> <span class="n">parameter</span> <span class="n">types</span><span class="o">.</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="more-fun-with-hex-values">
+<h3>More fun with hex values<a class="headerlink" href="#more-fun-with-hex-values" title="Permalink to this headline"></a></h3>
+<p>1) Here’s an approach to take a string of hex, create a byte string
+with those hex values, and then convert it back to the hex string.</p>
+<div class="literal-block-wrapper docutils container" id="id15">
+<div class="code-block-caption"><span class="caption-text">Convert string of hex to a Python byte string and back</span><a class="headerlink" href="#id15" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">hex_string</span> <span class="o">=</span> <span class="s1">&#39;AB1D&#39;</span>
+<span class="linenos">2</span> <span class="o">&gt;&gt;&gt;</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">hex_string</span><span class="p">)</span>
+<span class="linenos">3</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\xab\x1d</span><span class="s1">&#39;</span>
+<span class="linenos">4</span> <span class="o">&gt;&gt;&gt;</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">hex_string</span><span class="p">)</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span>
+<span class="linenos">5</span> <span class="s1">&#39;ab1d&#39;</span>
+</pre></div>
+</div>
+</div>
+<p>2) Here’s an approach to convert a string to a string of equivalent
+bytes in hex and back to the string.</p>
+<div class="literal-block-wrapper docutils container" id="id16">
+<div class="code-block-caption"><span class="caption-text">Convert string to hex and back to string</span><a class="headerlink" href="#id16" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">string</span> <span class="o">=</span> <span class="s1">&#39;test&#39;</span>
+<span class="linenos">2</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">string_as_bytes</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+<span class="linenos">3</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">string_as_bytes</span>
+<span class="linenos">4</span> <span class="sa">b</span><span class="s1">&#39;test&#39;</span>
+<span class="linenos">5</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">string_as_bytes</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span>
+<span class="linenos">6</span> <span class="s1">&#39;74657374&#39;</span>
+<span class="linenos">7</span> <span class="o">&gt;&gt;&gt;</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">string_as_hex</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ASCII&#39;</span><span class="p">)</span>
+<span class="linenos">8</span> <span class="s1">&#39;test&#39;</span>
+</pre></div>
+</div>
+</div>
+<p>3) Here’s an approach to convert a returned bytes value to its
+base 10 integer.</p>
+<div class="literal-block-wrapper docutils container" id="id17">
+<div class="code-block-caption"><span class="caption-text">Convert returned bytes value to an integer</span><a class="headerlink" href="#id17" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos">2</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00\x00</span><span class="s1">09&#39;</span>
+<span class="linenos">3</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span>   <span class="c1"># just to show the use of hex</span>
+<span class="linenos">4</span> <span class="s1">&#39;00003039&#39;</span>
+<span class="linenos">5</span> <span class="o">&gt;&gt;&gt;</span> <span class="nb">int</span><span class="p">(</span><span class="s1">&#39;0x&#39;</span> <span class="o">+</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hex</span><span class="p">(),</span> <span class="n">base</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>  <span class="c1"># convert to integer</span>
+<span class="linenos">6</span> <span class="mi">12345</span>
+</pre></div>
+</div>
+</div>
+<p>4) If you need to compare the returned value for a fixed byte array,
+here’s one approach to add the trailing nulls.
+This might come in handy, for example, when testing an event
+arg of a bytes value.</p>
+<div class="literal-block-wrapper docutils container" id="id18">
+<div class="code-block-caption"><span class="caption-text">Append nulls to match fixed byte array length</span><a class="headerlink" href="#id18" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">string</span> <span class="o">=</span> <span class="s1">&#39;abc&#39;</span>
+<span class="linenos">2</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">string_as_bytes</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+<span class="linenos">3</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">string_as_bytes</span>
+<span class="linenos">4</span> <span class="sa">b</span><span class="s1">&#39;abc&#39;</span>
+<span class="linenos">5</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">string_as_bytes32</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">string_as_bytes</span><span class="p">)</span> <span class="o">+</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">32</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">string_as_bytes</span><span class="p">))</span>
+<span class="linenos">6</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">string_as_bytes32</span>
+<span class="linenos">7</span> <span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;abc</span><span class="se">\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<img alt="_images/section_separator.png" src="_images/section_separator.png" />
+</section>
+</section>
 <section id="transaction-results">
 <h2>Transaction results<a class="headerlink" href="#transaction-results" title="Permalink to this headline"></a></h2>
 <p><a class="reference internal" href="simpleth.html#simpleth.Results" title="simpleth.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">simpleth.Results</span></code></a> can be used after a transaction completes
 to see the details about it.</p>
-<div class="literal-block-wrapper docutils container" id="id9">
-<div class="code-block-caption"><span class="caption-text">Get the results of a transaction</span><a class="headerlink" href="#id9" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id19">
+<div class="code-block-caption"><span class="caption-text">Get the results of a transaction</span><a class="headerlink" href="#id19" title="Permalink to this code"></a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Results</span>
 <span class="linenos"> 2</span><span class="gp">&gt;&gt;&gt; </span><span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">42</span><span class="p">)</span>
 <span class="linenos"> 3</span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">Results</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">receipt</span><span class="p">)</span>
@@ -751,8 +1025,8 @@ of Ether, in <cite>wei</cite> , from one address to another.</p></li>
 <code class="docutils literal notranslate"><span class="pre">value_wei</span></code> which will send the specified amount of Ether,
 in <cite>wei</cite> , to the transaction.</p></li>
 </ol>
-<div class="literal-block-wrapper docutils container" id="id10">
-<div class="code-block-caption"><span class="caption-text">Methods and properties to handle ether</span><a class="headerlink" href="#id10" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id20">
+<div class="code-block-caption"><span class="caption-text">Methods and properties to handle ether</span><a class="headerlink" href="#id20" title="Permalink to this code"></a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span>    <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Convert</span>
 <span class="linenos">  2</span>    <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="n">Convert</span><span class="p">()</span>
 <span class="linenos">  3</span>    <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="o">.</span><span class="n">denominations_to_wei</span><span class="p">()[</span><span class="s1">&#39;szabo&#39;</span><span class="p">]</span>
@@ -1396,8 +1670,8 @@ epoch time:</p>
 <li><p><a class="reference internal" href="simpleth.html#simpleth.Convert.to_local_time_string" title="simpleth.Convert.to_local_time_string"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simpleth.Convert.to_local_time_string()</span></code></a> converts epoch seconds to a
 time string.</p></li>
 </ol>
-<div class="literal-block-wrapper docutils container" id="id11">
-<div class="code-block-caption"><span class="caption-text">Handling time</span><a class="headerlink" href="#id11" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id21">
+<div class="code-block-caption"><span class="caption-text">Handling time</span><a class="headerlink" href="#id21" title="Permalink to this code"></a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="o">.</span><span class="n">local_time_string</span><span class="p">()</span>
 <span class="linenos"> 2</span> <span class="s1">&#39;2022-05-21 18:03:41&#39;</span>
 <span class="linenos"> 3</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="o">.</span><span class="n">local_time_string</span><span class="p">(</span><span class="s1">&#39;%A %I:%M:%S %p&#39;</span><span class="p">)</span>
@@ -1453,8 +1727,8 @@ for details on directives available for the strings.</p>
 <code class="docutils literal notranslate"><span class="pre">simpleth</span></code> classes. The intent is to let you code to catch this
 single exception to simplify error-handling and provide hints to
 quickly identify the cause of the error.</p>
-<div class="literal-block-wrapper docutils container" id="id12">
-<div class="code-block-caption"><span class="caption-text">Getting a SimplethError in the Python interpreter</span><a class="headerlink" href="#id12" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id22">
+<div class="code-block-caption"><span class="caption-text">Getting a SimplethError in the Python interpreter</span><a class="headerlink" href="#id22" title="Permalink to this code"></a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Contract</span><span class="p">(</span><span class="s1">&#39;bogus&#39;</span><span class="p">)</span>
 <span class="linenos"> 2</span> <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
 <span class="linenos"> 3</span>   <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
@@ -1479,8 +1753,8 @@ typical type of message you will see when using the Python interpreter.</p></li>
 on possible causes.</p></li>
 </ul>
 </div>
-<div class="literal-block-wrapper docutils container" id="id13">
-<div class="code-block-caption"><span class="caption-text">Handling a SimplethError</span><a class="headerlink" href="#id13" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id23">
+<div class="code-block-caption"><span class="caption-text">Handling a SimplethError</span><a class="headerlink" href="#id23" title="Permalink to this code"></a></div>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="go"> &gt;&gt;&gt; try:</span>
 <span class="linenos"> 2</span><span class="go"> ...     c = Contract(&#39;bogus&#39;)</span>
 <span class="linenos"> 3</span><span class="go"> ... except SimplethError as e:</span>
@@ -1503,8 +1777,8 @@ on possible causes.</p></li>
 A program could take action to fix the problem at this point.</p></li>
 </ul>
 </div>
-<div class="literal-block-wrapper docutils container" id="id14">
-<div class="code-block-caption"><span class="caption-text">Properties of a SimplethError</span><a class="headerlink" href="#id14" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id24">
+<div class="code-block-caption"><span class="caption-text">Properties of a SimplethError</span><a class="headerlink" href="#id24" title="Permalink to this code"></a></div>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="go"> &gt;&gt;&gt; import pprint</span>
 <span class="linenos"> 2</span><span class="go"> &gt;&gt;&gt; pp = pprint.PrettyPrinter(indent = 2)</span>
 <span class="linenos"> 3</span><span class="go"> &gt;&gt;&gt; try:</span>
@@ -1599,8 +1873,8 @@ exceptions for your code to handle.</p>
 exception thrown by an out of bounds index value looks like in the
 Python interpreter and how it might look in your code with a
 <code class="docutils literal notranslate"><span class="pre">try</span></code> / <code class="docutils literal notranslate"><span class="pre">except</span></code>:</p>
-<div class="literal-block-wrapper docutils container" id="id15">
-<div class="code-block-caption"><span class="caption-text">Handling transaction error exceptions</span><a class="headerlink" href="#id15" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id25">
+<div class="code-block-caption"><span class="caption-text">Handling transaction error exceptions</span><a class="headerlink" href="#id25" title="Permalink to this code"></a></div>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="go"> &gt;&gt;&gt; c.run_trx(user, &#39;storeNum&#39;, 4, 42)</span>
 <span class="linenos"> 2</span><span class="go"> Traceback (most recent call last):</span>
 <span class="linenos"> 3</span><span class="go">   File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
@@ -1691,8 +1965,8 @@ contract. The transaction, <code class="docutils literal notranslate"><span clas
 for the <code class="docutils literal notranslate"><span class="pre">owner</span></code> of the contract to be the address that sent the transaction,
 i.e., the owner is the only one allowed to use this transaction. The
 <code class="docutils literal notranslate"><span class="pre">require()</span></code> has a message that explains the problem.</p>
-<div class="literal-block-wrapper docutils container" id="id16">
-<div class="code-block-caption"><span class="caption-text">Handling transaction thrown exceptions - require and its message</span><a class="headerlink" href="#id16" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id26">
+<div class="code-block-caption"><span class="caption-text">Handling transaction thrown exceptions - require and its message</span><a class="headerlink" href="#id26" title="Permalink to this code"></a></div>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="go"> &gt;&gt;&gt; c.run_trx(user, &#39;sumTwoNums&#39;)</span>
 <span class="linenos"> 2</span><span class="go"> Traceback (most recent call last):</span>
 <span class="linenos"> 3</span><span class="go">   File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
@@ -1746,8 +2020,8 @@ that is guarded by a modifier <code class="docutils literal notranslate"><span c
 <code class="docutils literal notranslate"><span class="pre">require()</span></code>. This example is included because modifiers are very common
 and you’ll see they act just like the previous example of a failed
 <code class="docutils literal notranslate"><span class="pre">require()</span></code></p>
-<div class="literal-block-wrapper docutils container" id="id17">
-<div class="code-block-caption"><span class="caption-text">Handling transaction thrown exceptions - modifier with message</span><a class="headerlink" href="#id17" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id27">
+<div class="code-block-caption"><span class="caption-text">Handling transaction thrown exceptions - modifier with message</span><a class="headerlink" href="#id27" title="Permalink to this code"></a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span> <span class="o">&gt;&gt;&gt;</span> <span class="k">try</span><span class="p">:</span>
 <span class="linenos">2</span> <span class="o">...</span>     <span class="n">c</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;setOwner&#39;</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
 <span class="linenos">3</span> <span class="o">...</span> <span class="k">except</span> <span class="n">SimplethError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -1771,8 +2045,8 @@ account does not own <code class="docutils literal notranslate"><span class="pre
 <p>This example shows a failed <code class="docutils literal notranslate"><span class="pre">assert()</span></code>. There is no message associated
 with an assert. If the test fails, the transaction is reverted and a Python
 <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> is thrown.</p>
-<div class="literal-block-wrapper docutils container" id="id18">
-<div class="code-block-caption"><span class="caption-text">Handling transaction thrown exceptions - assert</span><a class="headerlink" href="#id18" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id28">
+<div class="code-block-caption"><span class="caption-text">Handling transaction thrown exceptions - assert</span><a class="headerlink" href="#id28" title="Permalink to this code"></a></div>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="go"> &gt;&gt;&gt; c.run_trx(user, &#39;assertGreaterThan10&#39;, 9)</span>
 <span class="linenos"> 2</span><span class="go"> Traceback (most recent call last):</span>
 <span class="linenos"> 3</span><span class="go">   File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
@@ -1826,8 +2100,8 @@ pass back to our user.</p></li>
 statement. <code class="docutils literal notranslate"><span class="pre">Test</span></code> has a transaction, <code class="docutils literal notranslate"><span class="pre">revertTransaction</span></code> with only
 one statement, a <code class="docutils literal notranslate"><span class="pre">revert()</span></code>. A <code class="docutils literal notranslate"><span class="pre">revert()</span></code> can have a message. We’ll
 look for it in the same manner we did for <code class="docutils literal notranslate"><span class="pre">require()</span></code>:</p>
-<div class="literal-block-wrapper docutils container" id="id19">
-<div class="code-block-caption"><span class="caption-text">Handling transaction thrown exceptions - revert with message</span><a class="headerlink" href="#id19" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id29">
+<div class="code-block-caption"><span class="caption-text">Handling transaction thrown exceptions - revert with message</span><a class="headerlink" href="#id29" title="Permalink to this code"></a></div>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="go"> &gt;&gt;&gt; c.run_trx(user, &#39;revertTransaction&#39;)</span>
 <span class="linenos"> 2</span><span class="go"> Traceback (most recent call last):</span>
 <span class="linenos"> 3</span><span class="go">   File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
@@ -1881,8 +2155,8 @@ The <code class="docutils literal notranslate"><span class="pre">Test</span></co
 which issues <code class="docutils literal notranslate"><span class="pre">selfdestruct</span></code> and makes the contract unusable. As far as
 <code class="docutils literal notranslate"><span class="pre">simpleth</span></code> goes this is just another transaction, but it makes for
 an interesting example:</p>
-<div class="literal-block-wrapper docutils container" id="id20">
-<div class="code-block-caption"><span class="caption-text">Destroying Test with a selfdestruct</span><a class="headerlink" href="#id20" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id30">
+<div class="code-block-caption"><span class="caption-text">Destroying Test with a selfdestruct</span><a class="headerlink" href="#id30" title="Permalink to this code"></a></div>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="go">    &gt;&gt;&gt; b.balance_of(c.address)</span>
 <span class="linenos">  2</span><span class="go">    610</span>
 <span class="linenos">  3</span><span class="go">    &gt;&gt;&gt; b.balance(b.accounts[3])</span>
@@ -2204,8 +2478,8 @@ of seconds before the transaction is put into a new block on the
 chain. This allows you to, say, set a delay of ten seconds in
 order to test use of the periodic checking in <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_trx_receipt_wait()</span></code>
 or <code class="xref py py-meth docutils literal notranslate"><span class="pre">run_trx()</span></code>.</p>
-<div class="literal-block-wrapper docutils container" id="id21">
-<div class="code-block-caption"><span class="caption-text">Send transaction and get the receipt</span><a class="headerlink" href="#id21" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id31">
+<div class="code-block-caption"><span class="caption-text">Send transaction and get the receipt</span><a class="headerlink" href="#id31" title="Permalink to this code"></a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="linenos"> 1</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">trx_hash</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">submit_trx</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;storeNums&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </span><span class="hll"><span class="linenos"> 2</span> <span class="o">&gt;&gt;&gt;</span> <span class="n">receipt</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">get_trx_receipt</span><span class="p">(</span><span class="n">trx_hash</span><span class="p">)</span>
 </span><span class="linenos"> 3</span> <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">Results</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">receipt</span><span class="p">))</span>
@@ -2275,8 +2549,8 @@ and store them in the directory named in the environment variable,
 <h3>Using solc<a class="headerlink" href="#using-solc" title="Permalink to this headline"></a></h3>
 <p>Use <code class="docutils literal notranslate"><span class="pre">solc.exe</span></code> with the arguments shown below to make a contract
 ready to deploy by <code class="docutils literal notranslate"><span class="pre">simpleth</span></code>:</p>
-<div class="literal-block-wrapper docutils container" id="id22">
-<div class="code-block-caption"><span class="caption-text">Command to compile a smart contract for use by simpleth</span><a class="headerlink" href="#id22" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id32">
+<div class="code-block-caption"><span class="caption-text">Command to compile a smart contract for use by simpleth</span><a class="headerlink" href="#id32" title="Permalink to this code"></a></div>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="go">solc --abi --bin --optimize --overwrite -o &lt;ARTIFACTS_DIR&gt; &lt;CONTRACT&gt;</span>
 </pre></div>
 </div>
@@ -2294,8 +2568,8 @@ output flies.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&lt;CONTRACT&gt;</span></code> is the path to the Solidity smart contract source
 file to compile</p></li>
 </ul>
-<div class="literal-block-wrapper docutils container" id="id23">
-<div class="code-block-caption"><span class="caption-text">Example of compiling the Test.sol contract</span><a class="headerlink" href="#id23" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id33">
+<div class="code-block-caption"><span class="caption-text">Example of compiling the Test.sol contract</span><a class="headerlink" href="#id33" title="Permalink to this code"></a></div>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="gp">$ </span>solc --abi --bin --optimize --overwrite -o %SIMPLETH_ARTIFACTS_DIR% contracts<span class="se">\T</span>est.sol
 <span class="linenos">2</span><span class="go">Compiler run successful. Artifact(s) can be found in directory &quot;&lt;%SIMPLETH_ARTIFACTS_DIR%&gt;&quot;.</span>
 </pre></div>
@@ -2357,8 +2631,8 @@ below:</p>
 </tr>
 </tbody>
 </table>
-<div class="literal-block-wrapper docutils container" id="id24">
-<div class="code-block-caption"><span class="caption-text">Example of Test contract files in the artifact directory</span><a class="headerlink" href="#id24" title="Permalink to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id34">
+<div class="code-block-caption"><span class="caption-text">Example of Test contract files in the artifact directory</span><a class="headerlink" href="#id34" title="Permalink to this code"></a></div>
 <div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="gp"> $ </span><span class="nb">cd</span> %SIMPLETH_ARTIFACTS_DIR%
 <span class="linenos">2</span><span class="gp"> $ </span>dir Test.*
 <span class="linenos">3</span><span class="go"> ... snip ....</span>
