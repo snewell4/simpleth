@@ -1,3 +1,7 @@
+## 0.1.57 2022-11-05
+
+     - Add test cases for Solidity bytes data type
+
 ## 0.1.56 2022-10-26
 
      - Add revert_msg to Contract().call_fcn() error C-010-040

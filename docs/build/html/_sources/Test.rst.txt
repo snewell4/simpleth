@@ -30,6 +30,12 @@ STATE VARIABLES
 
 :testBool: used to store a boolean
 
+:testBytes: used to store a byte array
+
+:testBytes32: used to store a 32-byte value
+
+:testBytes4: used to store a four-byte value
+
 :testInt: used to store a signed integer
 
 :testStr: used to store a string
@@ -103,6 +109,20 @@ divideNums(uint256)
 :Purpose:  Divides values in nums[]. There is no test for _divisor being zero. This is used to test a transaction that fails.
 
 :Notes:  Emits NumsDivided()
+
+
+________________________________________
+
+getBytes()
+----------
+:Purpose:  Function to return the three test byte values
+
+**Returns:**
+
+:testBytes32\_: 32-byte value in testBytes32
+:testBytes4\_: four-byte value in testBytes4
+:testBytes\_: byte string in testBytes
+
 
 
 ________________________________________
@@ -197,6 +217,22 @@ setOwner(address)
 **Parameters:**
 
 :\_newOwner: address of the account to be the new owner
+
+
+
+________________________________________
+
+storeBytes(bytes4,bytes32,bytes)
+--------------------------------
+:Purpose:  Stores various byte values
+
+:Notes:  Emits BytesStored()
+
+**Parameters:**
+
+:\_testBytes: value to store in testBytes
+:\_testBytes32: value to store in testBytes32
+:\_testBytes4: value to store in testBytes4
 
 
 
@@ -354,6 +390,22 @@ sumTwoNums()
 
 EVENTS
 ^^^^^^
+BytesStored(uint256,bytes4,bytes32,bytes)
+-----------------------------------------
+:Purpose:  Emitted when new byte values are stored
+
+
+**Parameters:**
+
+:testBytes: a byte array value
+:testBytes32: a 32-byte value
+:testBytes4: a 4-byte value
+:timestamp: block time when nums were updated
+
+
+
+________________________________________
+
 Destroyed(uint256,uint256)
 --------------------------
 :Purpose:  Emitted when contract is destroyed

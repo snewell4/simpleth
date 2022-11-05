@@ -2,12 +2,32 @@
 
 import pytest
 
+
 from simpleth import Blockchain, \
     Contract, \
     Results, \
     EventSearch, \
     Convert, \
     SimplethError
+
+
+# Values for testing Solidity bytes are used in multiple test cases.
+# Easiest to define their initial values and their byte value counterparts here.
+#
+# 4 bytes integer value in little endian will be used for bytes4 arg value
+integer_for_b4 = 12345
+bytes_for_b4 = integer_for_b4.to_bytes(4, 'little')
+# 30 chars will be used for bytes32 arg value
+string_for_b32 = 'test string stored in 32 bytes'
+bytes_for_b32 = string_for_b32.encode()  # this is 30 bytes
+# Solidity will return trailing nulls to fill out to 32 bytes.
+# To compare input to returned value, add trailing nulls.
+bytes_for_b32_with_nulls = \
+    bytearray(bytes_for_b32) + \
+    bytearray(32 - len(bytes_for_b32))
+# 47 chars will be used for the bytes arg value
+string_for_bytes = 'test string stored in a Solidity bytes variable'
+bytes_for_bytes = string_for_bytes.encode()
 
 
 def test_deploy():
@@ -98,11 +118,43 @@ def test_setOwner_back_to_original():
     assert result.trx_name == 'setOwner'
 
 
+def test_storeBytes():
+    """Test trx that stores three byte values. Check event."""
+    # Variables are defined at top of module since they are shared with next
+    # test case.
+    u = Blockchain().address(0)
+    c = Contract('test')
+    c.connect()
+    c.run_trx(u, 'storeBytes', bytes_for_b4, bytes_for_b32, bytes_for_bytes)
+    e = EventSearch(c, 'BytesStored')
+    event = e.get_old()
+    assert c.get_var('testBytes4') == bytes_for_b4
+    assert int.from_bytes(c.get_var('testBytes4'), byteorder='little') == integer_for_b4
+    # Solidity returns trailing nulls to fill out to 32 bytes.
+    # Must add two trailing nulls.
+    assert c.get_var('testBytes32') == bytes_for_b32_with_nulls
+    assert c.get_var('testBytes') == bytes_for_bytes
+    assert c.get_var('testBytes').decode() == string_for_bytes
+    assert event[0]['args']['testBytes4'] == bytes_for_b4
+    assert event[0]['args']['testBytes32'] == bytes_for_b32_with_nulls
+    assert event[0]['args']['testBytes'] == bytes_for_bytes
+
+
+def test_getBytes():
+    """Test fcn that returns three byte values."""
+    c = Contract('test')
+    c.connect()
+    bytes_data = c.call_fcn('getBytes')
+    assert bytes_data[0] == bytes_for_b4
+    assert bytes_data[1] == bytes_for_b32_with_nulls
+    assert bytes_data[2] == bytes_for_bytes
+
+
 def test_storeNum():
     """Test trx that stores one number into nums array."""
     new_num = 100
     nums_index = 0
-    u = Blockchain().address(0)  # btw, this account is no longer owner
+    u = Blockchain().address(0)
     c = Contract('test')
     c.connect()
     c.run_trx(u, 'storeNum', nums_index, new_num)

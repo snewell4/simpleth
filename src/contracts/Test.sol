@@ -43,6 +43,15 @@ contract Test {
     /// @dev used to store a boolean
     bool public testBool;
 
+    /// @dev used to store a four-byte value
+    bytes4 public testBytes4;
+
+    /// @dev used to store a 32-byte value
+    bytes32 public testBytes32;
+
+    /// @dev used to store a byte array
+    bytes public testBytes;
+
     /// @dev used to store a signed integer
     int public testInt;
 
@@ -51,6 +60,22 @@ contract Test {
 
     /// @dev used to store an unsigned integer
     uint public testUint;
+
+
+    /**
+     * @notice Emitted when new byte values are stored
+     *
+     * @param timestamp block time when nums were updated
+     * @param testBytes4 a 4-byte value
+     * @param testBytes32 a 32-byte value
+     * @param testBytes a byte array value
+     */
+    event BytesStored(
+        uint timestamp,
+        bytes4 testBytes4,
+        bytes32 testBytes32,
+        bytes testBytes
+    );
 
     /**
      * @notice Emitted when contract is destroyed
@@ -397,6 +422,25 @@ contract Test {
     }
 
     /**
+     * @notice Function to return the three test byte values
+     *
+     * @return testBytes4_ four-byte value in testBytes4
+     * @return testBytes32_ 32-byte value in testBytes32
+     * @return testBytes_ byte string in testBytes
+     */
+    function getBytes()
+        public
+        view
+        returns(
+            bytes4 testBytes4_,
+            bytes32 testBytes32_,
+            bytes memory testBytes_
+        )
+    {
+        return (testBytes4, testBytes32, testBytes);
+    }
+
+    /**
      * @notice Function to return nums[index]
      *
      * @param index specifies the nums[] entry to return
@@ -502,6 +546,33 @@ contract Test {
         emit OwnerSet(
             block.timestamp,
             _newOwner
+        );
+    }
+
+    /**
+     * @notice Stores various byte values
+     *
+     * @dev Emits BytesStored()
+     *
+     * @param _testBytes4 value to store in testBytes4
+     * @param _testBytes32 value to store in testBytes32
+     * @param _testBytes value to store in testBytes
+     */
+    function storeBytes(
+            bytes4 _testBytes4,
+            bytes32 _testBytes32,
+            bytes memory _testBytes
+        )
+        public
+    {
+        testBytes4 = _testBytes4;
+        testBytes32 = _testBytes32;
+        testBytes = _testBytes;
+        emit BytesStored(
+            block.timestamp,
+            testBytes4,
+            testBytes32,
+            testBytes
         );
     }
 
