@@ -1512,8 +1512,11 @@ this is the wrong arg type - it is not `bytes4`.
   :caption: Exception when attempting to store eight bytes into four
   :linenos:
 
+   >>> from simpleth import SimplethError
    >>> string = 'testtest'
    >>> eight_bytes = string.encode()
+   >>> eight_bytes
+   b'testtest'
    >>> try:
    ...     t.run_trx(user, 'storeBytes', eight_bytes, eight_bytes, eight_bytes)
    ... except SimplethError as excp:
@@ -1522,6 +1525,12 @@ this is the wrong arg type - it is not `bytes4`.
    ERROR in Test().submit_trx(storeBytes): Wrong number or type of args"".
    HINT1: Check parameter definition(s) for the transaction in the contract.
    HINT2: Check run_trx() optional parameter types.
+   HINT3: For bytesN parameter, check you do not pass more than N bytes. 
+
+It's OK to pass an arg with fewer bytes than the fixed byte array size, an
+earlier example uses a 3-byte arg for a `bytes4` value. The trailing bytes
+will be set to null. But, as shown here, you are not allowed to pass too
+any bytes.
 
 More fun with hex values
 """"""""""""""""""""""""
@@ -1566,6 +1575,7 @@ More fun with hex values
    12345
 
 **4) byte string -> byte string padded with trailing nulls**
+
 If you need to compare the returned value for a fixed byte array,
 here's one approach to add the trailing nulls.
 Example makes it match a `bytes32`.

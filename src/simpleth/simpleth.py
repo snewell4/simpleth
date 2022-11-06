@@ -2162,6 +2162,8 @@ class Contract:
                 f'HINT1: Check parameter definition(s) for the transaction in '
                 f'the contract.\n'
                 f'HINT2: Check run_trx() optional parameter types.\n'
+                f'HINT3: For bytesN parameter, check you do not pass more '
+                f'than N bytes.\n'
                 )
             raise SimplethError(message, code='C-080-020') from None
         except self._web3e.BadFunctionCallOutput:
