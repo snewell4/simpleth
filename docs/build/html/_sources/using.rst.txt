@@ -1500,6 +1500,42 @@ from all three variables.
    >>> t.call_fcn('getBytes')
    [b'\xaa\xaa\xbb\xbb', b'\xaa\xaa\xbb\xbb\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', b'\xaa\xaa\xbb\xbb']
 
+Using a Python bytearray as an arg
+""""""""""""""""""""""""""""""""""
+When passing a value as an argument for a Solidity `byte` parameter you
+can use a Python `bytearray`.
+The example below passes byte arrays to both the fixed and variable byte
+args.
+A three-byte `bytearray` is passed to the two `byteN` parameters.
+A longer `bytearray` is passed to the `bytes` parameter.
+
+.. code-block:: python
+  :caption: Use bytearray as args
+  :linenos:
+
+   >>> short_string = 'abc'
+   >>> short_string_bytes = string.encode()
+   >>> short_string_bytes
+   b'abc'
+   >>> short_string_bytearray = bytearray(short_string_bytes)
+   >>> short_string_bytearray
+   bytearray(b'abc')
+   >>> long_string = 'Life, the universe, and everything'
+   >>> long_string_bytes = long_string.encode()
+   >>> long_string_bytes
+   b'Life, the universe, and everything'
+   >>> long_string_bytearray = bytearray(long_string_bytes)
+   >>> long_string_bytearray
+   bytearray(b'Life, the universe, and everything')
+   >>> trx_receipt = t.run_trx(user, 'storeBytes', short_string_bytearray, short_string_bytearray, long_string_bytearray)
+   >>> t.call_fcn('getBytes')
+   [b'abc\x00', b'abc\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', b'Life, the universe, and everything']'
+
+The choice of using a Python byte string versus a bytearray is up to the
+needs of your Python code.
+The bytearray allows more manipulation; it is mutable.
+The byte object is immutable.
+
 Exception if arg has too many bytes
 """""""""""""""""""""""""""""""""""
 If you attempt to pass an arg with more bytes than the Solidity size
