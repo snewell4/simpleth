@@ -594,283 +594,6 @@ only once. If the dictionary repeats a key, only the last one is used.
    - Line 52: As expected. when we check for a new transaction it is
      returned.
 
-
-.. image:: ../images/section_separator.png
-
-Handling bytes
-**************
-Passing values for transaction arguments with the Solidity data type of
-`bytes` requires an understanding of how a smart contract stores
-and returns those values plus Python functions to create and
-use the values.
-
-We will be using the `bytes` variables along with their getter,
-setter, and event in `Test.sol`.
-This code allows testing of two fixed-size arrays of bytes,
-one of four-bytes and the other of 32-bytes, along with one dynamic
-array of bytes.
-
-Solidity uses big endian format for storing bytes and characters are
-encoded using the unicode standard, `utf-8`.
-This will influence parameters used in a few of the Python functions.
-
-.. code-block::
-  :caption: Test.sol bytes-related code
-  :linenos:
-
-   bytes4 public testBytes4;
-   bytes32 public testBytes32;
-   bytes public testBytes;
-
-   function getBytes()
-       public
-       view
-       returns(
-           bytes4 testBytes4_,
-           bytes32 testBytes32_,
-           bytes memory testBytes_
-       )
-   {
-       return (testBytes4, testBytes32, testBytes);
-   }
-
-   function storeBytes(
-           bytes4 _testBytes4,
-           bytes32 _testBytes32,
-           bytes memory _testBytes
-       )
-       public
-   {
-       testBytes4 = _testBytes4;
-       testBytes32 = _testBytes32;
-       testBytes = _testBytes;
-       emit BytesStored(
-           block.timestamp,
-           testBytes4,
-           testBytes32,
-           testBytes
-       );
-   }
-
-Initial null value
-""""""""""""""""""
-The three `bytes` public state variables are not given an initial value
-in the contract.
-Use `getBytes()` to return them.
-The `bytes4` variable is set to four null bytes.
-The `bytes32` vairable is set to 32 null bytes.
-The `bytes` variable is set to an empty array.
-Python shows them as byte strings.
-
-.. code-block:: python
-  :caption: Get initial values
-  :linenos:
-
-    >>> from simpleth import Contract, Blockchain
-    >>> t = Contract('Test')
-    >>> t.connect()
-    '0x16db9563B047A1535629389ED5AA4a3494B753a7'
-    >>> t.call_fcn('getBytes')
-    [b'\x00\x00\x00\x00', b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', b'']
-    >>>
-
-Set a character value
-"""""""""""""""""""""
-The example below will store the characters, 'a', 'b', and 'c' as three
-bytes in the four-byte, 32-byte, and byte array variables.
-Python's method, `encode()`, will create the array of bytes that is
-passed as args to `storeBytes()`.
-`encode()` uses `utf-8` as the default encoding.
-
-The call to `getBytes()` returns the three Solidiity variable values.
-The two fixed byte array variables are null-padded to fill out the
-length of the byte array.
-These are the bytes with values of `x\00`.
-The dynamic byte array variable does not have any padding.
-
-To convert the Python byte arrays to a string, use the `decode()` method.
-The resulting string will have the null padding at the end.
-One approach, using `split()`, is shown to remove those nulls.
-
-.. code-block:: python
-  :caption: Set Solidity bytes with a string of characters
-  :linenos:
-
-   >>> b = Blockchain()
-   >>> user = b.address(4)
-   >>> string = 'abc'
-   >>> string_as_bytes = string.encode()
-   >>> trx_receipt = t.run_trx(user, 'storeBytes', string_as_bytes, string_as_bytes, string_as_bytes)
-   >>> values = t.call_fcn('getBytes')
-   >>> values
-   [b'abc\x00', b'abc\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', b'abc']
-   >>> values[1].decode()
-   'abc\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-   >>> values[1].decode().split('\x00',1)[0]
-   'abc'
-
-Set an integer value
-""""""""""""""""""""
-If you need to store an integer value in a bytes data, use Python's
-`to_bytes()` method to create the byte string and pass that as
-an argument to Solidity.
-You must specify the number of bytes to hold the integer.
-Null bytes will be prepended to fill out the fixed byte array.
-For a dynamic byte array, if you wish to have the smallest array size,
-specify the number of bytes that will hold the binary value for the
-integer.
-You will also specify big endian format.
-
-The example below creates three different values to use as the args
-for `storeBytes()`, each is a different size.
-After storing the bytes, the value for the public state variable,
-`testBytes4` is shown.
-Next a call to `getBytes()` returns the values.
-Python's `from_bytes()` method is used to convert each of the returned
-values back to the original integer.
-
-Finally, if you are storing a negative integer, the same approach
-is used but you must add another arg to indicate this integer is signed.
-The example only shows converting a negative integer to a byte string
-and back.
-
-.. code-block:: python
-  :caption: Set Solidity bytes with an integer value
-  :linenos:
-
-
-   >>> integer = 12345
-   >>> integer_as_4bytes = integer.to_bytes(4, 'big')
-   >>> integer_as_32bytes = integer.to_bytes(32, 'big')
-   >>> integer_as_byte_array = integer.to_bytes(2, 'big')
-   >>> trx_receipt = t.run_trx(user, 'storeBytes', integer_as_4bytes, integer_as_32bytes, integer_as_byte_array)
-   >>> t.get_var('testBytes4')
-   b'\x00\x0009'
-   >>> values = t.call_fcn('getBytes')
-   >>> values
-   [b'\x00\x0009', b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0009', b'09']
-   >>> int.from_bytes(values[0], byteorder='big')
-   12345
-   >>> int.from_bytes(values[1], byteorder='big')
-   12345
-   >>> int.from_bytes(values[2], byteorder='big')
-   12345
-   >>>
-   >>> neg_integer = -42
-   >>> bytes = neg_integer.to_bytes(4, 'big', signed=True)
-   >>> bytes
-   b'\xff\xff\xff\xd6'
-   >>> int.from_bytes(bytes, 'big', signed=True)
-   -42
-
-Set a hex value
-"""""""""""""""
-If you need to store a string of hex characters, you can use the
-`fromhex()` method to place the hex equivalent in a Python byte
-string and use that as an arg to a Solidity transaction.
-The example below creates a four bytes from eight hex characters
-and stores into the three different bytes variables.
-The example finishes by getting the four-byte public state variable value
-holding the eight hex characters as well as the returned values
-from all three variables.
-
-.. code-block:: python
-  :caption: Store eight hex characters as four bytes
-  :linenos:
-
-   >>> hex_string = 'AAAABBBB'
-   >>> hex_string_as_bytes = bytes.fromhex(hex_string)
-   >>> trx_receipt = t.run_trx(user, 'storeBytes', hex_string_as_bytes, hex_string_as_bytes, hex_string_as_bytes)
-   >>> t.get_var('testBytes4')
-   b'\xaa\xaa\xbb\xbb'
-   >>> t.call_fcn('getBytes')
-   [b'\xaa\xaa\xbb\xbb', b'\xaa\xaa\xbb\xbb\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', b'\xaa\xaa\xbb\xbb']
-   
-Exception if arg has too many bytes
-"""""""""""""""""""""""""""""""""""
-If you attempt to pass an arg with more bytes than the Solidity size
-of a fixed array byte variable, the transaction will revert.
-The example below uses :class:`SimplethError` to catch the exception
-thrown when an eight-byte value is passed to the four-byte arg;
-this is the wrong arg type - it is not `bytes4`.
-
-.. code-block:: python
-  :caption: Exception when attempting to store eight bytes into four
-  :linenos:
-
-   >>> string = 'testtest'
-   >>> eight_bytes = string.encode()
-   >>> try:
-   ...     t.run_trx(user, 'storeBytes', eight_bytes, eight_bytes, eight_bytes)
-   ... except SimplethError as excp:
-   ...     print(excp.message)
-   ...
-   ERROR in Test().submit_trx(storeBytes): Wrong number or type of args"".
-   HINT1: Check parameter definition(s) for the transaction in the contract.
-   HINT2: Check run_trx() optional parameter types.
-
-More fun with hex values
-""""""""""""""""""""""""
-1) Here's an approach to take a string of hex, create a byte string
-with those hex values, and then convert it back to the hex string.
-
-.. code-block:: python
-  :caption: Convert string of hex to a Python byte string and back
-  :linenos:
-
-   >>> hex_string = 'AB1D'
-   >>> bytes.fromhex(hex_string)
-   b'\xab\x1d'
-   >>> bytes.fromhex(hex_string).hex()
-   'ab1d'
-
-2) Here's an approach to convert a string to a string of equivalent
-bytes in hex and back to the string.
-
-.. code-block:: python
-  :caption: Convert string to hex and back to string
-  :linenos:
-
-   >>> string = 'test'
-   >>> string_as_bytes = string.encode()
-   >>> string_as_bytes
-   b'test'
-   >>> string_as_bytes.hex()
-   '74657374'
-   >>> bytes.fromhex(string_as_hex).decode('ASCII')
-   'test'
-
-3) Here's an approach to convert a returned bytes value to its
-base 10 integer.
-
-.. code-block:: python
-  :caption: Convert returned bytes value to an integer
-  :linenos:
-
-   >>> values[0]
-   b'\x00\x0009'
-   >>> values[0].hex()   # just to show the use of hex
-   '00003039'
-   >>> int('0x' + values[0].hex(), base=16)  # convert to integer
-   12345
-
-4) If you need to compare the returned value for a fixed byte array,
-here's one approach to add the trailing nulls.
-This might come in handy, for example, when testing an event
-arg of a bytes value.
-
-.. code-block:: python
-  :caption: Append nulls to match fixed byte array length
-  :linenos:
-
-   >>> string = 'abc'
-   >>> string_as_bytes = string.encode()
-   >>> string_as_bytes
-   b'abc'
-   >>> string_as_bytes32 = bytearray(string_as_bytes) + bytearray(32 - len(string_as_bytes))
-   >>> string_as_bytes32
-   bytearray(b'abc\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
-
 .. image:: ../images/section_separator.png
 
 Transaction results
@@ -1588,6 +1311,280 @@ Handling Ether
 
 .. image:: ../images/section_separator.png
 
+Handling bytes
+**************
+Passing values for transaction arguments with the Solidity data type of
+`bytes` requires an understanding of how a smart contract stores
+and returns those values plus Python functions to create and
+use the values.
+
+We will be using the `bytes` variables along with their getter,
+setter, and event in `Test.sol`.
+This code allows testing of two fixed-size arrays of bytes,
+one of four-bytes and the other of 32-bytes, along with one dynamic
+array of bytes.
+
+Solidity uses big endian format for storing bytes and characters are
+encoded using the unicode standard, `utf-8`.
+This will influence parameters used in a few of the Python functions.
+
+.. code-block::
+  :caption: Test.sol bytes-related code
+  :linenos:
+
+   bytes4 public testBytes4;
+   bytes32 public testBytes32;
+   bytes public testBytes;
+
+   function getBytes()
+       public
+       view
+       returns(
+           bytes4 testBytes4_,
+           bytes32 testBytes32_,
+           bytes memory testBytes_
+       )
+   {
+       return (testBytes4, testBytes32, testBytes);
+   }
+
+   function storeBytes(
+           bytes4 _testBytes4,
+           bytes32 _testBytes32,
+           bytes memory _testBytes
+       )
+       public
+   {
+       testBytes4 = _testBytes4;
+       testBytes32 = _testBytes32;
+       testBytes = _testBytes;
+       emit BytesStored(
+           block.timestamp,
+           testBytes4,
+           testBytes32,
+           testBytes
+       );
+   }
+
+Initial null value
+""""""""""""""""""
+The three `bytes` public state variables are not given an initial value
+in the contract.
+Use `getBytes()` to return them.
+The `bytes4` variable is set to four null bytes.
+The `bytes32` vairable is set to 32 null bytes.
+The `bytes` variable is set to an empty array.
+Python shows them as byte strings.
+
+.. code-block:: python
+  :caption: Get initial values
+  :linenos:
+
+    >>> from simpleth import Contract, Blockchain
+    >>> t = Contract('Test')
+    >>> t.connect()
+    '0x16db9563B047A1535629389ED5AA4a3494B753a7'
+    >>> t.call_fcn('getBytes')
+    [b'\x00\x00\x00\x00', b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', b'']
+    >>>
+
+Set a character value
+"""""""""""""""""""""
+The example below will store the characters, 'a', 'b', and 'c' as three
+bytes in the four-byte, 32-byte, and byte array variables.
+Python's method, `encode()`, will create the array of bytes that is
+passed as args to `storeBytes()`.
+`encode()` uses `utf-8` as the default encoding.
+
+The call to `getBytes()` returns the three Solidiity variable values.
+The two fixed byte array variables are null-padded to fill out the
+length of the byte array.
+These are the bytes with values of `x\00`.
+The dynamic byte array variable does not have any padding.
+
+To convert the Python byte arrays to a string, use the `decode()` method.
+The resulting string will have the null padding at the end.
+One approach, using `split()`, is shown to remove those nulls.
+
+.. code-block:: python
+  :caption: Set Solidity bytes with a string of characters
+  :linenos:
+
+   >>> b = Blockchain()
+   >>> user = b.address(4)
+   >>> string = 'abc'
+   >>> string_as_bytes = string.encode()
+   >>> trx_receipt = t.run_trx(user, 'storeBytes', string_as_bytes, string_as_bytes, string_as_bytes)
+   >>> values = t.call_fcn('getBytes')
+   >>> values
+   [b'abc\x00', b'abc\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', b'abc']
+   >>> values[1].decode()
+   'abc\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+   >>> values[1].decode().split('\x00',1)[0]
+   'abc'
+
+Set an integer value
+""""""""""""""""""""
+If you need to store an integer value in a bytes data, use Python's
+`to_bytes()` method to create the byte string and pass that as
+an argument to Solidity.
+You must specify the number of bytes to hold the integer.
+Null bytes will be prepended to fill out the fixed byte array.
+For a dynamic byte array, if you wish to have the smallest array size,
+specify the number of bytes that will hold the binary value for the
+integer.
+You will also specify big endian format.
+
+The example below creates three different values to use as the args
+for `storeBytes()`, each is a different size.
+After storing the bytes, the value for the public state variable,
+`testBytes4` is shown.
+Next a call to `getBytes()` returns the values.
+Python's `from_bytes()` method is used to convert each of the returned
+values back to the original integer.
+
+Finally, if you are storing a negative integer, the same approach
+is used but you must add another arg to indicate this integer is signed.
+The example only shows converting a negative integer to a byte string
+and back.
+
+.. code-block:: python
+  :caption: Set Solidity bytes with an integer value
+  :linenos:
+
+
+   >>> integer = 12345
+   >>> integer_as_4bytes = integer.to_bytes(4, 'big')
+   >>> integer_as_32bytes = integer.to_bytes(32, 'big')
+   >>> integer_as_byte_array = integer.to_bytes(2, 'big')
+   >>> trx_receipt = t.run_trx(user, 'storeBytes', integer_as_4bytes, integer_as_32bytes, integer_as_byte_array)
+   >>> t.get_var('testBytes4')
+   b'\x00\x0009'
+   >>> values = t.call_fcn('getBytes')
+   >>> values
+   [b'\x00\x0009', b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0009', b'09']
+   >>> int.from_bytes(values[0], byteorder='big')
+   12345
+   >>> int.from_bytes(values[1], byteorder='big')
+   12345
+   >>> int.from_bytes(values[2], byteorder='big')
+   12345
+   >>>
+   >>> neg_integer = -42
+   >>> bytes = neg_integer.to_bytes(4, 'big', signed=True)
+   >>> bytes
+   b'\xff\xff\xff\xd6'
+   >>> int.from_bytes(bytes, 'big', signed=True)
+   -42
+
+Set a hex value
+"""""""""""""""
+If you need to store a string of hex characters, you can use the
+`fromhex()` method to place the hex equivalent in a Python byte
+string and use that as an arg to a Solidity transaction.
+The example below creates a four bytes from eight hex characters
+and stores into the three different bytes variables.
+The example finishes by getting the four-byte public state variable value
+holding the eight hex characters as well as the returned values
+from all three variables.
+
+.. code-block:: python
+  :caption: Store eight hex characters as four bytes
+  :linenos:
+
+   >>> hex_string = 'AAAABBBB'
+   >>> hex_string_as_bytes = bytes.fromhex(hex_string)
+   >>> trx_receipt = t.run_trx(user, 'storeBytes', hex_string_as_bytes, hex_string_as_bytes, hex_string_as_bytes)
+   >>> t.get_var('testBytes4')
+   b'\xaa\xaa\xbb\xbb'
+   >>> t.call_fcn('getBytes')
+   [b'\xaa\xaa\xbb\xbb', b'\xaa\xaa\xbb\xbb\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', b'\xaa\xaa\xbb\xbb']
+
+Exception if arg has too many bytes
+"""""""""""""""""""""""""""""""""""
+If you attempt to pass an arg with more bytes than the Solidity size
+of a fixed array byte variable, the transaction will revert.
+The example below uses :class:`SimplethError` to catch the exception
+thrown when an eight-byte value is passed to the four-byte arg;
+this is the wrong arg type - it is not `bytes4`.
+
+.. code-block:: python
+  :caption: Exception when attempting to store eight bytes into four
+  :linenos:
+
+   >>> string = 'testtest'
+   >>> eight_bytes = string.encode()
+   >>> try:
+   ...     t.run_trx(user, 'storeBytes', eight_bytes, eight_bytes, eight_bytes)
+   ... except SimplethError as excp:
+   ...     print(excp.message)
+   ...
+   ERROR in Test().submit_trx(storeBytes): Wrong number or type of args"".
+   HINT1: Check parameter definition(s) for the transaction in the contract.
+   HINT2: Check run_trx() optional parameter types.
+
+More fun with hex values
+""""""""""""""""""""""""
+**1) string of hex -> byte string of hex values -> string of hex**
+
+.. code-block:: python
+  :caption: Convert string of hex to a Python byte string and back
+  :linenos:
+
+   >>> hex_string = 'AB1D'
+   >>> bytes.fromhex(hex_string)
+   b'\xab\x1d'
+   >>> bytes.fromhex(hex_string).hex()
+   'ab1d'
+
+**2) string of text -> byte string of text -> string of hex values -> string of text**
+
+.. code-block:: python
+  :caption: Convert string to hex and back to string
+  :linenos:
+
+   >>> string = 'test'
+   >>> string_as_bytes = string.encode()
+   >>> string_as_bytes
+   b'test'
+   >>> string_as_bytes.hex()
+   '74657374'
+   >>> bytes.fromhex(string_as_hex).decode('ASCII')
+   'test'
+
+**3) returned bytes -> integer**
+
+.. code-block:: python
+  :caption: Convert returned bytes value to an integer
+  :linenos:
+
+   >>> values[0]
+   b'\x00\x0009'
+   >>> values[0].hex()   # take a look at hex in the bytes
+   '00003039'
+   >>> int('0x' + values[0].hex(), base=16)  # convert to integer
+   12345
+
+**4) byte string -> byte string padded with trailing nulls**
+If you need to compare the returned value for a fixed byte array,
+here's one approach to add the trailing nulls.
+Example makes it match a `bytes32`.
+This might come in handy, for example, when testing an event
+arg of a bytes value.
+
+.. code-block:: python
+  :caption: Append nulls to match fixed byte array length
+  :linenos:
+
+   >>> string = 'abc'
+   >>> string_as_bytes = string.encode()
+   >>> string_as_bytes
+   b'abc'
+   >>> string_as_bytes32 = bytearray(string_as_bytes) + bytearray(32 - len(string_as_bytes))
+   >>> string_as_bytes32
+   bytearray(b'abc\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00')
+
+.. image:: ../images/section_separator.png
 
 Handling time
 *************
@@ -1651,8 +1648,8 @@ epoch time:
 .. image:: ../images/section_separator.png
 
 
-simpleth exceptions
-*******************
+SimplethError exceptions
+************************
 :class:`simpleth.SimplethError` throws exceptions for errors in all
 ``simpleth`` classes. The intent is to let you code to catch this
 single exception to simplify error-handling and provide hints to
@@ -1757,8 +1754,8 @@ quickly identify the cause of the error.
 
 Transaction exceptions
 **********************
-Exceptions can be thrown by the Solidity Virtual Machine (VM) that runs
-the transaction when it encounters runtime errors such as:
+Exceptions can be thrown by the Solidity Ethereum Virtual Machine (EVM)
+that runs the transaction when it encounters runtime errors such as:
 
 - divide by zero
 - out of bounds array index
@@ -1768,34 +1765,34 @@ the transaction when it encounters runtime errors such as:
 - transaction sender was not valid
 - insufficient ether in sender balance to run the transaction
 
-These **transaction error exceptions** will cause ``SimplethError``
+These **transaction error exceptions** will throw ``SimplethError``
 exceptions for your code to handle.
 
-Other exceptions can be thrown by the VM which are coded into
+Other exceptions can be thrown by the EVM which are coded into
 a transaction. A contract may be checking for conditions where
 the transaction should not be allowed to proceed and needs to
 be `reverted`. The transaction can:
 
-#. Use the Solidity operation, ``require`` , to validate a
-   condition is met. If the condition is not met, a ``revert``
+#. Use the Solidity operation, ``require()`` , to validate a
+   condition is met. If the condition is not met, a ``revert()``
    is done and an optional message string will be available
    in the ``SimplethError``
 
-   ``require`` is commonly used in a contract ``modifier`` and
+   ``require()`` is commonly used in a contract ``modifier`` and
    a frequent type of modifier is to limit access to a transaction
    to one or more specified accounts.
 
-#. Use of the Solidity operation, ``assert`` , to confirm an
+#. Use of the Solidity operation, ``assert()`` , to confirm an
    expected condition. There is no message for a failed assert.
 
-   ``assert`` is commonly used to double-check a value meets
+   ``assert()`` is commonly used to double-check a value meets
    your expectations and should never fail.
 
-#. Use of the Solidity operation, ``revert`` , will cause the
+#. Use of the Solidity operation, ``revert()`` , will cause the
    transaction to stop and exit. There is no message for a
    revert.
 
-   ``revert`` is used if conditions warrant stopping and undoing
+   ``revert()`` is used if conditions warrant stopping and undoing
    all actions by the transaction.
 
 These **transaction exceptions** will cause ``SimplethError``

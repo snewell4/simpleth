@@ -1,4 +1,8 @@
-## 0.1.58 2022-11-06
+## 0.1.59 2022-11-06
+
+     - Minor edits for readability and correctness
+
+## 0.1.58 2022-11-05
 
      - Add section to explain using bytes data and fix missing artifacts
 
