@@ -1329,10 +1329,12 @@ class Contract:
                 f'ERROR in {self.name}().call_fcn().\n'
                 f'Function "{fcn_name}" was given bad arguments.\n'
                 f'ValidationError says {exception}\n'
-                f'HINT 1: Check you specified the correct number of '
+                f'HINT1: Check you specified the correct number of '
                 f'arguments.\n'
-                f'HINT 2: Check you specified the correct types for the '
+                f'HINT2: Check you specified the correct types for the '
                 f'arguments.\n'
+                f'HINT3: You called a transaction with call_fcn() '
+                f'instead of run_trx().\n'
                 )
             raise SimplethError(message, code='C-010-020') from None
         except self._web3e.BadFunctionCallOutput as exception:
