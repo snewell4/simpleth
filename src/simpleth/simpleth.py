@@ -1364,7 +1364,7 @@ class Contract:
             raise SimplethError(
                 message,
                 code='C-010-040',
-                revert_msg=trx_revert_message
+                revert_description=trx_revert_message
                 ) from None
         return fcn_return
 
@@ -2269,7 +2269,7 @@ class Contract:
             raise SimplethError(
                 message,
                 code='C-080-080',
-                revert_msg=trx_revert_message
+                revert_description=trx_revert_message
                 ) from None
         return trx_hash
 
@@ -4067,7 +4067,7 @@ class SimplethError(Exception):
             self,
             message: str,
             code: str = '',
-            revert_msg: str = ''
+            revert_description: str = ''
             ) -> None:
         """Create error exception.
 
@@ -4076,7 +4076,7 @@ class SimplethError(Exception):
         :param code: unique identifier of this error (**optional**,
             default: `''`)
         :type code: str
-        :param revert_msg: message from a transaction assert() or
+        :param revert_description: reason from a transaction revert() or
             require() (**optional**, default: `''`)
         :type code: str
         :example:
@@ -4084,28 +4084,47 @@ class SimplethError(Exception):
             >>> try:
             ...     raise SimplethError('test')
             ... except SimplethError as e:
-            ...     print(f'{e}')
+            ...     print(e)
             ...
             test
+            >>>
             >>> try:
-            ...     raise SimplethError('test', '10')
+            ...     raise SimplethError(
+            ...         'test message',
+            ...         code='TEST-010-020',
+            ...         revert_description='Sender was not owner'
+            ...         )
             ... except SimplethError as e:
-            ...     print(f'{e}')
+            ...     print(f'e                = {e}')
+            ...     print(f'code             = {e.code}')
+            ...     print(f'revert           = {e.revert_description}')
+            ...     excp = e
             ...
-            [10] test
-            >>> from simpleth import SimplethError
-            >>> try:
-            ...     raise SimplethError('test', 'ERR-020-010')
+            e                = [TEST-010-020] test message
+            code             = TEST-010-020
+            revert           = Sender was not owner
+            >>>
+            >>> from simpleth import Blockchain, Contract
+            >>> u = Blockchain().address(0)
+            >>> t=Contract('Test')
+            >>> t.connect()      #doctest: +SKIP
+            '0x02051679af2Bd7A276085212fcBe98ebeF747FDb'
+            >>> try:             #doctest: +SKIP
+            ...     t.run_trx(u, 'throwRevertWithMessage', 'Sender was not owner')
             ... except SimplethError as e:
-            ...     print(f'e = {e}')
-            ...     print(f'code = {e.code}')
-            ...     print(f'message = {e.message}')
-            ...     print(f'exc_info = {e.exc_info}')
+            ...     print(f'e     = {e}')
+            ...     print(f'code  = {e.code}')
+            ...     print(f'revert_description = {e.revert_description}')
+            ...     excp = e
             ...
-            e = [ERR-020-010] test
-            code = ERR-020-010
-            message = test
-            exc_info = (None, None, None)
+            e     = [C-080-080] ERROR in Test().submit_trx(throwRevertWithMessage).
+            ValueError says: VM Exception while processing transaction: revert Sender was not owner
+            HINT1:  Did you fail to pass a transaction require()?
+            ...snip...
+            code  = C-080-080
+            revert_description = Sender was not owner
+            >>> excp.exc_info       #doctest: +SKIP
+            (<class 'ValueError'>, ValueError({'message': 'VM Exception ...snip....
 
         .. note::
            -  ``code`` can serve several purposes:
@@ -4147,9 +4166,9 @@ class SimplethError(Exception):
         info: (`type`, `value`, `traceback`)"""
         self.message: str = message
         """Exception instance variable with ``message``"""
-        self.revert_msg: str = revert_msg
-        """Exception instance variable with ``assert()`` or
-        ``require()`` message from transaction"""
+        self.revert_description: str = revert_description
+        """Exception instance variable with ``revert()`` or
+        ``require()`` reason from transaction"""
 
         if code:
             self.code = code

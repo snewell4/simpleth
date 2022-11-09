@@ -1859,6 +1859,104 @@ Python interpreter and how it might look in your code with a
       File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 1838, in run_trx
         trx_hash: T_HASH = self.submit_trx(
       File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 2128, in submit_trx
+              f'HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n'
+          simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(storeNum).
+          ValueError says: VM Exception while processing transaction: revert
+          HINT1:  Did you fail to pass a transaction require()?
+          HINT2:  Did you fail to pass a transaction guard modifier()?
+          HINT3:  Did you fail an assert()?
+          HINT4:  Did the transaction do a revert()?
+          HINT5:  Did you divide by zero?
+          HINT6:  Did you pass in an out-of-bounds array index?
+          HINT7:  Did you pass in an out-of-range enum value?
+          HINT8:  Was the gas limit too low (less than the base fee)?
+          HINT9:  Was the gas limit too high (greater than the block gas limit)?
+          HINT10: Was max_fee_gwei a float? (It must be an int)
+          HINT11: Was max_priority_fee_gwei a float? (It must be an int)
+          HINT12: Did this trx call another trx, which failed?
+          HINT13: Did you attempt to send ether to a non-payable trx?
+          HINT14: Was sender a valid account that can submit a trx?
+          HINT15: Does sender have enough Ether to run trx?
+
+          >>> try:
+          ...     c.run_trx(user, 'storeNum', 4, 42)
+          ... except SimplethError as e:
+          ...     print(e.code)
+          ...     print(e.message)
+          ...     print(e.revert_description)
+          ...     pp.pprint(e.exc_info)
+          ...
+          C-080-080
+          ERROR in Test().submit_trx(storeNum).
+          ValueError says: VM Exception while processing transaction: revert
+          HINT1:  Did you fail to pass a transaction require()?
+          HINT2:  Did you fail to pass a transaction guard modifier()?
+          HINT3:  Did you fail an assert()?
+          HINT4:  Did the transaction do a revert()?
+          HINT5:  Did you divide by zero?
+          HINT6:  Did you pass in an out-of-bounds array index?
+          HINT7:  Did you pass in an out-of-range enum value?
+          HINT8:  Was the gas limit too low (less than the base fee)?
+          HINT9:  Was the gas limit too high (greater than the block gas limit)?
+          HINT10: Was max_fee_gwei a float? (It must be an int)
+          HINT11: Was max_priority_fee_gwei a float? (It must be an int)
+          HINT12: Did this trx call another trx, which failed?
+          HINT13: Did you attempt to send ether to a non-payable trx?
+          HINT14: Was sender a valid account that can submit a trx?
+          HINT15: Does sender have enough Ether to run trx?
+
+
+          ( <class 'ValueError'>,
+            ValueError({'message': 'VM Exception while processing transaction: revert', 'code': -32000, 'data': {'0x6f829f521ebd6bf7ab34feea51bb4c18b82c663229004af13fa4ea788f0117d9': {'error': 'revert', 'program_counter': 5528, 'return': '0x4e487b710000000000000000000000000000000000000000000000000000000000000032'}, 'stack': 'RuntimeError: VM Exception while processing transaction: revert\n    at Function.RuntimeError.fromResults (C:
+              f'HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n'
+          simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(storeNum).
+          ValueError says: VM Exception while processing transaction: revert
+          HINT1:  Did you fail to pass a transaction require()?
+          HINT2:  Did you fail to pass a transaction guard modifier()?
+          HINT3:  Did you fail an assert()?
+          HINT4:  Did the transaction do a revert()?
+          HINT5:  Did you divide by zero?
+          HINT6:  Did you pass in an out-of-bounds array index?
+          HINT7:  Did you pass in an out-of-range enum value?
+          HINT8:  Was the gas limit too low (less than the base fee)?
+          HINT9:  Was the gas limit too high (greater than the block gas limit)?
+          HINT10: Was max_fee_gwei a float? (It must be an int)
+          HINT11: Was max_priority_fee_gwei a float? (It must be an int)
+          HINT12: Did this trx call another trx, which failed?
+          HINT13: Did you attempt to send ether to a non-payable trx?
+          HINT14: Was sender a valid account that can submit a trx?
+          HINT15: Does sender have enough Ether to run trx?
+
+          >>> try:
+          ...     c.run_trx(user, 'storeNum', 4, 42)
+          ... except SimplethError as e:
+          ...     print(e.code)
+          ...     print(e.message)
+          ...     print(e.revert_description)
+          ...     pp.pprint(e.exc_info)
+          ...
+          C-080-080
+          ERROR in Test().submit_trx(storeNum).
+          ValueError says: VM Exception while processing transaction: revert
+          HINT1:  Did you fail to pass a transaction require()?
+          HINT2:  Did you fail to pass a transaction guard modifier()?
+          HINT3:  Did you fail an assert()?
+          HINT4:  Did the transaction do a revert()?
+          HINT5:  Did you divide by zero?
+          HINT6:  Did you pass in an out-of-bounds array index?
+          HINT7:  Did you pass in an out-of-range enum value?
+          HINT8:  Was the gas limit too low (less than the base fee)?
+          HINT9:  Was the gas limit too high (greater than the block gas limit)?
+          HINT10: Was max_fee_gwei a float? (It must be an int)
+          HINT11: Was max_priority_fee_gwei a float? (It must be an int)
+          HINT12: Did this trx call another trx, which failed?
+          HINT13: Did you attempt to send ether to a non-payable trx?
+          HINT14: Was sender a valid account that can submit a trx?
+          HINT15: Does sender have enough Ether to run trx?
+
+
+          ( <class 'ValueError'>,
+            ValueError({'message': 'VM Exception while processing transaction: revert', 'code': -32000, 'data': {'0x6f829f521ebd6bf7ab34feea51bb4c18b82c663229004af13fa4ea788f0117d9': {'error': 'revert', 'program_counter': 5528, 'return': '0x4e487b710000000000000000000000000000000000000000000000000000000000000032'}, 'stack': 'RuntimeError: VM Exception while processing transaction: revert\n    at Function.RuntimeError.fromResults (C:
         f'HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n'
     simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(storeNum).
     ValueError says: VM Exception while processing transaction: revert
@@ -1950,6 +2048,58 @@ i.e., the owner is the only one allowed to use this transaction. The
       File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 1838, in run_trx
         trx_hash: T_HASH = self.submit_trx(
       File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 2128, in submit_trx
+              f'HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n'
+          simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(sumTwoNums).
+          ValueError says: VM Exception while processing transaction: revert must be owner to sum two nums
+          HINT1:  Did you fail to pass a transaction require()?
+          HINT2:  Did you fail to pass a transaction guard modifier()?
+          HINT3:  Did you fail an assert()?
+          HINT4:  Did the transaction do a revert()?
+          HINT5:  Did you divide by zero?
+          HINT6:  Did you pass in an out-of-bounds array index?
+          HINT7:  Did you pass in an out-of-range enum value?
+          HINT8:  Was the gas limit too low (less than the base fee)?
+          HINT9:  Was the gas limit too high (greater than the block gas limit)?
+          HINT10: Was max_fee_gwei a float? (It must be an int)
+          HINT11: Was max_priority_fee_gwei a float? (It must be an int)
+          HINT12: Did this trx call another trx, which failed?
+          HINT13: Did you attempt to send ether to a non-payable trx?
+          HINT14: Was sender a valid account that can submit a trx?
+          HINT15: Does sender have enough Ether to run trx?
+
+          >>> try:
+          ...     c.run_trx(user, 'sumTwoNums')
+          ... except SimplethError as e:
+          ...     msg = e.revert_description
+          ...
+          >>> msg
+          'must be owner to sum two nums'
+              f'HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n'
+          simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(sumTwoNums).
+          ValueError says: VM Exception while processing transaction: revert must be owner to sum two nums
+          HINT1:  Did you fail to pass a transaction require()?
+          HINT2:  Did you fail to pass a transaction guard modifier()?
+          HINT3:  Did you fail an assert()?
+          HINT4:  Did the transaction do a revert()?
+          HINT5:  Did you divide by zero?
+          HINT6:  Did you pass in an out-of-bounds array index?
+          HINT7:  Did you pass in an out-of-range enum value?
+          HINT8:  Was the gas limit too low (less than the base fee)?
+          HINT9:  Was the gas limit too high (greater than the block gas limit)?
+          HINT10: Was max_fee_gwei a float? (It must be an int)
+          HINT11: Was max_priority_fee_gwei a float? (It must be an int)
+          HINT12: Did this trx call another trx, which failed?
+          HINT13: Did you attempt to send ether to a non-payable trx?
+          HINT14: Was sender a valid account that can submit a trx?
+          HINT15: Does sender have enough Ether to run trx?
+
+          >>> try:
+          ...     c.run_trx(user, 'sumTwoNums')
+          ... except SimplethError as e:
+          ...     msg = e.revert_description
+          ...
+          >>> msg
+          'must be owner to sum two nums'
         f'HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n'
     simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(sumTwoNums).
     ValueError says: VM Exception while processing transaction: revert must be owner to sum two nums
@@ -1997,6 +2147,22 @@ and you'll see they act just like the previous example of a failed
 .. code-block:: python
    :linenos:
    :caption: Handling transaction thrown exceptions - modifier with message
+
+       >>> try:
+       ...     c.run_trx(user, 'setOwner', user)
+       ... except SimplethError as e:
+       ...     msg = e.revert_description
+       ...
+       >>> msg
+       'Must be owner'
+
+       >>> try:
+       ...     c.run_trx(user, 'setOwner', user)
+       ... except SimplethError as e:
+       ...     msg = e.revert_description
+       ...
+       >>> msg
+       'Must be owner'
 
     >>> try:
     ...     c.run_trx(user, 'setOwner', user)
@@ -2082,6 +2248,58 @@ look for it in the same manner we did for ``require()``:
       File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 1838, in run_trx
         trx_hash: T_HASH = self.submit_trx(
       File "C:\Users\snewe\OneDrive\Desktop\simpleth\src\simpleth\simpleth.py", line 2128, in submit_trx
+              f'HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n'
+          simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(revertTransaction).
+          ValueError says: VM Exception while processing transaction: revert Revert this transaction.
+          HINT1:  Did you fail to pass a transaction require()?
+          HINT2:  Did you fail to pass a transaction guard modifier()?
+          HINT3:  Did you fail an assert()?
+          HINT4:  Did the transaction do a revert()?
+          HINT5:  Did you divide by zero?
+          HINT6:  Did you pass in an out-of-bounds array index?
+          HINT7:  Did you pass in an out-of-range enum value?
+          HINT8:  Was the gas limit too low (less than the base fee)?
+          HINT9:  Was the gas limit too high (greater than the block gas limit)?
+          HINT10: Was max_fee_gwei a float? (It must be an int)
+          HINT11: Was max_priority_fee_gwei a float? (It must be an int)
+          HINT12: Did this trx call another trx, which failed?
+          HINT13: Did you attempt to send ether to a non-payable trx?
+          HINT14: Was sender a valid account that can submit a trx?
+          HINT15: Does sender have enough Ether to run trx?
+
+          >>> try:
+          ...     c.run_trx(user, 'revertTransaction')
+          ... except SimplethError as e:
+          ...     msg = e.revert_description
+          ...
+          >>> msg
+          'Revert this transaction.'
+              f'HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n'
+          simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(revertTransaction).
+          ValueError says: VM Exception while processing transaction: revert Revert this transaction.
+          HINT1:  Did you fail to pass a transaction require()?
+          HINT2:  Did you fail to pass a transaction guard modifier()?
+          HINT3:  Did you fail an assert()?
+          HINT4:  Did the transaction do a revert()?
+          HINT5:  Did you divide by zero?
+          HINT6:  Did you pass in an out-of-bounds array index?
+          HINT7:  Did you pass in an out-of-range enum value?
+          HINT8:  Was the gas limit too low (less than the base fee)?
+          HINT9:  Was the gas limit too high (greater than the block gas limit)?
+          HINT10: Was max_fee_gwei a float? (It must be an int)
+          HINT11: Was max_priority_fee_gwei a float? (It must be an int)
+          HINT12: Did this trx call another trx, which failed?
+          HINT13: Did you attempt to send ether to a non-payable trx?
+          HINT14: Was sender a valid account that can submit a trx?
+          HINT15: Does sender have enough Ether to run trx?
+
+          >>> try:
+          ...     c.run_trx(user, 'revertTransaction')
+          ... except SimplethError as e:
+          ...     msg = e.revert_description
+          ...
+          >>> msg
+          'Revert this transaction.'
         f'HINT11: Was max_priority_fee_gwei a float? (It must be an int)\n'
     simpleth.SimplethError: [C-080-080] ERROR in Test().submit_trx(revertTransaction).
     ValueError says: VM Exception while processing transaction: revert Revert this transaction.

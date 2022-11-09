@@ -925,7 +925,7 @@ class TestContractRunTrxBad:
                 non_owner
                 )
         assert excp.value.code == 'C-080-080' and \
-            excp.value.revert_msg == 'Must be owner'
+               excp.value.revert_description == 'Must be owner'
 
     def test_run_trx_with_require_fail_raises_C_080_080(
             self,
@@ -940,7 +940,7 @@ class TestContractRunTrxBad:
                 'sumTwoNums'
                 )
         assert excp.value.code == 'C-080-080' and \
-            excp.value.revert_msg == 'must be owner to sum two nums'
+               excp.value.revert_description == 'must be owner to sum two nums'
 
     def test_revert_sends_back_message(
             self,
@@ -956,7 +956,7 @@ class TestContractRunTrxBad:
                 revert_msg
                 )
         assert excp.value.code == 'C-080-080' and \
-               excp.value.revert_msg == revert_msg
+               excp.value.revert_description == revert_msg
 
     def test_run_trx_with_db0_arg_raises_C_080_080(
             self,

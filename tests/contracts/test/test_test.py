@@ -476,7 +476,7 @@ def test_throwRevertWithMessage_reverts():
     with pytest.raises(SimplethError) as excp:
         c.run_trx(u, 'throwRevertWithMessage', revert_msg)
     assert excp.value.code == 'C-080-080'
-    assert excp.value.revert_msg == revert_msg
+    assert excp.value.revert_description == revert_msg
 
 
 def test_throwRevert_reverts():
@@ -487,7 +487,7 @@ def test_throwRevert_reverts():
     with pytest.raises(SimplethError) as excp:
         c.run_trx(u, 'throwRevert')
     assert excp.value.code == 'C-080-080'
-    assert excp.value.revert_msg == ''
+    assert excp.value.revert_description == ''
 
 
 def test_throwAssert_reverts():
@@ -498,7 +498,7 @@ def test_throwAssert_reverts():
     with pytest.raises(SimplethError) as excp:
         c.run_trx(u, 'throwAssert')
     assert excp.value.code == 'C-080-080'
-    assert excp.value.revert_msg == ''
+    assert excp.value.revert_description == ''
 
 
 def test_requireFailsFunction_reverts_as_a_transaction():
@@ -510,7 +510,7 @@ def test_requireFailsFunction_reverts_as_a_transaction():
     with pytest.raises(SimplethError) as excp:
         c.run_trx(u, 'requireFailsFunction')
     assert excp.value.code == 'C-080-080'
-    assert excp.value.revert_msg == 'Function require failed'
+    assert excp.value.revert_description == 'Function require failed'
 
 
 def test_requireFailsFunction_reverts_as_a_function():
@@ -521,7 +521,7 @@ def test_requireFailsFunction_reverts_as_a_function():
     with pytest.raises(SimplethError) as excp:
         c.call_fcn('requireFailsFunction')
     assert excp.value.code == 'C-010-040'
-    assert excp.value.revert_msg == 'Function require failed'
+    assert excp.value.revert_description == 'Function require failed'
 
 
 def test_receive():

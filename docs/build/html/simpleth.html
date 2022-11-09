@@ -3220,7 +3220,7 @@ those data types is available as the attribute, <code class="xref py py-attr doc
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="simpleth.SimplethError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">SimplethError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revert_msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpleth.SimplethError" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simpleth.</span></span><span class="sig-name descname"><span class="pre">SimplethError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revert_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpleth.SimplethError" title="Permalink to this definition"></a></dt>
 <dd><p>Simple Ethereum Error exception class.</p>
 <p>It is used by <a class="reference internal" href="#simpleth.Contract" title="simpleth.Contract"><code class="xref py py-class docutils literal notranslate"><span class="pre">Contract</span></code></a>, <a class="reference internal" href="#simpleth.Convert" title="simpleth.Convert"><code class="xref py py-class docutils literal notranslate"><span class="pre">Convert</span></code></a>, <a class="reference internal" href="#simpleth.Blockchain" title="simpleth.Blockchain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Blockchain</span></code></a>,
 <a class="reference internal" href="#simpleth.Results" title="simpleth.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code></a>, and <a class="reference internal" href="#simpleth.EventSearch" title="simpleth.EventSearch"><code class="xref py py-class docutils literal notranslate"><span class="pre">EventSearch</span></code></a> to throw exceptions for
@@ -3246,7 +3246,7 @@ reasons for <cite>SimplethError</cite> is fixed and time to consider doing away
 with it.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="simpleth.SimplethError.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revert_msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#simpleth.SimplethError.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revert_description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#simpleth.SimplethError.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Create error exception.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -3254,7 +3254,7 @@ with it.</p>
 <li><p><strong>message</strong> (<em>str</em>) – error message with a description of error</p></li>
 <li><p><strong>code</strong> (<em>str</em>) – unique identifier of this error (<strong>optional</strong>,
 default: <cite>‘’</cite>)</p></li>
-<li><p><strong>revert_msg</strong> – message from a transaction assert() or
+<li><p><strong>revert_description</strong> – reason from a transaction revert() or
 require() (<strong>optional</strong>, default: <cite>‘’</cite>)</p></li>
 </ul>
 </dd>
@@ -3263,28 +3263,47 @@ require() (<strong>optional</strong>, default: <cite>‘’</cite>)</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">raise</span> <span class="n">SimplethError</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
 <span class="gp">... </span><span class="k">except</span> <span class="n">SimplethError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="go">test</span>
+<span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">raise</span> <span class="n">SimplethError</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;10&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">raise</span> <span class="n">SimplethError</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="s1">&#39;test message&#39;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">code</span><span class="o">=</span><span class="s1">&#39;TEST-010-020&#39;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">revert_description</span><span class="o">=</span><span class="s1">&#39;Sender was not owner&#39;</span>
+<span class="gp">... </span>        <span class="p">)</span>
 <span class="gp">... </span><span class="k">except</span> <span class="n">SimplethError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;e                = </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;code             = </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;revert           = </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">revert_description</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">excp</span> <span class="o">=</span> <span class="n">e</span>
 <span class="gp">...</span>
-<span class="go">[10] test</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">SimplethError</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">raise</span> <span class="n">SimplethError</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;ERR-020-010&#39;</span><span class="p">)</span>
+<span class="go">e                = [TEST-010-020] test message</span>
+<span class="go">code             = TEST-010-020</span>
+<span class="go">revert           = Sender was not owner</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">simpleth</span> <span class="kn">import</span> <span class="n">Blockchain</span><span class="p">,</span> <span class="n">Contract</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="n">Blockchain</span><span class="p">()</span><span class="o">.</span><span class="n">address</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">=</span><span class="n">Contract</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>      
+<span class="go">&#39;0x02051679af2Bd7A276085212fcBe98ebeF747FDb&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>             
+<span class="gp">... </span>    <span class="n">t</span><span class="o">.</span><span class="n">run_trx</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">&#39;throwRevertWithMessage&#39;</span><span class="p">,</span> <span class="s1">&#39;Sender was not owner&#39;</span><span class="p">)</span>
 <span class="gp">... </span><span class="k">except</span> <span class="n">SimplethError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;e = </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;code = </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;message = </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;exc_info = </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">exc_info</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;e     = </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;code  = </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;revert_description = </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">revert_description</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">excp</span> <span class="o">=</span> <span class="n">e</span>
 <span class="gp">...</span>
-<span class="go">e = [ERR-020-010] test</span>
-<span class="go">code = ERR-020-010</span>
-<span class="go">message = test</span>
-<span class="go">exc_info = (None, None, None)</span>
+<span class="go">e     = [C-080-080] ERROR in Test().submit_trx(throwRevertWithMessage).</span>
+<span class="go">ValueError says: VM Exception while processing transaction: revert Sender was not owner</span>
+<span class="go">HINT1:  Did you fail to pass a transaction require()?</span>
+<span class="go">...snip...</span>
+<span class="go">code  = C-080-080</span>
+<span class="go">revert_description = Sender was not owner</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">excp</span><span class="o">.</span><span class="n">exc_info</span>       
+<span class="go">(&lt;class &#39;ValueError&#39;&gt;, ValueError({&#39;message&#39;: &#39;VM Exception ...snip....</span>
 </pre></div>
 </div>
 </dd>
@@ -3347,10 +3366,10 @@ info: (<cite>type</cite>, <cite>value</cite>, <cite>traceback</cite>)</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="simpleth.SimplethError.revert_msg">
-<span class="sig-name descname"><span class="pre">revert_msg</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simpleth.SimplethError.revert_msg" title="Permalink to this definition"></a></dt>
-<dd><p>Exception instance variable with <code class="docutils literal notranslate"><span class="pre">assert()</span></code> or
-<code class="docutils literal notranslate"><span class="pre">require()</span></code> message from transaction</p>
+<dt class="sig sig-object py" id="simpleth.SimplethError.revert_description">
+<span class="sig-name descname"><span class="pre">revert_description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simpleth.SimplethError.revert_description" title="Permalink to this definition"></a></dt>
+<dd><p>Exception instance variable with <code class="docutils literal notranslate"><span class="pre">revert()</span></code> or
+<code class="docutils literal notranslate"><span class="pre">require()</span></code> reason from transaction</p>
 </dd></dl>
 
 <dl class="py attribute">
