@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Smart Contract Reference &mdash; simpleth 0.1.61 documentation</title>
+  <title>Smart Contract Reference &mdash; simpleth 0.1.62 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -108,6 +108,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#storetypes-bool-uint8-uint256-int256-address-string-uint256-3">storeTypes(bool,uint8,uint256,int256,address,string,uint256[3])</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sumnums">sumNums()</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sumtwonums">sumTwoNums()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#throwassert">throwAssert()</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#throwrevert">throwRevert()</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#throwrevertwithmessage-string">throwRevertWithMessage(string)</a></li>
 </ul>
@@ -933,6 +934,18 @@ in the Solidity source files.</p>
 </dd>
 <dt class="field-even">Notes</dt>
 <dd class="field-even"><p>Emits TwoNumsSummed()</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="throwassert">
+<h4>throwAssert()<a class="headerlink" href="#throwassert" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Allows test of assert().</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Always asserts. No event emitted.</p>
 </dd>
 </dl>
 </section>

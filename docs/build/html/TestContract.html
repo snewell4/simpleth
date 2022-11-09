@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Test Contract Source &mdash; simpleth 0.1.61 documentation</title>
+  <title>Test Contract Source &mdash; simpleth 0.1.62 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -905,17 +905,15 @@ contract Test {
     }
 
     /**
-     * @notice Allows test of revert() with a description message
+     * @notice Allows test of assert().
      *
-     * @dev Always reverts. No event emitted.
-     *
-     * @param _message_str Passed back as the revert description.
+     * @dev Always asserts. No event emitted.
      */
-    function throwRevertWithMessage(string memory _message_str)
+    function throwAssert()
         public
         pure
     {
-        revert(_message_str);
+        assert(false);
     }
 
     /**
@@ -928,6 +926,20 @@ contract Test {
         pure
     {
         revert();
+    }
+
+    /**
+     * @notice Allows test of revert() with a description message
+     *
+     * @dev Always reverts. No event emitted.
+     *
+     * @param _message_str Passed back as the revert description.
+     */
+    function throwRevertWithMessage(string memory _message_str)
+        public
+        pure
+    {
+        revert(_message_str);
     }
 
     /**

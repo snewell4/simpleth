@@ -379,6 +379,15 @@ sumTwoNums()
 
 ________________________________________
 
+throwAssert()
+-------------
+:Purpose:  Allows test of assert().
+
+:Notes:  Always asserts. No event emitted.
+
+
+________________________________________
+
 throwRevert()
 -------------
 :Purpose:  Allows test of revert() with no parameter for a message

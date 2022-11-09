@@ -490,6 +490,17 @@ def test_throwRevert_reverts():
     assert excp.value.revert_msg == ''
 
 
+def test_throwAssert_reverts():
+    """Test a transaction that calls assert()"""
+    u = Blockchain().address(0)
+    c = Contract('test')
+    c.connect()
+    with pytest.raises(SimplethError) as excp:
+        c.run_trx(u, 'throwAssert')
+    assert excp.value.code == 'C-080-080'
+    assert excp.value.revert_msg == ''
+
+
 def test_requireFailsFunction_reverts_as_a_transaction():
     """Test a transaction that calls revert() sends back the message"""
     # It is a two-line function that is called with run_trx()
