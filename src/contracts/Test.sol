@@ -520,18 +520,6 @@ contract Test {
     }
 
     /**
-     * @notice Allows test of revert()
-     *
-     * @dev Always reverts. No event emitted. Passes back a message.
-     */
-    function revertFunction()
-        public
-        pure
-    {
-        revert("Function reverted");
-    }
-
-    /**
      * @notice Allows current owner to assign a new owner
      *
      * @dev Emits OwnerSet().
@@ -835,6 +823,32 @@ contract Test {
             nums[1],
             numsTotal
         );
+    }
+
+    /**
+     * @notice Allows test of revert() with a description message
+     *
+     * @dev Always reverts. No event emitted.
+     *
+     * @param _message_str Passed back as the revert description.
+     */
+    function throwRevertWithMessage(string memory _message_str)
+        public
+        pure
+    {
+        revert(_message_str);
+    }
+
+    /**
+     * @notice Allows test of revert() with no parameter for a message
+     *
+     * @dev Always reverts. No event emitted.
+     */
+    function throwRevert()
+        public
+        pure
+    {
+        revert();
     }
 
     /**

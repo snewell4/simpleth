@@ -948,14 +948,15 @@ class TestContractRunTrxBad:
             ):
         """Test get the message for a revert()"""
         c = connect_to_test_contract
-        revert_msg = ''
+        revert_msg = 'Function reverted'
         with pytest.raises(SimplethError) as excp:
             c.run_trx(
                 constants.TRX_SENDER,
-                'revertFunction'
+                'throwRevertWithMessage',
+                revert_msg
                 )
         assert excp.value.code == 'C-080-080' and \
-               excp.value.revert_msg == 'Function reverted'
+               excp.value.revert_msg == revert_msg
 
     def test_run_trx_with_db0_arg_raises_C_080_080(
             self,

@@ -199,15 +199,6 @@ requireFailsFunction()
 
 ________________________________________
 
-revertFunction()
-----------------
-:Purpose:  Allows test of revert()
-
-:Notes:  Always reverts. No event emitted. Passes back a message.
-
-
-________________________________________
-
 setOwner(address)
 -----------------
 :Purpose:  Allows current owner to assign a new owner
@@ -384,6 +375,29 @@ sumTwoNums()
 :Purpose:  Sums values in nums[0] and nums[1] and stores in numsTotal. Required to be owner to call
 
 :Notes:  Emits TwoNumsSummed()
+
+
+________________________________________
+
+throwRevert()
+-------------
+:Purpose:  Allows test of revert() with no parameter for a message
+
+:Notes:  Always reverts. No event emitted.
+
+
+________________________________________
+
+throwRevertWithMessage(string)
+------------------------------
+:Purpose:  Allows test of revert() with a description message
+
+:Notes:  Always reverts. No event emitted.
+
+**Parameters:**
+
+:\_message\_str: Passed back as the revert description.
+
 
 
 .. image:: ../images/section_separator.png

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Smart Contract Reference &mdash; simpleth 0.1.60 documentation</title>
+  <title>Smart Contract Reference &mdash; simpleth 0.1.61 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -96,7 +96,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#getnums">getNums()</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#gettypes">getTypes()</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#requirefailsfunction">requireFailsFunction()</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#revertfunction">revertFunction()</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#setowner-address">setOwner(address)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#storebytes-bytes4-bytes32-bytes">storeBytes(bytes4,bytes32,bytes)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#storenum-uint256-uint256">storeNum(uint256,uint256)</a></li>
@@ -109,6 +108,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#storetypes-bool-uint8-uint256-int256-address-string-uint256-3">storeTypes(bool,uint8,uint256,int256,address,string,uint256[3])</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sumnums">sumNums()</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sumtwonums">sumTwoNums()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#throwrevert">throwRevert()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#throwrevertwithmessage-string">throwRevertWithMessage(string)</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#id14">EVENTS</a><ul>
@@ -666,18 +667,6 @@ in the Solidity source files.</p>
 </dl>
 </section>
 <hr class="docutils" />
-<section id="revertfunction">
-<h4>revertFunction()<a class="headerlink" href="#revertfunction" title="Permalink to this headline"></a></h4>
-<dl class="field-list simple">
-<dt class="field-odd">Purpose</dt>
-<dd class="field-odd"><p>Allows test of revert()</p>
-</dd>
-<dt class="field-even">Notes</dt>
-<dd class="field-even"><p>Always reverts. No event emitted. Passes back a message.</p>
-</dd>
-</dl>
-</section>
-<hr class="docutils" />
 <section id="setowner-address">
 <h4>setOwner(address)<a class="headerlink" href="#setowner-address" title="Permalink to this headline"></a></h4>
 <dl class="field-list simple">
@@ -944,6 +933,36 @@ in the Solidity source files.</p>
 </dd>
 <dt class="field-even">Notes</dt>
 <dd class="field-even"><p>Emits TwoNumsSummed()</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="throwrevert">
+<h4>throwRevert()<a class="headerlink" href="#throwrevert" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Allows test of revert() with no parameter for a message</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Always reverts. No event emitted.</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="throwrevertwithmessage-string">
+<h4>throwRevertWithMessage(string)<a class="headerlink" href="#throwrevertwithmessage-string" title="Permalink to this headline"></a></h4>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Allows test of revert() with a description message</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Always reverts. No event emitted.</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_message_str</dt>
+<dd class="field-odd"><p>Passed back as the revert description.</p>
 </dd>
 </dl>
 <img alt="_images/section_separator.png" src="_images/section_separator.png" />

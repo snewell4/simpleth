@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Test &mdash; simpleth 0.1.60 documentation</title>
+  <title>Test &mdash; simpleth 0.1.61 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -342,18 +342,6 @@
 </dl>
 </section>
 <hr class="docutils" />
-<section id="revertfunction">
-<h3>revertFunction()<a class="headerlink" href="#revertfunction" title="Permalink to this headline"></a></h3>
-<dl class="field-list simple">
-<dt class="field-odd">Purpose</dt>
-<dd class="field-odd"><p>Allows test of revert()</p>
-</dd>
-<dt class="field-even">Notes</dt>
-<dd class="field-even"><p>Always reverts. No event emitted. Passes back a message.</p>
-</dd>
-</dl>
-</section>
-<hr class="docutils" />
 <section id="setowner-address">
 <h3>setOwner(address)<a class="headerlink" href="#setowner-address" title="Permalink to this headline"></a></h3>
 <dl class="field-list simple">
@@ -620,6 +608,36 @@
 </dd>
 <dt class="field-even">Notes</dt>
 <dd class="field-even"><p>Emits TwoNumsSummed()</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="throwrevert">
+<h3>throwRevert()<a class="headerlink" href="#throwrevert" title="Permalink to this headline"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Allows test of revert() with no parameter for a message</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Always reverts. No event emitted.</p>
+</dd>
+</dl>
+</section>
+<hr class="docutils" />
+<section id="throwrevertwithmessage-string">
+<h3>throwRevertWithMessage(string)<a class="headerlink" href="#throwrevertwithmessage-string" title="Permalink to this headline"></a></h3>
+<dl class="field-list simple">
+<dt class="field-odd">Purpose</dt>
+<dd class="field-odd"><p>Allows test of revert() with a description message</p>
+</dd>
+<dt class="field-even">Notes</dt>
+<dd class="field-even"><p>Always reverts. No event emitted.</p>
+</dd>
+</dl>
+<p><strong>Parameters:</strong></p>
+<dl class="field-list simple">
+<dt class="field-odd">_message_str</dt>
+<dd class="field-odd"><p>Passed back as the revert description.</p>
 </dd>
 </dl>
 <img alt="_images/section_separator.png" src="_images/section_separator.png" />

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Test Contract Source &mdash; simpleth 0.1.60 documentation</title>
+  <title>Test Contract Source &mdash; simpleth 0.1.61 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -599,18 +599,6 @@ contract Test {
     }
 
     /**
-     * @notice Allows test of revert()
-     *
-     * @dev Always reverts. No event emitted. Passes back a message.
-     */
-    function revertFunction()
-        public
-        pure
-    {
-        revert(&quot;Function reverted&quot;);
-    }
-
-    /**
      * @notice Allows current owner to assign a new owner
      *
      * @dev Emits OwnerSet().
@@ -914,6 +902,32 @@ contract Test {
             nums[1],
             numsTotal
         );
+    }
+
+    /**
+     * @notice Allows test of revert() with a description message
+     *
+     * @dev Always reverts. No event emitted.
+     *
+     * @param _message_str Passed back as the revert description.
+     */
+    function throwRevertWithMessage(string memory _message_str)
+        public
+        pure
+    {
+        revert(_message_str);
+    }
+
+    /**
+     * @notice Allows test of revert() with no parameter for a message
+     *
+     * @dev Always reverts. No event emitted.
+     */
+    function throwRevert()
+        public
+        pure
+    {
+        revert();
     }
 
     /**

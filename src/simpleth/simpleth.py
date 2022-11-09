@@ -201,7 +201,7 @@ CONTRACT_LOGIC_ERROR_REVERT_MESSAGE: Final[str] = \
     'execution reverted: VM Exception while processing transaction: revert'
 """ContractLogicError exception message for a reverted transaction."""
 
-VALUE_ERROR_REVERT_MESSAGE: Final[str] = \
+VALUE_ERROR_REVERT_TEXT: Final[str] = \
     'VM Exception while processing transaction: revert'
 """ValueError exception message for a reverted transaction."""
 
@@ -1400,7 +1400,7 @@ class Contract:
            - :meth:`connect(address)` is intended only for use when
              a contract uses the Solidity operator, ``new`` to deploy
              the contract. The contract's new address is not in the ``.addr``
-             file for :meth:`connect' to find. So, that new address is
+             file for :meth:`connect` to find. So, that new address is
              supplied directly to :meth:`connect`.
 
         """
@@ -2223,7 +2223,7 @@ class Contract:
             # in newer web3.py releases.
 
             if isinstance(exception.args, str):
-                value_error_message = exception.args
+                value_error_message: str = exception.args
             elif isinstance(exception.args[0], str):
                 value_error_message = exception.args[0]
             elif isinstance(exception.args[0], dict):
@@ -2231,20 +2231,16 @@ class Contract:
             else:
                 value_error_message = str(exception)
 
-            # If transaction did assert() or require() and
-            # specified a message, that message is to the right
-            # of the standard revert message plus a space
-            # from ValueError. The space is important: no space
-            # means no trx revert message follows and one
-            # space means a trx revert message follows. Strip
-            # out the boilerplate message to get the trx revert message.
-            # Otherwise, the replace() does nothing and the trx revert message
-            # is just the standard VALUE_ERROR_REVERT_MESSAGE.
+            # If transaction did assert() or require() with an arg that gave
+            # a description of the reason, grab that description.
+            # It will be in the form of:
+            # <VALUE_ERROR_REVERT_TEXT><[spaces]><DESCRIPTION>
+            # Strip off the boilerplate text and any leading and trailing
+            # spaces. If there was no description argument to the assert()
+            # or revert, the trx_revert_message will be a empty string
             trx_revert_message: str = \
-                value_error_message.replace(
-                    VALUE_ERROR_REVERT_MESSAGE + ' ',
-                    ''
-                    )
+                value_error_message.replace(VALUE_ERROR_REVERT_TEXT, '')
+            trx_revert_message = trx_revert_message.strip()
 
             message = (
                 f'ERROR in {self.name}().submit_trx({trx_name}).\n'
